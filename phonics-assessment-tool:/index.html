@@ -1,0 +1,773 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UFLI Foundations Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body style="margin: 0; padding: 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: transparent;">
+
+<style>
+  :root {
+    --color-text-primary: #2c3e50;
+    --color-text-secondary: #7f8c8d;
+    --color-background-primary: #FBF9F7;
+    --color-background-secondary: #F3EFE7;
+    --color-border-primary: #378ADD;
+    --color-border-secondary: #D4C5B9;
+    --color-border-tertiary: #E8DDD4;
+  }
+  
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 1.5rem; background: #E8D4C4; }
+  .container { max-width: 1400px; margin: 0 auto; }
+  
+  .header { margin-bottom: 2rem; }
+  .header h1 { margin: 0; font-size: 24px; font-weight: 600; color: var(--color-text-primary); }
+  
+  .top-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+  
+  .box { padding: 1.5rem; background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); }
+  .box-title { font-size: 15px; font-weight: 700; color: var(--color-text-secondary); margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  .chart-area { background: var(--color-background-primary); border-radius: 8px; padding: 1rem; border: 0.5px solid var(--color-border-tertiary); margin-bottom: 1rem; }
+  #pieChart { width: 100%; height: 160px; cursor: pointer; }
+  
+  .counts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .count-item { padding: 10px; text-align: center; border-radius: 8px; border: 0.5px solid; cursor: pointer; transition: all 0.2s; }
+  .count-item:hover { transform: scale(1.05); }
+  .count-item.e { background: rgba(55, 138, 221, 0.1); border-color: #378ADD; }
+  .count-item.d { background: rgba(186, 117, 23, 0.1); border-color: #BA7517; }
+  .count-item.m { background: rgba(99, 153, 34, 0.1); border-color: #639922; }
+  .count-num { font-size: 18px; font-weight: 700; margin: 0; }
+  .count-item.e .count-num { color: #378ADD; }
+  .count-item.d .count-num { color: #BA7517; }
+  .count-item.m .count-num { color: #639922; }
+  .count-label { font-size: 11px; font-weight: 600; text-transform: uppercase; margin: 4px 0 0 0; color: var(--color-text-secondary); }
+  
+  select { width: 100%; padding: 12px 14px; border: 1px solid var(--color-border-secondary); border-radius: 8px; font-size: 16px; font-weight: 500; background: var(--color-background-primary); color: var(--color-text-primary); margin-bottom: 1rem; cursor: pointer; }
+  
+  .lessons { display: grid; gap: 10px; max-height: 350px; overflow-y: auto; }
+  .lesson { padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; display: grid; grid-template-columns: 1fr auto auto auto; gap: 8px; align-items: center; }
+  .lesson-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .lesson-meta { font-size: 11px; color: var(--color-text-secondary); display: block; margin-top: 2px; }
+  
+  .score-buttons { display: flex; gap: 6px; }
+  .btn-score { padding: 6px 10px; font-size: 11px; font-weight: 500; border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); color: var(--color-text-primary); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .btn-score:hover { border-color: var(--color-border-secondary); background: var(--color-background-secondary); }
+  .btn-score.e { background: #378ADD; border-color: #378ADD; color: white; }
+  .btn-score.d { background: #BA7517; border-color: #BA7517; color: white; }
+  .btn-score.m { background: #639922; border-color: #639922; color: white; }
+  
+  .section { margin: 1.5rem 0; padding: 1.5rem; background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--color-text-secondary); margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  input[type="date"], textarea, input[type="file"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #A0D4E8;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #E3F2FD;
+    color: var(--color-text-primary);
+  }
+  input[type="date"]:focus, textarea:focus, input[type="file"]:focus {
+    outline: none;
+    border-color: #378ADD;
+    background: #E3F2FD;
+  }
+  textarea { resize: vertical; min-height: 80px; }
+  
+  .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .two-column { grid-template-columns: 1fr; } }
+  
+  .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
+  .modal.show { display: block; }
+  .modal-content { background: var(--color-background-secondary); margin: 5% auto; padding: 2rem; border-radius: 12px; border: 1px solid var(--color-border-secondary); width: 90%; max-width: 600px; max-height: 70vh; overflow-y: auto; }
+  .close-modal { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--color-text-secondary); }
+  .close-modal:hover { color: var(--color-text-primary); }
+  .modal-title { font-size: 18px; font-weight: 700; margin: 0 0 1.5rem 0; color: var(--color-text-primary); }
+  .lesson-item { padding: 12px; margin-bottom: 10px; background: var(--color-background-primary); border-radius: 8px; border-left: 4px solid; }
+  .lesson-item.e { border-color: #378ADD; }
+  .lesson-item.d { border-color: #BA7517; }
+  .lesson-item.m { border-color: #639922; }
+  .lesson-item-name { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+  .lesson-item-skill { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+  
+  button { padding: 10px 16px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); border-radius: 6px; cursor: pointer; transition: 0.2s; }
+  button:hover { background: var(--color-background-secondary); }
+  
+  .btn-primary { background: #378ADD; border-color: #378ADD; color: white; font-weight: 500; }
+  .btn-primary:hover { background: #2966bb; }
+</style>
+
+<div class="container">
+  
+  <div class="header">
+    <h1>UFLI Foundations Tracker</h1>
+  </div>
+
+  <!-- TOP: GRAPH AND LESSONS SIDE BY SIDE -->
+  <div class="top-boxes">
+    
+    <!-- LEFT: DISTRIBUTION GRAPH -->
+    <div class="box">
+      <div class="box-title">Distribution</div>
+      <div class="chart-area">
+        <svg id="pieChart"></svg>
+      </div>
+      <div class="counts">
+        <div class="count-item e" onclick="showLessonsByScore('e')">
+          <p class="count-num" id="count-e">0</p>
+          <p class="count-label">Emerging / Beginning</p>
+        </div>
+        <div class="count-item d" onclick="showLessonsByScore('d')">
+          <p class="count-num" id="count-d">0</p>
+          <p class="count-label">Developing</p>
+        </div>
+        <div class="count-item m" onclick="showLessonsByScore('m')">
+          <p class="count-num" id="count-m">0</p>
+          <p class="count-label">Mastered</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: SELECT UNIT + LESSONS -->
+    <div class="box">
+      <div class="box-title">Select Unit</div>
+      <select id="unitSelect" onchange="updateLessons()">
+        <option value="">Choose a unit...</option>
+        <option value="all">All Lessons</option>
+      </select>
+      <div class="lessons" id="lessonsList"></div>
+    </div>
+
+  </div>
+
+  <!-- COMMENTS -->
+  <div class="section">
+    <div class="two-column">
+      <div>
+        <label for="strengthsComment">Strengths</label>
+        <textarea id="strengthsComment" placeholder="What is this student doing well in phonics?"></textarea>
+      </div>
+      <div>
+        <label for="stretchesComment">Stretches: Areas of Growth</label>
+        <textarea id="stretchesComment" placeholder="What are the challenges or areas where they need more practice?"></textarea>
+      </div>
+    </div>
+  </div>
+
+<!-- MODAL FOR FILTERED LESSONS -->
+  <div id="lessonsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div class="modal-title" id="modalTitle">Emerging / Beginning Lessons</div>
+      <div id="modalLessonsList"></div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="section" style="display: flex; gap: 8px; flex-wrap: wrap;">
+    <button class="btn-primary" onclick="exportPDF()">Export PDF</button>
+    <button onclick="exportJSON()">Export JSON</button>
+    <button onclick="exportCSV()">Export CSV</button>
+    <button onclick="clearForm()">Clear</button>
+  </div>
+
+</div>
+
+<script>
+// UFLI Foundations curriculum - All 128 Lessons (K-2)
+const curriculum = {
+  "Unit 1: Alphabet & Sounds": {
+    lessons: [
+      { name: "Lesson 1", skill: "a /ɑ/" },
+      { name: "Lesson 2", skill: "m /m/" },
+      { name: "Lesson 3", skill: "s /s/" },
+      { name: "Lesson 4", skill: "t /t/" },
+      { name: "Lesson 5", skill: "VC & CVC Words" },
+      { name: "Lesson 6", skill: "p /p/" },
+      { name: "Lesson 7", skill: "f /f/" },
+      { name: "Lesson 8", skill: "i /ɪ/" },
+      { name: "Lesson 9", skill: "n /n/" },
+      { name: "Lesson 10", skill: "CVC Practice (g, i)" },
+      { name: "Lesson 11", skill: "Nasalized A (am, on)" },
+      { name: "Lesson 12", skill: "o /ɔ/" },
+      { name: "Lesson 13", skill: "d /d/" },
+      { name: "Lesson 14", skill: "c /k/" },
+      { name: "Lesson 15", skill: "u /ʊ/" },
+      { name: "Lesson 16", skill: "g /g/" },
+      { name: "Lesson 17", skill: "b /b/" },
+      { name: "Lesson 18", skill: "e /e/" },
+      { name: "Lesson 19", skill: "VC & CVC Practice (all)" },
+      { name: "Lesson 20", skill: "-s /s/" },
+      { name: "Lesson 21", skill: "-s /z/" },
+      { name: "Lesson 22", skill: "k /k/" },
+      { name: "Lesson 23", skill: "h /h/" },
+      { name: "Lesson 24", skill: "r /r/ Part 1" },
+      { name: "Lesson 25", skill: "r /r/ Part 2" },
+      { name: "Lesson 26", skill: "l /l/ Part 1" },
+      { name: "Lesson 27", skill: "l /l/ Part 2, ai" },
+      { name: "Lesson 28", skill: "w /w/" },
+      { name: "Lesson 29", skill: "j /j/" },
+      { name: "Lesson 30", skill: "y /y/" },
+      { name: "Lesson 31", skill: "x /ks/" },
+      { name: "Lesson 32", skill: "qu /kw/" },
+      { name: "Lesson 33", skill: "v /v/" },
+      { name: "Lesson 34", skill: "z /z/" }
+    ],
+    heartWords: ["the", "is", "a"]
+  },
+  "Unit 2: Short Vowels & CVC Review": {
+    lessons: [
+      { name: "Lesson 35", skill: "Short A Review (incl. Nasalized A)" },
+      { name: "Lesson 36", skill: "Short I Review" },
+      { name: "Lesson 37", skill: "Short O Review" },
+      { name: "Lesson 38", skill: "Short A, I, O Review" },
+      { name: "Lesson 39", skill: "Short U Review" },
+      { name: "Lesson 40", skill: "Short E Review" },
+      { name: "Lesson 41", skill: "Short Vowels Review (all)" }
+    ],
+    heartWords: ["and", "to", "in"]
+  },
+  "Unit 3: Digraphs": {
+    lessons: [
+      { name: "Lesson 42", skill: "FLSZ Spelling Rule (ff, ll, ss, zz)" },
+      { name: "Lesson 43", skill: "-all, -oll, -ull" },
+      { name: "Lesson 44", skill: "ck /k/" },
+      { name: "Lesson 45", skill: "sh /sh/" },
+      { name: "Lesson 46", skill: "Voiced th /th/" },
+      { name: "Lesson 47", skill: "Unvoiced th /th/" },
+      { name: "Lesson 48", skill: "ch /ch/" },
+      { name: "Lesson 49", skill: "Digraphs Review 1" },
+      { name: "Lesson 50", skill: "wh /w/, ph /f/" },
+      { name: "Lesson 51", skill: "ng /n/" },
+      { name: "Lesson 52", skill: "nk /nk/" },
+      { name: "Lesson 53", skill: "Digraphs Review 2 (incl. CCCVC)" }
+    ],
+    heartWords: ["of", "you", "for"]
+  },
+  "Unit 4: VCe & Special Patterns": {
+    lessons: [
+      { name: "Lesson 54", skill: "o_e /ɑ/" },
+      { name: "Lesson 55", skill: "i_e /ī/" },
+      { name: "Lesson 56", skill: "o_e /ō/" },
+      { name: "Lesson 57", skill: "VCe Review 1, e_e /ē/" },
+      { name: "Lesson 58", skill: "u /ū/, /ū/" },
+      { name: "Lesson 59", skill: "VCe Review 2 (all)" },
+      { name: "Lesson 60", skill: "_ce /s/" },
+      { name: "Lesson 61", skill: "_ge /j/" },
+      { name: "Lesson 62", skill: "VCe Review 3, VCe Exceptions" },
+      { name: "Lesson 98", skill: "Silent Letters (kn, wr, mb, m)" }
+    ],
+    heartWords: ["not", "but", "can"]
+  },
+  "Unit 5: Long Vowel Teams": {
+    lessons: [
+      { name: "Lesson 84", skill: "ai, ay /ā/" },
+      { name: "Lesson 85", skill: "ee, ea, ey /ē/" },
+      { name: "Lesson 86", skill: "oa, ow, oe /ō/" },
+      { name: "Lesson 87", skill: "ie, igh /ī/" },
+      { name: "Lesson 88", skill: "Vowel Teams Review 1" }
+    ],
+    heartWords: ["be", "have", "this"]
+  },
+  "Unit 6: R-Controlled & Other Vowels": {
+    lessons: [
+      { name: "Lesson 77", skill: "ar /ɑr/" },
+      { name: "Lesson 78", skill: "or, ore /ɔr/" },
+      { name: "Lesson 79", skill: "ar & or, ore Review" },
+      { name: "Lesson 80", skill: "er /ɛr/" },
+      { name: "Lesson 81", skill: "ir, ur /ɛr/" },
+      { name: "Lesson 82", skill: "Spelling /ɛr/: er, ir, ur, w + or" },
+      { name: "Lesson 83", skill: "R-Controlled Vowels Review" },
+      { name: "Lesson 89", skill: "oo, u /oo/" },
+      { name: "Lesson 90", skill: "oo /ŭ/" },
+      { name: "Lesson 91", skill: "ew, ui, ue /ū/" },
+      { name: "Lesson 92", skill: "Vowel Teams Review 2" },
+      { name: "Lesson 93", skill: "au, aw, ugh /aw/" },
+      { name: "Lesson 94", skill: "ə /ə/, ə /ə/" },
+      { name: "Lesson 95", skill: "oi, oy /oi/" },
+      { name: "Lesson 96", skill: "ou, ow /ow/" },
+      { name: "Lesson 97", skill: "Vowel Teams & Diphthongs Review" }
+    ],
+    heartWords: ["she", "he", "we"]
+  },
+  "Unit 7: Reading Longer Words & Endings": {
+    lessons: [
+      { name: "Lesson 63", skill: "-es" },
+      { name: "Lesson 64", skill: "-ed" },
+      { name: "Lesson 65", skill: "-ing" },
+      { name: "Lesson 66", skill: "Closed & Open Syllables" },
+      { name: "Lesson 67", skill: "Closed/Closed" },
+      { name: "Lesson 68", skill: "Open/Closed" },
+      { name: "Lesson 69", skill: "tch /ch/" },
+      { name: "Lesson 70", skill: "dge /j/" },
+      { name: "Lesson 71", skill: "tch & dge Review" },
+      { name: "Lesson 72", skill: "Long VCC (-ild, -old, -ind, -olt, -ost)" },
+      { name: "Lesson 73", skill: "y /ī/" },
+      { name: "Lesson 74", skill: "y /ē/" },
+      { name: "Lesson 75", skill: "-le" },
+      { name: "Lesson 76", skill: "Ending Patterns Review" }
+    ],
+    heartWords: ["my", "was", "are"]
+  },
+  "Unit 8: Affixes & Advanced Patterns": {
+    lessons: [
+      { name: "Lesson 99", skill: "-s/-es" },
+      { name: "Lesson 100", skill: "-er/-est" },
+      { name: "Lesson 101", skill: "-ly" },
+      { name: "Lesson 102", skill: "-less, -ful" },
+      { name: "Lesson 103", skill: "un-" },
+      { name: "Lesson 104", skill: "pre-, re-" },
+      { name: "Lesson 105", skill: "dis-" },
+      { name: "Lesson 106", skill: "Affixes Review 1" },
+      { name: "Lesson 107", skill: "Doubling Rule -ed, -ing" },
+      { name: "Lesson 108", skill: "Doubling Rule -er, -est" },
+      { name: "Lesson 109", skill: "Drop -e Rule" },
+      { name: "Lesson 110", skill: "-y to i Rule" },
+      { name: "Lesson 111", skill: "-ar, -or, -er/" },
+      { name: "Lesson 112", skill: "air, are, ear /air/" },
+      { name: "Lesson 113", skill: "ear /ɛr/" },
+      { name: "Lesson 114", skill: "Alternate /ā/ (ei, ey, eigh, high, ea)" },
+      { name: "Lesson 115", skill: "Alternate Long U (ew, eu, ue /ū/; ou /ū/)" },
+      { name: "Lesson 116", skill: "ough /aw/, /ə/" },
+      { name: "Lesson 117", skill: "Signal Vowels (c /s/, s /z/, g /j/)" },
+      { name: "Lesson 118", skill: "ch /sh/, /k/; gn /n/, gh /g/; silent t" },
+      { name: "Lesson 119", skill: "-sion, -tion" },
+      { name: "Lesson 120", skill: "-ture" },
+      { name: "Lesson 121", skill: "-er, -or, -ist" },
+      { name: "Lesson 122", skill: "-ish" },
+      { name: "Lesson 123", skill: "-y" },
+      { name: "Lesson 124", skill: "-ness" },
+      { name: "Lesson 125", skill: "-ment" },
+      { name: "Lesson 126", skill: "-able, -ible" },
+      { name: "Lesson 127", skill: "uni-, bi-, tri" },
+      { name: "Lesson 128", skill: "Affixes Review 2" }
+    ],
+    heartWords: ["said", "make", "come"]
+  }
+};
+
+const scores = {};
+let allAssessments = JSON.parse(localStorage.getItem('ufliAssessments')) || [];
+let currentUnit = "";
+
+function initUnits() {
+  const select = document.getElementById('unitSelect');
+  Object.keys(curriculum).forEach(unit => {
+    const option = document.createElement('option');
+    option.value = unit;
+    option.textContent = unit;
+    select.appendChild(option);
+  });
+}
+
+function updateLessons() {
+  currentUnit = document.getElementById('unitSelect').value;
+  if (!currentUnit) {
+    document.getElementById('lessonsList').innerHTML = '';
+    return;
+  }
+  
+  const list = document.getElementById('lessonsList');
+  list.innerHTML = '';
+  
+  let lessonsToShow = [];
+  
+  if (currentUnit === 'all') {
+    Object.entries(curriculum).forEach(([unit, data]) => {
+      data.lessons.forEach(lesson => {
+        lessonsToShow.push({ ...lesson, unit });
+      });
+    });
+  } else {
+    curriculum[currentUnit].lessons.forEach(lesson => {
+      lessonsToShow.push({ ...lesson, unit: currentUnit });
+    });
+  }
+  
+  lessonsToShow.forEach(({ name, skill, unit }) => {
+    scores[name] = scores[name] || null;
+    const row = document.createElement('div');
+    row.className = 'lesson';
+    const scoreE = scores[name] === 'Emerging' ? 'e' : '';
+    const scoreD = scores[name] === 'Developing' ? 'd' : '';
+    const scoreM = scores[name] === 'Mastered' ? 'm' : '';
+    row.innerHTML = `
+      <div>
+        <div class="lesson-name">${name}: ${skill}</div>
+        ${currentUnit === 'all' ? `<span class="lesson-meta">${unit}</span>` : ''}
+      </div>
+      <button class="btn-score ${scoreE}" onclick="setScore('${name}', 'Emerging')">E</button>
+      <button class="btn-score ${scoreD}" onclick="setScore('${name}', 'Developing')">D</button>
+      <button class="btn-score ${scoreM}" onclick="setScore('${name}', 'Mastered')">M</button>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function setScore(lesson, level) {
+  scores[lesson] = level;
+  updateLessons();
+  updateCharts();
+}
+
+function updateCharts() {
+  drawPieChart();
+  updateCounts();
+}
+
+function updateCounts() {
+  const counts = { e: 0, d: 0, m: 0 };
+  Object.values(scores).forEach(score => {
+    if (score === 'Emerging') counts.e++;
+    else if (score === 'Developing') counts.d++;
+    else if (score === 'Mastered') counts.m++;
+  });
+  
+  document.getElementById('count-e').textContent = counts.e;
+  document.getElementById('count-d').textContent = counts.d;
+  document.getElementById('count-m').textContent = counts.m;
+}
+
+function drawPieChart() {
+  const counts = { e: 0, d: 0, m: 0 };
+  Object.values(scores).forEach(score => {
+    if (score === 'Emerging') counts.e++;
+    else if (score === 'Developing') counts.d++;
+    else if (score === 'Mastered') counts.m++;
+  });
+  
+  const total = counts.e + counts.d + counts.m || 1;
+  const svg = document.getElementById('pieChart');
+  svg.innerHTML = '';
+  svg.setAttribute('viewBox', '0 0 280 160');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  
+  const radius = 50;
+  const cx = 80, cy = 70;
+  const colors = { e: '#378ADD', d: '#BA7517', m: '#639922' };
+  const order = ['e', 'd', 'm'];
+  let startAngle = -Math.PI / 2;
+  
+  order.forEach(key => {
+    const value = counts[key];
+    if (value === 0) return;
+    
+    const sliceAngle = (value / total) * 2 * Math.PI;
+    const endAngle = startAngle + sliceAngle;
+    
+    const x1 = cx + radius * Math.cos(startAngle);
+    const y1 = cy + radius * Math.sin(startAngle);
+    const x2 = cx + radius * Math.cos(endAngle);
+    const y2 = cy + radius * Math.sin(endAngle);
+    
+    const largeArc = sliceAngle > Math.PI ? 1 : 0;
+    const pathData = `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+    
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', pathData);
+    path.setAttribute('fill', colors[key]);
+    path.setAttribute('stroke', 'white');
+    path.setAttribute('stroke-width', '2');
+    path.style.cursor = 'pointer';
+    path.onclick = () => showLessonsByScore(key);
+    svg.appendChild(path);
+    
+    startAngle = endAngle;
+  });
+}
+
+function showLessonsByScore(scoreLevel) {
+  const levelNames = { e: 'Emerging / Beginning', d: 'Developing', m: 'Mastered' };
+  const levelMap = { e: 'Emerging', d: 'Developing', m: 'Mastered' };
+  
+  const lessonsByUnit = {};
+  
+  // Get all lessons with the selected score, organized by unit
+  Object.entries(curriculum).forEach(([unitName, unitData]) => {
+    const unitLessons = [];
+    
+    unitData.lessons.forEach(lesson => {
+      if (scores[lesson.name] === levelMap[scoreLevel]) {
+        unitLessons.push(lesson);
+      }
+    });
+    
+    if (unitLessons.length > 0) {
+      lessonsByUnit[unitName] = unitLessons;
+    }
+  });
+  
+  // Display in modal
+  const modal = document.getElementById('lessonsModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalList = document.getElementById('modalLessonsList');
+  
+  modalTitle.textContent = `${levelNames[scoreLevel]} Lessons`;
+  modalList.innerHTML = '';
+  
+  const unitNames = Object.keys(lessonsByUnit);
+  
+  if (unitNames.length === 0) {
+    modalList.innerHTML = '<p style="color: var(--color-text-secondary);">No lessons at this level.</p>';
+  } else {
+    unitNames.forEach(unitName => {
+      // Unit header
+      const unitHeader = document.createElement('div');
+      unitHeader.style.marginTop = '1rem';
+      unitHeader.style.marginBottom = '0.75rem';
+      unitHeader.style.paddingBottom = '0.5rem';
+      unitHeader.style.borderBottom = '2px solid var(--color-border-secondary)';
+      unitHeader.style.fontSize = '14px';
+      unitHeader.style.fontWeight = '700';
+      unitHeader.style.color = 'var(--color-text-primary)';
+      unitHeader.textContent = unitName;
+      modalList.appendChild(unitHeader);
+      
+      // Lessons under this unit
+      lessonsByUnit[unitName].forEach(lesson => {
+        const item = document.createElement('div');
+        item.className = `lesson-item ${scoreLevel}`;
+        item.innerHTML = `
+          <div class="lesson-item-name">${lesson.name}</div>
+          <div class="lesson-item-skill">${lesson.skill}</div>
+        `;
+        modalList.appendChild(item);
+      });
+    });
+  }
+  
+  modal.classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('lessonsModal').classList.remove('show');
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById('lessonsModal');
+  if (event.target === modal) {
+    modal.classList.remove('show');
+  }
+}
+
+function exportJSON() {
+  const strengths = document.getElementById('strengthsComment').value;
+  const stretches = document.getElementById('stretchesComment').value;
+  
+  const assessment = {
+    unit: currentUnit || 'All Units',
+    scores: { ...scores },
+    strengths: strengths,
+    stretches: stretches
+  };
+  
+  const dataStr = JSON.stringify(assessment, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ufli_assessment.json';
+  a.click();
+}
+
+function exportCSV() {
+  const strengths = document.getElementById('strengthsComment').value;
+  const stretches = document.getElementById('stretchesComment').value;
+  
+  let csv = 'Lesson,Skill,Score\n';
+  
+  Object.entries(scores).forEach(([lesson, score]) => {
+    if (score) {
+      csv += `"${lesson}","","${score}"\n`;
+    }
+  });
+  
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ufli_assessment.csv';
+  a.click();
+}
+
+function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  
+  // Get current data
+  const strengths = document.getElementById('strengthsComment').value;
+  const stretches = document.getElementById('stretchesComment').value;
+  const unit = currentUnit || 'All Units';
+  
+  // Calculate counts
+  const counts = { e: 0, d: 0, m: 0 };
+  Object.values(scores).forEach(score => {
+    if (score === 'Emerging') counts.e++;
+    else if (score === 'Developing') counts.d++;
+    else if (score === 'Mastered') counts.m++;
+  });
+  
+  // Create PDF
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  let yPosition = 20;
+  
+  // Colors (RGB)
+  const colors = {
+    title: [44, 62, 80],
+    emerging: [55, 138, 221],
+    developing: [186, 117, 23],
+    mastered: [99, 153, 34],
+    text: [44, 62, 80],
+    lightText: [127, 140, 141]
+  };
+  
+  // Title
+  pdf.setFontSize(20);
+  pdf.setTextColor(...colors.title);
+  pdf.text('UFLI Foundations Assessment Report', pageWidth / 2, yPosition, { align: 'center' });
+  yPosition += 12;
+  
+  // Summary counts (visual representation)
+  pdf.setFontSize(12);
+  pdf.setTextColor(...colors.title);
+  pdf.text('Assessment Summary', 15, yPosition);
+  yPosition += 8;
+  
+  pdf.setFontSize(11);
+  pdf.setTextColor(...colors.emerging);
+  pdf.text(`Emerging / Beginning: ${counts.e}`, 15, yPosition);
+  yPosition += 5;
+  
+  pdf.setTextColor(...colors.developing);
+  pdf.text(`Developing: ${counts.d}`, 15, yPosition);
+  yPosition += 5;
+  
+  pdf.setTextColor(...colors.mastered);
+  pdf.text(`Mastered: ${counts.m}`, 15, yPosition);
+  yPosition += 10;
+  
+  // Strengths section
+  pdf.setFontSize(13);
+  pdf.setTextColor(...colors.mastered);
+  pdf.text('Strengths', 15, yPosition);
+  yPosition += 6;
+  
+  pdf.setFontSize(10);
+  pdf.setTextColor(...colors.text);
+  const strengthsLines = pdf.splitTextToSize(strengths || '(No strengths recorded)', pageWidth - 30);
+  pdf.text(strengthsLines, 15, yPosition);
+  yPosition += strengthsLines.length * 4 + 5;
+  
+  // Mastered units
+  const masteredUnits = [];
+  Object.entries(curriculum).forEach(([unitName, unitData]) => {
+    const hasMastered = unitData.lessons.some(lesson => scores[lesson.name] === 'Mastered');
+    if (hasMastered) masteredUnits.push(unitName);
+  });
+  
+  if (masteredUnits.length > 0) {
+    pdf.setFontSize(9);
+    pdf.setTextColor(...colors.mastered);
+    pdf.text('Mastered in:', 15, yPosition);
+    yPosition += 4;
+    pdf.setFontSize(9);
+    pdf.setTextColor(...colors.lightText);
+    masteredUnits.forEach(unit => {
+      pdf.text(`• ${unit}`, 18, yPosition);
+      yPosition += 4;
+    });
+    yPosition += 3;
+  }
+  
+  // Stretches section
+  pdf.setFontSize(13);
+  pdf.setTextColor(...colors.emerging);
+  pdf.text('Stretches: Areas of Growth', 15, yPosition);
+  yPosition += 6;
+  
+  pdf.setFontSize(10);
+  pdf.setTextColor(...colors.text);
+  const stretchesLines = pdf.splitTextToSize(stretches || '(No stretches recorded)', pageWidth - 30);
+  pdf.text(stretchesLines, 15, yPosition);
+  yPosition += stretchesLines.length * 4 + 5;
+  
+  // Lessons needing work (Emerging & Developing)
+  const lessonsByUnit = {};
+  Object.entries(curriculum).forEach(([unitName, unitData]) => {
+    const needsWork = [];
+    unitData.lessons.forEach(lesson => {
+      if (scores[lesson.name] === 'Emerging' || scores[lesson.name] === 'Developing') {
+        needsWork.push({ ...lesson, score: scores[lesson.name] });
+      }
+    });
+    if (needsWork.length > 0) {
+      lessonsByUnit[unitName] = needsWork;
+    }
+  });
+  
+  if (Object.keys(lessonsByUnit).length > 0) {
+    if (yPosition > pageHeight - 30) {
+      pdf.addPage();
+      yPosition = 20;
+    }
+    
+    pdf.setFontSize(12);
+    pdf.setTextColor(...colors.title);
+    pdf.text('Needs Work In:', 15, yPosition);
+    yPosition += 6;
+    
+    Object.entries(lessonsByUnit).forEach(([unitName, lessons]) => {
+      // Check if we need a new page
+      if (yPosition > pageHeight - 20) {
+        pdf.addPage();
+        yPosition = 20;
+      }
+      
+      pdf.setFontSize(10);
+      pdf.setTextColor(...colors.title);
+      pdf.text(unitName, 18, yPosition);
+      yPosition += 4;
+      
+      lessons.forEach(lesson => {
+        if (yPosition > pageHeight - 10) {
+          pdf.addPage();
+          yPosition = 20;
+        }
+        
+        pdf.setFontSize(8);
+        const scoreColor = lesson.score === 'Emerging' ? colors.emerging : colors.developing;
+        pdf.setTextColor(...scoreColor);
+        pdf.text(`${lesson.name}: ${lesson.skill}`, 21, yPosition);
+        yPosition += 3;
+      });
+      yPosition += 2;
+    });
+  }
+  
+  // Save PDF
+  pdf.save('ufli_assessment_report.pdf');
+}
+
+function clearForm() {
+  document.getElementById('unitSelect').value = '';
+  document.getElementById('strengthsComment').value = '';
+  document.getElementById('stretchesComment').value = '';
+  Object.keys(scores).forEach(k => scores[k] = null);
+  currentUnit = "";
+  document.getElementById('lessonsList').innerHTML = '';
+  updateCharts();
+}
+
+// Initialize
+initUnits();
+</script>
+
+</body>
+</html>
