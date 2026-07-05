@@ -240,10 +240,11 @@
 
 <div class="toolbar" id="toolbar">
   <button class="primary" onclick="exportPDF()">⬇ Download PDF</button>
+  <button onclick="exportImage()">🖼 Download image</button>
   <button onclick="window.print()">🖨 Print</button>
   <button onclick="saveDraft()">💾 Save draft</button>
   <button onclick="resetSheet()">↺ Start fresh</button>
-  <span class="hint">Click any text to edit it. Click a photo box to add a picture. Your work saves in this browser — use <b>Save draft</b> to keep it between visits.</span>
+  <span class="hint">Click any text to edit it. Click a photo box to add a picture. To post in a school system like <b>Blackbaud</b>, use <b>Download PDF</b> to attach a file, or <b>Download image</b> to drop it into an announcement or email. Your work saves in this browser — use <b>Save draft</b> to keep it between visits.</span>
 </div>
 
 <div class="sheet" id="sheet">
@@ -479,6 +480,27 @@
     document.body.appendChild(t);
     setTimeout(function () { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; }, 1600);
     setTimeout(function () { t.remove(); }, 2100);
+  }
+
+  /* ---------- export as image (easy to upload/embed) ---------- */
+  function exportImage() {
+    const sheet = document.getElementById('sheet');
+    flash('Building your image…');
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true }).then(function (canvas) {
+      canvas.toBlob(function (blob) {
+        if (!blob) { flash('Image export failed — try Download PDF', true); return; }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'weekly-newsletter.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      }, 'image/png');
+    }).catch(function () {
+      flash('Image export failed — try Download PDF', true);
+    });
   }
 
   /* ---------- export to PDF ---------- */
