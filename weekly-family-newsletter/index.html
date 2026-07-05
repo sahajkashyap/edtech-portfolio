@@ -349,10 +349,13 @@
   <div class="ab-actions">
     <button onclick="archiveThisWeek()">➕ Add this week to archive</button>
     <button class="primary" onclick="openSummary()">✨ Create summary by subject</button>
+    <button onclick="exportArchive()" title="Save a backup file of every saved week">⬇ Back up</button>
+    <button onclick="document.getElementById('archiveImport').click()" title="Load a backup file from another device">⬆ Restore</button>
     <button onclick="toggleArchiveList()" id="manageBtn">Manage</button>
   </div>
   <div class="archive-list" id="archiveList" style="display:none"></div>
 </div>
+<input type="file" id="archiveImport" accept="application/json,.json" style="display:none">
 
 <div class="sheet" id="sheet">
 
@@ -836,6 +839,67 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
   }
+
+  /* ---------- back up / restore the archive as a file ---------- */
+  function exportArchive() {
+    const list = loadArchive();
+    if (!list.length) { flash('Nothing to back up yet', true); return; }
+    const payload = { type: 'weekly-family-newsletter-archive', version: 1, weeks: list };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'newsletter-archive.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    flash('Backup saved ✓');
+  }
+
+  document.getElementById('archiveImport').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (ev) {
+      let incoming;
+      try {
+        const parsed = JSON.parse(ev.target.result);
+        incoming = Array.isArray(parsed) ? parsed : parsed.weeks;
+      } catch (err) { incoming = null; }
+      if (!Array.isArray(incoming)) {
+        flash('That file isn\'t a newsletter backup', true);
+        return;
+      }
+      // keep only well-formed week objects
+      const clean = incoming.filter(function (w) {
+        return w && typeof w.week === 'string' && w.sections && typeof w.sections === 'object';
+      });
+      if (!clean.length) { flash('No weeks found in that file', true); return; }
+
+      const current = loadArchive();
+      let merge = true;
+      if (current.length) {
+        merge = confirm('Merge ' + clean.length + ' week(s) from the file into your ' +
+          current.length + ' saved week(s)?\n\nOK = merge · Cancel = replace what\'s here');
+      }
+      let result;
+      if (merge && current.length) {
+        result = current.slice();
+        clean.forEach(function (w) {
+          const at = result.findIndex(function (x) { return x.week === w.week; });
+          if (at >= 0) result[at] = w; else result.push(w);
+        });
+      } else {
+        result = clean;
+      }
+      storeArchive(result);
+      renderArchiveList();
+      flash('Restored — ' + result.length + ' week(s) in the archive ✓');
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
 
   /* ---------- build the by-subject summary ---------- */
   function openSummary() {
