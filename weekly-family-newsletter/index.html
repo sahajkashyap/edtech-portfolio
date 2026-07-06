@@ -259,6 +259,38 @@
   .subjects li { margin-bottom: 8px; }
   .subjects li:last-child { margin-bottom: 0; }
 
+  /* catch-up: tap a subject to see its history (interactive only) */
+  .catchup { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px dashed #c7b89f; }
+  .catchup-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 0.65rem; }
+  .catchup-head .ic { font-size: 15px; }
+  .catchup-head .t { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #5d6b3f; }
+  .catchup-head .note { font-size: 12px; color: #7d8a5e; font-weight: 500; }
+  .catchup-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .catchup-pill {
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
+    background: rgba(255,255,255,0.7); border: 1px solid #c7b89f; border-radius: 999px;
+    padding: 8px 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    transition: 0.15s; box-shadow: none;
+  }
+  .catchup-pill:hover { background: #fff; border-color: var(--sage); transform: none; }
+  .catchup-pill .cnt {
+    font-size: 11px; font-weight: 700; color: #6f7d4b;
+    background: rgba(124,154,94,0.16); border-radius: 999px; padding: 1px 7px;
+  }
+  .catchup-pill .arw { font-size: 10px; color: #7d8a5e; transition: transform 0.18s; }
+  .catchup-pill.open { background: #fff; border-color: var(--sage); }
+  .catchup-pill.open .arw { transform: rotate(180deg); }
+  .catchup-panel {
+    margin-top: 0.75rem; background: rgba(255,255,255,0.8);
+    border: 1px solid #d9ceb8; border-radius: 12px; padding: 0.9rem 1.05rem;
+  }
+  .catchup-panel .cp-title { font-size: 13px; font-weight: 800; color: #4a3f35; margin: 0 0 0.55rem; }
+  .catchup-week { margin-bottom: 0.55rem; }
+  .catchup-week:last-child { margin-bottom: 0; }
+  .catchup-week .wk { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--sun); }
+  .catchup-week .txt { font-size: 13.5px; line-height: 1.55; color: #574c40; margin-top: 1px; }
+  .catchup-empty { font-size: 12.5px; color: #8a7c6d; font-style: italic; line-height: 1.55; }
+
   /* photo slots */
   .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-bottom: 1.1rem; }
   .photo {
@@ -325,7 +357,7 @@
   /* print */
   @media print {
     body { background: #fff; padding: 0; }
-    .toolbar, .archive-bar { display: none !important; }
+    .toolbar, .archive-bar, .catchup { display: none !important; }
     .sheet { box-shadow: none; border-radius: 0; max-width: 100%; }
     .photo .remove { display: none !important; }
     [contenteditable]:empty:before { content: ""; }
@@ -417,6 +449,7 @@
           <li><b>Social Studies:</b> our community helpers and how they keep us safe</li>
         </ul>
       </div>
+      <div class="catchup" id="catchup"></div>
     </div>
 
     <!-- coming up + highlight -->
@@ -619,7 +652,7 @@
   function exportImage() {
     const sheet = document.getElementById('sheet');
     flash('Building your image…');
-    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true }).then(function (canvas) {
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipCatchup }).then(function (canvas) {
       canvas.toBlob(function (blob) {
         if (!blob) { flash('Image export failed — try Download PDF', true); return; }
         const url = URL.createObjectURL(blob);
@@ -640,7 +673,7 @@
   function exportPDF() {
     const sheet = document.getElementById('sheet');
     flash('Building your PDF…');
-    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true }).then(function (canvas) {
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipCatchup }).then(function (canvas) {
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageW = pdf.internal.pageSize.getWidth();
@@ -773,6 +806,7 @@
   function storeArchive(list) {
     localStorage.setItem(ARCHIVE_KEY, JSON.stringify(list));
     renderArchiveStatus();
+    renderCatchup();
   }
 
   function snapshotWeek() {
@@ -906,6 +940,82 @@
     e.target.value = '';
   });
 
+  /* =====================================================================
+     CATCH-UP  — tap a subject to see its history from past weeks
+     (interactive only; excluded from print/PDF/image exports)
+     ===================================================================== */
+  let openSubject = null;
+
+  function skipCatchup(el) {
+    return el && el.classList && el.classList.contains('catchup');
+  }
+
+  // "Reading: retelling stories" -> { subject:'Reading', detail:'retelling stories' }
+  function parseSubject(line) {
+    const t = (line || '').replace(/^-\s*/, '').trim();
+    const i = t.indexOf(':');
+    if (i > 0 && i <= 40) return { subject: t.slice(0, i).trim(), detail: t.slice(i + 1).trim() };
+    return { subject: '', detail: t };
+  }
+
+  function collectSubjectHistory() {
+    const order = [];
+    const map = {};
+    loadArchive().forEach(function (w) {
+      const lines = (w.sections && w.sections.learned) || [];
+      lines.forEach(function (line) {
+        const parsed = parseSubject(line);
+        if (!parsed.subject || !parsed.detail) return;
+        const key = parsed.subject.toLowerCase();
+        if (!map[key]) { map[key] = { label: parsed.subject, entries: [] }; order.push(key); }
+        map[key].entries.push({ week: w.week, detail: parsed.detail });
+      });
+    });
+    return { order: order, map: map };
+  }
+
+  function renderCatchup() {
+    const box = document.getElementById('catchup');
+    if (!box) return;
+    const data = collectSubjectHistory();
+    if (!data.order.length) {
+      box.innerHTML =
+        '<div class="catchup-head"><span class="ic">🕘</span>' +
+        '<span class="t">Catch up on past weeks</span></div>' +
+        '<div class="catchup-empty">Once you save a few weeks to the archive (the “Add this week to archive” button up top), each subject will get a button here so families who’ve been away can look back on what the class has covered.</div>';
+      return;
+    }
+    let html =
+      '<div class="catchup-head"><span class="ic">🕘</span>' +
+      '<span class="t">Catch up on past weeks</span>' +
+      '<span class="note">Tap a subject to see what we’ve covered</span></div>' +
+      '<div class="catchup-pills">';
+    data.order.forEach(function (key) {
+      const s = data.map[key];
+      const isOpen = openSubject === key;
+      html += '<button type="button" class="catchup-pill' + (isOpen ? ' open' : '') +
+        '" onclick="toggleCatchup(&quot;' + key.replace(/"/g, '') + '&quot;)">' +
+        escapeHtml(s.label) + ' <span class="cnt">' + s.entries.length + '</span>' +
+        ' <span class="arw">▾</span></button>';
+    });
+    html += '</div>';
+    if (openSubject && data.map[openSubject]) {
+      const s = data.map[openSubject];
+      html += '<div class="catchup-panel"><p class="cp-title">' + escapeHtml(s.label) + ' — over time</p>';
+      s.entries.forEach(function (e) {
+        html += '<div class="catchup-week"><div class="wk">' + escapeHtml(e.week) +
+          '</div><div class="txt">' + escapeHtml(e.detail) + '</div></div>';
+      });
+      html += '</div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function toggleCatchup(key) {
+    openSubject = (openSubject === key) ? null : key;
+    renderCatchup();
+  }
+
   /* ---------- build the by-subject summary ---------- */
   function openSummary() {
     const list = loadArchive();
@@ -1017,6 +1127,7 @@
   /* ---------- boot ---------- */
   restoreDraft();
   renderArchiveStatus();
+  renderCatchup();
   document.addEventListener('input', function () {
     clearTimeout(window.__save);
     window.__save = setTimeout(autoSave, 800);
