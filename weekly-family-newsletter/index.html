@@ -307,8 +307,14 @@
   .catchup-panel {
     margin-top: 0.75rem; background: rgba(255,255,255,0.8);
     border: 1px solid #d9ceb8; border-radius: 12px; padding: 0.9rem 1.05rem;
+    max-height: 320px; overflow-y: auto;
   }
-  .catchup-panel .cp-title { font-size: 13px; font-weight: 800; color: #4a3f35; margin: 0 0 0.55rem; }
+  .catchup-panel .cp-title {
+    font-size: 13px; font-weight: 800; color: #4a3f35; margin: 0 0 0.55rem;
+    position: sticky; top: -0.9rem; background: #fbf7ef;
+    padding: 0.35rem 0; margin-top: -0.35rem;
+  }
+  .catchup-panel .cp-title .cnt { color: #7d8a5e; font-weight: 700; }
   .catchup-week { margin-bottom: 0.55rem; }
   .catchup-week:last-child { margin-bottom: 0; }
   .catchup-week .wk { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--sun); }
@@ -424,7 +430,7 @@
     <p class="kicker" contenteditable="true" data-ph="Room 12 · Ms. Rivera">Room 18 · Mr. Kashyap</p>
     <h1 class="title" contenteditable="true" data-field="title" data-ph="Our Weekly Newsletter">Our Weekly Newsletter</h1>
     <div class="meta-row">
-      <span class="pair"><span class="lbl">Week of</span><span contenteditable="true" data-field="week" data-ph="March 3">March 16, 2026</span></span>
+      <span class="pair"><span class="lbl">Week of</span><span contenteditable="true" data-field="week" data-ph="March 3">November 23, 2026</span></span>
       <span class="pair"><span class="lbl">Grade</span><span contenteditable="true" data-field="grade" data-ph="2nd Grade">3rd / 4th Grade</span></span>
       <span class="pair"><span class="lbl">Teacher</span><span contenteditable="true" data-field="teacher" data-ph="Ms. Rivera">Sahaj Kashyap</span></span>
     </div>
@@ -433,10 +439,10 @@
   <!-- ===== GREETING ===== -->
   <div class="greeting editable-block" contenteditable="true" data-field="greeting"
        data-ph="Write a warm hello to your families here…">
-    Hello families! What a busy, joyful week in Room 18. Our readers are growing by leaps
-    and bounds, our weather scientists are hard at work, and the personal narratives are
-    really taking shape. Here's a look at the week — thank you, as always, for everything
-    you do at home.
+    Hello families! It's hard to believe how much we've grown since September. As the
+    leaves turn and we head into Thanksgiving break, I'm so proud of our readers, writers,
+    and young scientists. Here's a look at our week — and don't miss <b>Time travel</b>
+    under "What we learned" to see how far the class has come this fall.
   </div>
 
   <!-- ===== BODY ===== -->
@@ -461,9 +467,9 @@
     <!-- more photos: a link to a full album (Google Photos, etc.) -->
     <div class="album has-link" id="album">
       <span class="album-icon">📸</span>
-      <span class="album-label" contenteditable="true" data-ph="More photos from this week">More photos from this week (weather station &amp; wind vanes!)</span>
-      <a class="album-go" id="albumLink" href="https://photos.app.goo.gl/room18-week30" target="_blank" rel="noopener">View album →</a>
-      <span class="album-url" id="albumUrl">https://photos.app.goo.gl/room18-week30</span>
+      <span class="album-label" contenteditable="true" data-ph="More photos from this week">More photos from this week (food drive &amp; weather lab!)</span>
+      <a class="album-go" id="albumLink" href="https://photos.app.goo.gl/room18-fall" target="_blank" rel="noopener">View album →</a>
+      <span class="album-url" id="albumUrl">https://photos.app.goo.gl/room18-fall</span>
       <span class="album-controls no-export">
         <button type="button" class="album-add" onclick="setAlbumLink()">🔗 Add photo album link</button>
         <button type="button" class="album-change" onclick="setAlbumLink()">Change link</button>
@@ -480,11 +486,11 @@
       <div class="editable-block subjects" contenteditable="true" data-field="learned"
            data-ph="What did the class explore this week?">
         <ul>
-          <li><b>Reading:</b> author's purpose in nonfiction; this week's running records show several readers reaching levels O–P</li>
-          <li><b>Language Arts:</b> editing and revising our personal narratives, with a focus on commas in a series</li>
-          <li><b>Math:</b> finding area as rows × columns, and practicing our 3s and 4s multiplication facts</li>
+          <li><b>Reading:</b> author's purpose — to inform, entertain, or persuade; fall running records show many readers reaching levels O–P</li>
+          <li><b>Language Arts:</b> beginning opinion writing — stating a clear opinion and backing it up with reasons</li>
+          <li><b>Math:</b> introducing division as sharing into equal groups</li>
           <li><b>Science:</b> building simple weather instruments to measure wind and rain</li>
-          <li><b>Social Studies:</b> being a good citizen — our rights and responsibilities</li>
+          <li><b>Social Studies:</b> citizenship — our rights and responsibilities, and our class food drive</li>
         </ul>
       </div>
       <div class="catchup no-export" id="catchup"></div>
@@ -500,9 +506,9 @@
         <div class="editable-block" contenteditable="true" data-field="coming"
              data-ph="What's on the horizon for next week?">
           <ul>
-            <li>Beginning our persuasive writing unit</li>
-            <li>Multiplication facts quiz on Friday (3s &amp; 4s)</li>
-            <li>Field trip to the science museum on March 25</li>
+            <li>Thanksgiving break — no school Nov 25–27</li>
+            <li>Opinion writing celebration on Dec 4</li>
+            <li>Winter concert practice begins next week</li>
           </ul>
         </div>
       </div>
@@ -514,8 +520,8 @@
         </div>
         <div class="editable-block" contenteditable="true" data-field="highlight"
              data-ph="A proud moment, a class win, a funny story to share…">
-          Ask your child about the wind vane they built this week — we tested them out on
-          the playground and cheered as they spun in the breeze!
+          Ask your child about our class food drive — together we collected over 200 cans
+          for the local food pantry. What a kind, generous group of citizens!
         </div>
       </div>
     </div>
@@ -530,9 +536,9 @@
         <div class="editable-block dates" contenteditable="true" data-field="reminders"
              data-ph="Important dates and reminders…">
           <ul>
-            <li><b>Mon 3/16</b> — Library books due</li>
-            <li><b>Wed 3/18</b> — Spring pictures</li>
-            <li><b>Fri 3/20</b> — Early dismissal, 1:00 pm</li>
+            <li><b>Mon 11/23</b> — Library books due</li>
+            <li><b>Tue 11/24</b> — Food drive donations due</li>
+            <li><b>Wed–Fri 11/25–27</b> — Thanksgiving break, no school</li>
           </ul>
         </div>
       </div>
@@ -546,8 +552,8 @@
              data-ph="Simple ways families can support learning…">
           <ul>
             <li>Read together 20 minutes each night and jot the title in the reading log</li>
-            <li>Practice 3s and 4s multiplication facts</li>
-            <li>Ask about our weather station: "What was the temperature today?"</li>
+            <li>Practice multiplication facts (2s, 5s, and 10s)</li>
+            <li>Ask at dinner: "What are you thankful for this year?"</li>
           </ul>
         </div>
       </div>
@@ -864,6 +870,8 @@
      TERM ARCHIVE  — save weeks, then summarize by subject
      ===================================================================== */
   const ARCHIVE_KEY = 'weekly-family-newsletter-archive';
+  const ARCHIVE_OWNED_KEY = 'weekly-family-newsletter-owned';
+  function markArchiveOwned() { try { localStorage.setItem(ARCHIVE_OWNED_KEY, '1'); } catch (e) {} }
   const SUBJECTS = [
     { key: 'learned',   label: 'What we learned',    chip: '📚' },
     { key: 'coming',    label: 'Coming up next',     chip: '🔭' },
@@ -881,52 +889,96 @@
       { learned: learned, coming: [], highlight: highlight ? [highlight] : [], reminders: [], home: [] },
       extra || {}) }, SEED_META);
   }
+  // A full fall term (Sept–Nov), so each Time travel subject holds a long,
+  // scrollable running record from the start of the year up to this week.
   const SEED_ARCHIVE = [
-    seedWeek('Week 25 · February 9, 2026', [
-      'Reading: running records this week — most readers secure at levels M–N; retelling with a clear beginning, middle, and end',
-      'Language Arts: telling complete sentences from fragments, and fixing capitalization',
-      'Math: multi-digit addition with regrouping into the hundreds',
-      'Science: exploring the three states of matter — solid, liquid, and gas',
-      'Social Studies: map skills — using a compass rose and the four cardinal directions'
-    ], 'We built a “matter museum” with solids, liquids, and gases brought from home.'),
-    seedWeek('Week 26 · February 16, 2026', [
-      'Reading: making inferences from text clues; running records show several readers growing into level O',
-      'Language Arts: identifying nouns and verbs and keeping subject–verb agreement',
-      'Math: subtraction across zeros',
-      'Science: how matter changes — melting and freezing investigations',
+    seedWeek('Week 1 · September 8, 2026', [
+      'Reading: setting up our reading routines; beginning-of-year running records to find each reader’s just-right level',
+      'Language Arts: launching our writer’s notebooks and gathering ideas',
+      'Math: reviewing place value to the thousands',
+      'Science: being a scientist — observing closely and asking questions',
+      'Social Studies: building our classroom community — rules, jobs, and being a good citizen'
+    ], 'We wrote our hopes and dreams for the school year and hung them in the hall.'),
+    seedWeek('Week 2 · September 14, 2026', [
+      'Reading: choosing “just right” books and building our independent reading stamina',
+      'Language Arts: complete sentences vs. fragments; capital letters and end punctuation',
+      'Math: comparing and ordering numbers',
+      'Science: living vs. nonliving things',
+      'Social Studies: map skills — the compass rose and cardinal directions'
+    ], 'We reached 15 minutes of quiet independent reading — a class record!'),
+    seedWeek('Week 3 · September 21, 2026', [
+      'Reading: story elements — characters, setting, problem, and solution',
+      'Language Arts: nouns — common and proper',
+      'Math: rounding to the nearest ten and hundred',
+      'Science: what plants and animals need to survive',
       'Social Studies: reading map keys and the symbols that stand for real places'
-    ], 'We melted and re-froze crayons to watch matter change state.'),
-    seedWeek('Week 27 · February 23, 2026', [
-      'Reading: comparing two versions of the same folktale and discussing character motivation',
-      'Language Arts: using adjectives and adverbs to add detail to our writing',
-      'Math: introduction to multiplication — equal groups and building arrays',
-      'Science: tracing the water cycle — evaporation, condensation, precipitation',
-      'Social Studies: the history of our community and how it has changed'
-    ], 'Students acted out the water cycle as raindrops traveling cloud to river to sea.'),
-    seedWeek('Week 28 · March 2, 2026', [
-      'Reading: nonfiction text features — headings, captions, bold words, and the glossary',
-      'Language Arts: paragraph structure — a topic sentence with supporting details',
-      'Math: multiplication facts for 2s, 5s, and 10s',
-      'Science: weather vs. climate, and reading temperature on a thermometer',
+    ], 'We planted bean seeds to watch what living things need to grow.'),
+    seedWeek('Week 4 · September 28, 2026', [
+      'Reading: retelling fiction with a clear beginning, middle, and end',
+      'Language Arts: verbs and subject–verb agreement',
+      'Math: multi-digit addition with regrouping',
+      'Science: the life cycle of plants',
+      'Social Studies: physical vs. political maps'
+    ], 'Our bean seeds sprouted and we measured them with rulers.'),
+    seedWeek('Week 5 · October 5, 2026', [
+      'Reading: asking questions before, during, and after reading',
+      'Language Arts: using adjectives to add detail',
+      'Math: multi-digit subtraction, including across zeros',
+      'Science: habitats and ecosystems',
+      'Social Studies: our community — urban, suburban, and rural'
+    ], 'We built shoebox dioramas of different animal habitats.'),
+    seedWeek('Week 6 · October 12, 2026', [
+      'Reading: making predictions and checking them against the text',
+      'Language Arts: choosing a small moment for a personal narrative',
+      'Math: estimating sums and differences',
+      'Science: food chains — producers, consumers, and decomposers',
+      'Social Studies: landforms and bodies of water'
+    ], 'We made a giant food-chain web across the whole classroom with yarn.'),
+    seedWeek('Week 7 · October 19, 2026', [
+      'Reading: making inferences from text clues; running records show growth into levels N–O',
+      'Language Arts: drafting our personal narratives',
+      'Math: introduction to multiplication — equal groups and arrays',
+      'Science: adaptations that help animals survive',
+      'Social Studies: the history of our town and how it has changed'
+    ], 'Students shared “animal adaptation” trading cards they designed.'),
+    seedWeek('Week 8 · October 26, 2026', [
+      'Reading: comparing characters across two different stories',
+      'Language Arts: adding dialogue and using quotation marks',
+      'Math: multiplication facts — 2s, 5s, and 10s',
+      'Science: states of matter — solid, liquid, and gas',
       'Social Studies: community helpers and an introduction to local government'
-    ], 'A firefighter visited to talk about community helpers and safety.'),
-    seedWeek('Week 29 · March 9, 2026', [
-      'Reading: summarizing nonfiction using the most important key details',
-      'Language Arts: drafting our personal narratives from one small moment',
+    ], 'We built a “matter museum” with examples brought from home.'),
+    seedWeek('Week 9 · November 2, 2026', [
+      'Reading: introduction to nonfiction — text features like headings, captions, and the glossary',
+      'Language Arts: revising for a strong beginning and ending',
+      'Math: multiplication facts — 3s and 4s',
+      'Science: how matter changes — melting and freezing investigations',
+      'Social Studies: needs vs. wants'
+    ], 'We froze and melted crayons to watch matter change state.'),
+    seedWeek('Week 10 · November 9, 2026', [
+      'Reading: finding the main idea and key details in nonfiction',
+      'Language Arts: editing our narratives — commas in a series',
       'Math: solving word problems with multiplication',
-      'Science: measuring rainfall and recording our daily weather data',
-      'Social Studies: goods and services, and telling needs from wants'
-    ], 'We opened a class weather station and now log the temperature every morning.'),
-    seedWeek('Week 30 · March 16, 2026', [
-      'Reading: author’s purpose in nonfiction; running records show several readers reaching levels O–P',
-      'Language Arts: editing and revising our personal narratives, with commas in a series',
-      'Math: finding area as rows × columns, and practicing 3s and 4s multiplication facts',
+      'Science: introduction to weather and the water cycle',
+      'Social Studies: goods and services'
+    ], 'We acted out the water cycle as raindrops on a journey.'),
+    seedWeek('Week 11 · November 16, 2026', [
+      'Reading: summarizing nonfiction in our own words',
+      'Language Arts: publishing and sharing our personal narratives',
+      'Math: area as rows × columns',
+      'Science: measuring weather — temperature, wind, and rain',
+      'Social Studies: producers and consumers in an economy'
+    ], 'We held an author’s celebration and read our narratives aloud.'),
+    seedWeek('Week 12 · November 23, 2026', [
+      'Reading: author’s purpose — to inform, entertain, or persuade; fall running records show many readers reaching levels O–P',
+      'Language Arts: beginning opinion writing — stating a clear opinion and backing it up with reasons',
+      'Math: introducing division as sharing into equal groups',
       'Science: building simple weather instruments to measure wind and rain',
-      'Social Studies: being a good citizen — our rights and responsibilities'
-    ], 'Ask about the wind vane your child built — we tested them on the playground!', {
-      coming: ['Beginning our persuasive writing unit', 'Multiplication facts quiz on Friday (3s & 4s)', 'Field trip to the science museum on March 25'],
-      reminders: ['Mon 3/16 — Library books due', 'Wed 3/18 — Spring pictures', 'Fri 3/20 — Early dismissal, 1:00 pm'],
-      home: ['Read together 20 minutes each night and jot the title in the reading log', 'Practice 3s and 4s multiplication facts', 'Ask about our weather station: “What was the temperature today?”']
+      'Social Studies: citizenship — our rights and responsibilities, and our class food drive'
+    ], 'Ask about our class food drive — together we collected over 200 cans!', {
+      coming: ['Thanksgiving break — no school Nov 25–27', 'Opinion writing celebration on Dec 4', 'Winter concert practice begins next week'],
+      reminders: ['Mon 11/23 — Library books due', 'Tue 11/24 — Food drive donations due', 'Wed–Fri 11/25–27 — Thanksgiving break, no school'],
+      home: ['Read together 20 minutes each night and jot the title in the reading log', 'Practice multiplication facts (2s, 5s, and 10s)', 'Ask at dinner: “What are you thankful for this year?”']
     })
   ];
 
@@ -966,6 +1018,7 @@
       list.push(snap);
       flash('Saved "' + snap.week + '" to the archive ✓');
     }
+    markArchiveOwned();
     storeArchive(list);
   }
 
@@ -974,6 +1027,7 @@
     if (!list[i]) return;
     if (!confirm('Remove "' + list[i].week + '" from the archive?')) return;
     list.splice(i, 1);
+    markArchiveOwned();
     storeArchive(list);
     renderArchiveList();
   }
@@ -1063,6 +1117,7 @@
       } else {
         result = clean;
       }
+      markArchiveOwned();
       storeArchive(result);
       renderArchiveList();
       flash('Restored — ' + result.length + ' week(s) in the archive ✓');
@@ -1132,7 +1187,8 @@
     html += '</div>';
     if (openSubject && data.map[openSubject]) {
       const s = data.map[openSubject];
-      html += '<div class="catchup-panel"><p class="cp-title">' + escapeHtml(s.label) + ' — over time</p>';
+      html += '<div class="catchup-panel"><p class="cp-title">' + escapeHtml(s.label) +
+        ' — over time <span class="cnt">· ' + s.entries.length + ' weeks</span></p>';
       s.entries.forEach(function (e) {
         html += '<div class="catchup-week"><div class="wk">' + escapeHtml(e.week) +
           '</div><div class="txt">' + escapeHtml(e.detail) + '</div></div>';
@@ -1257,8 +1313,9 @@
 
   /* ---------- boot ---------- */
   restoreDraft();
-  // load the example term history the first time, so Time travel isn't empty
-  if (localStorage.getItem(ARCHIVE_KEY) === null) {
+  // Keep the example term loaded until the teacher makes the archive their own
+  // (adds, imports, or removes a week). Until then it stays in sync with updates.
+  if (localStorage.getItem(ARCHIVE_OWNED_KEY) !== '1') {
     try { localStorage.setItem(ARCHIVE_KEY, JSON.stringify(SEED_ARCHIVE)); } catch (e) {}
   }
   renderArchiveStatus();
