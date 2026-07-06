@@ -259,6 +259,30 @@
   .subjects li { margin-bottom: 8px; }
   .subjects li:last-child { margin-bottom: 0; }
 
+  /* more-photos album link (appears in exports so PDF readers see it too) */
+  .album {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+    margin-bottom: 1.1rem; padding: 11px 15px;
+    background: var(--sky-soft); border: 1px solid #cadae6; border-radius: 12px;
+  }
+  .album-icon { font-size: 17px; }
+  .album-label { font-size: 14px; font-weight: 700; color: #3f5566; }
+  .album-go {
+    font-size: 13.5px; font-weight: 700; color: #fff; text-decoration: none;
+    background: var(--sky); border-radius: 999px; padding: 6px 13px; transition: 0.15s;
+  }
+  .album-go:hover { background: #4a789c; }
+  .album-url { font-size: 12px; color: #6d8296; word-break: break-all; flex-basis: 100%; }
+  .album-controls { display: inline-flex; gap: 6px; }
+  .album-controls button { padding: 6px 11px; font-size: 12.5px; }
+  /* show the right controls for the current state */
+  .album-go, .album-url, .album-change, .album-remove { display: none; }
+  .album.has-link .album-add { display: none; }
+  .album.has-link .album-go { display: inline-block; }
+  .album.has-link .album-url { display: block; }
+  .album.has-link .album-change,
+  .album.has-link .album-remove { display: inline-flex; }
+
   /* catch-up: tap a subject to see its history (interactive only) */
   .catchup { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px dashed #c7b89f; }
   .catchup-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 0.65rem; }
@@ -357,7 +381,7 @@
   /* print */
   @media print {
     body { background: #fff; padding: 0; }
-    .toolbar, .archive-bar, .catchup { display: none !important; }
+    .toolbar, .archive-bar, .no-export { display: none !important; }
     .sheet { box-shadow: none; border-radius: 0; max-width: 100%; }
     .photo .remove { display: none !important; }
     [contenteditable]:empty:before { content: ""; }
@@ -433,6 +457,19 @@
       </div>
     </div>
 
+    <!-- more photos: a link to a full album (Google Photos, etc.) -->
+    <div class="album" id="album">
+      <span class="album-icon">📸</span>
+      <span class="album-label" contenteditable="true" data-ph="More photos from this week">More photos from this week</span>
+      <a class="album-go" id="albumLink" href="#" target="_blank" rel="noopener">View album →</a>
+      <span class="album-url" id="albumUrl"></span>
+      <span class="album-controls no-export">
+        <button type="button" class="album-add" onclick="setAlbumLink()">🔗 Add photo album link</button>
+        <button type="button" class="album-change" onclick="setAlbumLink()">Change link</button>
+        <button type="button" class="album-remove" onclick="removeAlbumLink()">Remove</button>
+      </span>
+    </div>
+
     <!-- what we learned — full width, room for every subject -->
     <div class="card tint-sage">
       <div class="card-head">
@@ -449,7 +486,7 @@
           <li><b>Social Studies:</b> our community helpers and how they keep us safe</li>
         </ul>
       </div>
-      <div class="catchup" id="catchup"></div>
+      <div class="catchup no-export" id="catchup"></div>
     </div>
 
     <!-- coming up + highlight -->
@@ -519,13 +556,13 @@
   <!-- ===== FOOTER ===== -->
   <div class="footer">
     <div class="contact">
-      <div><span class="lbl">Questions?</span> I'd love to hear from you.</div>
+      <div><span class="lbl">Questions?</span> We'd love to hear from you.</div>
       <div><span class="lbl">Email:</span> <span contenteditable="true" data-ph="you@school.edu">you@school.edu</span></div>
       <div><span class="lbl">Class site:</span> <span contenteditable="true" data-ph="ourclass.example.com">ourclass.example.com</span></div>
     </div>
     <div class="signoff">
       <div class="warm" contenteditable="true" data-ph="Warmly,">Warmly,</div>
-      <div class="name" contenteditable="true" data-ph="Ms. Rivera">Ms. Rivera</div>
+      <div class="name" contenteditable="true" data-ph="Mr. Sahaj Kashyap">Mr. Sahaj Kashyap</div>
     </div>
   </div>
 </div>
@@ -585,6 +622,33 @@
     const photo = document.querySelector('.photo[data-slot="' + slot + '"]');
     photo.querySelector('img').src = '';
     photo.classList.remove('has-img');
+  }
+
+  /* ---------- more-photos album link ---------- */
+  function setAlbumLink() {
+    const link = document.getElementById('albumLink');
+    const current = link.getAttribute('href');
+    let url = prompt('Paste the link to your photo album (Google Photos, a shared folder, etc.):',
+      current && current !== '#' ? current : 'https://');
+    if (url === null) return;
+    url = url.trim();
+    if (!url || url === 'https://') return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    link.href = url;
+    document.getElementById('albumUrl').textContent = url;
+    document.getElementById('album').classList.add('has-link');
+    saveSilently();
+    flash('Photo album link added ✓');
+  }
+
+  function removeAlbumLink() {
+    if (!confirm('Remove the photo album link?')) return;
+    const link = document.getElementById('albumLink');
+    link.href = '#';
+    document.getElementById('albumUrl').textContent = '';
+    document.getElementById('album').classList.remove('has-link');
+    saveSilently();
+    flash('Link removed');
   }
 
   /* ---------- save / restore draft ---------- */
@@ -754,6 +818,14 @@
     const caps = Array.from(document.querySelectorAll('.photo.has-img [data-field="caption"]'))
       .map(function (c) { return c.innerText.trim(); }).filter(Boolean);
     if (caps.length) { L.push('PHOTOS'); caps.forEach(function (c) { L.push('- ' + c); }); L.push(''); }
+
+    const album = document.getElementById('album');
+    if (album && album.classList.contains('has-link')) {
+      const albumLabel = document.querySelector('.album-label');
+      const albumUrl = document.getElementById('albumLink').getAttribute('href');
+      L.push((albumLabel ? albumLabel.innerText.trim().toUpperCase() : 'MORE PHOTOS') + ': ' + albumUrl);
+      L.push('');
+    }
 
     const warm = document.querySelector('.signoff .warm');
     const name = document.querySelector('.signoff .name');
@@ -947,7 +1019,7 @@
   let openSubject = null;
 
   function skipCatchup(el) {
-    return el && el.classList && el.classList.contains('catchup');
+    return el && el.classList && el.classList.contains('no-export');
   }
 
   // "Reading: retelling stories" -> { subject:'Reading', detail:'retelling stories' }
@@ -981,14 +1053,14 @@
     if (!data.order.length) {
       box.innerHTML =
         '<div class="catchup-head"><span class="ic">🕘</span>' +
-        '<span class="t">Catch up on past weeks</span></div>' +
+        '<span class="t">Time travel</span></div>' +
         '<div class="catchup-empty">Once you save a few weeks to the archive (the “Add this week to archive” button up top), each subject will get a button here so families who’ve been away can look back on what the class has covered.</div>';
       return;
     }
     let html =
       '<div class="catchup-head"><span class="ic">🕘</span>' +
-      '<span class="t">Catch up on past weeks</span>' +
-      '<span class="note">Tap a subject to see what we’ve covered</span></div>' +
+      '<span class="t">Time travel</span>' +
+      '<span class="note">Tap a subject to see what we’ve covered so far</span></div>' +
       '<div class="catchup-pills">';
     data.order.forEach(function (key) {
       const s = data.map[key];
