@@ -1147,7 +1147,13 @@
   function collectSubjectHistory() {
     const order = [];
     const map = {};
-    loadArchive().forEach(function (w) {
+    // Time travel is only the PAST: skip the week that's currently on screen
+    // (it's already shown up top in "What we learned").
+    const currentWeek = (fieldText('week') || '').trim();
+    const past = loadArchive().filter(function (w) {
+      return !(currentWeek && w.week && w.week.indexOf(currentWeek) !== -1);
+    });
+    past.forEach(function (w) {
       const lines = (w.sections && w.sections.learned) || [];
       lines.forEach(function (line) {
         const parsed = parseSubject(line);
@@ -1157,6 +1163,8 @@
         map[key].entries.push({ week: w.week, detail: parsed.detail });
       });
     });
+    // newest week first, oldest at the bottom
+    order.forEach(function (k) { map[k].entries.reverse(); });
     return { order: order, map: map };
   }
 
