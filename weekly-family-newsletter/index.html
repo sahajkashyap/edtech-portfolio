@@ -255,6 +255,9 @@
   .editable-block { font-size: 14.5px; line-height: 1.7; color: #574c40; min-height: 22px; }
   .editable-block ul { margin: 0.2rem 0 0; padding-left: 1.2rem; }
   .editable-block li { margin-bottom: 5px; }
+  /* the academic list carries the most writing, so give each subject room */
+  .subjects li { margin-bottom: 8px; }
+  .subjects li:last-child { margin-bottom: 0; }
 
   /* photo slots */
   .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-bottom: 1.1rem; }
@@ -398,23 +401,26 @@
       </div>
     </div>
 
-    <!-- two columns -->
-    <div class="grid-2">
-      <div class="card tint-sage">
-        <div class="card-head">
-          <span class="chip">📚</span>
-          <p class="card-title">What we learned</p>
-        </div>
-        <div class="editable-block" contenteditable="true" data-field="learned"
-             data-ph="What did the class explore this week?">
-          <ul>
-            <li><b>Reading:</b> retelling stories in our own words</li>
-            <li><b>Math:</b> adding two-digit numbers</li>
-            <li><b>Science:</b> what plants need to grow</li>
-          </ul>
-        </div>
+    <!-- what we learned — full width, room for every subject -->
+    <div class="card tint-sage">
+      <div class="card-head">
+        <span class="chip">📚</span>
+        <p class="card-title">What we learned</p>
       </div>
+      <div class="editable-block subjects" contenteditable="true" data-field="learned"
+           data-ph="What did the class explore this week?">
+        <ul>
+          <li><b>Reading:</b> retelling stories in our own words</li>
+          <li><b>Language Arts:</b> nouns, verbs, and writing complete sentences</li>
+          <li><b>Math:</b> adding two-digit numbers</li>
+          <li><b>Science:</b> what plants need to grow</li>
+          <li><b>Social Studies:</b> our community helpers and how they keep us safe</li>
+        </ul>
+      </div>
+    </div>
 
+    <!-- coming up + highlight -->
+    <div class="grid-2">
       <div class="card tint-sky">
         <div class="card-head">
           <span class="chip">🔭</span>
@@ -429,18 +435,17 @@
           </ul>
         </div>
       </div>
-    </div>
 
-    <!-- highlight strip -->
-    <div class="card tint-sun">
-      <div class="card-head">
-        <span class="chip">⭐</span>
-        <p class="card-title">Highlight of the week</p>
-      </div>
-      <div class="editable-block" contenteditable="true" data-field="highlight"
-           data-ph="A proud moment, a class win, a funny story to share…">
-        Ask your child about our class read-aloud — they had the whole room giggling
-        during our reader's theater on Friday!
+      <div class="card tint-sun">
+        <div class="card-head">
+          <span class="chip">⭐</span>
+          <p class="card-title">Highlight of the week</p>
+        </div>
+        <div class="editable-block" contenteditable="true" data-field="highlight"
+             data-ph="A proud moment, a class win, a funny story to share…">
+          Ask your child about our class read-aloud — they had the whole room giggling
+          during our reader's theater on Friday!
+        </div>
       </div>
     </div>
 
