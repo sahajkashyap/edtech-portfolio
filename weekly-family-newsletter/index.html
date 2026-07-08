@@ -255,6 +255,71 @@
   .editable-block { font-size: 14.5px; line-height: 1.7; color: #574c40; min-height: 22px; }
   .editable-block ul { margin: 0.2rem 0 0; padding-left: 1.2rem; }
   .editable-block li { margin-bottom: 5px; }
+  /* the academic list carries the most writing, so give each subject room */
+  .subjects li { margin-bottom: 8px; }
+  .subjects li:last-child { margin-bottom: 0; }
+
+  /* more-photos album link (appears in exports so PDF readers see it too) */
+  .album {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+    margin-bottom: 1.1rem; padding: 11px 15px;
+    background: var(--sky-soft); border: 1px solid #cadae6; border-radius: 12px;
+  }
+  .album-icon { font-size: 17px; }
+  .album-label { font-size: 14px; font-weight: 700; color: #3f5566; }
+  .album-go {
+    font-size: 13.5px; font-weight: 700; color: #fff; text-decoration: none;
+    background: var(--sky); border-radius: 999px; padding: 6px 13px; transition: 0.15s;
+  }
+  .album-go:hover { background: #4a789c; }
+  .album-url { font-size: 12px; color: #6d8296; word-break: break-all; flex-basis: 100%; }
+  .album-controls { display: inline-flex; gap: 6px; }
+  .album-controls button { padding: 6px 11px; font-size: 12.5px; }
+  /* show the right controls for the current state */
+  .album-go, .album-url, .album-change, .album-remove { display: none; }
+  .album.has-link .album-add { display: none; }
+  .album.has-link .album-go { display: inline-block; }
+  .album.has-link .album-url { display: block; }
+  .album.has-link .album-change,
+  .album.has-link .album-remove { display: inline-flex; }
+
+  /* catch-up: tap a subject to see its history (interactive only) */
+  .catchup { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px dashed #c7b89f; }
+  .catchup-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 0.65rem; }
+  .catchup-head .ic { font-size: 15px; }
+  .catchup-head .t { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #5d6b3f; }
+  .catchup-head .note { font-size: 12px; color: #7d8a5e; font-weight: 500; }
+  .catchup-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .catchup-pill {
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
+    background: rgba(255,255,255,0.7); border: 1px solid #c7b89f; border-radius: 999px;
+    padding: 8px 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    transition: 0.15s; box-shadow: none;
+  }
+  .catchup-pill:hover { background: #fff; border-color: var(--sage); transform: none; }
+  .catchup-pill .cnt {
+    font-size: 11px; font-weight: 700; color: #6f7d4b;
+    background: rgba(124,154,94,0.16); border-radius: 999px; padding: 1px 7px;
+  }
+  .catchup-pill .arw { font-size: 10px; color: #7d8a5e; transition: transform 0.18s; }
+  .catchup-pill.open { background: #fff; border-color: var(--sage); }
+  .catchup-pill.open .arw { transform: rotate(180deg); }
+  .catchup-panel {
+    margin-top: 0.75rem; background: rgba(255,255,255,0.8);
+    border: 1px solid #d9ceb8; border-radius: 12px; padding: 0.9rem 1.05rem;
+    max-height: 320px; overflow-y: auto;
+  }
+  .catchup-panel .cp-title {
+    font-size: 13px; font-weight: 800; color: #4a3f35; margin: 0 0 0.55rem;
+    position: sticky; top: -0.9rem; background: #fbf7ef;
+    padding: 0.35rem 0; margin-top: -0.35rem;
+  }
+  .catchup-panel .cp-title .cnt { color: #7d8a5e; font-weight: 700; }
+  .catchup-week { margin-bottom: 0.55rem; }
+  .catchup-week:last-child { margin-bottom: 0; }
+  .catchup-week .wk { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--sun); }
+  .catchup-week .txt { font-size: 13.5px; line-height: 1.55; color: #574c40; margin-top: 1px; }
+  .catchup-empty { font-size: 12.5px; color: #8a7c6d; font-style: italic; line-height: 1.55; }
 
   /* photo slots */
   .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-bottom: 1.1rem; }
@@ -322,7 +387,7 @@
   /* print */
   @media print {
     body { background: #fff; padding: 0; }
-    .toolbar, .archive-bar { display: none !important; }
+    .toolbar, .archive-bar, .no-export { display: none !important; }
     .sheet { box-shadow: none; border-radius: 0; max-width: 100%; }
     .photo .remove { display: none !important; }
     [contenteditable]:empty:before { content: ""; }
@@ -362,21 +427,22 @@
   <!-- ===== BANNER ===== -->
   <div class="banner">
     <div class="sun"></div>
-    <p class="kicker" contenteditable="true" data-ph="Room 12 · Ms. Rivera">Room 12 · Our Classroom</p>
+    <p class="kicker" contenteditable="true" data-ph="Room 12 · Ms. Rivera">Room 18 · Mr. Kashyap</p>
     <h1 class="title" contenteditable="true" data-field="title" data-ph="Our Weekly Newsletter">Our Weekly Newsletter</h1>
     <div class="meta-row">
-      <span class="pair"><span class="lbl">Week of</span><span contenteditable="true" data-field="week" data-ph="March 3">the date</span></span>
-      <span class="pair"><span class="lbl">Grade</span><span contenteditable="true" data-field="grade" data-ph="2nd Grade">your grade</span></span>
-      <span class="pair"><span class="lbl">Teacher</span><span contenteditable="true" data-field="teacher" data-ph="Ms. Rivera">your name</span></span>
+      <span class="pair"><span class="lbl">Week of</span><span contenteditable="true" data-field="week" data-ph="March 3">November 23, 2026</span></span>
+      <span class="pair"><span class="lbl">Grade</span><span contenteditable="true" data-field="grade" data-ph="2nd Grade">3rd / 4th Grade</span></span>
+      <span class="pair"><span class="lbl">Teacher</span><span contenteditable="true" data-field="teacher" data-ph="Ms. Rivera">Sahaj Kashyap</span></span>
     </div>
   </div>
 
   <!-- ===== GREETING ===== -->
   <div class="greeting editable-block" contenteditable="true" data-field="greeting"
        data-ph="Write a warm hello to your families here…">
-    Hello families! We had such a wonderful week together. Here's a peek at what we've
-    been up to and a few things to look forward to. Thank you, as always, for everything
-    you do at home — it makes all the difference.
+    Hello families! It's hard to believe how much we've grown since September. As the
+    leaves turn and we head into Thanksgiving break, I'm so proud of our readers, writers,
+    and young scientists. Here's a look at our week — and don't miss <b>Time travel</b>
+    under "What we learned" to see how far the class has come this fall.
   </div>
 
   <!-- ===== BODY ===== -->
@@ -398,23 +464,40 @@
       </div>
     </div>
 
-    <!-- two columns -->
-    <div class="grid-2">
-      <div class="card tint-sage">
-        <div class="card-head">
-          <span class="chip">📚</span>
-          <p class="card-title">What we learned</p>
-        </div>
-        <div class="editable-block" contenteditable="true" data-field="learned"
-             data-ph="What did the class explore this week?">
-          <ul>
-            <li><b>Reading:</b> retelling stories in our own words</li>
-            <li><b>Math:</b> adding two-digit numbers</li>
-            <li><b>Science:</b> what plants need to grow</li>
-          </ul>
-        </div>
-      </div>
+    <!-- more photos: a link to a full album (Google Photos, etc.) -->
+    <div class="album has-link" id="album">
+      <span class="album-icon">📸</span>
+      <span class="album-label" contenteditable="true" data-ph="More photos from this week">More photos from this week (food drive &amp; weather lab!)</span>
+      <a class="album-go" id="albumLink" href="https://photos.app.goo.gl/room18-fall" target="_blank" rel="noopener">View album →</a>
+      <span class="album-url" id="albumUrl">https://photos.app.goo.gl/room18-fall</span>
+      <span class="album-controls no-export">
+        <button type="button" class="album-add" onclick="setAlbumLink()">🔗 Add photo album link</button>
+        <button type="button" class="album-change" onclick="setAlbumLink()">Change link</button>
+        <button type="button" class="album-remove" onclick="removeAlbumLink()">Remove</button>
+      </span>
+    </div>
 
+    <!-- what we learned — full width, room for every subject -->
+    <div class="card tint-sage">
+      <div class="card-head">
+        <span class="chip">📚</span>
+        <p class="card-title">What we learned</p>
+      </div>
+      <div class="editable-block subjects" contenteditable="true" data-field="learned"
+           data-ph="What did the class explore this week?">
+        <ul>
+          <li><b>Reading:</b> author's purpose — to inform, entertain, or persuade; fall running records show many readers reaching levels O–P</li>
+          <li><b>Language Arts:</b> beginning opinion writing — stating a clear opinion and backing it up with reasons</li>
+          <li><b>Math:</b> introducing division as sharing into equal groups</li>
+          <li><b>Science:</b> building simple weather instruments to measure wind and rain</li>
+          <li><b>Social Studies:</b> citizenship — our rights and responsibilities, and our class food drive</li>
+        </ul>
+      </div>
+      <div class="catchup no-export" id="catchup"></div>
+    </div>
+
+    <!-- coming up + highlight -->
+    <div class="grid-2">
       <div class="card tint-sky">
         <div class="card-head">
           <span class="chip">🔭</span>
@@ -423,24 +506,23 @@
         <div class="editable-block" contenteditable="true" data-field="coming"
              data-ph="What's on the horizon for next week?">
           <ul>
-            <li>Starting our weather unit</li>
-            <li>Library visit on Wednesday</li>
-            <li>New spelling words go home Monday</li>
+            <li>Thanksgiving break — no school Nov 25–27</li>
+            <li>Opinion writing celebration on Dec 4</li>
+            <li>Winter concert practice begins next week</li>
           </ul>
         </div>
       </div>
-    </div>
 
-    <!-- highlight strip -->
-    <div class="card tint-sun">
-      <div class="card-head">
-        <span class="chip">⭐</span>
-        <p class="card-title">Highlight of the week</p>
-      </div>
-      <div class="editable-block" contenteditable="true" data-field="highlight"
-           data-ph="A proud moment, a class win, a funny story to share…">
-        Ask your child about our class read-aloud — they had the whole room giggling
-        during our reader's theater on Friday!
+      <div class="card tint-sun">
+        <div class="card-head">
+          <span class="chip">⭐</span>
+          <p class="card-title">Highlight of the week</p>
+        </div>
+        <div class="editable-block" contenteditable="true" data-field="highlight"
+             data-ph="A proud moment, a class win, a funny story to share…">
+          Ask your child about our class food drive — together we collected over 200 cans
+          for the local food pantry. What a kind, generous group of citizens!
+        </div>
       </div>
     </div>
 
@@ -454,9 +536,9 @@
         <div class="editable-block dates" contenteditable="true" data-field="reminders"
              data-ph="Important dates and reminders…">
           <ul>
-            <li><b>Mon 3/3</b> — Library books due</li>
-            <li><b>Wed 3/5</b> — Wear green for spirit day</li>
-            <li><b>Fri 3/7</b> — Early dismissal, 1:00 pm</li>
+            <li><b>Mon 11/23</b> — Library books due</li>
+            <li><b>Tue 11/24</b> — Food drive donations due</li>
+            <li><b>Wed–Fri 11/25–27</b> — Thanksgiving break, no school</li>
           </ul>
         </div>
       </div>
@@ -469,9 +551,9 @@
         <div class="editable-block" contenteditable="true" data-field="home"
              data-ph="Simple ways families can support learning…">
           <ul>
-            <li>Read together for 15 minutes each night</li>
-            <li>Practice counting coins at the store</li>
-            <li>Ask: "What was the best part of your day?"</li>
+            <li>Read together 20 minutes each night and jot the title in the reading log</li>
+            <li>Practice multiplication facts (2s, 5s, and 10s)</li>
+            <li>Ask at dinner: "What are you thankful for this year?"</li>
           </ul>
         </div>
       </div>
@@ -481,13 +563,13 @@
   <!-- ===== FOOTER ===== -->
   <div class="footer">
     <div class="contact">
-      <div><span class="lbl">Questions?</span> I'd love to hear from you.</div>
-      <div><span class="lbl">Email:</span> <span contenteditable="true" data-ph="you@school.edu">you@school.edu</span></div>
-      <div><span class="lbl">Class site:</span> <span contenteditable="true" data-ph="ourclass.example.com">ourclass.example.com</span></div>
+      <div><span class="lbl">Questions?</span> We'd love to hear from you.</div>
+      <div><span class="lbl">Email:</span> <span contenteditable="true" data-ph="you@school.edu">skashyap@school.edu</span></div>
+      <div><span class="lbl">Class site:</span> <span contenteditable="true" data-ph="ourclass.example.com">room18.example.com</span></div>
     </div>
     <div class="signoff">
       <div class="warm" contenteditable="true" data-ph="Warmly,">Warmly,</div>
-      <div class="name" contenteditable="true" data-ph="Ms. Rivera">Ms. Rivera</div>
+      <div class="name" contenteditable="true" data-ph="Mr. Sahaj Kashyap">Mr. Sahaj Kashyap</div>
     </div>
   </div>
 </div>
@@ -547,6 +629,33 @@
     const photo = document.querySelector('.photo[data-slot="' + slot + '"]');
     photo.querySelector('img').src = '';
     photo.classList.remove('has-img');
+  }
+
+  /* ---------- more-photos album link ---------- */
+  function setAlbumLink() {
+    const link = document.getElementById('albumLink');
+    const current = link.getAttribute('href');
+    let url = prompt('Paste the link to your photo album (Google Photos, a shared folder, etc.):',
+      current && current !== '#' ? current : 'https://');
+    if (url === null) return;
+    url = url.trim();
+    if (!url || url === 'https://') return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    link.href = url;
+    document.getElementById('albumUrl').textContent = url;
+    document.getElementById('album').classList.add('has-link');
+    saveSilently();
+    flash('Photo album link added ✓');
+  }
+
+  function removeAlbumLink() {
+    if (!confirm('Remove the photo album link?')) return;
+    const link = document.getElementById('albumLink');
+    link.href = '#';
+    document.getElementById('albumUrl').textContent = '';
+    document.getElementById('album').classList.remove('has-link');
+    saveSilently();
+    flash('Link removed');
   }
 
   /* ---------- save / restore draft ---------- */
@@ -614,7 +723,7 @@
   function exportImage() {
     const sheet = document.getElementById('sheet');
     flash('Building your image…');
-    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true }).then(function (canvas) {
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipCatchup }).then(function (canvas) {
       canvas.toBlob(function (blob) {
         if (!blob) { flash('Image export failed — try Download PDF', true); return; }
         const url = URL.createObjectURL(blob);
@@ -635,7 +744,7 @@
   function exportPDF() {
     const sheet = document.getElementById('sheet');
     flash('Building your PDF…');
-    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true }).then(function (canvas) {
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipCatchup }).then(function (canvas) {
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageW = pdf.internal.pageSize.getWidth();
@@ -717,6 +826,14 @@
       .map(function (c) { return c.innerText.trim(); }).filter(Boolean);
     if (caps.length) { L.push('PHOTOS'); caps.forEach(function (c) { L.push('- ' + c); }); L.push(''); }
 
+    const album = document.getElementById('album');
+    if (album && album.classList.contains('has-link')) {
+      const albumLabel = document.querySelector('.album-label');
+      const albumUrl = document.getElementById('albumLink').getAttribute('href');
+      L.push((albumLabel ? albumLabel.innerText.trim().toUpperCase() : 'MORE PHOTOS') + ': ' + albumUrl);
+      L.push('');
+    }
+
     const warm = document.querySelector('.signoff .warm');
     const name = document.querySelector('.signoff .name');
     if (warm && warm.innerText.trim()) L.push(warm.innerText.trim());
@@ -753,12 +870,116 @@
      TERM ARCHIVE  — save weeks, then summarize by subject
      ===================================================================== */
   const ARCHIVE_KEY = 'weekly-family-newsletter-archive';
+  const ARCHIVE_OWNED_KEY = 'weekly-family-newsletter-owned';
+  function markArchiveOwned() { try { localStorage.setItem(ARCHIVE_OWNED_KEY, '1'); } catch (e) {} }
   const SUBJECTS = [
     { key: 'learned',   label: 'What we learned',    chip: '📚' },
     { key: 'coming',    label: 'Coming up next',     chip: '🔭' },
     { key: 'highlight', label: 'Highlights',         chip: '⭐' },
     { key: 'reminders', label: 'Reminders & dates',  chip: '📌' },
     { key: 'home',      label: 'Ways to help at home',chip: '🏡' }
+  ];
+
+  // Example term of history so the "Time travel" buttons show a real running
+  // record on first open. Auto-loads only when no archive exists yet, so it
+  // never overwrites a teacher's own saved weeks.
+  const SEED_META = { title: 'Our Weekly Newsletter', grade: '3rd / 4th Grade', teacher: 'Sahaj Kashyap' };
+  function seedWeek(week, learned, highlight, extra) {
+    return Object.assign({ week: week, greeting: '', sections: Object.assign(
+      { learned: learned, coming: [], highlight: highlight ? [highlight] : [], reminders: [], home: [] },
+      extra || {}) }, SEED_META);
+  }
+  // A full fall term (Sept–Nov), so each Time travel subject holds a long,
+  // scrollable running record from the start of the year up to this week.
+  const SEED_ARCHIVE = [
+    seedWeek('Week 1 · September 8, 2026', [
+      'Reading: setting up our reading routines; beginning-of-year running records to find each reader’s just-right level',
+      'Language Arts: launching our writer’s notebooks and gathering ideas',
+      'Math: reviewing place value to the thousands',
+      'Science: being a scientist — observing closely and asking questions',
+      'Social Studies: building our classroom community — rules, jobs, and being a good citizen'
+    ], 'We wrote our hopes and dreams for the school year and hung them in the hall.'),
+    seedWeek('Week 2 · September 14, 2026', [
+      'Reading: choosing “just right” books and building our independent reading stamina',
+      'Language Arts: complete sentences vs. fragments; capital letters and end punctuation',
+      'Math: comparing and ordering numbers',
+      'Science: living vs. nonliving things',
+      'Social Studies: map skills — the compass rose and cardinal directions'
+    ], 'We reached 15 minutes of quiet independent reading — a class record!'),
+    seedWeek('Week 3 · September 21, 2026', [
+      'Reading: story elements — characters, setting, problem, and solution',
+      'Language Arts: nouns — common and proper',
+      'Math: rounding to the nearest ten and hundred',
+      'Science: what plants and animals need to survive',
+      'Social Studies: reading map keys and the symbols that stand for real places'
+    ], 'We planted bean seeds to watch what living things need to grow.'),
+    seedWeek('Week 4 · September 28, 2026', [
+      'Reading: retelling fiction with a clear beginning, middle, and end',
+      'Language Arts: verbs and subject–verb agreement',
+      'Math: multi-digit addition with regrouping',
+      'Science: the life cycle of plants',
+      'Social Studies: physical vs. political maps'
+    ], 'Our bean seeds sprouted and we measured them with rulers.'),
+    seedWeek('Week 5 · October 5, 2026', [
+      'Reading: asking questions before, during, and after reading',
+      'Language Arts: using adjectives to add detail',
+      'Math: multi-digit subtraction, including across zeros',
+      'Science: habitats and ecosystems',
+      'Social Studies: our community — urban, suburban, and rural'
+    ], 'We built shoebox dioramas of different animal habitats.'),
+    seedWeek('Week 6 · October 12, 2026', [
+      'Reading: making predictions and checking them against the text',
+      'Language Arts: choosing a small moment for a personal narrative',
+      'Math: estimating sums and differences',
+      'Science: food chains — producers, consumers, and decomposers',
+      'Social Studies: landforms and bodies of water'
+    ], 'We made a giant food-chain web across the whole classroom with yarn.'),
+    seedWeek('Week 7 · October 19, 2026', [
+      'Reading: making inferences from text clues; running records show growth into levels N–O',
+      'Language Arts: drafting our personal narratives',
+      'Math: introduction to multiplication — equal groups and arrays',
+      'Science: adaptations that help animals survive',
+      'Social Studies: the history of our town and how it has changed'
+    ], 'Students shared “animal adaptation” trading cards they designed.'),
+    seedWeek('Week 8 · October 26, 2026', [
+      'Reading: comparing characters across two different stories',
+      'Language Arts: adding dialogue and using quotation marks',
+      'Math: multiplication facts — 2s, 5s, and 10s',
+      'Science: states of matter — solid, liquid, and gas',
+      'Social Studies: community helpers and an introduction to local government'
+    ], 'We built a “matter museum” with examples brought from home.'),
+    seedWeek('Week 9 · November 2, 2026', [
+      'Reading: introduction to nonfiction — text features like headings, captions, and the glossary',
+      'Language Arts: revising for a strong beginning and ending',
+      'Math: multiplication facts — 3s and 4s',
+      'Science: how matter changes — melting and freezing investigations',
+      'Social Studies: needs vs. wants'
+    ], 'We froze and melted crayons to watch matter change state.'),
+    seedWeek('Week 10 · November 9, 2026', [
+      'Reading: finding the main idea and key details in nonfiction',
+      'Language Arts: editing our narratives — commas in a series',
+      'Math: solving word problems with multiplication',
+      'Science: introduction to weather and the water cycle',
+      'Social Studies: goods and services'
+    ], 'We acted out the water cycle as raindrops on a journey.'),
+    seedWeek('Week 11 · November 16, 2026', [
+      'Reading: summarizing nonfiction in our own words',
+      'Language Arts: publishing and sharing our personal narratives',
+      'Math: area as rows × columns',
+      'Science: measuring weather — temperature, wind, and rain',
+      'Social Studies: producers and consumers in an economy'
+    ], 'We held an author’s celebration and read our narratives aloud.'),
+    seedWeek('Week 12 · November 23, 2026', [
+      'Reading: author’s purpose — to inform, entertain, or persuade; fall running records show many readers reaching levels O–P',
+      'Language Arts: beginning opinion writing — stating a clear opinion and backing it up with reasons',
+      'Math: introducing division as sharing into equal groups',
+      'Science: building simple weather instruments to measure wind and rain',
+      'Social Studies: citizenship — our rights and responsibilities, and our class food drive'
+    ], 'Ask about our class food drive — together we collected over 200 cans!', {
+      coming: ['Thanksgiving break — no school Nov 25–27', 'Opinion writing celebration on Dec 4', 'Winter concert practice begins next week'],
+      reminders: ['Mon 11/23 — Library books due', 'Tue 11/24 — Food drive donations due', 'Wed–Fri 11/25–27 — Thanksgiving break, no school'],
+      home: ['Read together 20 minutes each night and jot the title in the reading log', 'Practice multiplication facts (2s, 5s, and 10s)', 'Ask at dinner: “What are you thankful for this year?”']
+    })
   ];
 
   function loadArchive() {
@@ -768,6 +989,7 @@
   function storeArchive(list) {
     localStorage.setItem(ARCHIVE_KEY, JSON.stringify(list));
     renderArchiveStatus();
+    renderCatchup();
   }
 
   function snapshotWeek() {
@@ -796,6 +1018,7 @@
       list.push(snap);
       flash('Saved "' + snap.week + '" to the archive ✓');
     }
+    markArchiveOwned();
     storeArchive(list);
   }
 
@@ -804,6 +1027,7 @@
     if (!list[i]) return;
     if (!confirm('Remove "' + list[i].week + '" from the archive?')) return;
     list.splice(i, 1);
+    markArchiveOwned();
     storeArchive(list);
     renderArchiveList();
   }
@@ -893,6 +1117,7 @@
       } else {
         result = clean;
       }
+      markArchiveOwned();
       storeArchive(result);
       renderArchiveList();
       flash('Restored — ' + result.length + ' week(s) in the archive ✓');
@@ -900,6 +1125,91 @@
     reader.readAsText(file);
     e.target.value = '';
   });
+
+  /* =====================================================================
+     CATCH-UP  — tap a subject to see its history from past weeks
+     (interactive only; excluded from print/PDF/image exports)
+     ===================================================================== */
+  let openSubject = null;
+
+  function skipCatchup(el) {
+    return el && el.classList && el.classList.contains('no-export');
+  }
+
+  // "Reading: retelling stories" -> { subject:'Reading', detail:'retelling stories' }
+  function parseSubject(line) {
+    const t = (line || '').replace(/^-\s*/, '').trim();
+    const i = t.indexOf(':');
+    if (i > 0 && i <= 40) return { subject: t.slice(0, i).trim(), detail: t.slice(i + 1).trim() };
+    return { subject: '', detail: t };
+  }
+
+  function collectSubjectHistory() {
+    const order = [];
+    const map = {};
+    // Time travel is only the PAST: skip the week that's currently on screen
+    // (it's already shown up top in "What we learned").
+    const currentWeek = (fieldText('week') || '').trim();
+    const past = loadArchive().filter(function (w) {
+      return !(currentWeek && w.week && w.week.indexOf(currentWeek) !== -1);
+    });
+    past.forEach(function (w) {
+      const lines = (w.sections && w.sections.learned) || [];
+      lines.forEach(function (line) {
+        const parsed = parseSubject(line);
+        if (!parsed.subject || !parsed.detail) return;
+        const key = parsed.subject.toLowerCase();
+        if (!map[key]) { map[key] = { label: parsed.subject, entries: [] }; order.push(key); }
+        map[key].entries.push({ week: w.week, detail: parsed.detail });
+      });
+    });
+    // newest week first, oldest at the bottom
+    order.forEach(function (k) { map[k].entries.reverse(); });
+    return { order: order, map: map };
+  }
+
+  function renderCatchup() {
+    const box = document.getElementById('catchup');
+    if (!box) return;
+    const data = collectSubjectHistory();
+    if (!data.order.length) {
+      box.innerHTML =
+        '<div class="catchup-head"><span class="ic">🕘</span>' +
+        '<span class="t">Time travel</span></div>' +
+        '<div class="catchup-empty">Once you save a few weeks to the archive (the “Add this week to archive” button up top), each subject will get a button here so families who’ve been away can look back on what the class has covered.</div>';
+      return;
+    }
+    let html =
+      '<div class="catchup-head"><span class="ic">🕘</span>' +
+      '<span class="t">Time travel</span>' +
+      '<span class="note">Tap a subject to see what we’ve covered so far</span></div>' +
+      '<div class="catchup-pills">';
+    data.order.forEach(function (key) {
+      const s = data.map[key];
+      const isOpen = openSubject === key;
+      html += '<button type="button" class="catchup-pill' + (isOpen ? ' open' : '') +
+        '" onclick="toggleCatchup(&quot;' + key.replace(/"/g, '') + '&quot;)">' +
+        escapeHtml(s.label) + ' <span class="cnt">' + s.entries.length + '</span>' +
+        ' <span class="arw">▾</span></button>';
+    });
+    html += '</div>';
+    if (openSubject && data.map[openSubject]) {
+      const s = data.map[openSubject];
+      html += '<div class="catchup-panel"><p class="cp-title">' + escapeHtml(s.label) +
+        ' — over time <span class="cnt">· ' + s.entries.length + ' weeks</span></p>';
+      s.entries.forEach(function (e) {
+        html += '<div class="catchup-week"><div class="wk">' + escapeHtml(e.week) +
+          '</div><div class="txt">' + escapeHtml(e.detail) + '</div></div>';
+      });
+      html += '</div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function toggleCatchup(key) {
+    openSubject = (openSubject === key) ? null : key;
+    renderCatchup();
+  }
 
   /* ---------- build the by-subject summary ---------- */
   function openSummary() {
@@ -1011,7 +1321,13 @@
 
   /* ---------- boot ---------- */
   restoreDraft();
+  // Keep the example term loaded until the teacher makes the archive their own
+  // (adds, imports, or removes a week). Until then it stays in sync with updates.
+  if (localStorage.getItem(ARCHIVE_OWNED_KEY) !== '1') {
+    try { localStorage.setItem(ARCHIVE_KEY, JSON.stringify(SEED_ARCHIVE)); } catch (e) {}
+  }
   renderArchiveStatus();
+  renderCatchup();
   document.addEventListener('input', function () {
     clearTimeout(window.__save);
     window.__save = setTimeout(autoSave, 800);
