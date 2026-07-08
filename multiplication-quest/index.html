@@ -209,6 +209,32 @@
   .build-controls { display: flex; gap: 34px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
   .build-controls .cl { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
 
+  /* ---------- SPEED RUN ---------- */
+  .sr-intro { max-width: 520px; margin: 0 auto; }
+  .sr-intro h2 { font-size: 34px; margin: 0 0 14px; }
+  .sr-intro p { font-size: 18px; font-weight: 700; margin: 4px 0; }
+  .sr-best { color: var(--muted); font-weight: 600 !important; margin: 14px 0 !important; }
+  .sr-hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 800; }
+  .sr-hud .score { color: var(--indigo); font-size: 20px; }
+  .sr-hud .streak { color: var(--rust); font-size: 18px; }
+  .sr-timerbar { height: 12px; background: #E4DCD1; border-radius: 999px; overflow: hidden; margin-bottom: 22px; }
+  .sr-timerfill { height: 100%; background: var(--teal); border-radius: 999px; transition: width 1s linear; }
+  .sr-timerfill.low { background: var(--rust); }
+  .sr-q { font-size: 48px; font-weight: 700; margin: 18px 0 26px; }
+  .sr-final h2 { font-size: 30px; margin: 0 0 6px; }
+  .sr-bignum { font-size: 60px; font-weight: 800; color: var(--indigo); margin: 8px 0; }
+  .sr-newbest { color: var(--rust); font-weight: 800; font-size: 20px; margin: 6px 0 16px; }
+
+  /* ---------- MYSTERY FACTOR ---------- */
+  .mf-box { min-width: 78px; height: 88px; border-radius: 14px; border: 2.5px dashed var(--indigo);
+    background: #EDE7DD; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 44px; font-weight: 700; padding: 0 10px; }
+  .mf-box.filled { border-style: solid; background: #fff; }
+  .skip-hint { border: 2px dashed var(--teal); background: #E9F3EE; border-radius: 14px; padding: 18px; margin-top: 20px; }
+  .skip-seq { font-size: 20px; font-weight: 700; line-height: 1.8; }
+  .skip-seq .step { display: inline-block; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; margin: 3px; }
+  .skip-seq .step.last { background: var(--teal); color: #fff; border-color: var(--teal); }
+
   /* ---------- TOAST ---------- */
   #toast {
     position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%) translateY(20px);
@@ -749,8 +775,185 @@ SCREENS['array-builder'] = function (app) {
   fresh();
 };
 
+// ---------- SPEED RUN ----------
+SCREENS['speed-run'] = function (app) {
+  let timeLeft, score, streak, running, fact;
+  const DURATION = 60;
+
+  function intro() {
+    running = false;
+    app.innerHTML = `<div class="card center">
+      <div class="sr-intro">
+        <h2 class="mode-title serif">⚡ Speed Run</h2>
+        <p>Answer as many as you can in 60 seconds.</p>
+        <p>Every 3 right in a row = bigger bonus! 🔥</p>
+        <p class="sr-best">Personal best: <b>${state.best}</b></p>
+        <button class="btn btn-rust" onclick="SR.start()">Start!</button>
+      </div>
+    </div>`;
+  }
+
+  function tick() {
+    if (!running) return;
+    timeLeft--;
+    const fill = document.getElementById('srFill');
+    if (fill) {
+      fill.style.width = (timeLeft / DURATION * 100) + '%';
+      fill.classList.toggle('low', timeLeft <= 10);
+    }
+    const t = document.getElementById('srTime');
+    if (t) t.textContent = timeLeft + 's';
+    if (timeLeft <= 0) { end(); return; }
+    later(tick, 1000);
+  }
+
+  function nextProblem() {
+    fact = newFact();
+    const choices = choicesFor(fact.product);
+    document.getElementById('srProblem').innerHTML = `
+      <div class="sr-q serif">${fact.a} × ${fact.b} = ?</div>
+      <div class="ab-choices">${choices.map(v =>
+        `<button class="ab-choice" onclick="SR.answer(this, ${v})">${v}</button>`).join('')}</div>`;
+  }
+
+  function play() {
+    running = true; timeLeft = DURATION; score = 0; streak = 0;
+    app.innerHTML = `<div class="card">
+      <div class="sr-hud">
+        <span class="streak" id="srStreak">🔥 0</span>
+        <span id="srTime">${DURATION}s</span>
+        <span class="score" id="srScore">0 pts</span>
+      </div>
+      <div class="sr-timerbar"><div class="sr-timerfill" id="srFill" style="width:100%"></div></div>
+      <div class="center" id="srProblem"></div>
+    </div>`;
+    nextProblem();
+    later(tick, 1000);
+  }
+
+  function end() {
+    running = false;
+    const isBest = score > state.best;
+    if (isBest) { state.best = score; store.set('best', score); }
+    app.innerHTML = `<div class="card center sr-final">
+      <h2 class="mode-title serif">⏱️ Time's up!</h2>
+      <div class="sr-bignum">${score}</div>
+      <p style="color:var(--muted);font-weight:700">points</p>
+      ${isBest ? '<p class="sr-newbest">🏆 New personal best!</p>' : `<p class="sr-best" style="color:var(--muted)">Personal best: <b>${state.best}</b></p>`}
+      <div class="action-row">
+        <button class="btn btn-rust" onclick="SR.start()">Play again</button>
+        <button class="btn btn-ghost" onclick="go('home')">Home</button>
+      </div>
+    </div>`;
+  }
+
+  window.SR = {
+    start() { play(); },
+    answer(el, v) {
+      if (!running) return;
+      if (v === fact.product) {
+        streak++;
+        let pts = 10;
+        if (streak % 3 === 0) { const bonus = (streak / 3) * 5; pts += bonus; toast('🔥 Streak x' + streak + '! +' + bonus + ' bonus', 'good'); }
+        score += pts;
+        addStar(0); // stars tracked separately; keep speed run to points
+        document.getElementById('srScore').textContent = score + ' pts';
+        document.getElementById('srStreak').textContent = '🔥 ' + streak;
+        nextProblem();
+      } else {
+        streak = 0;
+        document.getElementById('srStreak').textContent = '🔥 0';
+        el.classList.add('wrong');
+        later(() => el.classList.remove('wrong'), 400);
+      }
+    }
+  };
+
+  intro();
+};
+
+// ---------- MYSTERY FACTOR ----------
+SCREENS['mystery-factor'] = function (app) {
+  let fact, hideA, known, missing, digits, entered, hintOpen;
+
+  function fresh() {
+    fact = newFact();
+    hideA = Math.random() < 0.5;
+    known = hideA ? fact.b : fact.a;
+    missing = hideA ? fact.a : fact.b;
+    digits = String(missing).split('').map(Number);
+    entered = digits.map(() => null);
+    hintOpen = false;
+    draw();
+  }
+
+  function boxHtml() {
+    const filled = entered.every(d => d !== null);
+    const txt = entered.map(d => d === null ? '' : d).join('');
+    return `<span class="mf-box ${filled ? 'filled' : ''}" onclick="MF.clear()">${txt || '?'}</span>`;
+  }
+
+  function draw() {
+    const eq = hideA
+      ? `${boxHtml()} <span>×</span> <span>${known}</span> <span>=</span> <span>${fact.product}</span>`
+      : `<span>${known}</span> <span>×</span> ${boxHtml()} <span>=</span> <span>${fact.product}</span>`;
+    const cards = [0,1,2,3,4,5,6,7,8,9].map(n =>
+      `<button class="num-card" onclick="MF.tap(${n})">${n}</button>`).join('');
+    app.innerHTML = `<div class="card center">
+      <h2 class="mode-title serif">🔍 Mystery Factor</h2>
+      <p class="mode-sub">A number is missing. Tap cards to find the hidden factor!</p>
+      <div class="equation serif" style="gap:16px">${eq}</div>
+      <div class="card-row">${cards}</div>
+      <div class="action-row">
+        <button class="btn btn-indigo" onclick="MF.check()">Check ✓</button>
+        <button class="btn btn-rust" onclick="MF.toggleHint()">💡 Hint</button>
+        <button class="btn btn-ghost" onclick="MF.fresh()">New problem</button>
+      </div>
+      <div id="mfHint"></div>`;
+    if (hintOpen) drawHint();
+  }
+
+  function drawHint() {
+    const steps = [];
+    for (let i = 1; i <= missing; i++) steps.push(known * i);
+    const seq = steps.map((v, i) =>
+      `<span class="step ${i === steps.length - 1 ? 'last' : ''}">${v}</span>`).join('<span style="color:var(--muted)">,</span> ');
+    document.getElementById('mfHint').innerHTML = `<div class="skip-hint pop">
+      <p style="font-weight:700;margin:0 0 10px">Skip-count by ${known} until you reach ${fact.product}:</p>
+      <div class="skip-seq">${seq}</div>
+      <p style="margin:12px 0 0;color:var(--muted)">How many numbers did you count? That's the missing factor!</p>
+    </div>`;
+  }
+
+  window.MF = {
+    fresh,
+    tap(n) {
+      const i = entered.indexOf(null);
+      if (i === -1) { entered = digits.map(() => null); entered[0] = n; }
+      else entered[i] = n;
+      draw();
+    },
+    clear() { entered = digits.map(() => null); draw(); },
+    check() {
+      if (entered.includes(null)) { toast('Fill in the missing number!'); return; }
+      const guess = +entered.join('');
+      if (guess === missing) {
+        addStar(1);
+        toast('🎉 Yes! ' + fact.a + ' × ' + fact.b + ' = ' + fact.product, 'good');
+        later(fresh, 1100);
+      } else {
+        toast('Not the hidden factor — try the hint!', 'bad');
+        const el = document.querySelector('.mf-box'); if (el) { el.classList.add('shake'); later(() => el.classList.remove('shake'), 350); }
+      }
+    },
+    toggleHint() { hintOpen = !hintOpen; if (hintOpen) drawHint(); else document.getElementById('mfHint').innerHTML = ''; }
+  };
+
+  fresh();
+};
+
 // Placeholder screens (built in later commits)
-['mystery-factor','speed-run','worksheet','progress'].forEach(id => {
+['worksheet','progress'].forEach(id => {
   SCREENS[id] = function (app) {
     app.innerHTML = `<div class="card center"><h2 class="mode-title serif">Coming up next</h2>
       <p class="mode-sub">This mode is being built.</p></div>`;
