@@ -235,6 +235,44 @@
   .skip-seq .step { display: inline-block; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; margin: 3px; }
   .skip-seq .step.last { background: var(--teal); color: #fff; border-color: var(--teal); }
 
+  /* ---------- WORKSHEET MAKER ---------- */
+  .ws-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (max-width: 560px) { .ws-controls { grid-template-columns: 1fr; } }
+  .ws-controls .field { margin: 0; }
+  .ws-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+  .ws-toggle { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+  .ws-toggle input { width: 18px; height: 18px; accent-color: var(--indigo); }
+  .print-sheet { background: #fff; color: #1a1a1a; border: 1px solid var(--line); border-radius: 10px; padding: 32px; }
+  .ws-sheet-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--indigo); padding-bottom: 10px; margin-bottom: 18px; }
+  .ws-sheet-head h3 { margin: 0; font-size: 22px; }
+  .ws-sheet-head .meta { font-size: 12px; color: var(--muted); }
+  .ws-name { font-size: 13px; color: var(--muted); }
+  .ws-probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 24px; }
+  @media (max-width: 560px) { .ws-probs { grid-template-columns: repeat(2, 1fr); } }
+  .ws-prob { font-size: 17px; font-weight: 600; }
+  .ws-prob .n { color: var(--muted); font-size: 12px; margin-right: 6px; }
+  .ws-prob .blank { display: inline-block; min-width: 40px; border-bottom: 1.5px solid #aaa; text-align: center; }
+  .ws-prob .ans { color: var(--teal); font-weight: 800; }
+  .ws-key { margin-top: 24px; border-top: 1.5px dashed var(--line); padding-top: 14px; }
+  .ws-key h4 { margin: 0 0 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  .ws-key .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px 14px; font-size: 13px; }
+
+  /* ---------- MY PROGRESS ---------- */
+  .prog-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+  @media (max-width: 520px) { .prog-stats { grid-template-columns: 1fr; } }
+  .stat { background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px; padding: 22px; text-align: center; }
+  .stat .big { font-size: 46px; font-weight: 800; color: var(--indigo); }
+  .stat .lab { color: var(--muted); font-weight: 700; margin-top: 4px; }
+  .prog-tables { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 12px 0 20px; }
+  .prog-tables .t { padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; }
+  .prog-tables .t.on { background: var(--teal); border-color: var(--teal); color: #fff; }
+
+  @media print {
+    header, nav, .ws-controls, .ws-actions, .mode-title, .mode-sub, #toast, .ws-print-hide { display: none !important; }
+    body, main, .card { background: #fff !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; }
+    .print-sheet { border: none !important; padding: 0 !important; }
+  }
+
   /* ---------- TOAST ---------- */
   #toast {
     position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%) translateY(20px);
@@ -952,13 +990,162 @@ SCREENS['mystery-factor'] = function (app) {
   fresh();
 };
 
-// Placeholder screens (built in later commits)
-['worksheet','progress'].forEach(id => {
-  SCREENS[id] = function (app) {
-    app.innerHTML = `<div class="card center"><h2 class="mode-title serif">Coming up next</h2>
-      <p class="mode-sub">This mode is being built.</p></div>`;
+// ---------- WORKSHEET MAKER ----------
+// Share-safe encode/decode (handles unicode in the title).
+function encodeCfg(cfg) { return btoa(unescape(encodeURIComponent(JSON.stringify(cfg)))); }
+function decodeCfg(str) { try { return JSON.parse(decodeURIComponent(escape(atob(str)))); } catch (e) { return null; } }
+
+function buildWorksheet(cfg) {
+  const rng = makeRng(cfg.seed);
+  const tables = (cfg.tables && cfg.tables.length) ? cfg.tables : [2, 3, 4, 5];
+  const probs = [];
+  for (let i = 0; i < cfg.count; i++) {
+    const a = tables[Math.floor(rng() * tables.length)];
+    const b = 1 + Math.floor(rng() * cfg.maxFactor);
+    let style = 'standard';
+    if (cfg.mix === 'missing') style = 'missing';
+    else if (cfg.mix === 'mixed') style = rng() < 0.4 ? 'missing' : 'standard';
+    probs.push({ a, b, product: a * b, style, hideA: rng() < 0.5 });
+  }
+  return probs;
+}
+
+SCREENS.worksheet = function (app) {
+  // Load config from a shared link if present, else defaults.
+  const q = (location.hash.split('?')[1] || '');
+  const params = new URLSearchParams(q);
+  const shared = params.get('c') ? decodeCfg(params.get('c')) : null;
+  let cfg = shared || {
+    seed: randSeed(),
+    count: 15,
+    title: 'Multiplication Practice',
+    tables: state.settings.tables.slice(),
+    maxFactor: state.settings.maxFactor,
+    mix: 'standard',
+    showKey: false
   };
-});
+
+  function countOptions(active) {
+    const opts = [10, 15, 20, 25, 30, 40];
+    if (!opts.includes(active)) opts.push(active); // bug fix: keep a shared non-preset count visible
+    opts.sort((a, b) => a - b);
+    return opts.map(n => `<option value="${n}" ${n === active ? 'selected' : ''}>${n} problems</option>`).join('');
+  }
+
+  function shareLink() {
+    const clean = { seed: cfg.seed, count: cfg.count, title: cfg.title, tables: cfg.tables, maxFactor: cfg.maxFactor, mix: cfg.mix, showKey: cfg.showKey };
+    return location.origin + location.pathname + '#worksheet?c=' + encodeCfg(clean);
+  }
+
+  function render() {
+    const probs = buildWorksheet(cfg);
+    const probHtml = probs.map((p, i) => {
+      let body;
+      if (p.style === 'missing') {
+        body = p.hideA
+          ? `<span class="blank">${cfg.showKey ? '<span class="ans">' + p.a + '</span>' : ''}</span> × ${p.b} = ${p.product}`
+          : `${p.a} × <span class="blank">${cfg.showKey ? '<span class="ans">' + p.b + '</span>' : ''}</span> = ${p.product}`;
+      } else {
+        body = `${p.a} × ${p.b} = <span class="blank">${cfg.showKey ? '<span class="ans">' + p.product + '</span>' : ''}</span>`;
+      }
+      return `<div class="ws-prob"><span class="n">${i + 1}.</span>${body}</div>`;
+    }).join('');
+
+    const key = cfg.showKey ? '' : `<div class="ws-key"><h4>Answer key (turn on to print)</h4>
+      <div class="grid">${probs.map((p, i) => `<div>${i + 1}. ${p.product}</div>`).join('')}</div></div>`;
+
+    app.innerHTML = `<div class="card">
+      <h2 class="mode-title serif ws-print-hide">🖨️ Worksheet Maker</h2>
+      <p class="mode-sub center ws-print-hide">Make a printable sheet. The share link recreates the exact same sheet.</p>
+      <div class="ws-controls ws-print-hide">
+        <div class="field"><label>Sheet title</label>
+          <input type="text" id="wsTitle" value="${cfg.title.replace(/"/g, '&quot;')}"></div>
+        <div class="field"><label>How many?</label>
+          <select id="wsCount">${countOptions(cfg.count)}</select></div>
+        <div class="field"><label>Problem style</label>
+          <select id="wsMix">
+            <option value="standard" ${cfg.mix==='standard'?'selected':''}>Standard (a × b = ?)</option>
+            <option value="missing" ${cfg.mix==='missing'?'selected':''}>Missing factor</option>
+            <option value="mixed" ${cfg.mix==='mixed'?'selected':''}>Mixed</option>
+          </select></div>
+        <div class="field"><label>&nbsp;</label>
+          <label class="ws-toggle"><input type="checkbox" id="wsKey" ${cfg.showKey?'checked':''}> Show answer key</label></div>
+      </div>
+      <div class="ws-actions ws-print-hide">
+        <button class="btn btn-indigo" onclick="WS.regen()">🎲 New problems</button>
+        <button class="btn btn-teal" onclick="WS.copy()">🔗 Copy share link</button>
+        <button class="btn btn-rust" onclick="window.print()">🖨️ Print</button>
+      </div>
+      <div class="print-sheet">
+        <div class="ws-sheet-head">
+          <div><h3 class="serif">${escapeHtmlText(cfg.title)}</h3>
+            <span class="meta">Times tables: ${(cfg.tables||[]).join(', ') || 'mixed'}</span></div>
+          <div class="ws-name">Name: ______________  Date: _______</div>
+        </div>
+        <div class="ws-probs">${probHtml}</div>
+        ${key}
+      </div>
+    </div>`;
+
+    document.getElementById('wsTitle').oninput = e => { cfg.title = e.target.value; softUpdateHead(); };
+    document.getElementById('wsCount').onchange = e => { cfg.count = +e.target.value; render(); };
+    document.getElementById('wsMix').onchange = e => { cfg.mix = e.target.value; render(); };
+    document.getElementById('wsKey').onchange = e => { cfg.showKey = e.target.checked; render(); };
+  }
+
+  function softUpdateHead() {
+    const h = document.querySelector('.ws-sheet-head h3'); if (h) h.textContent = cfg.title;
+  }
+
+  window.WS = {
+    regen() { cfg.seed = randSeed(); render(); },
+    copy() {
+      const link = shareLink();
+      const done = () => toast('🔗 Share link copied!', 'good');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(done).catch(() => fallbackCopy(link, done));
+      } else fallbackCopy(link, done);
+    }
+  };
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); cb();
+  }
+
+  render();
+};
+
+function escapeHtmlText(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+// ---------- MY PROGRESS ----------
+SCREENS.progress = function (app) {
+  const tables = state.settings.tables;
+  app.innerHTML = `<div class="card center">
+    <h2 class="mode-title serif">📊 My Progress</h2>
+    <p class="mode-sub">Keep practicing to grow your stars!</p>
+    <div class="prog-stats">
+      <div class="stat"><div class="big">⭐ ${state.stars}</div><div class="lab">Stars earned</div></div>
+      <div class="stat"><div class="big">⚡ ${state.best}</div><div class="lab">Speed Run best</div></div>
+    </div>
+    <p style="font-weight:700;margin:0 0 6px">Practicing these tables:</p>
+    <div class="prog-tables">${Array.from({length:12},(_,i)=>i+1).map(n =>
+      `<span class="t ${tables.includes(n)?'on':''}">${n}×</span>`).join('')}</div>
+    <div class="action-row">
+      <button class="btn btn-ghost" onclick="openSettings()">Change tables ⚙️</button>
+      <button class="btn btn-ghost" onclick="PROG.reset()">Reset progress</button>
+    </div>
+  </div>`;
+  window.PROG = {
+    reset() {
+      if (!confirm('Reset all stars and your Speed Run best?')) return;
+      state.stars = 0; state.best = 0; store.set('stars', 0); store.set('best', 0);
+      document.getElementById('starCount').textContent = '0';
+      toast('Progress reset.'); boot();
+    }
+  };
+};
 
 // ---------- Init ----------
 document.getElementById('starCount').textContent = state.stars;
