@@ -165,6 +165,50 @@
   .add-card .body { font-size: 24px; font-weight: 700; }
   .add-card .vert { text-align: right; line-height: 1.15; }
 
+  /* ---------- ARRAY BUILDER ---------- */
+  .ab-head { position: relative; text-align: center; }
+  .ab-toggle { position: absolute; top: 0; right: 0; display: flex; flex-direction: column; gap: 10px; }
+  @media (max-width: 620px) {
+    .ab-toggle { position: static; flex-direction: row; justify-content: center; margin: 12px 0; }
+  }
+  .ab-eq { font-size: 40px; font-weight: 700; margin: 4px 0 14px; }
+  .ab-instr { font-weight: 700; max-width: 460px; margin: 0 auto 20px; line-height: 1.4; }
+  .count-btn {
+    width: 120px; height: 120px; border-radius: 50%; border: none; background: var(--teal); color: #fff;
+    font-size: 15px; font-weight: 700; cursor: pointer; margin: 8px auto; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px; font-family: inherit; transition: transform 0.1s, background 0.15s;
+  }
+  .count-btn:hover { background: var(--teal-dark); }
+  .count-btn .tri { font-size: 22px; }
+  .ab-gridwrap { display: inline-block; margin: 10px auto; }
+  .ab-colhead { display: grid; gap: 6px; margin-left: 26px; margin-bottom: 4px; }
+  .ab-colhead span { text-align: center; font-weight: 800; color: var(--indigo); font-size: 15px; }
+  .ab-body { display: flex; }
+  .ab-rowlabels { display: grid; gap: 6px; margin-right: 8px; }
+  .ab-rowlabels span { display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--teal); font-size: 15px; }
+  .ab-grid { display: grid; gap: 6px; }
+  .ab-dot { width: 26px; height: 26px; border-radius: 50%; background: #B8AC9C; transition: background 0.2s, transform 0.2s; }
+  .ab-dot.on { background: var(--indigo); transform: scale(1.08); }
+  .ab-rowband { border-radius: 999px; }
+  .ab-rowband.lit { background: rgba(91,75,140,0.14); }
+  .ab-result { font-size: 22px; font-weight: 800; margin: 16px 0 4px; }
+  .ab-result .r { color: var(--teal); } .ab-result .c { color: var(--indigo); }
+  .ab-counting { font-size: 20px; font-weight: 800; margin: 12px 0; }
+  .ab-counting b { color: var(--indigo); }
+  .ab-pick { font-weight: 700; margin: 10px 0 12px; }
+  .ab-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 420px; margin: 0 auto; }
+  .ab-choice { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; font-size: 26px;
+    font-weight: 800; cursor: pointer; font-family: inherit; transition: transform 0.1s, border-color 0.15s; }
+  .ab-choice:hover { transform: translateY(-2px); border-color: var(--indigo); }
+  .ab-choice.correct { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .ab-choice.wrong { background: #f4d9d0; border-color: var(--rust); }
+  .stepper { display: inline-flex; align-items: center; gap: 12px; }
+  .stepper button { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid var(--indigo);
+    background: #fff; font-size: 22px; font-weight: 700; cursor: pointer; color: var(--indigo); font-family: inherit; }
+  .stepper .val { font-size: 26px; font-weight: 800; min-width: 34px; text-align: center; }
+  .build-controls { display: flex; gap: 34px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+  .build-controls .cl { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+
   /* ---------- TOAST ---------- */
   #toast {
     position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%) translateY(20px);
@@ -552,8 +596,161 @@ SCREENS['digit-drop'] = function (app) {
   fresh();
 };
 
+// ---------- ARRAY BUILDER ----------
+SCREENS['array-builder'] = function (app) {
+  let fact, mode = 'count'; // 'count' | 'build'
+
+  function fresh() { fact = newFact(); render(); }
+
+  function header(extraRight) {
+    return `<div class="ab-head">
+      <div class="ab-toggle">
+        <button class="btn ${mode==='count'?'btn-indigo':'btn-ghost'}" onclick="AB.setMode('count')">🔢 Count it</button>
+        <button class="btn ${mode==='build'?'btn-indigo':'btn-ghost'}" onclick="AB.setMode('build')">🧱 Build it</button>
+      </div>
+      <h2 class="mode-title serif">🔢 Array Builder</h2>
+    </div>`;
+  }
+
+  // Build the dot grid markup for r rows x c cols.
+  function gridMarkup(r, c, opts) {
+    opts = opts || {};
+    const colHead = opts.colHead
+      ? `<div class="ab-colhead" style="grid-template-columns:repeat(${c},26px)">${
+          Array.from({length:c},(_,i)=>`<span>${opts.colHeadUpto && i>=opts.colHeadUpto ? '' : i+1}</span>`).join('')}</div>`
+      : '';
+    let rows = '';
+    for (let ri = 0; ri < r; ri++) {
+      const lit = opts.litRow !== undefined && ri <= opts.litRow;
+      const dots = Array.from({length:c},(_,ci) => {
+        const on = (opts.onRow !== undefined && ri <= opts.onRow) ||
+                   (opts.onCol !== undefined && ri === 0 && ci <= opts.onCol) ||
+                   (opts.allOn);
+        return `<div class="ab-dot ${on?'on':''}"></div>`;
+      }).join('');
+      rows += `<div class="ab-rowband ${lit?'lit':''}" style="display:grid;grid-template-columns:repeat(${c},26px);gap:6px;padding:2px">${dots}</div>`;
+    }
+    const rowLabels = opts.rowLabels
+      ? `<div class="ab-rowlabels" style="grid-template-rows:repeat(${r},26px)">${
+          Array.from({length:r},(_,i)=>`<span>${opts.rowLabelUpto!==undefined && i>opts.rowLabelUpto ? '' : i+1}</span>`).join('')}</div>`
+      : '';
+    return `<div class="ab-gridwrap">${colHead}
+      <div class="ab-body">${rowLabels}<div class="ab-grid">${rows}</div></div></div>`;
+  }
+
+  function render() {
+    setTheme('array-builder');
+    if (mode === 'count') renderCount();
+    else renderBuild();
+  }
+
+  // ----- COUNT IT -----
+  function renderCount() {
+    app.innerHTML = `<div class="card center">
+      ${header()}
+      <div class="ab-eq serif">${fact.a} × ${fact.b} = ?</div>
+      <p class="ab-instr">How many dots in all? Press the Count button and follow along — count one row across, then count how many rows.</p>
+      <div id="abStage">
+        ${gridMarkup(fact.a, fact.b, {})}
+        <button class="count-btn" onclick="AB.count()"><span class="tri">▶</span>Count<br>them!</button>
+      </div>
+    </div>`;
+  }
+
+  function runCount() {
+    const stage = document.getElementById('abStage');
+    let step = 0;
+    const totalCols = fact.b, totalRows = fact.a;
+    function frame() {
+      if (step < totalCols) {
+        // counting columns across the first row
+        stage.innerHTML = gridMarkup(fact.a, fact.b, { colHead: true, colHeadUpto: step + 1, onCol: step }) +
+          `<div class="ab-counting">Counting columns… <b>${step + 1}</b></div>`;
+        step++; later(frame, 550);
+      } else if (step < totalCols + totalRows) {
+        const r = step - totalCols;
+        stage.innerHTML = gridMarkup(fact.a, fact.b, { colHead: true, rowLabels: true, rowLabelUpto: r, litRow: r, onRow: r }) +
+          `<div class="ab-counting">Counting rows… <b>${r + 1}</b></div>`;
+        step++; later(frame, 550);
+      } else {
+        finishCount();
+      }
+    }
+    frame();
+  }
+
+  function finishCount() {
+    const stage = document.getElementById('abStage');
+    const choices = choicesFor(fact.product);
+    stage.innerHTML = `
+      <button class="count-btn" onclick="AB.count()"><span class="tri">▶</span>Count<br>again</button>
+      ${gridMarkup(fact.a, fact.b, { colHead: true, rowLabels: true, allOn: false, litRow: fact.a - 1 })}
+      <div class="ab-result"><span class="r">${fact.a}</span> rows of <span class="c">${fact.b}</span> = ${fact.product} 🎉</div>
+      <div class="ab-pick">Now pick the answer 👇</div>
+      <div class="ab-choices">${choices.map(v =>
+        `<button class="ab-choice" onclick="AB.answer(this, ${v})">${v}</button>`).join('')}</div>`;
+  }
+
+  // ----- BUILD IT -----
+  function renderBuild() {
+    let r = 1, c = 1;
+    app._buildRC = app._buildRC || { r: 1, c: 1 };
+    r = app._buildRC.r; c = app._buildRC.c;
+    function paint() {
+      const done = (r === fact.a && c === fact.b);
+      document.getElementById('buildStage').innerHTML = gridMarkup(r, c, { allOn: true }) +
+        `<div class="ab-result">${r} × ${c} = ${r * c}${done ? ' ✅' : ''}</div>` +
+        (done ? `<button class="btn btn-teal" onclick="AB.buildDone()" style="margin-top:8px">I built it! ⭐</button>` : '');
+    }
+    app.innerHTML = `<div class="card center">
+      ${header()}
+      <div class="ab-eq serif">Build ${fact.a} × ${fact.b}</div>
+      <p class="ab-instr">Make an array with ${fact.a} rows and ${fact.b} columns of dots.</p>
+      <div class="build-controls">
+        <div><div class="cl">Rows</div><div class="stepper">
+          <button onclick="AB.step('r',-1)">−</button><span class="val" id="rVal">${r}</span><button onclick="AB.step('r',1)">+</button></div></div>
+        <div><div class="cl">Columns</div><div class="stepper">
+          <button onclick="AB.step('c',-1)">−</button><span class="val" id="cVal">${c}</span><button onclick="AB.step('c',1)">+</button></div></div>
+      </div>
+      <div id="buildStage"></div>
+    </div>`;
+    paint();
+    app._paintBuild = paint;
+    app._getRC = () => ({ r, c });
+    app._setRC = (nr, nc) => { r = nr; c = nc; app._buildRC = { r, c };
+      document.getElementById('rVal').textContent = r; document.getElementById('cVal').textContent = c; paint(); };
+  }
+
+  window.AB = {
+    fresh,
+    setMode(m) { mode = m; render(); },
+    count() { runCount(); },
+    answer(el, v) {
+      if (v === fact.product) {
+        el.classList.add('correct'); addStar(1);
+        toast('🎉 ' + fact.a + ' × ' + fact.b + ' = ' + fact.product, 'good');
+        later(fresh, 1200);
+      } else {
+        el.classList.add('wrong'); toast('Not quite — count again!', 'bad');
+        later(() => el.classList.remove('wrong'), 500);
+      }
+    },
+    step(which, d) {
+      const { r, c } = app._getRC();
+      let nr = r, nc = c;
+      if (which === 'r') nr = Math.max(1, Math.min(12, r + d));
+      else nc = Math.max(1, Math.min(12, c + d));
+      app._setRC(nr, nc);
+    },
+    buildDone() { addStar(1); toast('⭐ Nice building! ' + fact.a + ' × ' + fact.b + ' = ' + fact.product, 'good');
+      app._buildRC = { r: 1, c: 1 }; later(fresh, 1200); }
+  };
+
+  fresh();
+};
+
 // Placeholder screens (built in later commits)
-['mystery-factor','speed-run','array-builder','worksheet','progress'].forEach(id => {
+['mystery-factor','speed-run','worksheet','progress'].forEach(id => {
   SCREENS[id] = function (app) {
     app.innerHTML = `<div class="card center"><h2 class="mode-title serif">Coming up next</h2>
       <p class="mode-sub">This mode is being built.</p></div>`;
