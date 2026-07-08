@@ -1,0 +1,568 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplication Quest</title>
+</head>
+<body>
+<style>
+  :root {
+    --indigo: #5B4B8C;
+    --indigo-dark: #4a3d75;
+    --rust: #A85E2E;
+    --rust-dark: #904e24;
+    --teal: #2E7D5B;
+    --teal-dark: #266b4d;
+    --gold: #E8B93B;
+    --ink: #2E2A26;
+    --muted: #7A736A;
+    --line: #E4DCD1;
+
+    /* themed (overridden per mode) */
+    --page-bg: #F1ECE3;
+    --header-bg: #EAE3D8;
+    --header-text: #2E2A26;
+    --nav-bg: #EFE8DE;
+    --card-bg: #FFFFFF;
+  }
+  body[data-theme="array"] {
+    --page-bg: #D3C9BB;
+    --header-bg: #8B7CA0;
+    --header-text: #FFFFFF;
+    --nav-bg: #FFFFFF;
+    --card-bg: #DAD1C4;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page-bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background 0.3s;
+  }
+  .serif { font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif; }
+
+  /* ---------- HEADER ---------- */
+  header {
+    background: var(--header-bg); color: var(--header-text);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px; transition: background 0.3s, color 0.3s;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .brand .x { font-size: 30px; line-height: 1; }
+  .brand h1 { margin: 0; font-size: 26px; font-weight: 700; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .star-pill {
+    display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.75);
+    color: var(--ink); padding: 8px 16px; border-radius: 999px; font-weight: 700; font-size: 15px;
+  }
+  .gear {
+    width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.55); font-size: 20px; display: flex; align-items: center;
+    justify-content: center; transition: transform 0.2s, background 0.2s;
+  }
+  .gear:hover { transform: rotate(40deg); background: rgba(255,255,255,0.85); }
+
+  /* ---------- NAV ---------- */
+  nav {
+    background: var(--nav-bg); padding: 14px 22px; display: flex; flex-wrap: wrap; gap: 10px;
+    transition: background 0.3s;
+  }
+  .tab {
+    display: flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 999px;
+    border: 1px solid var(--line); background: #fff; color: var(--ink);
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .tab:hover { border-color: var(--indigo); }
+  .tab.active { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+  .tab .ico { font-size: 16px; }
+
+  /* ---------- LAYOUT ---------- */
+  main { max-width: 820px; margin: 0 auto; padding: 26px 18px 60px; }
+  .card {
+    background: var(--card-bg); border-radius: 16px; padding: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.3s;
+  }
+  .center { text-align: center; }
+  .mode-title { font-size: 34px; font-weight: 700; margin: 0 0 6px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .mode-sub { color: var(--muted); font-size: 16px; margin: 0 0 20px; }
+
+  /* ---------- BUTTONS ---------- */
+  .btn {
+    border: none; border-radius: 12px; padding: 13px 22px; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: transform 0.1s, filter 0.15s; font-family: inherit;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-indigo { background: var(--indigo); color: #fff; }
+  .btn-indigo:hover { background: var(--indigo-dark); }
+  .btn-rust { background: var(--rust); color: #fff; }
+  .btn-rust:hover { background: var(--rust-dark); }
+  .btn-teal { background: var(--teal); color: #fff; }
+  .btn-teal:hover { background: var(--teal-dark); }
+  .btn-ghost { background: #fff; color: var(--ink); border: 1.5px solid var(--indigo); }
+  .btn-ghost:hover { background: #f6f3ee; }
+
+  /* ---------- HOME ---------- */
+  .home-hero { text-align: center; margin-bottom: 26px; }
+  .home-hero h2 { font-size: 40px; margin: 0 0 8px; }
+  .home-hero p { color: var(--muted); font-size: 18px; margin: 0; }
+  .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 640px) { .mode-grid { grid-template-columns: 1fr; } }
+  .mode-cta {
+    text-align: left; background: var(--card-bg); border: 1px solid var(--line); border-radius: 16px;
+    padding: 20px; cursor: pointer; display: flex; gap: 16px; align-items: flex-start;
+    transition: transform 0.12s, box-shadow 0.15s; font-family: inherit;
+  }
+  .mode-cta:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+  .mode-cta .emoji { font-size: 34px; line-height: 1; }
+  .mode-cta h3 { margin: 0 0 4px; font-size: 19px; }
+  .mode-cta p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.4; }
+
+  /* ---------- DIGIT DROP ---------- */
+  .equation { font-size: 46px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin: 10px 0 6px; }
+  .place-boxes { display: flex; gap: 12px; }
+  .place-box { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .place-label { font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+  .place-label.ones { color: var(--rust); }
+  .place-label.tens { color: var(--teal); }
+  .place-label.hundreds { color: var(--indigo); }
+  .digit-slot {
+    width: 78px; height: 88px; border-radius: 14px; border: 2.5px dashed var(--indigo);
+    background: #EDE7DD; display: flex; align-items: center; justify-content: center;
+    font-size: 44px; font-weight: 700; color: var(--ink); cursor: pointer;
+  }
+  .digit-slot.filled { border-style: solid; background: #fff; }
+  .card-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 24px 0; }
+  .num-card {
+    width: 62px; height: 78px; border-radius: 12px; border: 2px solid #CFC7E4; background: #fff;
+    color: var(--indigo); font-size: 30px; font-weight: 700; cursor: pointer; transition: all 0.12s;
+    font-family: inherit;
+  }
+  .num-card:hover { border-color: var(--indigo); transform: translateY(-2px); }
+  .num-card:active { background: #EEEAF7; }
+  .action-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 8px 0 6px; }
+
+  .hint-box { border: 2px dashed var(--rust); background: #FBF1E7; border-radius: 14px; padding: 20px; margin-top: 22px; }
+  .hint-box .legend { text-align: center; font-size: 15px; margin: 0 0 16px; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin: 0 2px; }
+  .blocks { display: flex; gap: 30px; justify-content: center; align-items: flex-end; margin-bottom: 6px; flex-wrap: wrap; }
+  .block-group { text-align: center; }
+  .block-stack { display: flex; gap: 8px; justify-content: center; align-items: flex-end; min-height: 90px; }
+  .rod { width: 16px; height: 84px; background: var(--teal); border-radius: 3px; display: grid; grid-template-rows: repeat(10, 1fr); }
+  .rod span { border-bottom: 1px solid rgba(255,255,255,0.5); }
+  .flat { width: 76px; height: 76px; background: var(--indigo); border-radius: 4px;
+    background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 7.6px 7.6px; }
+  .cube { width: 15px; height: 15px; background: var(--rust); border-radius: 3px; }
+  .cube-wrap { display: flex; gap: 6px; flex-wrap: wrap; max-width: 120px; justify-content: center; }
+  .block-label { font-size: 14px; font-weight: 700; margin-top: 8px; }
+  .block-label.tens { color: var(--teal); }
+  .block-label.ones { color: var(--rust); }
+  .block-label.hundreds { color: var(--indigo); }
+  .add-note { text-align: center; margin: 14px 0 10px; font-weight: 600; }
+  .add-cards { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .add-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; min-width: 150px; }
+  .add-card .head { font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+  .add-card .body { font-size: 24px; font-weight: 700; }
+  .add-card .vert { text-align: right; line-height: 1.15; }
+
+  /* ---------- TOAST ---------- */
+  #toast {
+    position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: #fff; padding: 14px 26px; border-radius: 999px; font-weight: 700;
+    font-size: 16px; opacity: 0; pointer-events: none; transition: all 0.25s; z-index: 100;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.good { background: var(--teal); }
+  #toast.bad { background: var(--rust); }
+
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+  .shake { animation: shake 0.3s; }
+  @keyframes pop { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+  .pop { animation: pop 0.25s; }
+
+  /* ---------- MODAL (settings) ---------- */
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; }
+  .modal.show { display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+  .modal-card { background: #fff; border-radius: 16px; padding: 26px; width: 100%; max-width: 460px; }
+  .modal-card h2 { margin: 0 0 18px; font-size: 22px; display: flex; align-items: center; gap: 8px; }
+  .field { margin-bottom: 18px; }
+  .field > label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px; }
+  .table-toggle { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .tchip { padding: 10px 0; text-align: center; border-radius: 10px; border: 1.5px solid var(--line);
+    background: #fff; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 15px; }
+  .tchip.on { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+  select, input[type=text], input[type=number] {
+    width: 100%; padding: 11px 13px; border: 1.5px solid var(--line); border-radius: 10px;
+    font-size: 16px; font-family: inherit; background: #fff; color: var(--ink);
+  }
+  .seg { display: flex; gap: 8px; }
+  .seg button { flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid var(--line);
+    background: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .seg button.on { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+</style>
+
+<header>
+  <div class="brand" onclick="go('home')">
+    <span class="x">✖️</span>
+    <h1 class="serif">Multiplication Quest</h1>
+  </div>
+  <div class="header-right">
+    <div class="star-pill" title="Stars earned"><span>⭐</span><span id="starCount">0</span></div>
+    <button class="gear" onclick="openSettings()" title="Settings">⚙️</button>
+  </div>
+</header>
+
+<nav id="nav"></nav>
+
+<main id="app"></main>
+
+<div id="toast"></div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal" id="settingsModal">
+  <div class="modal-card">
+    <h2>⚙️ Settings</h2>
+    <div class="field">
+      <label>Which times tables?</label>
+      <div class="table-toggle" id="tableToggle"></div>
+    </div>
+    <div class="field">
+      <label>Highest factor</label>
+      <select id="maxFactorSel">
+        <option value="5">up to 5</option>
+        <option value="10">up to 10</option>
+        <option value="12" selected>up to 12</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Difficulty</label>
+      <div class="seg" id="difficultySeg">
+        <button data-d="easy" class="on">Easy</button>
+        <button data-d="medium">Medium</button>
+        <button data-d="hard">Hard</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeSettings()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   Multiplication Quest — self-contained, offline, no dependencies.
+   Problems are generated algorithmically (original by construction).
+   ========================================================================= */
+
+// ---------- Persistent state ----------
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('mq_' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('mq_' + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+const state = {
+  stars: store.get('stars', 0),
+  best: store.get('best', 0),
+  settings: store.get('settings', { tables: [2, 3, 4, 5], maxFactor: 12, difficulty: 'easy' })
+};
+
+// ---------- Seeded RNG (mulberry32) for reproducible worksheets ----------
+function makeRng(seed) {
+  let s = seed >>> 0;
+  return function () {
+    s |= 0; s = (s + 0x6D2B79F5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function randSeed() { return Math.floor(Math.random() * 0xFFFFFFFF); }
+
+// ---------- Problem engine ----------
+function pick(arr, rng) { return arr[Math.floor((rng ? rng() : Math.random()) * arr.length)]; }
+
+function newFact(rng) {
+  const tables = state.settings.tables.length ? state.settings.tables : [2, 3, 4, 5];
+  const a = pick(tables, rng);
+  const max = state.settings.maxFactor;
+  const b = 1 + Math.floor((rng ? rng() : Math.random()) * max);
+  return { a, b, product: a * b };
+}
+
+// 4 unique answer choices including the correct product.
+function choicesFor(product, rng) {
+  const set = new Set([product]);
+  let guard = 0;
+  while (set.size < 4 && guard++ < 50) {
+    const delta = (Math.floor((rng ? rng() : Math.random()) * 5) + 1) * (Math.random() < 0.5 ? -1 : 1);
+    const cand = product + delta * (Math.random() < 0.4 ? pick([1, 2, 10], rng) : 1);
+    if (cand > 0 && cand !== product) set.add(cand);
+  }
+  while (set.size < 4) set.add(product + set.size);
+  const out = [...set];
+  // shuffle
+  for (let i = out.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; }
+  return out;
+}
+
+// ---------- Screen-scoped timers (cancelled on navigation) ----------
+let screenTimers = [];
+function later(fn, ms) { const id = setTimeout(fn, ms); screenTimers.push(id); return id; }
+function clearScreenTimers() { screenTimers.forEach(clearTimeout); screenTimers = []; }
+
+// ---------- Toast (global timer, separate from screen timers) ----------
+let toastTimer = null;
+function toast(msg, kind) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + (kind || '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = ''; }, 1600);
+}
+
+// ---------- Stars ----------
+function addStar(n) {
+  state.stars += (n || 1);
+  store.set('stars', state.stars);
+  document.getElementById('starCount').textContent = state.stars;
+}
+
+// ---------- Router ----------
+const MODES = [
+  { id: 'home', label: 'Home', ico: '🏠' },
+  { id: 'digit-drop', label: 'Digit Drop', ico: '🃏' },
+  { id: 'mystery-factor', label: 'Mystery Factor', ico: '🔍' },
+  { id: 'speed-run', label: 'Speed Run', ico: '⚡' },
+  { id: 'array-builder', label: 'Array Builder', ico: '🔢' },
+  { id: 'worksheet', label: 'Worksheet Maker', ico: '🖨️' },
+  { id: 'progress', label: 'My Progress', ico: '📊' }
+];
+
+function go(id) { location.hash = '#' + id; }
+
+function renderNav(active) {
+  document.getElementById('nav').innerHTML = MODES.map(m =>
+    `<button class="tab ${m.id === active ? 'active' : ''}" onclick="go('${m.id}')">
+       <span class="ico">${m.ico}</span>${m.label}</button>`).join('');
+}
+
+function setTheme(mode) {
+  document.body.setAttribute('data-theme', mode === 'array-builder' ? 'array' : 'cream');
+}
+
+function boot() {
+  clearScreenTimers();
+  const raw = (location.hash || '#home').slice(1);
+  const id = raw.split('?')[0] || 'home';
+  const known = MODES.find(m => m.id === id) ? id : 'home';
+  renderNav(known);
+  setTheme(known);
+  const app = document.getElementById('app');
+  const screen = SCREENS[known] || SCREENS.home;
+  screen(app);
+}
+
+window.addEventListener('hashchange', boot);
+
+// ---------- Settings modal ----------
+function openSettings() {
+  const tt = document.getElementById('tableToggle');
+  tt.innerHTML = '';
+  for (let n = 1; n <= 12; n++) {
+    const on = state.settings.tables.includes(n);
+    const b = document.createElement('button');
+    b.className = 'tchip' + (on ? ' on' : '');
+    b.textContent = n;
+    b.onclick = () => {
+      const i = state.settings.tables.indexOf(n);
+      if (i >= 0) state.settings.tables.splice(i, 1); else state.settings.tables.push(n);
+      state.settings.tables.sort((a, b) => a - b);
+      b.classList.toggle('on');
+      store.set('settings', state.settings);
+    };
+    tt.appendChild(b);
+  }
+  document.getElementById('maxFactorSel').value = String(state.settings.maxFactor);
+  document.querySelectorAll('#difficultySeg button').forEach(btn =>
+    btn.classList.toggle('on', btn.dataset.d === state.settings.difficulty));
+  document.getElementById('settingsModal').classList.add('show');
+}
+function closeSettings() {
+  document.getElementById('settingsModal').classList.remove('show');
+  // re-render current screen so new settings take effect
+  boot();
+}
+document.getElementById('maxFactorSel').onchange = e => { state.settings.maxFactor = +e.target.value; store.set('settings', state.settings); };
+document.querySelectorAll('#difficultySeg button').forEach(btn => btn.onclick = () => {
+  state.settings.difficulty = btn.dataset.d; store.set('settings', state.settings);
+  document.querySelectorAll('#difficultySeg button').forEach(b => b.classList.toggle('on', b === btn));
+});
+document.getElementById('settingsModal').onclick = e => {
+  if (e.target.id === 'settingsModal') closeSettings();
+};
+
+// ========================================================================
+//  SCREENS
+// ========================================================================
+const SCREENS = {};
+
+// ---------- HOME ----------
+SCREENS.home = function (app) {
+  const cards = MODES.filter(m => m.id !== 'home').map(m => {
+    const blurb = {
+      'digit-drop': 'Tap number cards to build the product, place value by place value.',
+      'mystery-factor': 'A number is missing — figure out the hidden factor.',
+      'speed-run': 'Race the clock for 60 seconds. Build streaks for bonus stars!',
+      'array-builder': 'See multiplication as rows and columns of dots. Count or build it.',
+      'worksheet': 'Make a printable practice sheet with an answer key and a share link.',
+      'progress': 'See your stars and personal best.'
+    }[m.id];
+    return `<button class="mode-cta" onclick="go('${m.id}')">
+        <span class="emoji">${m.ico}</span>
+        <span><h3 class="serif">${m.label}</h3><p>${blurb}</p></span>
+      </button>`;
+  }).join('');
+  app.innerHTML = `
+    <div class="home-hero">
+      <h2 class="serif">Pick a way to play ✖️</h2>
+      <p>Four games and a worksheet maker — practice your times tables your way.</p>
+    </div>
+    <div class="mode-grid">${cards}</div>`;
+};
+
+// ---------- DIGIT DROP ----------
+SCREENS['digit-drop'] = function (app) {
+  let fact, digits, entered, hintOpen = true;
+
+  function fresh() {
+    fact = newFact();
+    digits = String(fact.product).split('').map(Number);
+    entered = digits.map(() => null);
+    draw();
+  }
+
+  function placeLabel(idx, len) {
+    const fromRight = len - 1 - idx;
+    return ['ones', 'tens', 'hundreds'][fromRight] || 'thousands';
+  }
+
+  function draw() {
+    const len = digits.length;
+    const boxes = entered.map((d, i) => {
+      const pl = placeLabel(i, len);
+      return `<div class="place-box">
+          <span class="place-label ${pl}">${pl}</span>
+          <div class="digit-slot ${d !== null ? 'filled' : ''}" onclick="DD.clearSlot(${i})">${d !== null ? d : ''}</div>
+        </div>`;
+    }).join('');
+
+    const cards = [0,1,2,3,4,5,6,7,8,9].map(n =>
+      `<button class="num-card" onclick="DD.tap(${n})">${n}</button>`).join('');
+
+    app.innerHTML = `
+    <div class="card center">
+      <h2 class="mode-title serif">🃏 Digit Drop</h2>
+      <p class="mode-sub">Tap number cards to fill the answer boxes. Tap a box to clear it.</p>
+      <div class="equation serif">
+        <span>${fact.a} × ${fact.b} =</span>
+        <div class="place-boxes">${boxes}</div>
+      </div>
+      <div class="card-row">${cards}</div>
+      <div class="action-row">
+        <button class="btn btn-indigo" onclick="DD.check()">Check ✓</button>
+        <button class="btn btn-rust" onclick="DD.toggleHint()">🔁 Show the hint again</button>
+        <button class="btn btn-ghost" onclick="DD.fresh()">New problem</button>
+      </div>
+      <div id="hintMount"></div>
+    </div>`;
+    if (hintOpen) mountHint();
+  }
+
+  function mountHint() {
+    const p = fact.product;
+    const hundreds = Math.floor(p / 100);
+    const tens = Math.floor((p % 100) / 10);
+    const ones = p % 10;
+
+    let groups = '';
+    if (hundreds) {
+      const flats = Array.from({ length: hundreds }, () => `<div class="flat"></div>`).join('');
+      groups += `<div class="block-group"><div class="block-stack">${flats}</div>
+        <div class="block-label hundreds">${hundreds} hundred${hundreds>1?'s':''} = ${hundreds*100}</div></div>`;
+    }
+    if (tens) {
+      const rods = Array.from({ length: tens }, () =>
+        `<div class="rod">${'<span></span>'.repeat(10)}</div>`).join('');
+      groups += `<div class="block-group"><div class="block-stack">${rods}</div>
+        <div class="block-label tens">${tens} ten${tens>1?'s':''} = ${tens*10}</div></div>`;
+    }
+    if (ones || (!hundreds && !tens)) {
+      const cubes = Array.from({ length: ones }, () => `<div class="cube"></div>`).join('');
+      groups += `<div class="block-group"><div class="block-stack"><div class="cube-wrap">${cubes}</div></div>
+        <div class="block-label ones">${ones} one${ones!==1?'s':''} = ${ones}</div></div>`;
+    }
+
+    const parts = [];
+    if (hundreds) parts.push(hundreds * 100);
+    if (tens) parts.push(tens * 10);
+    parts.push(ones);
+    const across = parts.join(' + ') + ' = ?';
+    const vert = parts.map((x, i) => (i === parts.length - 1 ? '+ ' + x : x)).join('<br>');
+
+    document.getElementById('hintMount').innerHTML = `
+      <div class="hint-box pop">
+        <p class="legend">The answer as base-ten blocks —
+          <span class="swatch" style="background:var(--indigo)"></span> flat = 100,
+          <span class="swatch" style="background:var(--teal)"></span> rod = 10,
+          <span class="swatch" style="background:var(--rust)"></span> cube = 1:</p>
+        <div class="blocks">${groups}</div>
+        <p class="add-note">👉 Add the places to get the number — it's the same both ways:</p>
+        <div class="add-cards">
+          <div class="add-card"><div class="head">↔️ Going across</div><div class="body">${across}</div></div>
+          <div class="add-card"><div class="head">⬇️ Going down</div><div class="body vert">${vert}<hr style="border:none;border-top:2px solid var(--ink);margin:4px 0"></div></div>
+        </div>
+      </div>`;
+  }
+
+  window.DD = {
+    fresh,
+    tap(n) {
+      const i = entered.indexOf(null);
+      if (i === -1) { toast('All boxes are full — tap a box to clear it.'); return; }
+      entered[i] = n; draw();
+    },
+    clearSlot(i) { if (entered[i] !== null) { entered[i] = null; draw(); } },
+    check() {
+      if (entered.includes(null)) { toast('Fill every box first!'); return; }
+      const guess = +entered.join('');
+      if (guess === fact.product) {
+        addStar(1);
+        toast('🎉 Correct! ' + fact.a + ' × ' + fact.b + ' = ' + fact.product, 'good');
+        later(fresh, 1100);
+      } else {
+        toast('Not yet — try again!', 'bad');
+        document.querySelector('.place-boxes').classList.add('shake');
+        later(() => { const el = document.querySelector('.place-boxes'); if (el) el.classList.remove('shake'); }, 350);
+      }
+    },
+    toggleHint() { hintOpen = !hintOpen; if (hintOpen) mountHint(); else document.getElementById('hintMount').innerHTML = ''; }
+  };
+
+  fresh();
+};
+
+// Placeholder screens (built in later commits)
+['mystery-factor','speed-run','array-builder','worksheet','progress'].forEach(id => {
+  SCREENS[id] = function (app) {
+    app.innerHTML = `<div class="card center"><h2 class="mode-title serif">Coming up next</h2>
+      <p class="mode-sub">This mode is being built.</p></div>`;
+  };
+});
+
+// ---------- Init ----------
+document.getElementById('starCount').textContent = state.stars;
+boot();
+</script>
+</body>
+</html>
