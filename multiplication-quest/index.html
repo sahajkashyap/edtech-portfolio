@@ -541,12 +541,13 @@ SCREENS.home = function (app) {
 
 // ---------- DIGIT DROP ----------
 SCREENS['digit-drop'] = function (app) {
-  let fact, digits, entered, hintOpen = true;
+  let fact, digits, entered, hintOpen = false;
 
   function fresh() {
     fact = newFact();
     digits = String(fact.product).split('').map(Number);
     entered = digits.map(() => null);
+    hintOpen = false; // hide the hint on every new problem; user must click to reveal
     draw();
   }
 
