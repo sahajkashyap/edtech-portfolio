@@ -1,0 +1,630 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scent Match — Cologne Recommendation Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body style="margin: 0; padding: 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: transparent;">
+
+<style>
+  :root {
+    --color-text-primary: #2c3e50;
+    --color-text-secondary: #7f8c8d;
+    --color-background-primary: #FBF9F7;
+    --color-background-secondary: #F3EFE7;
+    --color-border-primary: #378ADD;
+    --color-border-secondary: #D4C5B9;
+    --color-border-tertiary: #E8DDD4;
+    --tier-prestige: #9B6B2F;
+    --tier-mid: #378ADD;
+    --tier-budget: #639922;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 1.5rem; background: #E8D4C4; }
+  .container { max-width: 1400px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.25rem; }
+  .header h1 { margin: 0; font-size: 26px; font-weight: 700; color: var(--color-text-primary); letter-spacing: -0.3px; }
+  .header p { margin: 8px 0 0 0; font-size: 15px; color: var(--color-text-secondary); max-width: 720px; line-height: 1.5; }
+
+  .search-box { padding: 1.5rem; background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); margin-bottom: 1.25rem; }
+  label { font-size: 13px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.75rem; }
+
+  .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  #scentInput {
+    flex: 1; min-width: 240px; padding: 13px 15px;
+    border: 1px solid #A0D4E8; border-radius: 8px;
+    font-size: 15px; font-family: inherit; background: #E3F2FD; color: var(--color-text-primary);
+  }
+  #scentInput:focus { outline: none; border-color: #378ADD; }
+
+  .btn { padding: 12px 20px; font-size: 14px; font-weight: 600; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .btn:hover { background: var(--color-background-primary); }
+  .btn-primary { background: #378ADD; border-color: #378ADD; color: white; }
+  .btn-primary:hover { background: #2966bb; }
+
+  .helper { font-size: 12.5px; color: var(--color-text-secondary); margin-top: 10px; line-height: 1.5; }
+
+  .popular { margin-top: 14px; }
+  .popular-label { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { padding: 6px 12px; font-size: 12.5px; font-weight: 500; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 20px; cursor: pointer; color: var(--color-text-primary); transition: 0.15s; }
+  .chip:hover { border-color: var(--color-border-primary); background: #E3F2FD; }
+
+  .tightness { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .tightness .seg { display: inline-flex; border: 0.5px solid var(--color-border-secondary); border-radius: 8px; overflow: hidden; }
+  .tightness .seg button { padding: 8px 14px; font-size: 12.5px; font-weight: 600; border: none; background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; }
+  .tightness .seg button.active { background: #378ADD; color: white; }
+
+  /* Anchor card */
+  .anchor { padding: 1.25rem 1.5rem; background: var(--color-background-primary); border-radius: 12px; border: 1px solid var(--color-border-secondary); margin-bottom: 1.25rem; display: none; }
+  .anchor.show { display: block; }
+  .anchor-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+  .anchor-name { font-size: 20px; font-weight: 700; color: var(--color-text-primary); margin: 0; }
+  .anchor-brand { font-size: 13px; color: var(--color-text-secondary); font-weight: 500; }
+  .anchor-meta { font-size: 12.5px; color: var(--color-text-secondary); margin-top: 4px; }
+  .notes-line { margin-top: 12px; font-size: 13px; color: var(--color-text-primary); line-height: 1.6; }
+  .notes-line b { color: var(--color-text-secondary); font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+
+  .accord-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .accord { padding: 4px 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; color: #fff; text-transform: capitalize; }
+
+  /* Results */
+  .results { display: none; }
+  .results.show { display: block; }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  @media (max-width: 900px) { .tiers { grid-template-columns: 1fr; } }
+
+  .tier { background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); overflow: hidden; }
+  .tier-head { padding: 14px 16px; color: #fff; }
+  .tier-head h3 { margin: 0; font-size: 16px; font-weight: 700; }
+  .tier-head .sub { font-size: 11.5px; opacity: 0.92; margin-top: 2px; }
+  .tier.prestige .tier-head { background: var(--tier-prestige); }
+  .tier.mid .tier-head { background: var(--tier-mid); }
+  .tier.budget .tier-head { background: var(--tier-budget); }
+  .tier-body { padding: 12px; display: grid; gap: 12px; }
+
+  .rec { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 10px; padding: 13px 14px; }
+  .rec-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .rec-name { font-size: 15px; font-weight: 700; color: var(--color-text-primary); margin: 0; }
+  .rec-brand { font-size: 12px; color: var(--color-text-secondary); }
+  .rec-price { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .tier.prestige .rec-price { color: var(--tier-prestige); }
+  .tier.mid .rec-price { color: var(--tier-mid); }
+  .tier.budget .rec-price { color: var(--tier-budget); }
+
+  .affinity { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11.5px; color: var(--color-text-secondary); }
+  .dots { letter-spacing: 1px; font-size: 13px; }
+  .tier.prestige .dots { color: var(--tier-prestige); }
+  .tier.mid .dots { color: var(--tier-mid); }
+  .tier.budget .dots { color: var(--tier-budget); }
+
+  .shared { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+  .shared .accord { font-size: 10.5px; padding: 3px 8px; }
+
+  .inspired { display: inline-block; margin-top: 9px; font-size: 11px; font-weight: 600; color: #8a5a1c; background: #F7ECD9; border: 0.5px solid #E5D2B0; border-radius: 6px; padding: 3px 8px; }
+
+  .empty-tier { font-size: 12.5px; color: var(--color-text-secondary); font-style: italic; padding: 6px 2px; line-height: 1.5; }
+
+  .no-match { display: none; padding: 1.5rem; background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); font-size: 14px; line-height: 1.6; }
+  .no-match.show { display: block; }
+  .no-match b { color: var(--color-text-primary); }
+
+  .actions { margin-top: 1.25rem; display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .disclaimer { margin-top: 1.5rem; font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; border-top: 0.5px solid var(--color-border-secondary); padding-top: 1rem; }
+  .disclaimer b { color: var(--color-text-primary); }
+</style>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Scent Match</h1>
+    <p>Some people want something new; some want the comfort of the familiar. Tell it a cologne you already love, and it finds fragrances with a similar scent profile &mdash; at three price tiers, so a scent you can't afford has a mid-range cousin and an affordable clone that smell like the same DNA.</p>
+  </div>
+
+  <div class="search-box">
+    <label for="scentInput">What do you wear? (type a cologne or perfume)</label>
+    <div class="search-row">
+      <input list="scentList" id="scentInput" placeholder="e.g. Armani Code, Dior Sauvage, Baccarat Rouge 540..." autocomplete="off">
+      <datalist id="scentList"></datalist>
+      <button class="btn btn-primary" onclick="runMatch()">Find similar scents</button>
+    </div>
+    <div class="helper">Tip: start typing and pick from the list so it matches exactly. Not sure of the name? The text printed on the bottle usually works.</div>
+
+    <div class="tightness">
+      <span class="popular-label" style="margin:0;">How close?</span>
+      <div class="seg">
+        <button id="modeClose" class="active" onclick="setMode('close')">Very close</button>
+        <button id="modeExplore" onclick="setMode('explore')">Explore &amp; wander</button>
+      </div>
+    </div>
+
+    <div class="popular">
+      <div class="popular-label">Popular starting points</div>
+      <div class="chip-row" id="popularChips"></div>
+    </div>
+  </div>
+
+  <div class="anchor" id="anchorCard"></div>
+
+  <div class="no-match" id="noMatch"></div>
+
+  <div class="results" id="results">
+    <div class="tiers">
+      <div class="tier prestige">
+        <div class="tier-head"><h3>Prestige</h3><div class="sub">The high-end equivalent</div></div>
+        <div class="tier-body" id="tier-prestige"></div>
+      </div>
+      <div class="tier mid">
+        <div class="tier-head"><h3>Mid-Range</h3><div class="sub">Accessible designer picks</div></div>
+        <div class="tier-body" id="tier-mid"></div>
+      </div>
+      <div class="tier budget">
+        <div class="tier-head"><h3>Budget &amp; Clones</h3><div class="sub">Same vibe, easy on the wallet</div></div>
+        <div class="tier-body" id="tier-budget"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="exportPDF()">Export as PDF</button>
+      <button class="btn" onclick="resetTool()">Start over</button>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <b>How this works:</b> matches are ranked by shared scent families (accords) and base notes &mdash; the parts of a fragrance that make two scents smell "related." <b>A note on clones:</b> budget picks labeled "inspired by" are widely regarded as taking cues from the pricier scent; they are separate products, not the same juice, and no house is claiming to be another. <b>Scent is personal</b> &mdash; skin chemistry changes everything, so always test before buying. Data is a curated snapshot; prices are rough US retail. Last updated <span id="lastUpdated">July 2026</span>.
+  </div>
+
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Curated fragrance library. Each entry: name, brand, year, gender (M/F/U),
+// tier (1 prestige, 2 mid, 3 budget/clone), price (approx US $), accords
+// (scent families that drive similarity), notes (top/heart/base), and an
+// optional inspiredBy (the pricier scent a budget clone is known to echo).
+// ---------------------------------------------------------------------------
+const FRAGRANCES = [
+  // ---- PRESTIGE / HIGH-END (tier 1) ----
+  { name:"Dior Sauvage EDP", brand:"Dior", year:2018, gender:"M", tier:1, price:110,
+    accords:["fresh-spicy","amber","aromatic","woody","citrus"],
+    notes:{top:["bergamot","pepper"],heart:["lavender","sichuan pepper","nutmeg"],base:["ambroxan","vanilla","cedar"]} },
+  { name:"Bleu de Chanel EDP", brand:"Chanel", year:2014, gender:"M", tier:1, price:120,
+    accords:["aromatic","woody","citrus","amber","incense"],
+    notes:{top:["grapefruit","lemon","mint","pink pepper"],heart:["ginger","nutmeg","jasmine"],base:["incense","sandalwood","cedar","amber"]} },
+  { name:"Acqua di Gio Profumo", brand:"Giorgio Armani", year:2015, gender:"M", tier:1, price:115,
+    accords:["aquatic","aromatic","incense","woody"],
+    notes:{top:["bergamot","sea notes"],heart:["geranium","sage","rosemary"],base:["incense","patchouli","amber"]} },
+  { name:"Armani Code", brand:"Giorgio Armani", year:2004, gender:"M", tier:1, price:95,
+    accords:["sweet","aromatic","tobacco","woody","citrus"],
+    notes:{top:["bergamot","lemon"],heart:["olive blossom","star anise"],base:["tonka","tobacco","leather","guaiac"]} },
+  { name:"Creed Aventus", brand:"Creed", year:2010, gender:"M", tier:1, price:370,
+    accords:["fruity","smoky","woody","fresh","musk"],
+    notes:{top:["pineapple","bergamot","blackcurrant","apple"],heart:["birch","patchouli","rose","jasmine"],base:["musk","oakmoss","ambergris","vanilla"]} },
+  { name:"Creed Green Irish Tweed", brand:"Creed", year:1985, gender:"M", tier:1, price:340,
+    accords:["green","fresh","floral","woody","aromatic"],
+    notes:{top:["lemon","verbena"],heart:["violet leaf","iris"],base:["sandalwood","ambergris"]} },
+  { name:"Creed Silver Mountain Water", brand:"Creed", year:1995, gender:"U", tier:1, price:340,
+    accords:["aquatic","fresh","fruity","musk","tea"],
+    notes:{top:["bergamot","mandarin"],heart:["green tea","blackcurrant"],base:["musk","sandalwood","petitgrain"]} },
+  { name:"Tom Ford Tobacco Vanille", brand:"Tom Ford", year:2007, gender:"U", tier:1, price:280,
+    accords:["tobacco","vanilla","sweet","spicy-warm","amber"],
+    notes:{top:["tobacco leaf","spices"],heart:["tonka","tobacco flower","vanilla"],base:["dried fruits","woody"]} },
+  { name:"Tom Ford Oud Wood", brand:"Tom Ford", year:2007, gender:"U", tier:1, price:260,
+    accords:["oud","woody","amber","spicy-warm","smoky"],
+    notes:{top:["rosewood","cardamom"],heart:["oud","sandalwood"],base:["vanilla","amber","tonka"]} },
+  { name:"Baccarat Rouge 540", brand:"MFK", year:2015, gender:"U", tier:1, price:325,
+    accords:["amber","sweet","saffron","floral","woody"],
+    notes:{top:["saffron","jasmine"],heart:["amberwood","ambergris"],base:["fir resin","cedar"]} },
+  { name:"Dior Homme Intense", brand:"Dior", year:2011, gender:"M", tier:1, price:120,
+    accords:["iris","powdery","sweet","woody","floral"],
+    notes:{top:["lavender"],heart:["iris","ambrette","pear"],base:["vetiver","cedar","cacao"]} },
+  { name:"Prada L'Homme", brand:"Prada", year:2016, gender:"M", tier:1, price:100,
+    accords:["iris","powdery","floral","aromatic","musk"],
+    notes:{top:["neroli","black pepper","cardamom"],heart:["iris","geranium","mate"],base:["amber","patchouli","cedar","sandalwood"]} },
+  { name:"Chanel Allure Homme Sport", brand:"Chanel", year:2004, gender:"M", tier:1, price:100,
+    accords:["citrus","aquatic","aromatic","amber","woody"],
+    notes:{top:["orange","aldehydes","sea notes"],heart:["pepper","neroli","cedar"],base:["tonka","vanilla","white musk"]} },
+  { name:"Viktor&Rolf Spicebomb", brand:"Viktor&Rolf", year:2012, gender:"M", tier:1, price:95,
+    accords:["spicy-warm","leather","tobacco","aromatic","amber"],
+    notes:{top:["pink pepper","grapefruit","bergamot"],heart:["cinnamon","saffron","paprika"],base:["tobacco","leather","vetiver"]} },
+  { name:"Dior Sauvage Elixir", brand:"Dior", year:2021, gender:"M", tier:1, price:150,
+    accords:["spicy-warm","sweet","woody","amber","aromatic"],
+    notes:{top:["cinnamon","nutmeg","cardamom","grapefruit"],heart:["lavender"],base:["licorice","amber","sandalwood","patchouli"]} },
+  { name:"Parfums de Marly Layton", brand:"Parfums de Marly", year:2016, gender:"M", tier:1, price:300,
+    accords:["sweet","spicy-warm","aromatic","vanilla","fruity"],
+    notes:{top:["apple","bergamot","lavender"],heart:["geranium","violet","pepper"],base:["vanilla","cardamom","guaiac","sandalwood"]} },
+  { name:"Parfums de Marly Herod", brand:"Parfums de Marly", year:2012, gender:"M", tier:1, price:300,
+    accords:["tobacco","spicy-warm","sweet","vanilla","woody"],
+    notes:{top:["cinnamon","pepper"],heart:["tobacco leaf","incense","osmanthus"],base:["vanilla","vetiver","cedar"]} },
+  { name:"Initio Oud for Greatness", brand:"Initio", year:2018, gender:"U", tier:1, price:320,
+    accords:["oud","saffron","spicy-warm","woody","amber"],
+    notes:{top:["saffron","nutmeg"],heart:["oud","lavender"],base:["patchouli","musk","sandalwood"]} },
+  { name:"MM Replica Jazz Club", brand:"Maison Margiela", year:2013, gender:"M", tier:1, price:140,
+    accords:["tobacco","sweet","spicy-warm","boozy","vanilla"],
+    notes:{top:["pink pepper","lemon","neroli"],heart:["rum","clary sage","tobacco"],base:["vanilla","styrax","vetiver"]} },
+  { name:"MM Replica By the Fireplace", brand:"Maison Margiela", year:2015, gender:"U", tier:1, price:140,
+    accords:["smoky","sweet","woody","vanilla","spicy-warm"],
+    notes:{top:["clove","pink pepper","orange"],heart:["chestnut","guaiac","cashmeran"],base:["vanilla","cade oil","peru balsam"]} },
+  { name:"Xerjoff Naxos", brand:"Xerjoff", year:2015, gender:"M", tier:1, price:290,
+    accords:["tobacco","sweet","honey","aromatic","vanilla"],
+    notes:{top:["bergamot","lavender","lemon"],heart:["honey","cinnamon","tobacco"],base:["vanilla","tonka","styrax"]} },
+  { name:"Dior Homme (2020)", brand:"Dior", year:2020, gender:"M", tier:1, price:110,
+    accords:["iris","powdery","woody","floral","citrus"],
+    notes:{top:["bergamot","pink pepper"],heart:["iris","cashmere wood","cardamom"],base:["vetiver","patchouli"]} },
+
+  // ---- MID-RANGE (tier 2) ----
+  { name:"Versace Eros", brand:"Versace", year:2012, gender:"M", tier:2, price:70,
+    accords:["sweet","aromatic","fresh","vanilla","woody"],
+    notes:{top:["mint","apple","lemon"],heart:["tonka","geranium","ambroxan"],base:["vanilla","cedar","vetiver","oakmoss"]} },
+  { name:"Versace Dylan Blue", brand:"Versace", year:2016, gender:"M", tier:2, price:60,
+    accords:["aquatic","aromatic","fresh-spicy","woody","amber"],
+    notes:{top:["bergamot","grapefruit","water notes"],heart:["black pepper","violet leaf","papyrus"],base:["incense","musk","tonka","saffron"]} },
+  { name:"Paco Rabanne 1 Million", brand:"Paco Rabanne", year:2008, gender:"M", tier:2, price:85,
+    accords:["spicy-warm","leather","sweet","amber","citrus"],
+    notes:{top:["grapefruit","mint","blood mandarin"],heart:["rose","cinnamon","spice"],base:["leather","amber","patchouli"]} },
+  { name:"Jean Paul Gaultier Le Male", brand:"Jean Paul Gaultier", year:1995, gender:"M", tier:2, price:80,
+    accords:["fougere","sweet","vanilla","aromatic","powdery"],
+    notes:{top:["mint","lavender","bergamot"],heart:["cinnamon","cumin","orange blossom"],base:["vanilla","tonka","sandalwood"]} },
+  { name:"Jean Paul Gaultier Ultra Male", brand:"Jean Paul Gaultier", year:2015, gender:"M", tier:2, price:95,
+    accords:["sweet","fruity","boozy","aromatic","vanilla"],
+    notes:{top:["pear","bergamot","mint"],heart:["lavender","blackcurrant","cinnamon"],base:["vanilla","amber","patchouli"]} },
+  { name:"YSL La Nuit de L'Homme", brand:"YSL", year:2009, gender:"M", tier:2, price:90,
+    accords:["spicy-warm","aromatic","sweet","woody","powdery"],
+    notes:{top:["cardamom","bergamot"],heart:["lavender","cedar","cumin"],base:["vetiver","caraway","tonka"]} },
+  { name:"YSL Y EDP", brand:"YSL", year:2018, gender:"M", tier:2, price:90,
+    accords:["aromatic","sweet","fresh-spicy","woody","fruity"],
+    notes:{top:["bergamot","apple","ginger"],heart:["sage","geranium","juniper"],base:["amberwood","tonka","cedar"]} },
+  { name:"Montblanc Legend", brand:"Montblanc", year:2011, gender:"M", tier:2, price:45,
+    accords:["fougere","aromatic","fresh","woody","fruity"],
+    notes:{top:["lavender","bergamot","pineapple"],heart:["oakmoss","geranium","apple","rose"],base:["sandalwood","tonka"]} },
+  { name:"Montblanc Explorer", brand:"Montblanc", year:2019, gender:"M", tier:2, price:50,
+    accords:["fruity","woody","smoky","fresh","musk"],
+    notes:{top:["bergamot","pink pepper","clary sage"],heart:["leather","vetiver"],base:["patchouli","ambergris"]}, inspiredBy:"Creed Aventus" },
+  { name:"Dolce & Gabbana Light Blue PH", brand:"Dolce & Gabbana", year:2007, gender:"M", tier:2, price:70,
+    accords:["citrus","aquatic","fresh","woody"],
+    notes:{top:["grapefruit","bergamot","mandarin"],heart:["pepper","rosewood","juniper"],base:["musk","incense","oakmoss"]} },
+  { name:"Acqua di Gio", brand:"Giorgio Armani", year:1996, gender:"M", tier:2, price:75,
+    accords:["aquatic","citrus","fresh","aromatic"],
+    notes:{top:["bergamot","lime","neroli"],heart:["jasmine","rosemary","sea notes"],base:["white musk","cedar","patchouli"]} },
+  { name:"Prada Luna Rossa Carbon", brand:"Prada", year:2017, gender:"M", tier:2, price:85,
+    accords:["aromatic","fresh","metallic","woody","lavender"],
+    notes:{top:["bergamot","pink pepper"],heart:["lavender","coal","patchouli"],base:["ambroxan","metallic notes"]} },
+  { name:"Valentino Uomo Intense", brand:"Valentino", year:2014, gender:"M", tier:2, price:90,
+    accords:["sweet","gourmand","chocolate","iris","vanilla"],
+    notes:{top:["bergamot","myrtle"],heart:["iris","hazelnut","gianduja chocolate"],base:["leather","vanilla","tonka"]} },
+  { name:"Azzaro Wanted", brand:"Azzaro", year:2016, gender:"M", tier:2, price:70,
+    accords:["citrus","spicy-warm","woody","aromatic"],
+    notes:{top:["lemon","ginger","lavender"],heart:["cardamom","juniper","geranium"],base:["tonka","vetiver","amberwood"]} },
+  { name:"Hugo Boss Bottled", brand:"Hugo Boss", year:1998, gender:"M", tier:2, price:65,
+    accords:["fruity","spicy-warm","woody","aromatic"],
+    notes:{top:["apple","bergamot","lemon"],heart:["cinnamon","cloves","geranium"],base:["sandalwood","vanilla","cedar"]} },
+  { name:"Guerlain L'Homme Ideal", brand:"Guerlain", year:2014, gender:"M", tier:2, price:80,
+    accords:["almond","aromatic","citrus","woody","sweet"],
+    notes:{top:["bergamot","lemon"],heart:["almond","cherry","rose"],base:["tonka","leather","sandalwood"]} },
+  { name:"Bvlgari Aqva Pour Homme", brand:"Bvlgari", year:2005, gender:"M", tier:2, price:60,
+    accords:["aquatic","citrus","mineral","woody"],
+    notes:{top:["mandarin","petitgrain"],heart:["posidonia","seaweed","mineral notes"],base:["woody notes","clary sage"]} },
+  { name:"Versace Pour Homme", brand:"Versace", year:2008, gender:"M", tier:2, price:55,
+    accords:["citrus","aromatic","fresh","woody"],
+    notes:{top:["bergamot","neroli","lemon"],heart:["geranium","clary sage","cedar"],base:["musk","tonka","amber"]} },
+
+  // ---- BUDGET & CLONES (tier 3) ----
+  { name:"Armaf Club de Nuit Intense Man", brand:"Armaf", year:2015, gender:"M", tier:3, price:35,
+    accords:["fruity","smoky","woody","fresh","musk"],
+    notes:{top:["pineapple","lemon","blackcurrant","apple"],heart:["birch","jasmine","rose"],base:["musk","vanilla","ambergris","oakmoss"]}, inspiredBy:"Creed Aventus" },
+  { name:"Lattafa Asad", brand:"Lattafa", year:2021, gender:"M", tier:3, price:25,
+    accords:["fruity","smoky","sweet","woody","tobacco"],
+    notes:{top:["pineapple","blackcurrant","bergamot"],heart:["tobacco","patchouli"],base:["vanilla","oud","musk"]}, inspiredBy:"Creed Aventus" },
+  { name:"Al Haramain L'Aventure", brand:"Al Haramain", year:2015, gender:"M", tier:3, price:30,
+    accords:["fruity","smoky","woody","fresh","musk"],
+    notes:{top:["pineapple","apple","bergamot"],heart:["birch","jasmine"],base:["musk","oakmoss","vanilla"]}, inspiredBy:"Creed Aventus" },
+  { name:"Zara Vibrant Leather", brand:"Zara", year:2018, gender:"M", tier:3, price:26,
+    accords:["fresh-spicy","amber","leather","woody","citrus"],
+    notes:{top:["bergamot","pepper"],heart:["leather","lavender"],base:["ambroxan","cedar","amber"]}, inspiredBy:"Dior Sauvage EDP" },
+  { name:"Armaf Tres Nuit", brand:"Armaf", year:2015, gender:"M", tier:3, price:25,
+    accords:["aromatic","woody","citrus","amber","incense"],
+    notes:{top:["grapefruit","lemon","mint"],heart:["ginger","nutmeg","jasmine"],base:["incense","cedar","amber"]}, inspiredBy:"Bleu de Chanel EDP" },
+  { name:"Dossier Woody Aromatic", brand:"Dossier", year:2020, gender:"M", tier:3, price:29,
+    accords:["aromatic","woody","citrus","amber","incense"],
+    notes:{top:["grapefruit","lemon","mint","pink pepper"],heart:["ginger","nutmeg"],base:["incense","sandalwood","cedar"]}, inspiredBy:"Bleu de Chanel EDP" },
+  { name:"Lattafa Khamrah", brand:"Lattafa", year:2022, gender:"U", tier:3, price:30,
+    accords:["sweet","spicy-warm","amber","vanilla","gourmand"],
+    notes:{top:["cinnamon","nutmeg","bergamot"],heart:["dates","praline","mahogany"],base:["tonka","vanilla","amber","benzoin"]} },
+  { name:"Lattafa Khamrah Qahwa", brand:"Lattafa", year:2023, gender:"U", tier:3, price:35,
+    accords:["coffee","sweet","spicy-warm","gourmand","vanilla"],
+    notes:{top:["coffee","cardamom","cinnamon"],heart:["dates","praline"],base:["vanilla","tonka","amber"]} },
+  { name:"Armaf CDN Urban Man Elixir", brand:"Armaf", year:2021, gender:"M", tier:3, price:40,
+    accords:["amber","sweet","saffron","woody","fruity"],
+    notes:{top:["saffron","jasmine","bergamot"],heart:["amberwood","cedar"],base:["fir resin","ambergris","musk"]}, inspiredBy:"Baccarat Rouge 540" },
+  { name:"Lattafa Yara", brand:"Lattafa", year:2020, gender:"F", tier:3, price:25,
+    accords:["sweet","gourmand","floral","vanilla","fruity"],
+    notes:{top:["orchid","heliotrope"],heart:["tuberose","orange blossom"],base:["vanilla","sandalwood","musk"]} },
+  { name:"Bade'e Al Oud Amethyst", brand:"Lattafa", year:2022, gender:"U", tier:3, price:30,
+    accords:["oud","amber","sweet","saffron","woody"],
+    notes:{top:["saffron","nutmeg","raspberry"],heart:["oud","lavender","geranium"],base:["patchouli","musk","amber"]}, inspiredBy:"Initio Oud for Greatness" },
+  { name:"Nautica Voyage", brand:"Nautica", year:2006, gender:"M", tier:3, price:18,
+    accords:["aquatic","fresh","green","woody"],
+    notes:{top:["apple","water notes"],heart:["lotus","mimosa"],base:["cedar","musk","amber"]} },
+  { name:"Armaf Club de Nuit Sillage", brand:"Armaf", year:2019, gender:"U", tier:3, price:35,
+    accords:["aquatic","fresh","aromatic","woody","amber"],
+    notes:{top:["bergamot","lemon","black currant"],heart:["sea notes","jasmine"],base:["musk","amber","cedar"]}, inspiredBy:"Silver Mountain Water" },
+  { name:"Lattafa Fakhar Black", brand:"Lattafa", year:2022, gender:"M", tier:3, price:25,
+    accords:["aromatic","citrus","sweet","powdery","woody"],
+    notes:{top:["bergamot","apple","ginger"],heart:["sage","geranium"],base:["amberwood","tonka","cedar"]}, inspiredBy:"YSL Y EDP" },
+  { name:"Armaf Ventana", brand:"Armaf", year:2018, gender:"M", tier:3, price:22,
+    accords:["sweet","fruity","aromatic","vanilla","woody"],
+    notes:{top:["pear","bergamot","mint"],heart:["lavender","cinnamon"],base:["vanilla","amber","patchouli"]}, inspiredBy:"Ultra Male" },
+  { name:"Lattafa Ana Abiyedh Rouge", brand:"Lattafa", year:2019, gender:"U", tier:3, price:22,
+    accords:["aromatic","sweet","citrus","powdery","woody"],
+    notes:{top:["bergamot","lemon"],heart:["cardamom","jasmine"],base:["vanilla","musk","cedar"]} },
+  { name:"Dossier Ambery Saffron", brand:"Dossier", year:2020, gender:"U", tier:3, price:29,
+    accords:["amber","sweet","saffron","floral","woody"],
+    notes:{top:["saffron","jasmine"],heart:["amberwood","ambergris"],base:["fir resin","cedar"]}, inspiredBy:"Baccarat Rouge 540" },
+  { name:"Zara Tobacco Collection Rich Warm", brand:"Zara", year:2019, gender:"U", tier:3, price:26,
+    accords:["tobacco","vanilla","sweet","spicy-warm","amber"],
+    notes:{top:["tobacco","spices"],heart:["tonka","tobacco flower"],base:["dried fruits","vanilla","woody notes"]}, inspiredBy:"Tobacco Vanille" },
+  { name:"Al Haramain Amber Oud Gold", brand:"Al Haramain", year:2017, gender:"U", tier:3, price:35,
+    accords:["amber","sweet","fruity","woody","musk"],
+    notes:{top:["apple","lemon","bergamot"],heart:["orchid","amberwood"],base:["musk","cedar","amber"]} }
+];
+
+// Human-readable colors per accord family
+const ACCORD_COLORS = {
+  citrus:"#E0A82E", aquatic:"#4FA3C7", "fresh-spicy":"#7FA650", aromatic:"#6BAA75",
+  fougere:"#5C946E", woody:"#8A6D4B", amber:"#C98A3B", sweet:"#CE7B8B",
+  gourmand:"#B5651D", vanilla:"#D9B26A", tobacco:"#9C6B3F", leather:"#6B4423",
+  floral:"#D98CB3", powdery:"#B3A2C4", green:"#7CA65C", fruity:"#E07A5F",
+  smoky:"#7A7A7A", oud:"#5B4634", musk:"#B79E86", "spicy-warm":"#C1440E",
+  iris:"#9E93B8", saffron:"#E3A857", incense:"#8C7F8E", boozy:"#A0522D",
+  chocolate:"#7B3F00", coconut:"#C9B48F", mineral:"#8FA3AE", honey:"#E0A93E",
+  almond:"#C9A97E", metallic:"#9FADB3", tea:"#94A67C"
+};
+function accordColor(a){ return ACCORD_COLORS[a] || "#9A8C82"; }
+
+let currentMode = "close";
+
+// ---- Similarity ----------------------------------------------------------
+function similarity(a, b) {
+  const A = new Set(a.accords), B = new Set(b.accords);
+  let inter = 0; A.forEach(x => { if (B.has(x)) inter++; });
+  const unionSize = new Set([...a.accords, ...b.accords]).size;
+  let score = unionSize ? inter / unionSize : 0;
+
+  // Base notes drive perceived similarity most — small bonus for overlap
+  const ba = new Set(a.notes.base.map(n => n.toLowerCase()));
+  const bb = new Set(b.notes.base.map(n => n.toLowerCase()));
+  let baseInter = 0; ba.forEach(x => { if (bb.has(x)) baseInter++; });
+  score += baseInter * 0.05;
+
+  // A named "inspired by" link is a strong signal in either direction
+  if (a.inspiredBy && b.name.includes(a.inspiredBy)) score += 0.30;
+  if (b.inspiredBy && a.name.includes(b.inspiredBy)) score += 0.30;
+
+  return score;
+}
+
+function sharedAccords(a, b) {
+  const B = new Set(b.accords);
+  return a.accords.filter(x => B.has(x));
+}
+
+function affinityDots(score) {
+  let n;
+  if (score >= 0.55) n = 5;
+  else if (score >= 0.42) n = 4;
+  else if (score >= 0.30) n = 3;
+  else if (score >= 0.20) n = 2;
+  else n = 1;
+  return { n, str: "●".repeat(n) + "○".repeat(5 - n) };
+}
+
+// ---- Rendering -----------------------------------------------------------
+function findByName(str) {
+  const q = str.trim().toLowerCase();
+  if (!q) return null;
+  let f = FRAGRANCES.find(x => x.name.toLowerCase() === q);
+  if (f) return f;
+  f = FRAGRANCES.find(x => x.name.toLowerCase().includes(q) || (x.brand + " " + x.name).toLowerCase().includes(q));
+  return f || null;
+}
+
+function accordChipsHTML(accords, cls) {
+  return accords.map(a =>
+    `<span class="accord" style="background:${accordColor(a)}">${a.replace("-", " ")}</span>`
+  ).join("");
+}
+
+function renderAnchor(f) {
+  const genderMap = { M:"Masculine", F:"Feminine", U:"Unisex" };
+  const el = document.getElementById("anchorCard");
+  el.innerHTML = `
+    <div class="anchor-top">
+      <div>
+        <p class="anchor-name">${f.name}</p>
+        <span class="anchor-brand">${f.brand} · ${f.year} · ${genderMap[f.gender]}</span>
+      </div>
+      <div class="anchor-brand" style="font-weight:600;">Your scent</div>
+    </div>
+    <div class="notes-line"><b>Top</b> ${f.notes.top.join(", ")} &nbsp;&middot;&nbsp; <b>Heart</b> ${f.notes.heart.join(", ")} &nbsp;&middot;&nbsp; <b>Base</b> ${f.notes.base.join(", ")}</div>
+    <div class="accord-chips">${accordChipsHTML(f.accords)}</div>
+  `;
+  el.classList.add("show");
+}
+
+function recCardHTML(anchor, rec) {
+  const score = similarity(anchor, rec);
+  const dots = affinityDots(score);
+  const shared = sharedAccords(anchor, rec);
+  const genderMap = { M:"M", F:"F", U:"Unisex" };
+  const inspired = rec.inspiredBy
+    ? `<div class="inspired">Often called a clone of ${rec.inspiredBy}</div>` : "";
+  const sharedHTML = shared.length
+    ? `<div class="shared">${accordChipsHTML(shared)}</div>` : "";
+  return `
+    <div class="rec">
+      <div class="rec-top">
+        <div>
+          <p class="rec-name">${rec.name}</p>
+          <span class="rec-brand">${rec.brand} · ${genderMap[rec.gender]}</span>
+        </div>
+        <span class="rec-price">$${rec.price}</span>
+      </div>
+      <div class="affinity"><span class="dots">${dots.str}</span> scent affinity</div>
+      ${sharedHTML}
+      ${inspired}
+    </div>`;
+}
+
+function runMatch() {
+  const input = document.getElementById("scentInput").value;
+  const anchor = findByName(input);
+  const noMatch = document.getElementById("noMatch");
+  const results = document.getElementById("results");
+
+  if (!anchor) {
+    document.getElementById("anchorCard").classList.remove("show");
+    results.classList.remove("show");
+    noMatch.innerHTML = `We don't have <b>${input || "that one"}</b> in the library yet. Try picking from the dropdown, or start from a popular scent below. This is a curated snapshot &mdash; the list grows over time.`;
+    noMatch.classList.add("show");
+    return;
+  }
+  noMatch.classList.remove("show");
+  renderAnchor(anchor);
+
+  const threshold = currentMode === "close" ? 0.20 : 0.12;
+  const perTier = currentMode === "close" ? 3 : 4;
+
+  const scored = FRAGRANCES
+    .filter(f => f.name !== anchor.name)
+    .map(f => ({ f, s: similarity(anchor, f) }))
+    .filter(x => x.s >= threshold)
+    .sort((a, b) => b.s - a.s);
+
+  const tiers = { 1: [], 2: [], 3: [] };
+  scored.forEach(x => { if (tiers[x.f.tier].length < perTier) tiers[x.f.tier].push(x.f); });
+
+  const map = { 1: "tier-prestige", 2: "tier-mid", 3: "tier-budget" };
+  const emptyMsg = {
+    1: "No close prestige match in the library yet &mdash; your scent may already be at the top end.",
+    2: "No strong mid-range match yet. Try Explore mode for looser matches.",
+    3: "No budget clone found yet for this profile. Try Explore mode, or check back after an update."
+  };
+  [1, 2, 3].forEach(t => {
+    const box = document.getElementById(map[t]);
+    box.innerHTML = tiers[t].length
+      ? tiers[t].map(rec => recCardHTML(anchor, rec)).join("")
+      : `<div class="empty-tier">${emptyMsg[t]}</div>`;
+  });
+
+  results.classList.add("show");
+  results.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById("modeClose").classList.toggle("active", mode === "close");
+  document.getElementById("modeExplore").classList.toggle("active", mode === "explore");
+  if (document.getElementById("results").classList.contains("show")) runMatch();
+}
+
+function resetTool() {
+  document.getElementById("scentInput").value = "";
+  document.getElementById("anchorCard").classList.remove("show");
+  document.getElementById("results").classList.remove("show");
+  document.getElementById("noMatch").classList.remove("show");
+  document.getElementById("scentInput").focus();
+}
+
+// ---- PDF export ----------------------------------------------------------
+function exportPDF() {
+  const input = document.getElementById("scentInput").value;
+  const anchor = findByName(input);
+  if (!anchor) return;
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  let y = 20;
+
+  const colors = { title:[44,62,80], text:[44,62,80], light:[127,140,141],
+    prestige:[155,107,47], mid:[55,138,221], budget:[99,153,34] };
+
+  pdf.setFontSize(20); pdf.setTextColor(...colors.title);
+  pdf.text("Scent Match Report", pageWidth / 2, y, { align: "center" }); y += 10;
+  pdf.setFontSize(13); pdf.setTextColor(...colors.text);
+  pdf.text(`Your scent: ${anchor.name} (${anchor.brand})`, 15, y); y += 6;
+  pdf.setFontSize(9); pdf.setTextColor(...colors.light);
+  const notes = `Notes: ${anchor.notes.top.concat(anchor.notes.heart, anchor.notes.base).join(", ")}`;
+  pdf.splitTextToSize(notes, pageWidth - 30).forEach(l => { pdf.text(l, 15, y); y += 4.5; });
+  y += 4;
+
+  const threshold = currentMode === "close" ? 0.20 : 0.12;
+  const perTier = currentMode === "close" ? 3 : 4;
+  const scored = FRAGRANCES.filter(f => f.name !== anchor.name)
+    .map(f => ({ f, s: similarity(anchor, f) }))
+    .filter(x => x.s >= threshold).sort((a, b) => b.s - a.s);
+  const tierNames = { 1:"PRESTIGE  -  the high-end equivalent", 2:"MID-RANGE  -  accessible designer",
+    3:"BUDGET & CLONES  -  affordable" };
+  const tierColor = { 1:colors.prestige, 2:colors.mid, 3:colors.budget };
+
+  [1, 2, 3].forEach(t => {
+    const picks = scored.filter(x => x.f.tier === t).slice(0, perTier);
+    if (y > pageHeight - 30) { pdf.addPage(); y = 20; }
+    pdf.setFontSize(12); pdf.setTextColor(...tierColor[t]);
+    pdf.text(tierNames[t], 15, y); y += 6;
+    pdf.setFontSize(10); pdf.setTextColor(...colors.text);
+    if (!picks.length) { pdf.setTextColor(...colors.light); pdf.text("No strong match in the library yet.", 18, y); y += 6; return; }
+    picks.forEach(x => {
+      if (y > pageHeight - 15) { pdf.addPage(); y = 20; }
+      const dots = affinityDots(x.s);
+      pdf.setTextColor(...colors.text);
+      pdf.text(`${x.f.name}  -  ${x.f.brand}   $${x.f.price}   [${"*".repeat(dots.n)}]`, 18, y); y += 4.5;
+      if (x.f.inspiredBy) { pdf.setFontSize(8); pdf.setTextColor(...colors.light);
+        pdf.text(`inspired by ${x.f.inspiredBy}`, 20, y); y += 4; pdf.setFontSize(10); }
+    });
+    y += 3;
+  });
+
+  if (y > pageHeight - 25) { pdf.addPage(); y = 20; }
+  pdf.setFontSize(8); pdf.setTextColor(...colors.light);
+  pdf.splitTextToSize("Matches ranked by shared scent families and base notes. Budget picks labeled \"inspired by\" are separate products regarded as echoing the pricier scent. Scent is personal - always test before buying. Curated snapshot; prices are rough US retail.", pageWidth - 30)
+    .forEach(l => { pdf.text(l, 15, y); y += 4; });
+
+  pdf.save(`scent_match_${anchor.name.replace(/[^a-z0-9]+/gi, "_").toLowerCase()}.pdf`);
+}
+
+// ---- Init ----------------------------------------------------------------
+function buildDatalist() {
+  const dl = document.getElementById("scentList");
+  dl.innerHTML = FRAGRANCES
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(f => `<option value="${f.name}">${f.brand}</option>`).join("");
+}
+
+function buildPopular() {
+  const picks = ["Armani Code", "Dior Sauvage EDP", "Creed Aventus", "Baccarat Rouge 540",
+    "Bleu de Chanel EDP", "Tom Ford Tobacco Vanille", "YSL Y EDP", "Versace Eros"];
+  document.getElementById("popularChips").innerHTML = picks.map(p =>
+    `<span class="chip" onclick="pickPopular('${p}')">${p}</span>`).join("");
+}
+
+function pickPopular(name) {
+  document.getElementById("scentInput").value = name;
+  runMatch();
+}
+
+buildDatalist();
+buildPopular();
+document.getElementById("scentInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") runMatch();
+});
+</script>
+
+</body>
+</html>
