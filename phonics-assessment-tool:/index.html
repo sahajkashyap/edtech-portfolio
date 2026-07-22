@@ -927,6 +927,160 @@ const WORKSHEETS = {
     readAloud: ["The bug is in the mug.","Gus ran in the sun.","A pup sat on my rug.","Mom cut a bun for us."],
     sortWords: ["bug","big","cup","cap","run","ran"],
     sortDone: "bug"
+  },
+
+  "Lesson 44": {
+    footNote: "Digraph ck", digraph: true,
+    titleHtml: "Digraph <em>ck</em> &mdash; Reading &amp; Spelling Words with <em>ck</em>",
+    target: "ck", soundLabel: "k", keyword: "back", grownWord: "back", grownSounds: "/b/ /a/ /k/",
+    grownExamples: "the end of <em>back</em> and <em>duck</em> (two letters, one /k/ sound)",
+    fillNote: "It always comes at the end, right after a short vowel.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["back","duck","sick","rock","pack","lock","kick","sock","tuck","deck","pick","tack"],
+    families: [
+      { rime: "-ack", words: ["back","pack","tack","rack"] },
+      { rime: "-ick", words: ["sick","kick","pick","lick"] },
+      { rime: "-ock", words: ["rock","lock","sock","dock"] }
+    ],
+    fill: [["b a",""],["d u",""],["s i",""],["r o",""],["p a",""],["l o",""]],
+    soundBoxWords: [{w:"back",boxes:3,pairAt:2},{w:"duck",boxes:3,pairAt:2},{w:"sick",boxes:3,pairAt:2},{w:"rock",boxes:3,pairAt:2}],
+    changeOne: [{start:"back",from:"b",to:"p"},{start:"pack",from:"a",to:"i"},{start:"pick",from:"p",to:"s"},{start:"sock",from:"s",to:"r"}],
+    sentenceBank: ["back","duck","sick","rock"],
+    sentences: ["Come {}.","The {} can swim.","I feel {}.","Sit on the {}."],
+    readAloud: ["The duck is on a rock.","Pick up the sock.","Jack is sick in bed.","Kick the ball back."],
+    sortWords: ["back","bat","duck","dug","sick","sit"], sortDone: "back"
+  },
+
+  "Lesson 45": {
+    footNote: "Digraph sh", digraph: true,
+    titleHtml: "Digraph <em>sh</em> &mdash; Reading &amp; Spelling Words with <em>sh</em>",
+    target: "sh", soundLabel: "sh", keyword: "ship", grownWord: "ship", grownSounds: "/sh/ /i/ /p/",
+    grownExamples: "the start of <em>ship</em> and the end of <em>fish</em>",
+    fillNote: "It can come at the start or the end.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["ship","shop","shed","shut","fish","dish","cash","wish","rush","bash","hush","gush"],
+    families: [
+      { rime: "-ish", words: ["dish","fish","wish"] },
+      { rime: "-ash", words: ["cash","dash","mash","rash"] },
+      { rime: "-ush", words: ["gush","hush","rush"] }
+    ],
+    fill: [["","i p"],["f i",""],["","o p"],["d i",""],["c a",""],["","u t"]],
+    soundBoxWords: [{w:"ship",boxes:3,pairAt:0},{w:"fish",boxes:3,pairAt:2},{w:"shop",boxes:3,pairAt:0},{w:"dish",boxes:3,pairAt:2}],
+    changeOne: [{start:"ship",from:"i",to:"o"},{start:"shop",from:"p",to:"t"},{start:"fish",from:"f",to:"d"},{start:"dish",from:"i",to:"a"}],
+    sentenceBank: ["ship","fish","shop","wish"],
+    sentences: ["I see a big {}.","The {} can swim.","We go to the {}.","I {} for a pup."],
+    readAloud: ["The fish is in the dish.","Shut the shop at six.","I wish I had a ship.","Josh has cash in his bag."],
+    sortWords: ["ship","sun","fish","sock","wish","sit"], sortDone: "ship"
+  },
+
+  "Lesson 46": {
+    footNote: "Digraph th (voiced)", digraph: true,
+    titleHtml: "Digraph <em>th</em> (voiced) &mdash; Reading &amp; Spelling Words with <em>th</em>",
+    target: "th", soundLabel: "th", keyword: "this", grownWord: "this", grownSounds: "/th/ /i/ /s/",
+    grownExamples: "the start of <em>this</em>, <em>that</em>, and <em>then</em> (the buzzing <em>th</em> you feel in your throat)",
+    fillNote: "Here it comes at the start.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["that","this","then","them","than","thus","with","mother","father","brother","other","rather"],
+    families: [
+      { rime: "th-", words: ["that","this","then","them"] },
+      { rime: "th-", words: ["than","thus","with"] },
+      { rime: "big", words: ["mother","father","brother","other"] }
+    ],
+    fill: [["","a t"],["","i s"],["","e n"],["","e m"],["","a n"],["","u s"]],
+    soundBoxWords: [{w:"that",boxes:3,pairAt:0},{w:"this",boxes:3,pairAt:0},{w:"then",boxes:3,pairAt:0},{w:"them",boxes:3,pairAt:0}],
+    changeOne: [{start:"than",from:"a",to:"e"},{start:"then",from:"n",to:"m"},{start:"this",from:"i",to:"u"},{start:"them",from:"m",to:"n"}],
+    sentenceBank: ["this","that","then","them"],
+    sentences: ["Look at {}.","I want {}.","We ate, {} we ran.","I see {}."],
+    readAloud: ["That is my cat.","This is a big ship.","Get the bat, then run.","Mom sat with them."],
+    sortWords: ["this","hiss","that","hat","them","hem"], sortDone: "this"
+  },
+
+  "Lesson 47": {
+    footNote: "Digraph th (unvoiced)", digraph: true,
+    titleHtml: "Digraph <em>th</em> (unvoiced) &mdash; Reading &amp; Spelling Words with <em>th</em>",
+    target: "th", soundLabel: "th", keyword: "thin", grownWord: "thin", grownSounds: "/th/ /i/ /n/",
+    grownExamples: "the start of <em>thin</em> and the end of <em>bath</em> (the quiet <em>th</em>, no throat buzz)",
+    fillNote: "It can come at the start or the end.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["thin","thick","thud","thump","bath","math","path","moth","cloth","broth","thug","fifth"],
+    families: [
+      { rime: "-ath", words: ["bath","math","path"] },
+      { rime: "th-", words: ["thin","thick","thud"] },
+      { rime: "-oth", words: ["moth","cloth","broth"] }
+    ],
+    fill: [["","i n"],["b a",""],["m a",""],["m o",""],["p a",""],["","u d"]],
+    soundBoxWords: [{w:"thin",boxes:3,pairAt:0},{w:"bath",boxes:3,pairAt:2},{w:"math",boxes:3,pairAt:2},{w:"path",boxes:3,pairAt:2}],
+    changeOne: [{start:"bath",from:"b",to:"p"},{start:"path",from:"p",to:"m"},{start:"math",from:"m",to:"b"},{start:"thud",from:"d",to:"g"}],
+    sentenceBank: ["bath","math","path","thin"],
+    sentences: ["I take a {}.","I like {}.","We walk on the {}.","The ice is {}."],
+    readAloud: ["Beth has a bath.","The path is thin.","I did my math.","A moth sat on the cloth."],
+    sortWords: ["bath","bat","math","mat","path","pat"], sortDone: "bath"
+  },
+
+  "Lesson 48": {
+    footNote: "Digraph ch", digraph: true,
+    titleHtml: "Digraph <em>ch</em> &mdash; Reading &amp; Spelling Words with <em>ch</em>",
+    target: "ch", soundLabel: "ch", keyword: "chip", grownWord: "chip", grownSounds: "/ch/ /i/ /p/",
+    grownExamples: "the start of <em>chip</em> and the end of <em>rich</em>",
+    fillNote: "It can come at the start or the end.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["chip","chop","chin","chat","chug","chum","much","such","rich","chap","chomp","lunch"],
+    families: [
+      { rime: "ch-", words: ["chat","chip","chop","chin"] },
+      { rime: "ch-", words: ["chug","chum","chap"] },
+      { rime: "-ch", words: ["rich","much","such"] }
+    ],
+    fill: [["","i p"],["r i",""],["","o p"],["m u",""],["","i n"],["s u",""]],
+    soundBoxWords: [{w:"chip",boxes:3,pairAt:0},{w:"chop",boxes:3,pairAt:0},{w:"rich",boxes:3,pairAt:2},{w:"much",boxes:3,pairAt:2}],
+    changeOne: [{start:"chin",from:"n",to:"p"},{start:"chip",from:"i",to:"o"},{start:"chat",from:"t",to:"p"},{start:"much",from:"m",to:"s"}],
+    sentenceBank: ["chip","chop","chin","rich"],
+    sentences: ["I eat a {}.","Dad can {} it.","My {} is here.","The man is {}."],
+    readAloud: ["Rich has a red chip.","Chad can chop and chug.","I have much to munch.","Such a big lunch!"],
+    sortWords: ["chip","ship","chop","shop","rich","wish"], sortDone: "chip"
+  },
+
+  "Lesson 51": {
+    footNote: "Digraph ng", digraph: true,
+    titleHtml: "Digraph <em>ng</em> &mdash; Reading &amp; Spelling Words with <em>ng</em>",
+    target: "ng", soundLabel: "ng", keyword: "ring", grownWord: "ring", grownSounds: "/r/ /i/ /ng/",
+    grownExamples: "the end of <em>ring</em> and <em>song</em>",
+    fillNote: "It always comes at the end.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["ring","king","sing","song","sang","hang","bang","long","lung","wing","rung","gong"],
+    families: [
+      { rime: "-ing", words: ["ring","king","sing","wing"] },
+      { rime: "-ang", words: ["bang","hang","sang","rang"] },
+      { rime: "-ung", words: ["lung","rung","sung","hung"] }
+    ],
+    fill: [["r i",""],["k i",""],["s o",""],["s i",""],["b a",""],["l o",""]],
+    soundBoxWords: [{w:"ring",boxes:3,pairAt:2},{w:"king",boxes:3,pairAt:2},{w:"song",boxes:3,pairAt:2},{w:"sing",boxes:3,pairAt:2}],
+    changeOne: [{start:"ring",from:"r",to:"k"},{start:"king",from:"k",to:"s"},{start:"sing",from:"i",to:"o"},{start:"song",from:"s",to:"l"}],
+    sentenceBank: ["ring","king","song","sing"],
+    sentences: ["She has a {}.","The {} sat.","We sang a {}.","I like to {}."],
+    readAloud: ["The king has a gold ring.","We sing a long song.","Bring the thing here.","A bee can sting."],
+    sortWords: ["ring","rid","king","kit","song","sock"], sortDone: "ring"
+  },
+
+  "Lesson 52": {
+    footNote: "Digraph nk", digraph: true,
+    titleHtml: "Digraph <em>nk</em> &mdash; Reading &amp; Spelling Words with <em>nk</em>",
+    target: "nk", soundLabel: "nk", keyword: "bank", grownWord: "bank", grownSounds: "/b/ /a/ /nk/",
+    grownExamples: "the end of <em>bank</em> and <em>pink</em>",
+    fillNote: "It always comes at the end.",
+    warmup: ["the","is","and","up","in"],
+    readWords: ["bank","sink","pink","junk","honk","sank","tank","wink","link","dunk","rank","bunk"],
+    families: [
+      { rime: "-ank", words: ["bank","sank","tank","rank"] },
+      { rime: "-ink", words: ["sink","pink","wink","link"] },
+      { rime: "-unk", words: ["junk","dunk","bunk","hunk"] }
+    ],
+    fill: [["b a",""],["s i",""],["p i",""],["j u",""],["h o",""],["s a",""]],
+    soundBoxWords: [{w:"bank",boxes:3,pairAt:2},{w:"sink",boxes:3,pairAt:2},{w:"pink",boxes:3,pairAt:2},{w:"junk",boxes:3,pairAt:2}],
+    changeOne: [{start:"bank",from:"b",to:"s"},{start:"sank",from:"a",to:"i"},{start:"sink",from:"s",to:"p"},{start:"pink",from:"p",to:"l"}],
+    sentenceBank: ["bank","sink","pink","junk"],
+    sentences: ["Put it in the {}.","Wash in the {}.","My hat is {}.","Toss the {}."],
+    readAloud: ["I put cash in the bank.","The pink sock is in the sink.","A skunk can stink.","Do not dunk the junk."],
+    sortWords: ["bank","bat","sink","sit","pink","pig"], sortDone: "bank"
   }
 };
 
@@ -940,8 +1094,42 @@ function buildWorksheetHTML(c) {
   const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
   const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
   const fams = c.families.map(f => `<p class="family"><strong>${f.rime}</strong> ${f.words.join(' ')}</p>`).join('');
-  const fill = c.fill.map(p => `<span>${p[0]} <span class="blank"></span> ${p[1]}</span>`).join('');
-  const sbox = c.soundBoxWords.map(w => `<div class="sbrow"><span class="cue">${w}</span><span class="sboxes">${wsBoxes('sbox', w.length)}</span></div>`).join('');
+  const isD = !!c.digraph;
+  const target = c.target || c.vowel;
+  const soundLabel = c.soundLabel || c.vowel;
+  const sentDesc = isD ? `a <em>${target}</em>` : `a short-<em>${c.vowel}</em>`;
+  const grownBody = isD
+    ? `You don't need to prepare anything. Sit with your child and take it one section at a time. The two letters <strong>${target}</strong> work together to make <em>one</em> sound, /${soundLabel}/ &mdash; like ${c.grownExamples}. If a word is tricky, point under each sound and blend: ${c.grownSounds} &rarr; &ldquo;${c.grownWord}.&rdquo; Keep it to about ten minutes and end on a win.`
+    : `You don't need to prepare anything. Sit with your child and take it one section at a time. If a word is tricky, don't spell it out &mdash; point under each letter and have them say the sound, then blend: ${c.grownSounds} &rarr; &ldquo;${c.grownWord}.&rdquo; Short <em>${c.vowel}</em> is the sound in <em>${c.keyword}</em>. Keep it to about ten minutes and end on a win.`;
+  const warmHint = isD
+    ? `Read these first to feel ready. Then we practice the /${soundLabel}/ sound &mdash; two letters, <em>${target}</em>, that make one sound.`
+    : `Read these first to feel ready. Then we practice the /${soundLabel}/ sound &mdash; the <em>${target}</em> in <em>${c.keyword}</em>.`;
+  const readHint = isD
+    ? `Touch the sounds, say each one, then blend. Remember <em>${target}</em> is one sound.`
+    : `Touch each letter, say each sound, then blend.`;
+  const fillHint = isD
+    ? `Say the word. Write <em>${target}</em> &mdash; two letters &mdash; in the space. ${c.fillNote || ''}`
+    : `Say the word, then write <em>${target}</em> in the space.`;
+  const sbHint = isD
+    ? `Say the word slowly. Write one sound in each box. The two letters <em>${target}</em> go together in <strong>one</strong> box (shaded corner).`
+    : `Say the word slowly. Write one sound in each box.`;
+  const changeHint = isD
+    ? `Keep the <em>${target}</em>. Change the one letter shown to make a new word. Write your word &mdash; one letter in each box.`
+    : `Read the word. Change the one letter shown to make a new word. Write your word &mdash; one letter in each box.`;
+  const sortHeadA = isD ? `Has /${soundLabel}/ (like ${c.grownWord})` : `Short ${c.vowel} (like ${c.grownWord})`;
+  const sortHeadB = isD ? `No /${soundLabel}/` : `Not short ${c.vowel}`;
+  const sortHint = isD
+    ? `Say each word. Do you hear /${soundLabel}/? Write it in the right box. Check off each word as you use it &mdash; one is done for you.`
+    : `Say each word, then write it in the right box. Check off each word as you use it &mdash; one is done for you.`;
+  const fill = c.fill.map(p => `<span>${p[0]} <span class="blank${isD ? ' wide' : ''}"></span> ${p[1]}</span>`).join('');
+  const sbox = c.soundBoxWords.map(e => {
+    const w = typeof e === 'string' ? e : e.w;
+    const n = typeof e === 'string' ? w.length : e.boxes;
+    const pairAt = (typeof e === 'object' && e.pairAt != null) ? e.pairAt : -1;
+    let bx = '';
+    for (let i = 0; i < n; i++) bx += `<span class="sbox${i === pairAt ? ' pair' : ''}">${i === pairAt ? `<span class="pairlab">${target}</span>` : ''}</span>`;
+    return `<div class="sbrow"><span class="cue">${w}</span><span class="sboxes">${bx}</span></div>`;
+  }).join('');
   const chain = c.changeOne.map(o => `<div class="chainq"><span class="startw">${o.start}</span><span class="arrow">&rarr;</span><span class="instr">change <strong>${o.from}</strong> to <strong>${o.to}</strong></span><span class="arrow">&rarr;</span><span class="ansboxes">${wsBoxes('abox', o.start.length)}</span></div>`).join('');
   const bank1 = c.sentenceBank.map(w => `<span class="wb"><span class="ubox"></span>${w}</span>`).join('');
   const sents = c.sentences.map(s => `<p class="sent">${s.replace('{}', '<span class="blank"></span>')}</p>`).join('');
@@ -970,10 +1158,12 @@ function buildWorksheetHTML(c) {
     .fillrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 24px; font-size: 22px; margin-left: 12px; }
     .fillrow span { letter-spacing: 0.06em; }
     .blank { display: inline-block; width: 52px; border-bottom: 2px solid #1a1a1a; text-align: center; }
+    .blank.wide { width: 72px; }
     .sbrow { display: flex; align-items: center; gap: 18px; margin: 16px 0 16px 12px; }
     .sbrow .cue { font-size: 22px; width: 70px; letter-spacing: 0.05em; }
     .sboxes { display: flex; gap: 12px; }
-    .sbox { width: 75px; height: 75px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
+    .sbox { width: 75px; height: 75px; border: 1.5px solid #1a1a1a; border-radius: 6px; position: relative; }
+    .sbox .pairlab { position: absolute; bottom: 4px; right: 6px; font-size: 11px; color: #c9b48f; }
     .chainq { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; font-size: 20px; margin: 18px 0 18px 12px; }
     .chainq .startw { font-weight: bold; letter-spacing: 0.05em; min-width: 52px; }
     .chainq .arrow { color: #888; }
@@ -1015,35 +1205,35 @@ function buildWorksheetHTML(c) {
 
     <div class="tip">
       <div class="h">For the grown-up &middot; start here</div>
-      You don't need to prepare anything. Sit with your child and take it one section at a time. If a word is tricky, don't spell it out &mdash; point under each letter and have them say the sound, then blend: ${c.grownSounds} &rarr; &ldquo;${c.grownWord}.&rdquo; Short <em>${c.vowel}</em> is the sound in <em>${c.keyword}</em>. Keep it to about ten minutes and end on a win.
+      ${grownBody}
     </div>
 
     <h2>Warm-up &middot; Start with words you know</h2>
-    <p class="hint">Read these first to feel ready. Then we practice the /${c.vowel}/ sound &mdash; the <em>${c.vowel}</em> in <em>${c.keyword}</em>.</p>
+    <p class="hint">${warmHint}</p>
     <div class="warm">${warm}</div>
 
     <h2>1 &middot; Read each word out loud</h2>
-    <p class="hint">Touch each letter, say each sound, then blend.</p>
+    <p class="hint">${readHint}</p>
     <div class="wordgrid">${grid}</div>
 
     <h2>2 &middot; Read the word families</h2>
     <p class="hint">Only the first sound changes. Read down each line, then read it again faster.</p>
     ${fams}
 
-    <h2>3 &middot; Add the missing <em>${c.vowel}</em></h2>
-    <p class="hint">Say the word, then write <em>${c.vowel}</em> in the space.</p>
+    <h2>3 &middot; Add the missing <em>${target}</em></h2>
+    <p class="hint">${fillHint}</p>
     <div class="fillrow">${fill}</div>
 
     <h2>4 &middot; Tap the sounds, then write them</h2>
-    <p class="hint">Say the word slowly. Write one sound in each box.</p>
+    <p class="hint">${sbHint}</p>
     ${sbox}
 
     <h2>5 &middot; Change one sound</h2>
-    <p class="hint">Read the word. Change the one letter shown to make a new word. Write your word &mdash; one letter in each box.</p>
+    <p class="hint">${changeHint}</p>
     ${chain}
 
     <h2>6 &middot; Finish each sentence</h2>
-    <p class="hint">Pick a short-<em>${c.vowel}</em> word from the bank. Check off each word as you use it &mdash; every word is used once.</p>
+    <p class="hint">Pick ${sentDesc} word from the bank. Check off each word as you use it &mdash; every word is used once.</p>
     <div class="wordbank"><span class="lbl">Word bank</span>${bank1}</div>
     ${sents}
 
@@ -1052,11 +1242,11 @@ function buildWorksheetHTML(c) {
     ${reads}
 
     <h2>8 &middot; Sort the words</h2>
-    <p class="hint">Say each word, then write it in the right box. Check off each word as you use it &mdash; one is done for you.</p>
+    <p class="hint">${sortHint}</p>
     <div class="wordbank"><span class="lbl">Words</span>${bank2}</div>
     <div class="sort">
-      <div class="box"><div class="h">Short ${c.vowel} (like ${c.grownWord})</div>${c.sortDone}</div>
-      <div class="box"><div class="h">Not short ${c.vowel}</div></div>
+      <div class="box"><div class="h">${sortHeadA}</div>${c.sortDone}</div>
+      <div class="box"><div class="h">${sortHeadB}</div></div>
     </div>
 
     <div class="foot">
