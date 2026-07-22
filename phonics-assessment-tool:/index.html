@@ -101,6 +101,17 @@
   
   .btn-primary { background: #378ADD; border-color: #378ADD; color: white; font-weight: 500; }
   .btn-primary:hover { background: #2966bb; }
+
+  /* worksheet picker */
+  .worksheet-intro { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 1rem 0; }
+  .worksheet-unit { margin-top: 1.25rem; margin-bottom: .6rem; padding-bottom: .4rem; border-bottom: 2px solid var(--color-border-secondary); font-size: 14px; font-weight: 700; color: var(--color-text-primary); }
+  .worksheet-unit:first-child { margin-top: 0; }
+  .ws-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; margin-bottom: 8px; }
+  .ws-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .ws-ready { background: #639922; border-color: #639922; color: #fff; font-weight: 500; }
+  .ws-ready:hover { background: #527d1c; }
+  .ws-soon { font-size: 12px; color: var(--color-text-secondary); font-style: italic; }
+  .ws-get { margin-top: 8px; padding: 6px 12px; font-size: 12px; }
 </style>
 
 <div class="container">
@@ -169,8 +180,19 @@
     </div>
   </div>
 
+  <!-- MODAL: WORKSHEET PICKER -->
+  <div id="worksheetModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeWorksheetModal()">&times;</span>
+      <div class="modal-title">Generate practice worksheets</div>
+      <p class="worksheet-intro">Choose the skill you want to practice. We'll open a printable sheet matched to that exact skill &mdash; print it or save it as a PDF to do at home.</p>
+      <div id="worksheetPickerList"></div>
+    </div>
+  </div>
+
   <!-- BUTTONS -->
   <div class="section" style="display: flex; gap: 8px; flex-wrap: wrap;">
+    <button class="btn-primary" onclick="openWorksheetPicker()">Generate practice worksheets</button>
     <button class="btn-primary" onclick="exportPDF()">Export PDF</button>
     <button onclick="exportJSON()">Export JSON</button>
     <button onclick="exportCSV()">Export CSV</button>
@@ -533,9 +555,13 @@ function showLessonsByScore(scoreLevel) {
       lessonsByUnit[unitName].forEach(lesson => {
         const item = document.createElement('div');
         item.className = `lesson-item ${scoreLevel}`;
+        const wsBtn = WORKSHEETS[lesson.name]
+          ? `<button class="ws-ready ws-get" onclick="openWorksheet('${lesson.name}')">Get practice worksheet</button>`
+          : '';
         item.innerHTML = `
           <div class="lesson-item-name">${lesson.name}</div>
           <div class="lesson-item-skill">${lesson.skill}</div>
+          ${wsBtn}
         `;
         modalList.appendChild(item);
       });
@@ -553,6 +579,10 @@ window.onclick = function(event) {
   const modal = document.getElementById('lessonsModal');
   if (event.target === modal) {
     modal.classList.remove('show');
+  }
+  const wsModal = document.getElementById('worksheetModal');
+  if (event.target === wsModal) {
+    wsModal.classList.remove('show');
   }
 }
 
@@ -763,6 +793,319 @@ function clearForm() {
   currentUnit = "";
   document.getElementById('lessonsList').innerHTML = '';
   updateCharts();
+}
+
+// ============================================================
+//  PHONICS PRACTICE WORKSHEETS
+//  One printable sheet per skill. Original words only.
+//  Sight words are from the public-domain Dolch list (1936).
+//  Keyed by lesson name so the picker matches the curriculum
+//  above exactly (same names, same order).
+// ============================================================
+const WORKSHEETS = {
+  "Lesson 35": {
+    footNote: "Short a (CVC)",
+    titleHtml: "Short <em>a</em> &mdash; Reading &amp; Spelling CVC Words",
+    vowel: "a", keyword: "apple", grownWord: "cat", grownSounds: "/c/ /a/ /t/",
+    warmup: ["the", "a", "is", "has", "and"],
+    readWords: ["cat","map","bag","ran","tap","sad","nap","jam","hat","ram","pan","lab"],
+    families: [
+      { rime: "-at", words: ["cat","hat","mat","sat","bat","rat"] },
+      { rime: "-an", words: ["can","man","pan","ran","fan","van"] },
+      { rime: "-ap", words: ["cap","map","nap","tap","lap","gap"] }
+    ],
+    fill: [["c","t"],["m","p"],["b","g"],["f","n"],["r","t"],["h","m"]],
+    soundBoxWords: ["map","bag","ran","jam"],
+    changeOne: [
+      { start: "cat", from: "c", to: "h" },
+      { start: "hat", from: "t", to: "m" },
+      { start: "pan", from: "p", to: "m" },
+      { start: "man", from: "n", to: "d" }
+    ],
+    sentenceBank: ["cat","nap","bag","ran"],
+    sentences: ["The {} sat on my lap.","I put the apple in a {}.","The dog {} to the gate.","The baby took a {}."],
+    readAloud: ["Sam has a tan cap.","The cat ran and sat.","Dad had a map in his bag.","A fat ram sat by the van."],
+    sortWords: ["man","men","pat","pet","bad","bed"],
+    sortDone: "man"
+  },
+  "Lesson 40": {
+    footNote: "Short e (CVC)",
+    titleHtml: "Short <em>e</em> &mdash; Reading &amp; Spelling CVC Words",
+    vowel: "e", keyword: "egg", grownWord: "bed", grownSounds: "/b/ /e/ /d/",
+    warmup: ["the", "a", "is", "has", "and"],
+    readWords: ["bed","pen","net","red","leg","hen","jet","wet","ten","men","pet","get"],
+    families: [
+      { rime: "-et", words: ["bet","get","jet","let","met","net"] },
+      { rime: "-en", words: ["den","hen","men","pen","ten","yen"] },
+      { rime: "-ed", words: ["bed","fed","led","red","wed"] }
+    ],
+    fill: [["g","t"],["p","n"],["b","d"],["n","t"],["r","d"],["h","n"]],
+    soundBoxWords: ["red","pen","jet","web"],
+    changeOne: [
+      { start: "pen", from: "p", to: "t" },
+      { start: "ten", from: "t", to: "h" },
+      { start: "bed", from: "d", to: "t" },
+      { start: "bet", from: "b", to: "j" }
+    ],
+    sentenceBank: ["bed","ten","hen","red"],
+    sentences: ["Tom is in {}.","I see {} hens.","The {} can peck.","The bug is {}."],
+    readAloud: ["Ben has a red pen.","The hen is in the pen.","Get the net for Ken.","Ten men sat to rest."],
+    sortWords: ["bed","bad","pet","pat","hen","hat"],
+    sortDone: "bed"
+  },
+  "Lesson 36": {
+    footNote: "Short i (CVC)",
+    titleHtml: "Short <em>i</em> &mdash; Reading &amp; Spelling CVC Words",
+    vowel: "i", keyword: "igloo", grownWord: "pig", grownSounds: "/p/ /i/ /g/",
+    warmup: ["the", "a", "is", "has", "and"],
+    readWords: ["pig","sit","hit","lip","bin","rib","fin","kid","wig","zip","dig","win"],
+    families: [
+      { rime: "-it", words: ["bit","fit","hit","kit","lit","sit"] },
+      { rime: "-ig", words: ["big","dig","fig","pig","wig","jig"] },
+      { rime: "-in", words: ["bin","fin","pin","tin","win","din"] }
+    ],
+    fill: [["p","g"],["s","t"],["l","p"],["b","n"],["w","n"],["d","g"]],
+    soundBoxWords: ["pig","sit","lip","win"],
+    changeOne: [
+      { start: "pig", from: "p", to: "d" },
+      { start: "dig", from: "g", to: "p" },
+      { start: "pin", from: "p", to: "w" },
+      { start: "win", from: "n", to: "g" }
+    ],
+    sentenceBank: ["pig","sit","win","lip"],
+    sentences: ["The {} is big.","I can {} on it.","I hope I {}.","My {} is red."],
+    readAloud: ["The pig can dig.","A big pig ran.","Kim has six figs.","Sit and win with Tim."],
+    sortWords: ["pig","pug","sit","sat","pin","pan"],
+    sortDone: "pig"
+  },
+  "Lesson 37": {
+    footNote: "Short o (CVC)",
+    titleHtml: "Short <em>o</em> &mdash; Reading &amp; Spelling CVC Words",
+    vowel: "o", keyword: "octopus", grownWord: "dog", grownSounds: "/d/ /o/ /g/",
+    warmup: ["the", "a", "is", "has", "and"],
+    readWords: ["dog","pot","hop","log","box","top","cot","mop","rod","fox","job","hot"],
+    families: [
+      { rime: "-ot", words: ["cot","dot","got","hot","jot","pot"] },
+      { rime: "-op", words: ["cop","hop","mop","pop","top","bop"] },
+      { rime: "-og", words: ["dog","fog","hog","jog","log","bog"] }
+    ],
+    fill: [["p","t"],["h","p"],["l","g"],["b","x"],["t","p"],["d","g"]],
+    soundBoxWords: ["pot","hop","log","fox"],
+    changeOne: [
+      { start: "pot", from: "p", to: "h" },
+      { start: "hot", from: "t", to: "p" },
+      { start: "dog", from: "d", to: "l" },
+      { start: "log", from: "g", to: "t" }
+    ],
+    sentenceBank: ["dog","hop","box","top"],
+    sentences: ["The {} can run.","The frog can {}.","Put it in the {}.","The cat is on {}."],
+    readAloud: ["The dog sat on a log.","A fox ran to the box.","Tom got a hot pot.","The dog can hop and jog."],
+    sortWords: ["dog","dig","pot","pat","hop","hip"],
+    sortDone: "dog"
+  },
+  "Lesson 39": {
+    footNote: "Short u (CVC)",
+    titleHtml: "Short <em>u</em> &mdash; Reading &amp; Spelling CVC Words",
+    vowel: "u", keyword: "umbrella", grownWord: "bug", grownSounds: "/b/ /u/ /g/",
+    warmup: ["the", "a", "is", "has", "and"],
+    readWords: ["bug","sun","cup","mud","run","hut","bun","tub","rug","nut","cub","gum"],
+    families: [
+      { rime: "-ug", words: ["bug","dug","hug","jug","mug","rug"] },
+      { rime: "-un", words: ["bun","fun","run","sun","pun","nun"] },
+      { rime: "-ut", words: ["but","cut","gut","hut","nut","rut"] }
+    ],
+    fill: [["b","g"],["s","n"],["c","p"],["m","d"],["r","n"],["h","t"]],
+    soundBoxWords: ["bug","sun","cup","mud"],
+    changeOne: [
+      { start: "bug", from: "b", to: "r" },
+      { start: "rug", from: "g", to: "n" },
+      { start: "sun", from: "s", to: "b" },
+      { start: "bun", from: "n", to: "t" }
+    ],
+    sentenceBank: ["bug","sun","cup","run"],
+    sentences: ["The {} is red.","The {} is hot.","I have a {}.","The dog can {}."],
+    readAloud: ["The bug is in the mug.","Gus ran in the sun.","A pup sat on my rug.","Mom cut a bun for us."],
+    sortWords: ["bug","big","cup","cap","run","ran"],
+    sortDone: "bug"
+  }
+};
+
+function wsBoxes(cls, n) {
+  let s = '';
+  for (let i = 0; i < n; i++) s += `<span class="${cls}"></span>`;
+  return s;
+}
+
+function buildWorksheetHTML(c) {
+  const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
+  const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
+  const fams = c.families.map(f => `<p class="family"><strong>${f.rime}</strong> ${f.words.join(' ')}</p>`).join('');
+  const fill = c.fill.map(p => `<span>${p[0]} <span class="blank"></span> ${p[1]}</span>`).join('');
+  const sbox = c.soundBoxWords.map(w => `<div class="sbrow"><span class="cue">${w}</span><span class="sboxes">${wsBoxes('sbox', w.length)}</span></div>`).join('');
+  const chain = c.changeOne.map(o => `<div class="chainq"><span class="startw">${o.start}</span><span class="arrow">&rarr;</span><span class="instr">change <strong>${o.from}</strong> to <strong>${o.to}</strong></span><span class="arrow">&rarr;</span><span class="ansboxes">${wsBoxes('abox', o.start.length)}</span></div>`).join('');
+  const bank1 = c.sentenceBank.map(w => `<span class="wb"><span class="ubox"></span>${w}</span>`).join('');
+  const sents = c.sentences.map(s => `<p class="sent">${s.replace('{}', '<span class="blank"></span>')}</p>`).join('');
+  const reads = c.readAloud.map(s => `<p class="read"><span class="chk"></span> ${s}</p>`).join('');
+  const bank2 = c.sortWords.map(w => `<span class="wb"><span class="ubox"></span>${w}</span>`).join('');
+
+  const css = `
+    @page { size: letter; margin: 0.75in; }
+    * { box-sizing: border-box; }
+    body { font-family: "Century Gothic", "Verdana", sans-serif; color: #1a1a1a; background: #fff; margin: 0; line-height: 1.5; }
+    .toolbar { position: sticky; top: 0; z-index: 5; background: #f3efe7; border-bottom: 1px solid #d4c5b9; padding: 10px 16px; display: flex; gap: 14px; align-items: center; font-size: 13px; color: #4a3f2c; }
+    .toolbar button { padding: 8px 16px; font-size: 14px; border: none; background: #378ADD; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .toolbar button:hover { background: #2966bb; }
+    @media print { .toolbar { display: none; } }
+    .sheet { max-width: 7in; margin: 0 auto; padding: 32px 24px; }
+    .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 6px; }
+    .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
+    h1 { font-size: 22px; margin: 4px 0 0; }
+    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; }
+    h2 { font-size: 15px; margin: 26px 0 4px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+    .hint { font-size: 12px; color: #666; margin: 0 0 12px 12px; }
+    .wordgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 20px; letter-spacing: 0.04em; text-align: center; margin-left: 12px; }
+    .wordgrid div { border: 1px solid #ccc; border-radius: 6px; padding: 8px 0; }
+    .family { font-size: 19px; margin: 12px 0 12px 12px; line-height: 1.9; word-spacing: 12px; letter-spacing: 0.05em; }
+    .family strong { display: inline-block; width: 74px; color: #b23b00; word-spacing: normal; }
+    .fillrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 24px; font-size: 22px; margin-left: 12px; }
+    .fillrow span { letter-spacing: 0.06em; }
+    .blank { display: inline-block; width: 52px; border-bottom: 2px solid #1a1a1a; text-align: center; }
+    .sbrow { display: flex; align-items: center; gap: 18px; margin: 16px 0 16px 12px; }
+    .sbrow .cue { font-size: 22px; width: 70px; letter-spacing: 0.05em; }
+    .sboxes { display: flex; gap: 12px; }
+    .sbox { width: 75px; height: 75px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
+    .chainq { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; font-size: 20px; margin: 18px 0 18px 12px; }
+    .chainq .startw { font-weight: bold; letter-spacing: 0.05em; min-width: 52px; }
+    .chainq .arrow { color: #888; }
+    .chainq .instr strong { color: #b23b00; }
+    .chainq .ansboxes { display: flex; gap: 10px; }
+    .chainq .abox { width: 54px; height: 54px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
+    .wordbank { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin: 4px 0 4px 12px; font-size: 18px; color: #333; }
+    .wordbank .lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
+    .wordbank .wb { display: inline-flex; align-items: center; gap: 7px; }
+    .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
+    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 1.9; }
+    .sent .blank { width: 130px; margin: 0 6px; }
+    .read { font-size: 16px; margin: 9px 0 9px 12px; }
+    .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
+    .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
+    .box { border: 1px solid #999; border-radius: 6px; min-height: 132px; padding: 10px 12px; font-size: 18px; }
+    .box .h { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 8px; }
+    .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 12px 14px; margin: 4px 0 22px; font-size: 12.5px; color: #4a3f2c; }
+    .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 5px; }
+    .warm { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; font-size: 18px; text-align: center; margin-left: 12px; }
+    .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; color: #333; }
+    .foot { margin-top: 30px; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; }
+  `;
+
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Practice &mdash; ${c.footNote}</title><style>${css}</style></head><body>
+  <div class="toolbar">
+    <button onclick="window.print()">Print / Save as PDF</button>
+    <span>Use your browser's print dialog, then choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  </div>
+  <div class="sheet">
+    <div class="band">
+      <div>
+        <div class="tag">Targeted Practice &middot; Reading Foundations</div>
+        <h1>${c.titleHtml}</h1>
+      </div>
+      <div class="flagged">Flagged skill</div>
+    </div>
+    <p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>
+
+    <div class="tip">
+      <div class="h">For the grown-up &middot; start here</div>
+      You don't need to prepare anything. Sit with your child and take it one section at a time. If a word is tricky, don't spell it out &mdash; point under each letter and have them say the sound, then blend: ${c.grownSounds} &rarr; &ldquo;${c.grownWord}.&rdquo; Short <em>${c.vowel}</em> is the sound in <em>${c.keyword}</em>. Keep it to about ten minutes and end on a win.
+    </div>
+
+    <h2>Warm-up &middot; Start with words you know</h2>
+    <p class="hint">Read these first to feel ready. Then we practice the /${c.vowel}/ sound &mdash; the <em>${c.vowel}</em> in <em>${c.keyword}</em>.</p>
+    <div class="warm">${warm}</div>
+
+    <h2>1 &middot; Read each word out loud</h2>
+    <p class="hint">Touch each letter, say each sound, then blend.</p>
+    <div class="wordgrid">${grid}</div>
+
+    <h2>2 &middot; Read the word families</h2>
+    <p class="hint">Only the first sound changes. Read down each line, then read it again faster.</p>
+    ${fams}
+
+    <h2>3 &middot; Add the missing <em>${c.vowel}</em></h2>
+    <p class="hint">Say the word, then write <em>${c.vowel}</em> in the space.</p>
+    <div class="fillrow">${fill}</div>
+
+    <h2>4 &middot; Tap the sounds, then write them</h2>
+    <p class="hint">Say the word slowly. Write one sound in each box.</p>
+    ${sbox}
+
+    <h2>5 &middot; Change one sound</h2>
+    <p class="hint">Read the word. Change the one letter shown to make a new word. Write your word &mdash; one letter in each box.</p>
+    ${chain}
+
+    <h2>6 &middot; Finish each sentence</h2>
+    <p class="hint">Pick a short-<em>${c.vowel}</em> word from the bank. Check off each word as you use it &mdash; every word is used once.</p>
+    <div class="wordbank"><span class="lbl">Word bank</span>${bank1}</div>
+    ${sents}
+
+    <h2>7 &middot; Read to a grown-up</h2>
+    <p class="hint">Read each line out loud. Check the box when it sounds smooth.</p>
+    ${reads}
+
+    <h2>8 &middot; Sort the words</h2>
+    <p class="hint">Say each word, then write it in the right box. Check off each word as you use it &mdash; one is done for you.</p>
+    <div class="wordbank"><span class="lbl">Words</span>${bank2}</div>
+    <div class="sort">
+      <div class="box"><div class="h">Short ${c.vowel} (like ${c.grownWord})</div>${c.sortDone}</div>
+      <div class="box"><div class="h">Not short ${c.vowel}</div></div>
+    </div>
+
+    <div class="foot">
+      Practice sheet &middot; ${c.footNote} &middot; original items &middot; sight words drawn from the public-domain Dolch list &middot; reproduce, print, and share freely for classroom and family use.
+    </div>
+  </div>
+  </body></html>`;
+}
+
+function openWorksheet(lessonName) {
+  const c = WORKSHEETS[lessonName];
+  if (!c) return;
+  const w = window.open('', '_blank');
+  if (!w) {
+    alert('Please allow pop-ups so the practice worksheet can open in a new tab.');
+    return;
+  }
+  w.document.open();
+  w.document.write(buildWorksheetHTML(c));
+  w.document.close();
+}
+
+function openWorksheetPicker() {
+  const list = document.getElementById('worksheetPickerList');
+  list.innerHTML = '';
+  Object.entries(curriculum).forEach(([unitName, data]) => {
+    const header = document.createElement('div');
+    header.className = 'worksheet-unit';
+    header.textContent = unitName;
+    list.appendChild(header);
+
+    data.lessons.forEach(lesson => {
+      const ready = !!WORKSHEETS[lesson.name];
+      const row = document.createElement('div');
+      row.className = 'ws-row';
+      row.innerHTML = `
+        <div class="ws-name">${lesson.name}: ${lesson.skill}</div>
+        ${ready
+          ? `<button class="ws-ready" onclick="openWorksheet('${lesson.name}')">Generate</button>`
+          : `<span class="ws-soon">Coming soon</span>`}
+      `;
+      list.appendChild(row);
+    });
+  });
+  document.getElementById('worksheetModal').classList.add('show');
+}
+
+function closeWorksheetModal() {
+  document.getElementById('worksheetModal').classList.remove('show');
 }
 
 // Initialize
