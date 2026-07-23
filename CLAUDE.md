@@ -87,38 +87,34 @@ understand the terminal.
 
 ---
 
-# This project
+# This project — Reading Assessment Tool with Phonics Button
 
-A phonics assessment tool for teachers, modeled on the CORE Phonics Survey.
+This project adds ONE capability to the phonics assessment tool I already have
+(the "UFLI Foundations Tracker" at `phonics-assessment-tool:/index.html`): a
+**worksheet generator**. A button on that tool hands parents matched, printable
+practice worksheets for the exact skill the assessment flagged. Same tool, more
+capability — not a separate standalone app.
 
-## What it is
+> NOTE: The "CORE Phonics Survey" tool is a **separate project** and is NOT part
+> of this repo. Do not mix it into this work.
 
-- A website, not a native app. Teachers open a link on a school iPad and add it
-  to the home screen.
-- One-on-one: a child reads aloud, the teacher scores on screen.
-- Untimed. The child works at their own pace.
+## The closed loop
 
-## Scoring rules that come from the real assessment
+Assessment flags a skill → parent clicks **"Generate practice worksheets"** →
+picks the skill → one click makes a printable PDF practice sheet for that exact
+skill. The picker is built from the tool's own curriculum, so its skill names
+and order always match the tool exactly.
 
-- Three states, not two: correct, incorrect, or no response.
-- Correct is marked with nothing at all.
-- Incorrect means the teacher records the WRONG SOUND the child actually said.
-  That error is the diagnostic information. A red X alone is less useful than
-  the paper form.
-- No response is circled.
+## Copyright rules (hard rules)
 
-## Non-negotiables
+- Phonics scope & sequence is a shared teaching method — fine to follow.
+- The Dolch word list (1936) is public domain — fine to use for sight words.
+- The Fry list is NOT free — never use it.
+- Never reproduce UFLI's wording, word lists, or page design. Original words only.
 
-- Word lists must flag real words vs. pseudowords. Pseudowords are in the
-  assessment on purpose, because they cannot be memorized.
-- Must print to paper matching the screen exactly, so a teacher can go analog
-  when the iPad dies and key it in later.
-- Must survive bad school wifi without losing data.
-- Child audio is NOT stored or sent anywhere for automatic scoring. The teacher
-  scores. Speech recognition is unreliable on children's voices, and a minor's
-  voice leaving the building is a district-level decision, not a coding one.
+## Status
 
-## Build order
-
-Part C first: the 21 consonant sounds, one screen, scoring only. Nothing else
-until that works in a browser.
+Done — all 128 skills generate printable worksheets across six sheet types
+(sound patterns, magic-e, letter-sounds, word endings/affixes, reviews, and
+syllables). Browser-verified, backed up on `main`. The full build spec lives in
+the `phonics-worksheet` skill in `.claude/skills/`.
