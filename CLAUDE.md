@@ -40,9 +40,10 @@ can never drift).
 
 - Stage 1 — Prove the Short a template: **done / locked.**
 - Stage 2 — Button + skill picker + generator in the phonics tool: **built.**
-- Stage 3 — Worksheet ladder content: short vowels (Short A/E/I/O/U) **done**;
-  remaining ~123 skills incremental (picker shows all; ready ones generate,
-  others show "coming soon").
+- Stage 3 — Worksheet ladder content: **COMPLETE — all 128 skills generate.**
+  Six sheet shapes: sound-pattern (CVC/digraph/teams), magic-e, letter-sound,
+  word-ending/affix, review (multi-column sort), and syllable. Browser-verified:
+  128/128 render with zero JS errors.
 - Stage 4 — Merge to `main`: only on explicit approval.
 
 ## Git workflow
