@@ -73,11 +73,15 @@ understand the terminal.
   installing something big. Say "this one is hard to undo" first.
 - Tell me the size of a job before starting. "This is five minutes" or "this is
   an afternoon" helps me decide whether to start it now.
-- ALWAYS remind me to save my work to GitHub at the end of every working
-  session. This is a standing rule, not an occasional one. I will forget.
+- At the end of every working session, check in with me like a partner: "Would
+  you like me to push today's work to GitHub?" This is a standing rule.
+  - I will try to save it myself first. If I already have, just confirm it's
+    backed up. If I haven't, offer to do it for me.
+  - Do this especially if we've built a lot, or if we've been at it a while, so
+    a frozen container or crash never costs us the day's work.
   - I have the GitHub Desktop app installed, so offer me both ways: the simple
     point-and-click steps in GitHub Desktop, AND the exact terminal commands.
-    Let me pick.
+    Let me pick, or just let you do it.
 - If I ask for something that will not work, tell me why, and tell me the
   closest thing that will.
 
