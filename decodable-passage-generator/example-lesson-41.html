@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decodable Passage &mdash; Lesson 41, Short Vowels Review</title>
+<style>
+  @page { size: letter; margin: 0.6in; }
+  * { box-sizing: border-box; }
+  body { font-family: "Century Gothic", "Verdana", sans-serif; color: #1a1a1a; background: #fff; margin: 0; line-height: 1.5; }
+
+  .toolbar { position: sticky; top: 0; z-index: 5; background: #f3efe7; border-bottom: 1px solid #d4c5b9; padding: 10px 16px; display: flex; gap: 14px; align-items: center; font-size: 13px; color: #4a3f2c; }
+  .toolbar button { padding: 8px 16px; font-size: 14px; border: none; background: #378ADD; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  .toolbar button:hover { background: #2966bb; }
+
+  /* Each .page is exactly one printed sheet: 8.5x11 letter minus 0.6in margins. */
+  .page { width: 7.3in; min-height: 9.8in; margin: 0 auto; background: #fff; position: relative; }
+
+  @media screen {
+    body { background: #e9e5de; }
+    .page { box-shadow: 0 2px 10px rgba(0,0,0,0.18); padding: 0.6in; width: 8.5in; min-height: 11in; margin: 24px auto; }
+  }
+  @media print {
+    .toolbar { display: none; }
+    .page { min-height: 0; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+  }
+
+  .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 6px; }
+  .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
+  h1 { font-size: 22px; margin: 4px 0 0; }
+  .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; text-align: right; line-height: 1.4; }
+  .hint { font-size: 12px; color: #666; margin: 6px 0 10px; }
+
+  h2 { font-size: 15px; margin: 16px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+  .sub { font-size: 11.5px; color: #666; margin: 0 0 8px 12px; }
+
+  /* ---- the picture ---- */
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 5px; margin: 0 auto 3px; background: #fff; max-width: 4.4in; }
+  .art svg { display: block; width: 100%; height: auto; }
+  .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
+
+  /* ---- warm-up + heart words ---- */
+  .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 18px; text-align: center; margin: 0 0 10px 12px; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
+  .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin: 0 0 0 12px; font-size: 18px; }
+  .hearts .hw { display: inline-flex; align-items: center; gap: 7px; }
+  .hearts .ubox { display: inline-block; width: 15px; height: 15px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+
+  /* ---- the passage ---- */
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage .ptitle { font-size: 19px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
+  .passage p { font-size: 20px; line-height: 1.78; letter-spacing: 0.04em; word-spacing: 3px; margin: 0; }
+  .passage .ln { display: block; }
+
+  /* ---- fluency tracker ---- */
+  .fluency { display: flex; align-items: center; gap: 14px; margin: 12px 0 0 12px; }
+  .fluency .star { width: 28px; height: 28px; border: 1.5px solid #1a1a1a; border-radius: 50%; display: inline-block; flex: none; }
+  .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .fluency .note { font-size: 11.5px; color: #777; }
+
+  /* ---- grown-up box ---- */
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 4px; font-size: 11.8px; color: #4a3f2c; }
+  .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 5px; }
+  .tip p { margin: 4px 0; line-height: 1.35; }
+
+  /* ---- comprehension ---- */
+  .q { font-size: 15px; margin: 7px 0 0 12px; }
+  .qline { display: block; border-bottom: 1.5px solid #999; height: 24px; margin-top: 3px; }
+
+  /* ---- draw box ---- */
+  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 2.2in; margin: 6px 0 0 0; position: relative; }
+  .drawbox .dlab { position: absolute; top: 8px; left: 12px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ---- audit strip ---- */
+  .audit { margin-top: 12px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 11px; color: #33502c; line-height: 1.5; }
+  .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
+  .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
+
+  .foot { margin-top: 12px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <span>Use your browser&rsquo;s print dialog, then choose &ldquo;Save as PDF&rdquo; to keep a copy. Prints as 2 pages &mdash; front and back.</span>
+</div>
+
+<!-- ================= PAGE 1 — THE CHILD'S PAGE ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <div class="tag">Decodable Passage &middot; Reading Foundations</div>
+      <h1>Mud Pig</h1>
+    </div>
+    <div class="flagged">Lesson 41<br>Short Vowels &middot; All</div>
+  </div>
+  <p class="hint">Every word here uses only sounds taught through Lesson 41. Nothing has to be guessed. <strong>Grown-ups: turn the page over first.</strong></p>
+
+  <!-- ---- picture ---- -->
+  <div class="art">
+    <svg viewBox="0 0 660 250" role="img" aria-label="A child holding a rag stands beside a tub. A pig sits in a mud puddle under the sun.">
+      <g fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+
+        <!-- sun -->
+        <circle cx="588" cy="46" r="24"/>
+        <line x1="588" y1="8"  x2="588" y2="0"/>
+        <line x1="588" y1="92" x2="588" y2="84"/>
+        <line x1="550" y1="46" x2="542" y2="46"/>
+        <line x1="634" y1="46" x2="626" y2="46"/>
+        <line x1="561" y1="19" x2="555" y2="13"/>
+        <line x1="615" y1="73" x2="621" y2="79"/>
+        <line x1="615" y1="19" x2="621" y2="13"/>
+        <line x1="561" y1="73" x2="555" y2="79"/>
+
+        <!-- ground -->
+        <line x1="18" y1="214" x2="642" y2="214"/>
+
+        <!-- mud puddle -->
+        <path d="M300 214 q10 -20 46 -22 q30 -14 70 -6 q44 -8 72 8 q30 4 30 20 z" fill="#e6e0d6"/>
+        <path d="M330 205 q14 -6 26 -2" stroke-width="1.6"/>
+        <path d="M420 200 q16 -6 30 -1" stroke-width="1.6"/>
+
+        <!-- pig: body -->
+        <ellipse cx="392" cy="172" rx="60" ry="36" fill="#fff"/>
+        <!-- pig: tail -->
+        <path d="M333 158 q-16 -6 -12 6 q4 12 14 4"/>
+        <!-- pig: legs -->
+        <line x1="360" y1="204" x2="360" y2="214"/>
+        <line x1="386" y1="207" x2="386" y2="214"/>
+        <line x1="418" y1="207" x2="418" y2="214"/>
+        <!-- pig: head -->
+        <circle cx="459" cy="158" r="31" fill="#fff"/>
+        <!-- pig: ears -->
+        <path d="M441 133 l-6 -20 l20 9 z" fill="#fff"/>
+        <path d="M475 133 l10 -19 l4 21 z" fill="#fff"/>
+        <!-- pig: snout -->
+        <ellipse cx="487" cy="167" rx="13" ry="10" fill="#fff"/>
+        <circle cx="484" cy="167" r="1.7" fill="#1a1a1a"/>
+        <circle cx="491" cy="167" r="1.7" fill="#1a1a1a"/>
+        <!-- pig: eye + smile -->
+        <circle cx="459" cy="149" r="2.4" fill="#1a1a1a"/>
+        <path d="M448 172 q7 6 14 1"/>
+
+        <!-- child: head -->
+        <circle cx="128" cy="104" r="25" fill="#fff"/>
+        <circle cx="120" cy="101" r="2.4" fill="#1a1a1a"/>
+        <circle cx="136" cy="101" r="2.4" fill="#1a1a1a"/>
+        <path d="M118 113 q10 8 20 0"/>
+        <path d="M114 84 q6 -10 14 -6 q10 -6 14 6"/>
+        <!-- child: body -->
+        <path d="M128 129 l0 46"/>
+        <path d="M128 175 l-14 39"/>
+        <path d="M128 175 l16 39"/>
+        <path d="M128 141 l-24 22"/>
+        <path d="M128 141 l30 12"/>
+        <!-- rag in hand -->
+        <path d="M158 153 l22 -8 l8 20 l-22 8 z" fill="#fff"/>
+        <path d="M164 152 l6 16" stroke-width="1.4"/>
+
+        <!-- tub -->
+        <path d="M196 182 l58 0 l-8 32 l-42 0 z" fill="#fff"/>
+        <line x1="196" y1="182" x2="254" y2="182"/>
+        <path d="M212 182 q14 -16 28 0" stroke-width="1.8"/>
+
+        <!-- grass -->
+        <path d="M60 214 l-4 -12 M66 214 l2 -14 M72 214 l6 -11" stroke-width="1.8"/>
+        <path d="M560 214 l-4 -12 M568 214 l2 -13" stroke-width="1.8"/>
+      </g>
+    </svg>
+  </div>
+  <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
+
+  <!-- ---- before you read ---- -->
+  <h2>Before you read</h2>
+  <p class="rowlab">Sound these out. Tap under each letter, then blend.</p>
+  <div class="warm">
+    <div>pig</div><div>mud</div><div>sun</div><div>tub</div><div>rag</div><div>wet</div>
+  </div>
+  <p class="rowlab">Heart words &mdash; these don&rsquo;t sound out neatly. Read each, then check the box.</p>
+  <div class="hearts">
+    <span class="hw"><span class="ubox"></span>the</span>
+    <span class="hw"><span class="ubox"></span>is</span>
+    <span class="hw"><span class="ubox"></span>a</span>
+    <span class="hw"><span class="ubox"></span>and</span>
+    <span class="hw"><span class="ubox"></span>to</span>
+    <span class="hw"><span class="ubox"></span>in</span>
+  </div>
+
+  <!-- ---- passage ---- -->
+  <h2>Read the story</h2>
+  <div class="passage">
+    <div class="ptitle">Mud Pig</div>
+    <p>
+      <span class="ln">Sam has a pig.</span>
+      <span class="ln">The pig is big.</span>
+      <span class="ln">Sam and the pig sit in the sun.</span>
+      <span class="ln">The pig runs to the mud.</span>
+      <span class="ln">The pig sits in the mud.</span>
+      <span class="ln">Sam gets a rag and a tub.</span>
+      <span class="ln">Sam rubs the pig in the tub.</span>
+      <span class="ln">The pig is wet. Sam is wet!</span>
+      <span class="ln">The pig naps in the sun.</span>
+    </p>
+  </div>
+
+  <div class="fluency">
+    <span class="lbl">Read it 3 times</span>
+    <span class="star"></span><span class="star"></span><span class="star"></span>
+    <span class="note">Color one circle each time. It gets easier every read.</span>
+  </div>
+
+</div>
+
+<!-- ================= PAGE 2 — THE GROWN-UP'S PAGE ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <div class="tag">Mud Pig &middot; For the grown-up, and after reading</div>
+      <h1 style="font-size:20px;">How to use this, then talk and draw</h1>
+    </div>
+    <div class="flagged">Lesson 41<br>Page 2 of 2</div>
+  </div>
+
+  <div class="tip">
+    <div class="h">Four minutes, in this order</div>
+    <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
+    <p><strong>2. Cover the picture while they read.</strong> The picture is for understanding, not for guessing words. Uncover it when they finish.</p>
+    <p><strong>3. Warm up on the six words,</strong> check off the heart words, then read the story.</p>
+    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Say &ldquo;sound it out&rdquo; and tap under each letter. Every word here is one they can build.</p>
+    <p><strong>5. Read it three times.</strong> The first read is work. The third read is reading.</p>
+  </div>
+
+  <h2>Think about it</h2>
+  <p class="sub">Say the answer out loud first. Then write it if you can.</p>
+  <div class="q">1. Why is Sam wet?<span class="qline"></span></div>
+  <div class="q">2. What did Sam use to get the pig clean?<span class="qline"></span></div>
+  <div class="q">3. Do you think the pig liked the tub? Tell me why.<span class="qline"></span><span class="qline"></span></div>
+
+  <h2>Draw it</h2>
+  <p class="sub">Draw the last thing that happens in the story.</p>
+  <div class="drawbox"><span class="dlab">Your picture</span></div>
+
+  <div class="audit">
+    <div class="h">Sound check &middot; passed</div>
+    Checked word by word against the sounds taught through Lesson 41.
+    <strong>55 words &middot; 0 untaught sounds.</strong>
+    No silent <em>e</em>, no digraphs (<code>sh</code> <code>ch</code> <code>th</code> <code>ck</code>), no blends, no vowel teams, no r-controlled vowels.
+    Heart words used: <code>the</code> <code>is</code> <code>a</code> <code>and</code> <code>to</code> <code>in</code> &mdash; all taught by Lesson 41.
+  </div>
+
+  <div class="foot">
+    <span>Decodable Passage &mdash; Lesson 41, Short Vowels Review (all)</span>
+    <span>Original text. Public-domain sight words only.</span>
+  </div>
+
+</div>
+
+</body>
+</html>
