@@ -5,7 +5,9 @@ point is to agree on what a finished sheet looks like before we build the
 machine that makes 128 of them.
 
 - `example-lesson-41.html` — open in a browser, click **Print / Save as PDF**
-- `Mud Pig - Lesson 41 - EXAMPLE.pdf` — the printed result, 2 pages
+- `Mud Pig - Lesson 41 - EXAMPLE.pdf` — the printed result, 3 pages
+- `check-pages.py` — measures each sheet against the page budget before printing,
+  so we find what to trim instead of guessing (`python3 check-pages.py`)
 
 ## Why Lesson 41
 
@@ -43,15 +45,36 @@ agent composes into a scene. Roughly 40 props covers most CVC-level stories.
 
 ## Deliberate layout choices, in case we want to change them
 
-- **Two pages, front and back.** Page 1 is the child's — picture, warm-up words,
-  heart words, story, fluency circles. No adult text competing for attention.
-  Page 2 is the grown-up's — how to use it, questions, draw box.
-- **20px type at 1.78 line spacing** for the story. Big enough for a finger to
-  track under, tight enough to fit nine lines.
-- **Warm-up words come before the story**, and they are the same words that
-  appear in it. First encounter should be in isolation, not mid-sentence.
-- **The "sound check" strip on page 2** is the audit result printed on the page.
-  It is how a parent knows this wasn't slop.
+**Three sheets, and who owns each one is printed at the top.** Revised after
+teacher review, July 2026 — the first draft mixed adult instructions onto the
+child's page, which is just more words for a young reader to get confused by.
+
+| Sheet | Owner | What's on it |
+|---|---|---|
+| 1 | Grown-up — keep this one | How to use it in five steps, the story to follow along with, what a good answer sounds like, the sound-check reassurance |
+| 2 | The reader | Picture, warm-up words, heart words, the story, three fluency circles |
+| 3 | The reader | Three questions with wide writing lines, and a big draw-it box |
+
+**Space for young hands is non-negotiable.** A K–2 child is still learning to
+hold the pencil, so small targets are a fine-motor problem before they are ever a
+reading problem. When a sheet doesn't fit, cut adult text or add a page — never
+the child's space.
+
+- Writing lines **48px** tall, drawing box **3.3in** tall, ~20px between questions
+- Story type **24px**, word cards and heart words **22px**, question text **19px**
+- Adult text may be 11–13px. A child's may not.
+
+`check-pages.py` exists precisely so this rule survives contact with a full page:
+it measures each sheet against the 940.8px letter budget and says which one
+overflows, so the trimming comes out of headers rather than the drawing box.
+
+**Warm-up words come before the story**, and they are the same words that appear
+in it. First encounter should be in isolation, not mid-sentence.
+
+**The "sound check" is written for a parent, not an engineer.** It lives on the
+grown-up sheet and says, in plain words, that every word can be sounded out and
+what was deliberately kept out. The point is an adult who feels *empowered* to
+follow the recipe — not an audit log.
 
 ## What the real generator still needs
 

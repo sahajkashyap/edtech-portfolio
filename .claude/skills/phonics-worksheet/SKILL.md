@@ -43,9 +43,31 @@ one click hands the parent matched practice for that exact skill.
 - Keep each "problem" visually distinct — do not chain two instructions on one
   line. If steps are connected, still present them as separate problems with
   their own answer boxes.
-- Grown-up guidance sits **at the very top** so the adult can help right away and
-  is not overwhelmed. Word "the grown-up" (not "parent") — the helper may be any
-  adult.
+
+### Space is not decoration — never trim it to fit the page
+
+Confirmed by the teacher, July 2026. A child at this age is still learning to
+*hold the pencil*. Small, intricate targets are a fine-motor problem before they
+are ever a reading problem. When a sheet does not fit, **cut adult text, headers,
+or margins — never the child's working space.** Add a page instead.
+
+- **Writing lines: 48px tall, minimum.** Half that is too tight to form letters.
+- **Drawing boxes: 3.3in tall, minimum** for a half-page box. When in doubt, bigger.
+- **Generous gaps between questions** (~20px), so answers don't collide.
+- **Child-facing type is large**: story text ~24px, word cards / heart words
+  ~22px, question text ~19px. Adult text can be 11–13px; a child's cannot.
+
+### The child's page holds only the child's things
+
+Confirmed by the teacher, July 2026. Do not mix adult instructions into a page
+the child is working on — it is extra words to get confused by.
+
+- **Grown-up gets a separate first sheet**: how to use it, the story to follow
+  along with, what a good answer sounds like, and the sound-check reassurance.
+- **The child's sheets start with the work itself** — picture, words, story, then
+  their questions and drawing.
+- Label every sheet's owner at the top so nobody hands the wrong page to a kid.
+- Word it "the grown-up" (not "parent") — the helper may be any adult.
 
 ## Confirmed sheet structure (the Short a template)
 

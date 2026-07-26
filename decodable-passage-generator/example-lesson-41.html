@@ -30,67 +30,78 @@
   .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
   h1 { font-size: 22px; margin: 4px 0 0; }
   .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; text-align: right; line-height: 1.4; }
-  .hint { font-size: 12px; color: #666; margin: 6px 0 10px; }
 
-  h2 { font-size: 15px; margin: 16px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
-  .sub { font-size: 11.5px; color: #666; margin: 0 0 8px 12px; }
+  /* who the sheet belongs to — printed loud so nobody hands the wrong page to a kid */
+  .owner { display: inline-block; font-size: 11px; font-weight: bold; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px; }
+  .owner.adult { background: #4a3f2c; color: #f7f3ea; }
+  .owner.child { background: #378ADD; color: #fff; }
+
+  h2 { font-size: 15px; margin: 14px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+  .sub { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+
+  /* ---- grown-up boxes ---- */
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 12px 15px; margin: 4px 0 6px; font-size: 12.5px; color: #4a3f2c; }
+  .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 6px; }
+  .tip p { margin: 4px 0; line-height: 1.4; }
+
+  .answers { margin: 6px 0 0 0; font-size: 12.5px; }
+  .answers .qa { margin: 0 0 9px 12px; line-height: 1.42; }
+  .answers .qa .qq { font-weight: bold; }
+  .answers .qa .aa { color: #555; }
 
   /* ---- the picture ---- */
-  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 5px; margin: 0 auto 3px; background: #fff; max-width: 4.4in; }
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
   .art svg { display: block; width: 100%; height: auto; }
   .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
-  .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 18px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
-  .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin: 0 0 0 12px; font-size: 18px; }
-  .hearts .hw { display: inline-flex; align-items: center; gap: 7px; }
-  .hearts .ubox { display: inline-block; width: 15px; height: 15px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
+  .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
+  .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
   /* ---- the passage ---- */
   .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
-  .passage .ptitle { font-size: 19px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
-  .passage p { font-size: 20px; line-height: 1.78; letter-spacing: 0.04em; word-spacing: 3px; margin: 0; }
+  .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
+  .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
   .passage .ln { display: block; }
 
   /* ---- fluency tracker ---- */
-  .fluency { display: flex; align-items: center; gap: 14px; margin: 12px 0 0 12px; }
+  .fluency { display: flex; align-items: center; gap: 14px; margin: 8px 0 0 12px; }
   .fluency .star { width: 28px; height: 28px; border: 1.5px solid #1a1a1a; border-radius: 50%; display: inline-block; flex: none; }
   .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
   .fluency .note { font-size: 11.5px; color: #777; }
 
-  /* ---- grown-up box ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 4px; font-size: 11.8px; color: #4a3f2c; }
-  .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 5px; }
-  .tip p { margin: 4px 0; line-height: 1.35; }
+  /* ---- comprehension: wide lines for young hands ---- */
+  .q { font-size: 19px; margin: 0 0 20px 12px; }
+  .q .qtext { display: block; margin-bottom: 10px; }
+  .qline { display: block; border-bottom: 1.5px solid #999; height: 48px; }
 
-  /* ---- comprehension ---- */
-  .q { font-size: 15px; margin: 7px 0 0 12px; }
-  .qline { display: block; border-bottom: 1.5px solid #999; height: 24px; margin-top: 3px; }
+  /* ---- draw box: 50% bigger than the first draft ---- */
+  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 3.3in; margin: 2px 0 0 0; position: relative; }
+  .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
-  /* ---- draw box ---- */
-  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 2.2in; margin: 6px 0 0 0; position: relative; }
-  .drawbox .dlab { position: absolute; top: 8px; left: 12px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
-
-  /* ---- audit strip ---- */
-  .audit { margin-top: 12px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 11px; color: #33502c; line-height: 1.5; }
+  /* ---- audit strip (grown-up sheet only) ---- */
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #33502c; line-height: 1.55; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 12px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 14px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Use your browser&rsquo;s print dialog, then choose &ldquo;Save as PDF&rdquo; to keep a copy. Prints as 2 pages &mdash; front and back.</span>
+  <span>Prints as 3 pages: 1 grown-up sheet, then 2 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
-<!-- ================= PAGE 1 — THE CHILD'S PAGE ================= -->
+<!-- ================= PAGE 1 — GROWN-UP SHEET (keep this one) ================= -->
 <div class="page">
 
+  <span class="owner adult">Grown-up sheet &mdash; keep this one</span>
   <div class="band">
     <div>
       <div class="tag">Decodable Passage &middot; Reading Foundations</div>
@@ -98,7 +109,68 @@
     </div>
     <div class="flagged">Lesson 41<br>Short Vowels &middot; All</div>
   </div>
-  <p class="hint">Every word here uses only sounds taught through Lesson 41. Nothing has to be guessed. <strong>Grown-ups: turn the page over first.</strong></p>
+
+  <h2>Four minutes, in this order</h2>
+  <div class="tip">
+    <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
+    <p><strong>2. Cover the picture while they read.</strong> The picture is for understanding, not for guessing words. Uncover it when they finish.</p>
+    <p><strong>3. Warm up on the six words,</strong> check off the heart words, then read the story.</p>
+    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Say &ldquo;sound it out&rdquo; and tap under each letter. Every word here is one they can build &mdash; that is the whole point.</p>
+    <p><strong>5. Read it three times.</strong> The first read is work. The third read is reading.</p>
+  </div>
+
+  <h2>The story they will read</h2>
+  <p class="sub">So you can follow along without looking over their shoulder.</p>
+  <div class="tip" style="font-size:14px; line-height:1.7;">
+    Sam has a pig. The pig is big. Sam and the pig sit in the sun. The pig runs to
+    the mud. The pig sits in the mud. Sam gets a rag and a tub. Sam rubs the pig
+    in the tub. The pig is wet. Sam is wet! The pig naps in the sun.
+  </div>
+
+  <h2>Checking they understood</h2>
+  <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
+  <div class="answers">
+    <p class="qa"><span class="qq">1. Why is Sam wet?</span><br>
+      <span class="aa">Looking for cause and effect: Sam washed the pig, so Sam got wet too. If they
+      just say &ldquo;the tub,&rdquo; ask &ldquo;and what happened in the tub?&rdquo;</span></p>
+    <p class="qa"><span class="qq">2. What did Sam use to get the pig clean?</span><br>
+      <span class="aa">A rag and a tub. This one is stated right in the story &mdash; if they can&rsquo;t find it,
+      have them reread that line rather than telling them.</span></p>
+    <p class="qa"><span class="qq">3. Do you think the pig liked the tub? Tell me why.</span><br>
+      <span class="aa">Either answer is correct. You are listening for a <em>reason tied to the story</em> &mdash;
+      &ldquo;no, because it ran to the mud&rdquo; or &ldquo;yes, because it naps at the end.&rdquo;</span></p>
+  </div>
+
+  <div class="audit">
+    <div class="h">Why you can trust this page &middot; checked, word by word</div>
+    <p style="margin:0 0 5px;"><strong>Every one of the 55 words in this story can be sounded out with what your
+    child has already been taught.</strong> Nothing here needs guessing. If they get stuck, the answer is
+    always &ldquo;sound it out&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
+    <p style="margin:0;">Deliberately left out, because they haven&rsquo;t been taught yet:
+    silent <em>e</em> (<code>cake</code>), letter pairs like <code>sh</code> <code>ch</code> <code>th</code> <code>ck</code>,
+    two-consonant starts like <code>stop</code>, vowel pairs like <code>rain</code>, and <em>r</em>-changed
+    vowels like <code>bird</code>. The only words to know by sight, not sound out, are the six heart words:
+    <code>the</code> <code>is</code> <code>a</code> <code>and</code> <code>to</code> <code>in</code>.</p>
+  </div>
+
+  <div class="foot">
+    <span>Grown-up sheet &mdash; Lesson 41, Short Vowels Review (all)</span>
+    <span>Original text. Public-domain sight words only.</span>
+  </div>
+
+</div>
+
+<!-- ================= PAGE 2 — CHILD'S READING SHEET ================= -->
+<div class="page">
+
+  <span class="owner child">For the reader</span>
+  <div class="band">
+    <div>
+      <div class="tag">My reading page</div>
+      <h1>Mud Pig</h1>
+    </div>
+    <div class="flagged">Name<br>__________</div>
+  </div>
 
   <!-- ---- picture ---- -->
   <div class="art">
@@ -172,15 +244,13 @@
       </g>
     </svg>
   </div>
-  <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
 
   <!-- ---- before you read ---- -->
-  <h2>Before you read</h2>
-  <p class="rowlab">Sound these out. Tap under each letter, then blend.</p>
+  <h2>Say these first</h2>
   <div class="warm">
     <div>pig</div><div>mud</div><div>sun</div><div>tub</div><div>rag</div><div>wet</div>
   </div>
-  <p class="rowlab">Heart words &mdash; these don&rsquo;t sound out neatly. Read each, then check the box.</p>
+  <p class="rowlab">Heart words &mdash; read each one, then check the box.</p>
   <div class="hearts">
     <span class="hw"><span class="ubox"></span>the</span>
     <span class="hw"><span class="ubox"></span>is</span>
@@ -210,53 +280,43 @@
   <div class="fluency">
     <span class="lbl">Read it 3 times</span>
     <span class="star"></span><span class="star"></span><span class="star"></span>
-    <span class="note">Color one circle each time. It gets easier every read.</span>
+    <span class="note">Color one circle each time.</span>
   </div>
 
 </div>
 
-<!-- ================= PAGE 2 — THE GROWN-UP'S PAGE ================= -->
+<!-- ================= PAGE 3 — CHILD'S WORK SHEET ================= -->
 <div class="page">
 
-  <div class="band">
+  <div class="band" style="margin-bottom:4px;">
     <div>
-      <div class="tag">Mud Pig &middot; For the grown-up, and after reading</div>
-      <h1 style="font-size:20px;">How to use this, then talk and draw</h1>
+      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
+      <h1 style="font-size:18px;">Mud Pig &mdash; my work page</h1>
     </div>
-    <div class="flagged">Lesson 41<br>Page 2 of 2</div>
+    <div class="flagged">Name<br>__________</div>
   </div>
 
-  <div class="tip">
-    <div class="h">Four minutes, in this order</div>
-    <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
-    <p><strong>2. Cover the picture while they read.</strong> The picture is for understanding, not for guessing words. Uncover it when they finish.</p>
-    <p><strong>3. Warm up on the six words,</strong> check off the heart words, then read the story.</p>
-    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Say &ldquo;sound it out&rdquo; and tap under each letter. Every word here is one they can build.</p>
-    <p><strong>5. Read it three times.</strong> The first read is work. The third read is reading.</p>
-  </div>
+  <h2 style="margin-top:14px;">Think about it</h2>
 
-  <h2>Think about it</h2>
-  <p class="sub">Say the answer out loud first. Then write it if you can.</p>
-  <div class="q">1. Why is Sam wet?<span class="qline"></span></div>
-  <div class="q">2. What did Sam use to get the pig clean?<span class="qline"></span></div>
-  <div class="q">3. Do you think the pig liked the tub? Tell me why.<span class="qline"></span><span class="qline"></span></div>
+  <div class="q">
+    <span class="qtext">1. Why is Sam wet?</span>
+    <span class="qline"></span>
+    <span class="qline"></span>
+  </div>
+  <div class="q">
+    <span class="qtext">2. What did Sam use to get the pig clean?</span>
+    <span class="qline"></span>
+    <span class="qline"></span>
+  </div>
+  <div class="q">
+    <span class="qtext">3. Do you think the pig liked the tub? Tell me why.</span>
+    <span class="qline"></span>
+    <span class="qline"></span>
+  </div>
 
   <h2>Draw it</h2>
   <p class="sub">Draw the last thing that happens in the story.</p>
   <div class="drawbox"><span class="dlab">Your picture</span></div>
-
-  <div class="audit">
-    <div class="h">Sound check &middot; passed</div>
-    Checked word by word against the sounds taught through Lesson 41.
-    <strong>55 words &middot; 0 untaught sounds.</strong>
-    No silent <em>e</em>, no digraphs (<code>sh</code> <code>ch</code> <code>th</code> <code>ck</code>), no blends, no vowel teams, no r-controlled vowels.
-    Heart words used: <code>the</code> <code>is</code> <code>a</code> <code>and</code> <code>to</code> <code>in</code> &mdash; all taught by Lesson 41.
-  </div>
-
-  <div class="foot">
-    <span>Decodable Passage &mdash; Lesson 41, Short Vowels Review (all)</span>
-    <span>Original text. Public-domain sight words only.</span>
-  </div>
 
 </div>
 
