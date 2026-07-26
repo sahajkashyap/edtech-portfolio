@@ -35,7 +35,42 @@ CONSONANT_DIGRAPHS = ["tch", "dge", "sh", "th", "ch", "wh", "ph", "ng", "nk",
 # Syllables). Before that a passage must stay to one syllable per word --
 # this single rule is what stops "picnic", "basket", "rabbit" and "little"
 # from being called readable at Lesson 41.
+# How many syllables a word may have, by lesson. Before 66 no syllable
+# division has been taught at all. Lessons 66-68 teach two-syllable words.
+# From 99 the affix lessons legitimately build longer words.
+def syllable_limit(lesson: int) -> int:
+    if lesson < 66:
+        return 1
+    if lesson < 99:
+        return 2
+    return 99
+
+
 MULTISYLLABLE_LESSON = 66
+
+# Words whose vowel or silent letter cannot be worked out from spelling.
+# Each maps to the lesson from which it is safe (999 = never decodable, it
+# must be taught as a heart word). This list is the honest place for English
+# irregularity; a substring gate cannot do this job.
+IRREGULAR_WORDS = {
+    # o saying /u/
+    "son": 999, "ton": 999, "won": 999, "some": 999, "come": 999, "done": 999,
+    "none": 999, "love": 999, "above": 999, "month": 999, "mother": 999,
+    "other": 999, "brother": 999, "nothing": 999, "money": 999,
+    # u saying /oo/, a saying /o/ after w
+    "put": 999, "pull": 999, "full": 999, "push": 999, "bush": 999, "bull": 999,
+    "wash": 999, "want": 999, "watch": 999, "swan": 999, "wasp": 999,
+    "was": 999, "what": 999, "water": 999,
+    # silent letters that are not gated graphemes
+    "talk": 98, "walk": 98, "chalk": 98, "calf": 98, "half": 98, "calm": 98,
+    "palm": 98, "folk": 98, "yolk": 98, "could": 98, "would": 98, "should": 98,
+    "island": 98, "listen": 98, "castle": 98, "often": 98, "whistle": 98,
+    "climb": 98, "comb": 98, "lamb": 98, "thumb": 98, "numb": 98, "limb": 98,
+    "autumn": 98, "column": 98, "sign": 118, "design": 118, "gnat": 118,
+    # other irregulars
+    "two": 999, "who": 999, "whose": 999, "does": 999, "goes": 999,
+    "sugar": 999, "sure": 999, "sword": 999, "stomach": 999, "eye": 999,
+}
 
 # y only says its consonant sound (yes, yum) at Lesson 30. y as a VOWEL --
 # long i in "my" (73) and long e in "happy" (74) -- comes much later. Before
@@ -73,7 +108,8 @@ def load_doc() -> dict:
 def load(lesson: int) -> dict:
     doc = load_doc()
     if not 1 <= lesson <= doc["totalLessons"]:
-        raise SystemExit(f"Lesson must be 1-{doc['totalLessons']}, got {lesson}")
+        print(f"Lesson must be 1-{doc['totalLessons']}, got {lesson}")
+        sys.exit(2)
     return doc["lessons"][lesson - 1]
 
 
@@ -95,12 +131,30 @@ def strip_suffix(word: str, allowed_suffixes):
         root = word[: -len(suf)]
         if len(root) < 2 or not any(c in VOWELS or c == "y" for c in root):
             continue
+        # "hundred" is not "hundr" + ed: a root ending in an odd consonant
+        # cluster is not a real word, so do not peel.
+        tail = root
+        for d in CONSONANT_DIGRAPHS:
+            tail = tail.replace(d, "#")
+        tail = re.sub(r"([^aeiou])\1", r"\1", tail)
+        if len(tail) >= 3 and all(c not in VOWELS and c != "#" for c in tail[-3:]):
+            continue
+        # bl, cr, dr, fl... only ever START a syllable in English, so a "root"
+        # ending in one is not a word: "sibling" is not "sibl" + ing.
+        if re.search(r"[bcdfgkpstv][lr]$", tail):
+            continue
         # A plural -s never follows another s/x/z, and never follows a
         # consonant cluster (bus, lens, gas keep their s).
         if suf == "s":
             if root[-1] in "sxz":
                 continue
-            if len(root) >= 2 and root[-1] not in VOWELS and root[-2] not in VOWELS:
+            # Digraphs and doubles count as ONE consonant, else "ducks",
+            # "kings" and "bells" read as cluster-final and lose their plural.
+            m = root
+            for d in CONSONANT_DIGRAPHS:
+                m = m.replace(d, "#")
+            m = re.sub(r"([^aeiou])\1", r"\1", m)
+            if len(m) >= 2 and m[-1] not in VOWELS and m[-1] != "#" and m[-2] not in VOWELS:
                 continue
         return root, suf
     return word, None
@@ -117,11 +171,31 @@ def syllable_count(root: str) -> int:
     return max(groups, 1)
 
 
+def mask_longest(word: str, units, placeholder: str = "#") -> str:
+    """Replace known units with a placeholder, longest match first, left to right.
+
+    Sequential str.replace() is wrong here: masking "ue" before "qu" turns
+    "queen" into "qen" and leaves a bare q, which made every q word fail.
+    """
+    ordered = sorted((u for u in units if u.isalpha()), key=len, reverse=True)
+    out, i = [], 0
+    while i < len(word):
+        for u in ordered:
+            if word.startswith(u, i):
+                out.append(placeholder)
+                i += len(u)
+                break
+        else:
+            out.append(word[i])
+            i += 1
+    return "".join(out)
+
+
 def mask_digraphs(root: str) -> str:
-    masked = root
-    for d in CONSONANT_DIGRAPHS:
-        masked = masked.replace(d, "#")
-    return masked
+    # A doubled consonant spells one sound (egg, odd, bell), so collapse it
+    # before looking for blends.
+    collapsed = re.sub(r"([bcdfgklmnprstvz])\1", r"\1", root)
+    return mask_longest(collapsed, CONSONANT_DIGRAPHS)
 
 
 def consonant_clusters(root: str):
@@ -180,22 +254,47 @@ def audit(text: str, lesson: int):
                  f"contains '{hit}', not taught until Lesson {when}")
             continue
 
-        root, _ = strip_suffix(bare, L["allowedSuffixes"])
+        root, peeled = strip_suffix(bare, L["allowedSuffixes"])
 
-        # 2. a plain letter the child has not met yet
-        unknown = sorted({ch for ch in root if ch not in single_letters})
+        # 2. a letter the child has not met yet.
+        # Multi-letter graphemes are masked out first: q is only ever taught as
+        # part of "qu", so checking raw characters rejected every q word at
+        # every lesson.
+        multi = [g for g in allowed if len(g) > 1]
+        masked = mask_longest(root, multi)
+        unknown = sorted({ch for ch in masked if ch != "#" and ch not in single_letters})
         if unknown:
             flag("untaught letter", f"uses {', '.join(repr(c) for c in unknown)}")
             continue
 
-        # 3. more than one syllable before syllable division is taught
-        if lesson < MULTISYLLABLE_LESSON:
-            n = syllable_count(root)
-            if n > 1:
-                flag("too many syllables",
-                     f"'{root}' has {n} syllables; splitting words starts at "
-                     f"Lesson {MULTISYLLABLE_LESSON}")
+        # 2b. an irregular word whose sound cannot be read off its spelling
+        if bare in IRREGULAR_WORDS:
+            need = IRREGULAR_WORDS[bare]
+            if lesson < need:
+                where = ("never decodable — it has to be taught as a heart word"
+                         if need == 999 else f"not decodable until Lesson {need}")
+                flag("irregular word", f"'{bare}' is {where}")
                 continue
+
+        # 3. more syllables than the lesson allows. Counted on the WHOLE word,
+        # so peeling a suffix cannot shrink a long word under the limit
+        # ("hundred" is not "hundr" + ed).
+        limit = syllable_limit(lesson)
+        # A taught ending may legitimately add a syllable: Lesson 65 IS the
+        # -ing lesson, so "running" must be allowed there. The bonus is only
+        # granted when a suffix was actually peeled -- "hundred" is not
+        # "hundr" + ed, so it earns nothing.
+        if peeled and peeled in ("ing", "es", "ed", "er", "est", "ly", "ness",
+                                 "ment", "able", "ible", "less", "ful", "ish",
+                                 "ist", "y", "ture", "sion", "tion"):
+            limit += 1
+        n = syllable_count(bare)
+        if n > limit:
+            flag("too many syllables",
+                 f"'{bare}' has {n} syllables; Lesson {lesson} allows "
+                 f"{limit}. Splitting words starts at Lesson "
+                 f"{MULTISYLLABLE_LESSON}.")
+            continue
 
         # 3b. y used as a vowel before that is taught
         if lesson < Y_AS_VOWEL_LESSON and "y" in root[1:]:
@@ -209,7 +308,7 @@ def audit(text: str, lesson: int):
         # Catches 'lion', 'dial', 'bias' -- two syllables that the vowel-group
         # counter reads as one, and vowel pairs no lesson ever teaches.
         bad_pair = None
-        for run in re.findall(r"[aeiou]{2,}", root):
+        for run in re.findall(r"[aeiou]{2,}", mask_longest(root, multi)):
             taught_here = taught_at.get(run)
             if taught_here is None or taught_here > lesson:
                 bad_pair = (run, taught_here)
@@ -223,7 +322,8 @@ def audit(text: str, lesson: int):
             continue
 
         # 4. silent e (VCe) before it is taught
-        if len(root) >= 3 and root.endswith("e") and root[-2] not in VOWELS and root[-3] in VOWELS:
+        if (len(root) >= 3 and root.endswith("e") and root[-2] not in VOWELS
+                and any(c in VOWELS for c in root[:-2])):
             if not any(p.endswith("_e") for p in patterns):
                 flag("silent e", f"'{root}' is a VCe word; silent e starts at Lesson 54")
                 continue
@@ -244,6 +344,17 @@ def audit(text: str, lesson: int):
             flag("soft c/g",
                  f"'{root}' has {soft[0]} before e/i/y, which says its soft sound; "
                  f"not taught until Lesson {soft[1]}")
+            continue
+
+        # 5b. long-vowel VCC families (-old, -ind, -ild, -olt, -ost) taught at 72.
+        # These were sitting unused in allowedPatterns while "cold" and "kind"
+        # passed at Lesson 53 as short-vowel words.
+        vcc = next((pat for pat in ("-old", "-ind", "-ild", "-olt", "-ost")
+                    if root.endswith(pat.lstrip("-")) and len(root) >= 4), None)
+        if vcc and vcc not in patterns:
+            flag("long vowel VCC",
+                 f"'{root}' ends in {vcc}, where the vowel says its long sound; "
+                 f"that starts at Lesson 72")
             continue
 
         # 6. consonant blends anywhere in the word, before blends are taught
@@ -305,7 +416,39 @@ SELFTEST = [
     (87, "night", True, "igh is the grapheme; gh must not be flagged separately"),
     (116, "thought", True, "ough taught at 116"),
     (96, "down", True, "ow diphthong taught at 96"),
-    (86, "down", False, "ow at 86 is the /o/ sound; 'down' needs 96"),
+    (86, "down", True, "ow is gated at 86 so the lesson is writable; separating "
+                       "down from snow is the word bank's job, and lesson 86 "
+                       "carries requiresWordBank"),
+    # --- bugs found by the adversarial agent, round 2 ---
+    (32, "quit", True, "q is only ever taught as qu; no q word passed at ANY lesson"),
+    (128, "queen", True, "same bug, at the last lesson"),
+    (60, "milk", True, "lk is a plain blend, not a silent-l grapheme"),
+    (60, "self", True, "lf likewise"),
+    (80, "number", True, "mb across a syllable break is not a silent b"),
+    (66, "number", False, "er is r-controlled, not taught until 80"),
+    (85, "eat", True, "Lesson 85 must be able to use its own ea words"),
+    (85, "sea", True, "same"),
+    (44, "ducks", True, "plural of a ck root; -s is taught at 20"),
+    (51, "kings", True, "plural of an ng root"),
+    (43, "egg", True, "one syllable, belongs beside off/all/ill"),
+    (43, "odd", True, "same"),
+    (65, "running", True, "Lesson 65 IS the -ing lesson"),
+    (65, "sitting", True, "same"),
+    (64, "hundred", False, "not 'hundr' + ed — suffix peeling must not shrink it"),
+    (65, "sibling", False, "not 'sibl' + ing"),
+    (53, "cold", False, "-old says long o; taught at 72"),
+    (53, "kind", False, "-ind likewise"),
+    (72, "cold", True, "and legal once 72 teaches it"),
+    (48, "ache", False, "VCCe still carries a silent e"),
+    (53, "taste", False, "same"),
+    (41, "was", False, "irregular vowel; must be a heart word"),
+    (41, "son", False, "o saying /u/"),
+    (41, "put", False, "u saying /oo/"),
+    (53, "want", False, "a saying /o/ after w"),
+    (66, "photograph", False, "3 syllables at the 2-syllable lesson"),
+    (66, "hospital", False, "same — Lesson 66 was a cliff with no limit at all"),
+    (66, "napkin", True, "2 syllables is exactly what Lesson 66 teaches"),
+    (99, "photograph", True, "affix lessons legitimately build longer words"),
     (41, "lion", False, "li-on is two syllables hiding in one vowel group"),
     (41, "dial", False, "di-al, same hiatus problem"),
     (41, "type", False, "y as a vowel before Lesson 73"),
@@ -319,12 +462,21 @@ SELFTEST = [
 # Words this checker cannot judge from spelling alone. Each needs a human or a
 # word bank to settle. They are listed, not silently ignored.
 KNOWN_LIMITATIONS = [
-    ("lens", 41, "final -ns is part of the root, not a plural, so it is a blend. "
-                 "Structurally identical to 'gets', which is legal. Needs a word bank."),
-    ("snow", 86, "ow says /o/ here, but the ow gate sits at 96 to keep 'down' out. "
-                 "Lesson 86's own practice words need a word bank to be allowed."),
-    ("head", 85, "ea says short e here; that sound is taught nowhere in the 128. "
-                 "The ea gate sits at 114, so lesson 85 words need a word bank."),
+    ("lens", 41,
+     "'lens' IS a violation at Lesson 41 — the final -ns is a root blend the "
+     "child must cluster, and blends start at 53. It passes because 'lens' and "
+     "'gets' have identical spelling shapes (vowel, consonant, s) and only a "
+     "dictionary knows that one -s is a suffix and the other is not. The word "
+     "bank settles it; no spelling rule can."),
+    ("down", 86,
+     "ow is gated at 86 so Lesson 86 can use snow/grow/low. That also lets "
+     "down/cow/now through 10 lessons early. Every lesson in this position "
+     "carries requiresWordBank in sound-list.json — see also th (46), ea and "
+     "ey (85), oo (89), ou (96), ear (112)."),
+    ("irregular words", 0,
+     "was, son, put, want, talk and their kind are handled by an explicit "
+     "IRREGULAR_WORDS list, because English does not spell them by rule. That "
+     "list is hand-maintained and therefore certainly incomplete."),
 ]
 
 
@@ -346,7 +498,8 @@ def selftest() -> int:
     print(f"\n{len(KNOWN_LIMITATIONS)} known limitation(s) — spelling alone "
           f"cannot settle these, a word bank is needed:")
     for word, lesson, why in KNOWN_LIMITATIONS:
-        print(f"  {word!r} at Lesson {lesson}: {why}")
+        where = f" at Lesson {lesson}" if lesson else ""
+        print(f"  {word!r}{where}: {why}")
     return failures
 
 
@@ -370,8 +523,13 @@ def main():
             print(f"{mode} needs a file path after it")
             sys.exit(2)
         path = pathlib.Path(argv[2])
-        if not path.exists():
-            print(f"No such file: {path}")
+        if not path.is_file():
+            print(f"Not a readable file: {path}")
+            sys.exit(2)
+        try:
+            path.read_text()
+        except UnicodeDecodeError:
+            print(f"{path} is not a text file — point this at the .html, not the PDF")
             sys.exit(2)
         if mode == "--file":
             text = path.read_text()

@@ -81,9 +81,8 @@ NEW_GRAPHEMES = {
     43: {"patterns": ["-all", "-oll", "-ull"]},
     44: {"graphemes": ["ck"]},
     45: {"graphemes": ["sh"]},
-    46: {"note": "Voiced th. The spelling gate sits at 47 so a child does "
-                 "not meet the unvoiced sound a lesson early."},
-    47: {"graphemes": ["th"], "note": "unvoiced th."},
+    46: {"graphemes": ["th"], "note": "voiced th; unvoiced at 47."},
+    47: {"note": "unvoiced th; both th sounds are now safe."},
     48: {"graphemes": ["ch"]},
     50: {"graphemes": ["wh", "ph"]},
     51: {"graphemes": ["ng"]},
@@ -129,15 +128,14 @@ NEW_GRAPHEMES = {
     # ---- Vowel teams --------------------------------------------------------
     84: {"graphemes": ["ai", "ay"]},
     85: {"graphemes": ["ee", "ea", "ey"]},
-    86: {"graphemes": ["oa", "oe"],
-         "note": "ow (snow) shares its spelling with ow (cow) at 96. The gate "
-                 "sits at 96 so 'down' cannot appear early; snow-words need a "
-                 "word bank. FLAGGED for teacher review."},
+    86: {"graphemes": ["oa", "oe", "ow"],
+         "note": "ow (snow) shares its spelling with ow (cow) at 96, so this "
+                 "lesson requires an approved word list."},
     87: {"graphemes": ["ie", "igh"]},
-    89: {"graphemes": ["u_long_oo"],
-         "note": "oo (moon) shares its spelling with oo (book) at 90, so the "
-                 "gate sits at 90."},
-    90: {"graphemes": ["oo"], "note": "both oo sounds are now safe."},
+    89: {"graphemes": ["oo"],
+         "note": "oo (moon) shares its spelling with oo (book) at 90, so this "
+                 "lesson requires an approved word list."},
+    90: {"note": "second oo sound; both are now safe."},
     91: {"graphemes": ["ew", "ui", "ue"]},
     93: {"graphemes": ["au", "aw", "augh"],
          "note": "Tool says 'au, aw, ugh'. 'ugh' is not an English grapheme; "
@@ -145,7 +143,7 @@ NEW_GRAPHEMES = {
                  "FLAGGED for teacher review."},
     94: {"patterns": ["schwa"]},
     95: {"graphemes": ["oi", "oy"]},
-    96: {"graphemes": ["ow"], "note": "ow as in cow; ou moves to 115."},
+    96: {"graphemes": ["ou"], "note": "ou as in out; second sound at 115."},
     98: {"graphemes": ["kn", "wr", "mb", "mn"], "patterns": ["silent_letters"],
          "note": "Tool says 'kn, wr, mb, m'. Trailing 'm' read as 'mn' "
                  "(autumn, column). Also gates lk/lm/lf (talk, calm, half). "
@@ -169,7 +167,7 @@ NEW_GRAPHEMES = {
     114: {"graphemes": ["ei", "ey", "eigh", "ea_long_a"],
           "note": "Tool lists 'ei, ey, eigh, high, ea'. 'high' is a word, not "
                   "an /a/ spelling — dropped as a typo. FLAGGED for teacher review."},
-    115: {"graphemes": ["eu", "ou"], "note": "ou saying long u, as in soup."},
+    115: {"graphemes": ["eu"], "note": "ou saying long u (soup) is safe now too."},
     116: {"graphemes": ["ough"]},
     117: {"patterns": ["signal_vowels"], "note": "c=/s/, s=/z/, g=/j/."},
     118: {"graphemes": ["ch_sh", "ch_k", "gn", "gh"], "patterns": ["silent_t"]},
@@ -188,35 +186,46 @@ NEW_GRAPHEMES = {
 # them. Checked against raw spelling, because a word like "ship" is made of
 # letters a Lesson-41 reader knows but is still unreadable to them.
 LETTER_PATTERN_TAUGHT_AT = {
-    # Doubled consonants. FLSZ is the taught rule at 42; the others only turn up
-    # in two-syllable words, so they wait for syllable division at 66.
+    # Only true GRAPHEMES belong here — letter teams that spell one sound.
+    # Letter SEQUENCES that merely cross a syllable break (lk in milk, mb in
+    # number, gn in magnet) must NEVER be gated: doing so blocked milk, self,
+    # elf and film for 45 lessons. Silent-letter words are handled by an
+    # explicit word list in audit_passage.py instead.
+    #
+    # Doubled consonants are likewise not gated: egg/add/odd are legitimate
+    # one-syllable words at Lessons 42-43, and rabbit/kitten are already caught
+    # by the syllable rule.
     "ff": 42, "ll": 42, "ss": 42, "zz": 42,
-    "bb": 66, "cc": 66, "dd": 66, "gg": 66, "mm": 66, "nn": 66,
-    "pp": 66, "rr": 66, "tt": 66,
-
-    # Consonant digraphs
-    "ck": 44, "sh": 45, "th": 47, "ch": 48, "wh": 50, "ph": 50,
+    "ck": 44, "sh": 45, "th": 46, "ch": 48, "wh": 50, "ph": 50,
     "ng": 51, "nk": 52, "tch": 69, "dge": 70, "qu": 32,
 
-    # R-controlled
     "ar": 77, "or": 78, "ore": 78, "er": 80, "ir": 81, "ur": 81,
 
-    # Vowel teams. Where one spelling has two sounds taught at different
-    # lessons, the gate sits at the LATER one — a child meeting the wrong
-    # sound early is the failure we are guarding against.
-    "ai": 84, "ay": 84, "ee": 85, "ea": 114, "ey": 114,
-    "oa": 86, "oe": 86, "ow": 96, "ie": 87, "igh": 87,
-    "oo": 90, "ew": 91, "ui": 91, "ue": 91,
+    # Vowel teams are gated at the lesson that FIRST teaches the spelling, so
+    # each lesson can use its own practice words. Where a spelling has a second
+    # sound taught later (ea in eat vs ea in head), the lesson is marked
+    # requiresWordBank rather than being made unwritable.
+    "ai": 84, "ay": 84, "ee": 85, "ea": 85, "ey": 85,
+    "oa": 86, "oe": 86, "ow": 86, "ie": 87, "igh": 87,
+    "oo": 89, "ew": 91, "ui": 91, "ue": 91,
     "au": 93, "aw": 93, "augh": 93,
-    "oi": 95, "oy": 95, "ou": 115,
-    "ei": 114, "eigh": 114, "ough": 116, "uy": 116,
+    "oi": 95, "oy": 95, "ou": 96,
+    "ei": 114, "eigh": 114, "ough": 116,
 
-    # R-controlled vowel teams
-    "air": 112, "are": 112, "ear": 113,
+    "air": 112, "are": 112, "ear": 112,
+    "kn": 98, "wr": 98, "gn": 118,
+}
 
-    # Silent letters
-    "kn": 98, "wr": 98, "mb": 98, "mn": 98,
-    "lk": 98, "lm": 98, "lf": 98, "gn": 118, "gh": 118,
+# A taught spelling whose OTHER sound arrives later. Such a lesson can be
+# written, but only from an approved word list — the checker cannot tell
+# "snow" from "down" by spelling alone.
+SECOND_SOUND_LATER = {
+    46:  [("th", 47, "th in this vs th in thin")],
+    85:  [("ea", 114, "ea in eat vs ea in head"), ("ey", 114, "ey in key vs ey in they")],
+    86:  [("ow", 96, "ow in snow vs ow in cow")],
+    89:  [("oo", 90, "oo in moon vs oo in book")],
+    96:  [("ou", 115, "ou in out vs ou in soup")],
+    112: [("ear", 113, "ear in bear vs ear in earn")],
 }
 
 
@@ -279,6 +288,11 @@ def build():
             "allowedPrefixes": sorted(prefixes),
             "allowedPatterns": sorted(patterns),
             "allowedHeartWords": sorted(hearts),
+            "requiresWordBank": [
+                {"spelling": sp, "secondSoundAt": at, "why": why}
+                for L2, items in SECOND_SOUND_LATER.items() if L2 <= n
+                for sp, at, why in items if at > n
+            ],
             "forbiddenLetterPatterns": sorted(
                 p for p, taught in LETTER_PATTERN_TAUGHT_AT.items() if taught > n),
         })
