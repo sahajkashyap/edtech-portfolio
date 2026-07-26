@@ -69,6 +69,9 @@ the child is working on — it is extra words to get confused by.
 - **The child's sheets start with the work itself** — picture, words, story, then
   their questions and drawing.
 - Label every sheet's owner at the top so nobody hands the wrong page to a kid.
+- **Name lines must fit a whole name** — a rule ~3in long, not a short row of
+  underscores that only holds initials. Sit it in the header row so it costs no
+  vertical space. Child sheets only; the grown-up sheet doesn't need one.
 - Word it "the grown-up" (not "parent") — the helper may be any adult.
 
 ## Confirmed sheet structure (the Short a template)

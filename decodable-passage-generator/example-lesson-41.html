@@ -29,6 +29,10 @@
   .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; margin-bottom: 5px; }
   .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
   h1 { font-size: 22px; margin: 4px 0 0; }
+  .nameline { display: flex; align-items: flex-end; gap: 10px; margin: 0; flex: none; }
+  .nameline .lbl { font-size: 15px; color: #333; padding-bottom: 3px; }
+  .nameline .rule { width: 3.1in; border-bottom: 1.8px solid #1a1a1a; height: 28px; margin-bottom: 5px; }
+
   .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; text-align: right; line-height: 1.4; }
 
   /* who the sheet belongs to — printed loud so nobody hands the wrong page to a kid */
@@ -169,7 +173,7 @@
       <div class="tag">My reading page</div>
       <h1>Mud Pig</h1>
     </div>
-    <div class="flagged">Name<br>__________</div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
   <!-- ---- picture ---- -->
@@ -293,10 +297,10 @@
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
       <h1 style="font-size:18px;">Mud Pig &mdash; my work page</h1>
     </div>
-    <div class="flagged">Name<br>__________</div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <h2 style="margin-top:14px;">Think about it</h2>
+  <h2 style="margin-top:12px;">Think about it</h2>
 
   <div class="q">
     <span class="qtext">1. Why is Sam wet?</span>
@@ -324,10 +328,10 @@
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
       <h1 style="font-size:18px;">Mud Pig &mdash; my drawing page</h1>
     </div>
-    <div class="flagged">Name<br>__________</div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <h2 style="margin-top:14px;">Draw it</h2>
+  <h2 style="margin-top:12px;">Draw it</h2>
   <p class="sub">Draw the last thing that happens in the story.</p>
   <div class="drawbox"><span class="dlab">Your picture</span></div>
 

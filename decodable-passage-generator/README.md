@@ -68,6 +68,8 @@ the child's space.
 - Writing lines **80px** tall, drawing box **7.8in** tall, ~34px between questions
 - Story type **24px**, word cards and heart words **22px**, question text **19px**
 - Adult text may be 11–13px. A child's may not.
+- Name lines are ~3in of ruled line, long enough for a whole name, tucked into
+  the header row so they cost no vertical space
 
 `check-pages.py` exists precisely so this rule survives contact with a full page:
 it measures each sheet against the 940.8px letter budget and says which one
