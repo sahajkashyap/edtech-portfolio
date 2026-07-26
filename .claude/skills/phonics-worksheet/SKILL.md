@@ -51,11 +51,13 @@ Confirmed by the teacher, July 2026. A child at this age is still learning to
 are ever a reading problem. When a sheet does not fit, **cut adult text, headers,
 or margins — never the child's working space.** Add a page instead.
 
-- **Writing lines: 48px tall, minimum.** Half that is too tight to form letters.
-- **Drawing boxes: 3.3in tall, minimum** for a half-page box. When in doubt, bigger.
-- **Generous gaps between questions** (~20px), so answers don't collide.
+- **Writing lines: 80px tall, minimum.** Letters need height, not just width.
+- **Drawing boxes: give them their own sheet** and let them fill it (~7.8in).
+  A box squeezed in beside other work is always the wrong size.
+- **Generous gaps between questions** (~34px), so answers don't collide.
 - **Child-facing type is large**: story text ~24px, word cards / heart words
-  ~22px, question text ~19px. Adult text can be 11–13px; a child's cannot.
+  ~22px, question text ~19px. Grown-up text ~13.8px — big enough to read
+  comfortably, since a tired adult at the kitchen table is the real audience.
 
 ### The child's page holds only the child's things
 
