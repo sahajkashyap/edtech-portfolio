@@ -144,11 +144,35 @@ Every rule in it exists because an adversarial agent — one that did not write 
 **41 words (0.05%)**, and most of those are genuinely readable (*digs*, *dogs*,
 *kids*, *mats*, *taps*).
 
-Rules added by that loop: medial consonant clusters (not just word edges), a
+Round 1 added: medial consonant clusters (not just word edges), a
 one-syllable-before-Lesson-66 gate, longest-match pattern scanning so *night*
 isn't blocked for containing `gh`, y-as-a-vowel gating, untaught vowel pairs
 (*lion*, *dial*), soft c/g with a hard-g exception list, stricter suffix
 peeling, and empty input never counting as a pass.
+
+**Round 2 caught the opposite failure**: round 1 had traded false negatives for
+false *positives*, three of them bad enough to make whole lessons unwritable —
+no word containing `q` passed at any lesson (so Lesson 32, the `qu` lesson,
+rejected *quit* and *queen*); `milk`, `self`, `elf` and `film` were blocked for
+45 lessons; and Lesson 85 could not use `ea`, the grapheme Lesson 85 teaches.
+Also fixed: Lesson 66 was a cliff where the syllable gate switched off entirely
+and *photograph* passed; *hundred* was being read as `hundr` + `ed`; Lesson 65
+could not use *running*; *egg* and *odd* were rejected; *cold* and *kind* passed
+at 53 as short-vowel words.
+
+An unwritable lesson is a harder failure than a bad word slipping through — the
+generator produces nothing and the teacher never learns why.
+
+Words passing at each lesson, out of 120,958 dictionary words (3–9 letters):
+
+| Lesson | 20 | 41 | 53 | 65 | 66 | 77 | 99 |
+|---|---|---|---|---|---|---|---|
+| pass | 0.3% | 0.7% | 2.7% | 5.1% | 20.5% | 25.3% | 81.8% |
+
+The jump at 66 is the two-syllable unlock and is legitimate. **The 81.8% at 99
+is not yet tight enough** — from Lesson 99 the syllable limit is removed
+entirely because affix lessons build long words. That is the next thing to
+narrow.
 
 `python3 audit_passage.py --selftest` runs all of it as regression tests.
 
