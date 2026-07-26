@@ -26,7 +26,7 @@
     .page:last-child { page-break-after: auto; }
   }
 
-  .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 6px; }
+  .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; margin-bottom: 5px; }
   .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
   h1 { font-size: 22px; margin: 4px 0 0; }
   .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; text-align: right; line-height: 1.4; }
@@ -36,17 +36,17 @@
   .owner.adult { background: #4a3f2c; color: #f7f3ea; }
   .owner.child { background: #378ADD; color: #fff; }
 
-  h2 { font-size: 15px; margin: 14px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
-  .sub { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  h2 { font-size: 15px; margin: 12px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+  .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
   .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 12px 15px; margin: 4px 0 6px; font-size: 12.5px; color: #4a3f2c; }
-  .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 6px; }
-  .tip p { margin: 4px 0; line-height: 1.4; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
+  .tip p { margin: 3px 0; line-height: 1.38; }
 
-  .answers { margin: 6px 0 0 0; font-size: 12.5px; }
-  .answers .qa { margin: 0 0 9px 12px; line-height: 1.42; }
+  .answers { margin: 6px 0 0 0; font-size: 13.8px; }
+  .answers .qa { margin: 0 0 6px 12px; line-height: 1.4; }
   .answers .qa .qq { font-weight: bold; }
   .answers .qa .aa { color: #555; }
 
@@ -75,27 +75,27 @@
   .fluency .note { font-size: 11.5px; color: #777; }
 
   /* ---- comprehension: wide lines for young hands ---- */
-  .q { font-size: 19px; margin: 0 0 20px 12px; }
+  .q { font-size: 19px; margin: 0 0 34px 12px; }
   .q .qtext { display: block; margin-bottom: 10px; }
-  .qline { display: block; border-bottom: 1.5px solid #999; height: 48px; }
+  .qline { display: block; border-bottom: 1.5px solid #999; height: 80px; }
 
   /* ---- draw box: 50% bigger than the first draft ---- */
-  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 3.3in; margin: 2px 0 0 0; position: relative; }
+  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 7.8in; margin: 2px 0 0 0; position: relative; }
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #33502c; line-height: 1.55; }
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 14px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 6px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 3 pages: 1 grown-up sheet, then 2 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET (keep this one) ================= -->
@@ -115,13 +115,13 @@
     <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
     <p><strong>2. Cover the picture while they read.</strong> The picture is for understanding, not for guessing words. Uncover it when they finish.</p>
     <p><strong>3. Warm up on the six words,</strong> check off the heart words, then read the story.</p>
-    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Say &ldquo;sound it out&rdquo; and tap under each letter. Every word here is one they can build &mdash; that is the whole point.</p>
+    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Ask them to <strong>sound it out</strong>, or to <strong>use their sound spelling</strong> &mdash; those are the words their teacher uses, so home and school match. Tap under each letter as they go. Every word here is one they can build.</p>
     <p><strong>5. Read it three times.</strong> The first read is work. The third read is reading.</p>
   </div>
 
   <h2>The story they will read</h2>
   <p class="sub">So you can follow along without looking over their shoulder.</p>
-  <div class="tip" style="font-size:14px; line-height:1.7;">
+  <div class="tip" style="font-size:13.5px; line-height:1.5;">
     Sam has a pig. The pig is big. Sam and the pig sit in the sun. The pig runs to
     the mud. The pig sits in the mud. Sam gets a rag and a tub. Sam rubs the pig
     in the tub. The pig is wet. Sam is wet! The pig naps in the sun.
@@ -145,7 +145,7 @@
     <div class="h">Why you can trust this page &middot; checked, word by word</div>
     <p style="margin:0 0 5px;"><strong>Every one of the 55 words in this story can be sounded out with what your
     child has already been taught.</strong> Nothing here needs guessing. If they get stuck, the answer is
-    always &ldquo;sound it out&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
+    always &ldquo;sound it out&rdquo; or &ldquo;use your sound spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
     <p style="margin:0;">Deliberately left out, because they haven&rsquo;t been taught yet:
     silent <em>e</em> (<code>cake</code>), letter pairs like <code>sh</code> <code>ch</code> <code>th</code> <code>ck</code>,
     two-consonant starts like <code>stop</code>, vowel pairs like <code>rain</code>, and <em>r</em>-changed
@@ -314,7 +314,20 @@
     <span class="qline"></span>
   </div>
 
-  <h2>Draw it</h2>
+</div>
+
+<!-- ================= PAGE 4 — CHILD'S DRAWING SHEET ================= -->
+<div class="page">
+
+  <div class="band" style="margin-bottom:4px;">
+    <div>
+      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
+      <h1 style="font-size:18px;">Mud Pig &mdash; my drawing page</h1>
+    </div>
+    <div class="flagged">Name<br>__________</div>
+  </div>
+
+  <h2 style="margin-top:14px;">Draw it</h2>
   <p class="sub">Draw the last thing that happens in the story.</p>
   <div class="drawbox"><span class="dlab">Your picture</span></div>
 

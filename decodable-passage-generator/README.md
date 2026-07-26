@@ -5,7 +5,7 @@ point is to agree on what a finished sheet looks like before we build the
 machine that makes 128 of them.
 
 - `example-lesson-41.html` — open in a browser, click **Print / Save as PDF**
-- `Mud Pig - Lesson 41 - EXAMPLE.pdf` — the printed result, 3 pages
+- `Mud Pig - Lesson 41 - EXAMPLE.pdf` — the printed result, 4 pages
 - `check-pages.py` — measures each sheet against the page budget before printing,
   so we find what to trim instead of guessing (`python3 check-pages.py`)
 
@@ -45,7 +45,7 @@ agent composes into a scene. Roughly 40 props covers most CVC-level stories.
 
 ## Deliberate layout choices, in case we want to change them
 
-**Three sheets, and who owns each one is printed at the top.** Revised after
+**Four sheets, and who owns each one is printed at the top.** Revised after
 teacher review, July 2026 — the first draft mixed adult instructions onto the
 child's page, which is just more words for a young reader to get confused by.
 
@@ -53,14 +53,19 @@ child's page, which is just more words for a young reader to get confused by.
 |---|---|---|
 | 1 | Grown-up — keep this one | How to use it in five steps, the story to follow along with, what a good answer sounds like, the sound-check reassurance |
 | 2 | The reader | Picture, warm-up words, heart words, the story, three fluency circles |
-| 3 | The reader | Three questions with wide writing lines, and a big draw-it box |
+| 3 | The reader | Three questions with tall writing lines |
+| 4 | The reader | A full-page drawing box |
+
+The drawing got its own sheet the moment taller writing lines stopped fitting
+beside it. That is the rule working as intended: the page count gives, the
+child's space does not.
 
 **Space for young hands is non-negotiable.** A K–2 child is still learning to
 hold the pencil, so small targets are a fine-motor problem before they are ever a
 reading problem. When a sheet doesn't fit, cut adult text or add a page — never
 the child's space.
 
-- Writing lines **48px** tall, drawing box **3.3in** tall, ~20px between questions
+- Writing lines **80px** tall, drawing box **7.8in** tall, ~34px between questions
 - Story type **24px**, word cards and heart words **22px**, question text **19px**
 - Adult text may be 11–13px. A child's may not.
 
@@ -70,6 +75,10 @@ overflows, so the trimming comes out of headers rather than the drawing box.
 
 **Warm-up words come before the story**, and they are the same words that appear
 in it. First encounter should be in isolation, not mid-sentence.
+
+**Say it the way school says it.** Where the grown-up sheet tells an adult what
+to do when a child gets stuck, it offers both "sound it out" *and* "use your
+sound spelling" — the phrases a teacher uses in class, so home and school match.
 
 **The "sound check" is written for a parent, not an engineer.** It lives on the
 grown-up sheet and says, in plain words, that every word can be sounded out and
