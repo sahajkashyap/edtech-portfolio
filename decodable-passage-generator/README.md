@@ -103,3 +103,76 @@ follow the recipe — not an audit log.
 - Dolch (1936) is public domain — fine for sight words.
 - Fry is **not** free — never use it.
 - Never reproduce UFLI's wording, word lists, or page design. Original text only.
+
+---
+
+# The sound list and the checking loop
+
+Added July 2026. This is the machinery the passages are built on.
+
+## Files
+
+| File | What it is |
+|---|---|
+| `build_sound_list.py` | Generates the rulebook from the assessment tool's own curriculum. Every judgement call is a `note` you can argue with. |
+| `sound-list.json` | The rulebook. 128 lessons; allowed graphemes, suffixes, prefixes, patterns, heart words, and forbidden spellings for each. Never hand-edit it. |
+| `audit_passage.py` | The auditor. Checks a passage word by word. Did not write the story. |
+| `check-pages.py` | Checks each sheet fits on paper. |
+
+## The model
+
+Cumulative **by lesson number**: a child at Lesson 41 has had 1–40. Confirmed by
+the teacher — sheets go home in sequence, and a skill a child missed earlier is
+a separate conversation between teacher and parent, not something a worksheet
+should paper over.
+
+## The loop
+
+```
+writer drafts -> audit_passage.py -> violations? -> back to writer -> re-audit
+                                  -> zero -> story judge -> page check -> ship
+```
+
+`audit_passage.py` exits 1 on any violation. **Exit 1 means do not ship.**
+
+## How the auditor got its rules
+
+Every rule in it exists because an adversarial agent — one that did not write it
+— found a word that slipped past the previous version. The first version called
+**15,764 of 87,119 dictionary words (18%) readable at Lesson 41**, including
+*picnic*, *basket*, *rabbit*, *little* and *vein*. After the loop ran, that is
+**41 words (0.05%)**, and most of those are genuinely readable (*digs*, *dogs*,
+*kids*, *mats*, *taps*).
+
+Rules added by that loop: medial consonant clusters (not just word edges), a
+one-syllable-before-Lesson-66 gate, longest-match pattern scanning so *night*
+isn't blocked for containing `gh`, y-as-a-vowel gating, untaught vowel pairs
+(*lion*, *dial*), soft c/g with a hard-g exception list, stricter suffix
+peeling, and empty input never counting as a pass.
+
+`python3 audit_passage.py --selftest` runs all of it as regression tests.
+
+## What it still cannot do
+
+Spelling alone cannot settle words like `lens` (is that `-s` a plural?), `snow`
+(which `ow`?) or `head` (which `ea`?). These are listed in `KNOWN_LIMITATIONS`
+rather than quietly passed. **The fix is a word bank** — an approved word list
+per lesson with each word's grapheme breakdown. That is the next thing to build.
+
+## Flagged for teacher review
+
+`sound-list.json` carries a `flaggedForTeacherReview` list. These are places the
+source curriculum says something that looks like a typo, where a guess was made:
+
+| Lesson | Tool says | Call made |
+|---|---|---|
+| 10 | `CVC Practice (g, i)` | g isn't taught until 16 — treated as practice only |
+| 11 | `Nasalized A (am, on)` | read as am/an |
+| 27 | `l /l/ Part 2, ai` | `ai` is taught at 84 — treated as l practice only |
+| 86 | `oa, ow, oe /ō/` | `ow` gated at 96 so *down* can't appear early |
+| 93 | `au, aw, ugh /aw/` | `ugh` read as `augh` |
+| 98 | `Silent Letters (kn, wr, mb, m)` | trailing `m` read as `mn` |
+| 114 | `Alternate /ā/ (ei, ey, eigh, high, ea)` | `high` dropped as a typo |
+
+**These need a teacher's eye.** Each one is a guess about what the curriculum
+meant, and a wrong guess puts an untaught sound in front of a child.
