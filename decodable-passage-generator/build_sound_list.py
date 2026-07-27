@@ -1,0 +1,326 @@
+#!/usr/bin/env python3
+"""Build the cumulative sound list for all 128 lessons.
+
+This is the rulebook every decodable passage is checked against. Nothing else
+in the generator matters if this file is wrong, so it is generated from the
+assessment tool's own curriculum rather than typed by hand, and every judgement
+call is written down in NEW_GRAPHEMES below where a human can argue with it.
+
+The model, confirmed by the teacher (July 2026): lessons are taught in NUMBER
+order. A child on Lesson 41 has had 1-40. So "allowed at lesson N" is the union
+of everything introduced in lessons 1..N.
+
+Run:  python3 build_sound_list.py        -> writes sound-list.json
+"""
+
+import json
+import pathlib
+import re
+import sys
+
+TOOL = pathlib.Path("../phonics-assessment-tool:/index.html")
+OUT = pathlib.Path("sound-list.json")
+
+# ---------------------------------------------------------------------------
+# What each lesson INTRODUCES.
+#
+# Key = lesson number. Value = dict with any of:
+#   "graphemes" : letter patterns a child can now decode
+#   "suffixes"  : word endings
+#   "prefixes"  : word beginnings
+#   "patterns"  : structural permissions (blends, silent-e, open syllables...)
+#   "note"      : why, when the call wasn't obvious
+#
+# A lesson absent from this table introduces nothing new (reviews, practice).
+# ---------------------------------------------------------------------------
+NEW_GRAPHEMES = {
+    # ---- Unit 1: single letters, short vowels -------------------------------
+    1:  {"graphemes": ["a"]},
+    2:  {"graphemes": ["m"]},
+    3:  {"graphemes": ["s"]},
+    4:  {"graphemes": ["t"]},
+    5:  {"patterns": ["vc", "cvc"], "note": "VC & CVC word shapes become readable."},
+    6:  {"graphemes": ["p"]},
+    7:  {"graphemes": ["f"]},
+    8:  {"graphemes": ["i"]},
+    9:  {"graphemes": ["n"]},
+    10: {"note": "Tool calls this 'CVC Practice (g, i)' but g is not taught "
+                 "until Lesson 16. Treated as practice only — no new graphemes. "
+                 "FLAGGED for teacher review."},
+    11: {"patterns": ["nasalized_am_an"],
+         "note": "Tool calls this 'Nasalized A (am, on)'. UFLI teaches am/an; "
+                 "'on' is almost certainly a typo for 'an'. Read as am/an. "
+                 "FLAGGED for teacher review."},
+    12: {"graphemes": ["o"]},
+    13: {"graphemes": ["d"]},
+    14: {"graphemes": ["c"]},
+    15: {"graphemes": ["u"]},
+    16: {"graphemes": ["g"]},
+    17: {"graphemes": ["b"]},
+    18: {"graphemes": ["e"]},
+    20: {"suffixes": ["-s"], "note": "plural/verb -s said /s/."},
+    21: {"suffixes": ["-s"], "note": "same -s said /z/."},
+    22: {"graphemes": ["k"]},
+    23: {"graphemes": ["h"]},
+    24: {"graphemes": ["r"]},
+    26: {"graphemes": ["l"]},
+    27: {"note": "Tool calls this 'l /l/ Part 2, ai'. The vowel team ai is "
+                 "taught at Lesson 84 — 57 lessons later. Adding it here would "
+                 "let ai into every passage from 27 on. Treated as l practice "
+                 "only. FLAGGED for teacher review."},
+    28: {"graphemes": ["w"]},
+    29: {"graphemes": ["j"]},
+    30: {"graphemes": ["y"], "note": "consonant y as in yes."},
+    31: {"graphemes": ["x"]},
+    32: {"graphemes": ["qu"]},
+    33: {"graphemes": ["v"]},
+    34: {"graphemes": ["z"]},
+
+    # ---- Unit 3: digraphs ---------------------------------------------------
+    42: {"graphemes": ["ff", "ll", "ss", "zz"]},
+    43: {"patterns": ["-all", "-oll", "-ull"]},
+    44: {"graphemes": ["ck"]},
+    45: {"graphemes": ["sh"]},
+    46: {"graphemes": ["th"], "note": "voiced th; unvoiced at 47."},
+    47: {"note": "unvoiced th; both th sounds are now safe."},
+    48: {"graphemes": ["ch"]},
+    50: {"graphemes": ["wh", "ph"]},
+    51: {"graphemes": ["ng"]},
+    52: {"graphemes": ["nk"]},
+    53: {"patterns": ["blends"],
+         "note": "'Digraphs Review 2 (incl. CCCVC)' — consonant blends are only "
+                 "explicitly practised here. Before 53, no blends. This is the "
+                 "conservative reading and it is what keeps early passages honest."},
+
+    # ---- Unit 4: VCe --------------------------------------------------------
+    54: {"patterns": ["a_e"]},
+    55: {"patterns": ["i_e"]},
+    56: {"patterns": ["o_e"]},
+    57: {"patterns": ["e_e"]},
+    58: {"patterns": ["u_e"]},
+    62: {"patterns": ["vce_exceptions"],
+         "note": "have, give, live, come, some — VCe words where the vowel "
+                 "stays short. Real teaching point, not just review."},
+    60: {"patterns": ["_ce"]},
+    61: {"patterns": ["_ge"]},
+
+    # ---- Endings and syllables ---------------------------------------------
+    63: {"suffixes": ["-es"]},
+    64: {"suffixes": ["-ed"]},
+    65: {"suffixes": ["-ing"]},
+    66: {"patterns": ["open_syllable", "closed_syllable"]},
+    67: {"patterns": ["closed_closed"]},
+    68: {"patterns": ["open_closed"]},
+    69: {"graphemes": ["tch"]},
+    70: {"graphemes": ["dge"]},
+    72: {"patterns": ["-ild", "-old", "-ind", "-olt", "-ost"]},
+    73: {"graphemes": ["y_long_i"], "note": "y saying long i, as in my."},
+    74: {"graphemes": ["y_long_e"], "note": "y saying long e, as in happy."},
+    75: {"patterns": ["-le"]},
+
+    # ---- R-controlled -------------------------------------------------------
+    77: {"graphemes": ["ar"]},
+    78: {"graphemes": ["or", "ore"]},
+    80: {"graphemes": ["er"]},
+    81: {"graphemes": ["ir", "ur"]},
+    82: {"patterns": ["w+or"]},
+
+    # ---- Vowel teams --------------------------------------------------------
+    84: {"graphemes": ["ai", "ay"]},
+    85: {"graphemes": ["ee", "ea", "ey"]},
+    86: {"graphemes": ["oa", "oe", "ow"],
+         "note": "ow (snow) shares its spelling with ow (cow) at 96, so this "
+                 "lesson requires an approved word list."},
+    87: {"graphemes": ["ie", "igh"]},
+    89: {"graphemes": ["oo"],
+         "note": "oo (moon) shares its spelling with oo (book) at 90, so this "
+                 "lesson requires an approved word list."},
+    90: {"note": "second oo sound; both are now safe."},
+    91: {"graphemes": ["ew", "ui", "ue"]},
+    93: {"graphemes": ["au", "aw", "augh"],
+         "note": "Tool says 'au, aw, ugh'. 'ugh' is not an English grapheme; "
+                 "the /aw/ spelling is 'augh' (caught, taught). Read as augh. "
+                 "FLAGGED for teacher review."},
+    94: {"patterns": ["schwa"]},
+    95: {"graphemes": ["oi", "oy"]},
+    96: {"graphemes": ["ou"], "note": "ou as in out; second sound at 115."},
+    98: {"graphemes": ["kn", "wr", "mb", "mn"], "patterns": ["silent_letters"],
+         "note": "Tool says 'kn, wr, mb, m'. Trailing 'm' read as 'mn' "
+                 "(autumn, column). Also gates lk/lm/lf (talk, calm, half). "
+                 "FLAGGED for teacher review."},
+
+    # ---- Unit 8: affixes and advanced --------------------------------------
+    99:  {"suffixes": ["-s", "-es"]},
+    100: {"suffixes": ["-er", "-est"]},
+    101: {"suffixes": ["-ly"]},
+    102: {"suffixes": ["-less", "-ful"]},
+    103: {"prefixes": ["un-"]},
+    104: {"prefixes": ["pre-", "re-"]},
+    105: {"prefixes": ["dis-"]},
+    107: {"patterns": ["doubling_rule_ed_ing"]},
+    108: {"patterns": ["doubling_rule_er_est"]},
+    109: {"patterns": ["drop_e_rule"]},
+    110: {"patterns": ["y_to_i_rule"]},
+    111: {"suffixes": ["-ar", "-or", "-er"]},
+    112: {"graphemes": ["air", "are", "ear_air"]},
+    113: {"graphemes": ["ear_er"]},
+    114: {"graphemes": ["ei", "ey", "eigh", "ea_long_a"],
+          "note": "Tool lists 'ei, ey, eigh, high, ea'. 'high' is a word, not "
+                  "an /a/ spelling — dropped as a typo. FLAGGED for teacher review."},
+    115: {"graphemes": ["eu"], "note": "ou saying long u (soup) is safe now too."},
+    116: {"graphemes": ["ough"]},
+    117: {"patterns": ["signal_vowels"], "note": "c=/s/, s=/z/, g=/j/."},
+    118: {"graphemes": ["ch_sh", "ch_k", "gn", "gh"], "patterns": ["silent_t"]},
+    119: {"suffixes": ["-sion", "-tion"]},
+    120: {"suffixes": ["-ture"]},
+    121: {"suffixes": ["-er", "-or", "-ist"]},
+    122: {"suffixes": ["-ish"]},
+    123: {"suffixes": ["-y"]},
+    124: {"suffixes": ["-ness"]},
+    125: {"suffixes": ["-ment"]},
+    126: {"suffixes": ["-able", "-ible"]},
+    127: {"prefixes": ["uni-", "bi-", "tri-"]},
+}
+
+# Multi-letter spellings a child must NOT meet before the lesson that teaches
+# them. Checked against raw spelling, because a word like "ship" is made of
+# letters a Lesson-41 reader knows but is still unreadable to them.
+LETTER_PATTERN_TAUGHT_AT = {
+    # Only true GRAPHEMES belong here — letter teams that spell one sound.
+    # Letter SEQUENCES that merely cross a syllable break (lk in milk, mb in
+    # number, gn in magnet) must NEVER be gated: doing so blocked milk, self,
+    # elf and film for 45 lessons. Silent-letter words are handled by an
+    # explicit word list in audit_passage.py instead.
+    #
+    # Doubled consonants are likewise not gated: egg/add/odd are legitimate
+    # one-syllable words at Lessons 42-43, and rabbit/kitten are already caught
+    # by the syllable rule.
+    "ff": 42, "ll": 42, "ss": 42, "zz": 42,
+    "ck": 44, "sh": 45, "th": 46, "ch": 48, "wh": 50, "ph": 50,
+    "ng": 51, "nk": 52, "tch": 69, "dge": 70, "qu": 32,
+
+    "ar": 77, "or": 78, "ore": 78, "er": 80, "ir": 81, "ur": 81,
+
+    # Vowel teams are gated at the lesson that FIRST teaches the spelling, so
+    # each lesson can use its own practice words. Where a spelling has a second
+    # sound taught later (ea in eat vs ea in head), the lesson is marked
+    # requiresWordBank rather than being made unwritable.
+    "ai": 84, "ay": 84, "ee": 85, "ea": 85, "ey": 85,
+    "oa": 86, "oe": 86, "ow": 86, "ie": 87, "igh": 87,
+    "oo": 89, "ew": 91, "ui": 91, "ue": 91,
+    "au": 93, "aw": 93, "augh": 93,
+    "oi": 95, "oy": 95, "ou": 96,
+    "ei": 114, "eigh": 114, "ough": 116,
+
+    "air": 112, "are": 112, "ear": 112,
+    "kn": 98, "wr": 98, "gn": 118,
+}
+
+# A taught spelling whose OTHER sound arrives later. Such a lesson can be
+# written, but only from an approved word list — the checker cannot tell
+# "snow" from "down" by spelling alone.
+SECOND_SOUND_LATER = {
+    46:  [("th", 47, "th in this vs th in thin")],
+    85:  [("ea", 114, "ea in eat vs ea in head"), ("ey", 114, "ey in key vs ey in they")],
+    86:  [("ow", 96, "ow in snow vs ow in cow")],
+    89:  [("oo", 90, "oo in moon vs oo in book")],
+    96:  [("ou", 115, "ou in out vs ou in soup")],
+    112: [("ear", 113, "ear in bear vs ear in earn")],
+}
+
+
+
+def parse_curriculum(html: str):
+    """Pull unit -> lessons + heart words straight out of the tool."""
+    start = html.index('  "Unit 1: Alphabet & Sounds"')
+    block = html[start:start + 20000]
+    units = re.findall(
+        r'"(Unit \d+[^"]*)":\s*\{\s*lessons:\s*\[(.*?)\],\s*heartWords:\s*\[(.*?)\]',
+        block, re.S)
+    lessons, heart_by_unit = {}, {}
+    for uname, lesson_src, heart_src in units:
+        pairs = re.findall(r'\{\s*name:\s*"([^"]+)",\s*skill:\s*"([^"]+)"\s*\}', lesson_src)
+        words = re.findall(r'"([^"]+)"', heart_src)
+        nums = []
+        for name, skill in pairs:
+            n = int(name.split()[1])
+            lessons[n] = {"name": name, "skill": skill, "unit": uname}
+            nums.append(n)
+        heart_by_unit[uname] = {"words": words, "firstLesson": min(nums)}
+    return lessons, heart_by_unit
+
+
+def build():
+    if not TOOL.exists():
+        sys.exit(f"Cannot find the assessment tool at {TOOL}")
+    lessons, heart_by_unit = parse_curriculum(TOOL.read_text())
+
+    if sorted(lessons) != list(range(1, 129)):
+        sys.exit(f"Expected lessons 1-128, got {len(lessons)}")
+
+    # Heart words unlock at the lowest-numbered lesson of the unit that owns them.
+    heart_unlock = {}
+    for info in heart_by_unit.values():
+        heart_unlock.setdefault(info["firstLesson"], []).extend(info["words"])
+
+    out, graphemes, suffixes, prefixes, patterns, hearts, flags = [], [], [], [], [], [], []
+    for n in range(1, 129):
+        intro = NEW_GRAPHEMES.get(n, {})
+        for key, bucket in (("graphemes", graphemes), ("suffixes", suffixes),
+                            ("prefixes", prefixes), ("patterns", patterns)):
+            for item in intro.get(key, []):
+                if item not in bucket:
+                    bucket.append(item)
+        for w in heart_unlock.get(n, []):
+            if w not in hearts:
+                hearts.append(w)
+        if "note" in intro and "FLAGGED" in intro["note"]:
+            flags.append({"lesson": n, "skill": lessons[n]["skill"], "note": intro["note"]})
+
+        out.append({
+            "lesson": n,
+            "name": lessons[n]["name"],
+            "skill": lessons[n]["skill"],
+            "unit": lessons[n]["unit"],
+            "introduces": intro,
+            "allowedGraphemes": sorted(graphemes),
+            "allowedSuffixes": sorted(suffixes),
+            "allowedPrefixes": sorted(prefixes),
+            "allowedPatterns": sorted(patterns),
+            "allowedHeartWords": sorted(hearts),
+            "requiresWordBank": [
+                {"spelling": sp, "secondSoundAt": at, "why": why}
+                for L2, items in SECOND_SOUND_LATER.items() if L2 <= n
+                for sp, at, why in items if at > n
+            ],
+            "forbiddenLetterPatterns": sorted(
+                p for p, taught in LETTER_PATTERN_TAUGHT_AT.items() if taught > n),
+        })
+
+    doc = {
+        "model": "cumulative by lesson number: a child at lesson N has had 1..N",
+        "heartWordContract": "allowedHeartWords are EXEMPT from "
+                             "forbiddenLetterPatterns. 'the' contains th and is "
+                             "legal from lesson 1 because it is learned by sight, "
+                             "not sounded out. Any checker must test heart-word "
+                             "membership BEFORE testing letter patterns.",
+        "source": "phonics-assessment-tool:/index.html curriculum object",
+        "totalLessons": len(out),
+        "flaggedForTeacherReview": flags,
+        "letterPatternTaughtAt": LETTER_PATTERN_TAUGHT_AT,
+        "lessons": out,
+    }
+    OUT.write_text(json.dumps(doc, indent=1) + "\n")
+
+    print(f"wrote {OUT}  ({len(out)} lessons)")
+    print(f"lesson 41 allows {len(out[40]['allowedGraphemes'])} graphemes, "
+          f"{len(out[40]['allowedHeartWords'])} heart words")
+    print(f"lesson 128 allows {len(out[127]['allowedGraphemes'])} graphemes, "
+          f"{len(out[127]['allowedHeartWords'])} heart words")
+    print(f"\n{len(flags)} item(s) flagged for teacher review:")
+    for f in flags:
+        print(f"  Lesson {f['lesson']} ({f['skill']})")
+
+
+if __name__ == "__main__":
+    build()
