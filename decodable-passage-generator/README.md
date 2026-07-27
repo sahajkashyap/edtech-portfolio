@@ -140,9 +140,12 @@ writer drafts -> audit_passage.py -> violations? -> back to writer -> re-audit
 Every rule in it exists because an adversarial agent — one that did not write it
 — found a word that slipped past the previous version. The first version called
 **15,764 of 87,119 dictionary words (18%) readable at Lesson 41**, including
-*picnic*, *basket*, *rabbit*, *little* and *vein*. After the loop ran, that is
-**41 words (0.05%)**, and most of those are genuinely readable (*digs*, *dogs*,
-*kids*, *mats*, *taps*).
+*picnic*, *basket*, *rabbit*, *little* and *vein*. After three rounds of the
+loop that is **57 words (0.07%)** — a 277x reduction — and nearly all of the
+survivors are genuinely readable (*digs*, *dogs*, *kids*, *mats*, *taps*,
+*quit*, *quiz*).
+
+Full write-up for a technical reader: **[ENGINEERING.md](ENGINEERING.md)**.
 
 Round 1 added: medial consonant clusters (not just word edges), a
 one-syllable-before-Lesson-66 gate, longest-match pattern scanning so *night*
@@ -174,7 +177,7 @@ is not yet tight enough** — from Lesson 99 the syllable limit is removed
 entirely because affix lessons build long words. That is the next thing to
 narrow.
 
-`python3 audit_passage.py --selftest` runs all of it as regression tests.
+`python3 audit_passage.py --selftest` runs all 71 cases as regression tests.
 
 ## What it still cannot do
 
