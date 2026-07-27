@@ -79,6 +79,29 @@ ambiguous — `lens` (is `-s` a plural?), `snow` (which `ow`?), `head` (which
 **The fix is a word bank**: an approved word list per lesson, each word carrying
 its grapheme breakdown. Until that exists, prefer words the auditor can prove.
 
+## Every sheet says what has to come first
+
+Confirmed by the teacher, July 2026. A sheet can arrive in a home out of order —
+from an assessment report, a teacher's note, or a parent browsing. So the
+grown-up sheet opens with a prerequisite banner, **above everything else**:
+
+> **This is Lesson N. It assumes your child has already worked through Lessons
+> 1–(N-1).** Each lesson only uses sounds taught in the ones before it. If your
+> child has not had those yet, this story will be too hard — not because of
+> anything they did, but because the sounds have not been introduced yet. Ask
+> their teacher which sheet to start with.
+
+Rules for it:
+
+- It goes on the **grown-up sheet only**, at the very top. Never on a child's page.
+- Word it so a struggling reader is never the explanation. The sheet is out of
+  sequence, not the child.
+- The prerequisite is simply lessons 1..N-1 — the sequence is cumulative and
+  there are no non-adjacent dependencies.
+- If the lesson carries `requiresWordBank`, or is one of the
+  `flaggedForTeacherReview` entries, say so here too: the grown-up should know
+  the sheet rests on a judgement call.
+
 ## Sheet structure
 
 Follow the `phonics-worksheet` skill for all layout, space, and type rules —
