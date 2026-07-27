@@ -1,6 +1,6 @@
 # EdTech Portfolio
 
-Classroom tools built by a teacher of fourteen years in 3rd and 4th grade,
+Classroom tools built by a teacher of fourteen years across grades 1 through 6,
 working with Claude Code. The through-line is **teacher judgement encoded as
 software constraints** — not "AI makes a worksheet," but systems where the
 pedagogy is written down as rules a machine can enforce and a second component
