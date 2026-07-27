@@ -57,16 +57,20 @@ IRREGULAR_WORDS = {
     "son": 999, "ton": 999, "won": 999, "some": 999, "come": 999, "done": 999,
     "none": 999, "love": 999, "above": 999, "month": 999, "mother": 999,
     "other": 999, "brother": 999, "nothing": 999, "money": 999,
-    # u saying /oo/, a saying /o/ after w
+    # u saying /oo/
     "put": 999, "pull": 999, "full": 999, "push": 999, "bush": 999, "bull": 999,
-    "wash": 999, "want": 999, "watch": 999, "swan": 999, "wasp": 999,
+    # a saying short o -- UFLI teaches this at Lesson 94 (a /o/, as in want)
+    "wash": 94, "want": 94, "watch": 94, "swan": 94, "wasp": 94, "wand": 94,
     "was": 999, "what": 999, "water": 999,
-    # silent letters that are not gated graphemes
-    "talk": 98, "walk": 98, "chalk": 98, "calf": 98, "half": 98, "calm": 98,
-    "palm": 98, "folk": 98, "yolk": 98, "could": 98, "would": 98, "should": 98,
-    "island": 98, "listen": 98, "castle": 98, "often": 98, "whistle": 98,
+    # mb IS taught at Lesson 98
     "climb": 98, "comb": 98, "lamb": 98, "thumb": 98, "numb": 98, "limb": 98,
-    "autumn": 98, "column": 98, "sign": 118, "design": 118, "gnat": 118,
+    # silent letters UFLI does NOT teach anywhere in the 128. Verified against
+    # the published Toolbox: Lesson 98 covers kn, wr and mb only.
+    "talk": 999, "walk": 999, "chalk": 999, "calf": 999, "half": 999,
+    "calm": 999, "palm": 999, "folk": 999, "yolk": 999, "could": 999,
+    "would": 999, "should": 999, "island": 999, "listen": 999, "castle": 999,
+    "often": 999, "whistle": 999, "autumn": 999, "column": 999,
+    "sign": 118, "design": 118, "gnat": 118,
     # other irregulars
     "two": 999, "who": 999, "whose": 999, "does": 999, "goes": 999,
     "sugar": 999, "sure": 999, "sword": 999, "stomach": 999, "eye": 999,
@@ -409,7 +413,12 @@ SELFTEST = [
     (30, "buy", False, "uy at lesson 30"),
     (41, "gem", False, "soft g"),
     (41, "acid", False, "soft c + 2 syllables"),
-    (53, "talk", False, "silent l"),
+    (53, "talk", False, "silent l; UFLI never teaches lk"),
+    (128, "talk", False, "and still not at the last lesson"),
+    (94, "want", True, "a saying short o is taught at Lesson 94"),
+    (93, "want", False, "but not the lesson before"),
+    (98, "lamb", True, "mb IS taught at 98"),
+    (98, "autumn", False, "mn is not taught anywhere in the 128"),
     (41, "bus", True, "b-u-s: all taught, one syllable, no blend — a lesson 41 child reads this"),
     (41, "gets", True, "get is hard g, and -s is taught at 20"),
     (41, "gem", False, "gem really is soft g"),
@@ -473,6 +482,10 @@ KNOWN_LIMITATIONS = [
      "down/cow/now through 10 lessons early. Every lesson in this position "
      "carries requiresWordBank in sound-list.json — see also th (46), ea and "
      "ey (85), oo (89), ou (96), ear (112)."),
+    ("head", 85,
+     "RESOLVED at Lesson 94 -- UFLI does teach short e spelled ea there. "
+     "Between 85 and 93 the ea gate is open for the long-e sound, so head-type "
+     "words in that window still need the word bank."),
     ("irregular words", 0,
      "was, son, put, want, talk and their kind are handled by an explicit "
      "IRREGULAR_WORDS list, because English does not spell them by rule. That "

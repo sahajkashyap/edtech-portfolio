@@ -44,13 +44,8 @@ NEW_GRAPHEMES = {
     7:  {"graphemes": ["f"]},
     8:  {"graphemes": ["i"]},
     9:  {"graphemes": ["n"]},
-    10: {"note": "Tool calls this 'CVC Practice (g, i)' but g is not taught "
-                 "until Lesson 16. Treated as practice only — no new graphemes. "
-                 "FLAGGED for teacher review."},
-    11: {"patterns": ["nasalized_am_an"],
-         "note": "Tool calls this 'Nasalized A (am, on)'. UFLI teaches am/an; "
-                 "'on' is almost certainly a typo for 'an'. Read as am/an. "
-                 "FLAGGED for teacher review."},
+    10: {"note": "CVC practice with a and i. No new graphemes."},
+    11: {"patterns": ["nasalized_am_an"], "note": "am/an as a chunk; no new letters."},
     12: {"graphemes": ["o"]},
     13: {"graphemes": ["d"]},
     14: {"graphemes": ["c"]},
@@ -64,10 +59,7 @@ NEW_GRAPHEMES = {
     23: {"graphemes": ["h"]},
     24: {"graphemes": ["r"]},
     26: {"graphemes": ["l"]},
-    27: {"note": "Tool calls this 'l /l/ Part 2, ai'. The vowel team ai is "
-                 "taught at Lesson 84 — 57 lessons later. Adding it here would "
-                 "let ai into every passage from 27 on. Treated as l practice "
-                 "only. FLAGGED for teacher review."},
+    27: {"note": "l practice. UFLI lists no second item here; ai is Lesson 84."}, 
     28: {"graphemes": ["w"]},
     29: {"graphemes": ["j"]},
     30: {"graphemes": ["y"], "note": "consonant y as in yes."},
@@ -97,7 +89,7 @@ NEW_GRAPHEMES = {
     55: {"patterns": ["i_e"]},
     56: {"patterns": ["o_e"]},
     57: {"patterns": ["e_e"]},
-    58: {"patterns": ["u_e"]},
+    58: {"patterns": ["u_e"], "graphemes": ["u_e_yoo"], "note": "u_e also says /yu/ as in cube."},
     62: {"patterns": ["vce_exceptions"],
          "note": "have, give, live, come, some — VCe words where the vowel "
                  "stays short. Real teaching point, not just review."},
@@ -109,7 +101,7 @@ NEW_GRAPHEMES = {
     64: {"suffixes": ["-ed"]},
     65: {"suffixes": ["-ing"]},
     66: {"patterns": ["open_syllable", "closed_syllable"]},
-    67: {"patterns": ["closed_closed"]},
+    67: {"patterns": ["compound_words", "closed_closed"]},
     68: {"patterns": ["open_closed"]},
     69: {"graphemes": ["tch"]},
     70: {"graphemes": ["dge"]},
@@ -137,17 +129,17 @@ NEW_GRAPHEMES = {
                  "lesson requires an approved word list."},
     90: {"note": "second oo sound; both are now safe."},
     91: {"graphemes": ["ew", "ui", "ue"]},
-    93: {"graphemes": ["au", "aw", "augh"],
-         "note": "Tool says 'au, aw, ugh'. 'ugh' is not an English grapheme; "
-                 "the /aw/ spelling is 'augh' (caught, taught). Read as augh. "
-                 "FLAGGED for teacher review."},
-    94: {"patterns": ["schwa"]},
+    93: {"graphemes": ["au", "aw", "augh"]},
+    94: {"graphemes": ["ea_short_e", "a_short_o"],
+         "note": "UFLI teaches short e spelled ea (head, bread) and short o "
+                 "spelled a (want, wash) here. The tool had a schwa lesson, "
+                 "which UFLI does not have."},
     95: {"graphemes": ["oi", "oy"]},
     96: {"graphemes": ["ou"], "note": "ou as in out; second sound at 115."},
-    98: {"graphemes": ["kn", "wr", "mb", "mn"], "patterns": ["silent_letters"],
-         "note": "Tool says 'kn, wr, mb, m'. Trailing 'm' read as 'mn' "
-                 "(autumn, column). Also gates lk/lm/lf (talk, calm, half). "
-                 "FLAGGED for teacher review."},
+    98: {"graphemes": ["kn", "wr", "mb"], "patterns": ["silent_letters"],
+         "note": "UFLI teaches exactly three silent-letter patterns here. "
+                 "mn is not taught anywhere in the 128, and talk/calm/half "
+                 "are not part of this lesson."},
 
     # ---- Unit 8: affixes and advanced --------------------------------------
     99:  {"suffixes": ["-s", "-es"]},
@@ -164,12 +156,12 @@ NEW_GRAPHEMES = {
     111: {"suffixes": ["-ar", "-or", "-er"]},
     112: {"graphemes": ["air", "are", "ear_air"]},
     113: {"graphemes": ["ear_er"]},
-    114: {"graphemes": ["ei", "ey", "eigh", "ea_long_a"],
-          "note": "Tool lists 'ei, ey, eigh, high, ea'. 'high' is a word, not "
-                  "an /a/ spelling — dropped as a typo. FLAGGED for teacher review."},
+    114: {"graphemes": ["ei", "ey", "eigh", "ea_long_a", "aigh"],
+          "note": "The tool's 'high' is a mistyping of 'aigh' (straight). It "
+                  "was previously dropped, so aigh was never taught at all."},
     115: {"graphemes": ["eu"], "note": "ou saying long u (soup) is safe now too."},
     116: {"graphemes": ["ough"]},
-    117: {"patterns": ["signal_vowels"], "note": "c=/s/, s=/z/, g=/j/."},
+    117: {"patterns": ["signal_vowels"], "note": "c=/s/ and g=/j/ only; UFLI has no s=/z/ here."},
     118: {"graphemes": ["ch_sh", "ch_k", "gn", "gh"], "patterns": ["silent_t"]},
     119: {"suffixes": ["-sion", "-tion"]},
     120: {"suffixes": ["-ture"]},
@@ -210,7 +202,7 @@ LETTER_PATTERN_TAUGHT_AT = {
     "oo": 89, "ew": 91, "ui": 91, "ue": 91,
     "au": 93, "aw": 93, "augh": 93,
     "oi": 95, "oy": 95, "ou": 96,
-    "ei": 114, "eigh": 114, "ough": 116,
+    "ei": 114, "eigh": 114, "aigh": 114, "ough": 116,
 
     "air": 112, "are": 112, "ear": 112,
     "kn": 98, "wr": 98, "gn": 118,
@@ -221,13 +213,94 @@ LETTER_PATTERN_TAUGHT_AT = {
 # "snow" from "down" by spelling alone.
 SECOND_SOUND_LATER = {
     46:  [("th", 47, "th in this vs th in thin")],
-    85:  [("ea", 114, "ea in eat vs ea in head"), ("ey", 114, "ey in key vs ey in they")],
+    58:  [("u_e", 58, "u_e in tube vs u_e in cube")],
+    85:  [("ea", 94, "ea in eat vs ea in head (94) vs ea in great (114)"),
+          ("ey", 114, "ey in key vs ey in they")],
     86:  [("ow", 96, "ow in snow vs ow in cow")],
-    89:  [("oo", 90, "oo in moon vs oo in book")],
+    89:  [("oo", 90, "oo in book (89) vs oo in moon (90)")],
     96:  [("ou", 115, "ou in out vs ou in soup")],
     112: [("ear", 113, "ear in bear vs ear in earn")],
 }
 
+
+
+
+# ---------------------------------------------------------------------------
+# Corrections, verified against UFLI Foundations' published Toolbox and Scope &
+# Sequence (ufli.education.ufl.edu), July 2026.
+#
+# The assessment tool's curriculum object carries typos. We keep READING from
+# that tool so lesson names and order can never drift -- but we correct the
+# known errors here, in the open, rather than silently importing them.
+#
+# THE SAME FIXES ARE STILL NEEDED IN phonics-assessment-tool:/index.html.
+# Until they are made there, this layer is what stands between a typo and a
+# child. Every entry cites what the tool says and what UFLI actually teaches.
+# ---------------------------------------------------------------------------
+CURRICULUM_CORRECTIONS = {
+    10:  ("CVC Practice (a, i)",       "tool says '(g, i)'; UFLI has (a, i). The letter g is Lesson 16."),
+    11:  ("Nasalized A (am, an)",      "tool says '(am, on)'; UFLI has am/an."),
+    27:  ("l /l/ Part 2",              "tool says 'l /l/ Part 2, ai'. UFLI lists no second item; the "
+                                       "stray letters are the -al ending misread as 'ai'. The vowel "
+                                       "team ai is Lesson 84, and is NOT taught here."),
+    51:  ("ng /ng/",                   "notation only; tool wrote /n/."),
+    52:  ("nk /ngk/",                  "notation only; tool wrote /nk/."),
+    58:  ("u_e /u/, /yu/",             "tool says 'u /u/, /u/'. It is the VCe pattern u_e, and it "
+                                       "carries a second sound /yu/ (cube) the tool lost."),
+    67:  ("Compound Words, Closed/Closed",
+                                       "tool says 'Closed/Closed'. UFLI splits this into 67a Compound "
+                                       "Words and 67b Closed/Closed; compound words were missing."),
+    90:  ("oo /oo/ (moon)",            "tool wrote a breve, which is the book sound. UFLI Lesson 90 is "
+                                       "the long oo. Lesson 89 is the other one."),
+    93:  ("au, aw, augh /aw/",         "tool says 'ugh'; UFLI has augh (caught, taught)."),
+    94:  ("ea /e/ (head), a /o/ (want)",
+                                       "tool says 'schwa'. UFLI has no schwa lesson. Lesson 94 teaches "
+                                       "short e spelled ea, and short o spelled a. This was the single "
+                                       "largest error: it omitted two real sound-spellings and admitted "
+                                       "one UFLI does not teach."),
+    98:  ("Silent Letters (kn, wr, mb)",
+                                       "tool says '(kn, wr, mb, m)'. UFLI teaches THREE patterns here. "
+                                       "The stray 'm' is the /m/ of 'mb /m/' split off in typing. It is "
+                                       "not 'mn' -- mn is not taught anywhere in the 128."),
+    111: ("ar /er/, or /er/",          "tool says '-ar, -or, -er/'; the third item is spurious."),
+    113: ("ear /ear/ (hear)",          "tool wrote the /er/ sound. UFLI Lesson 113 is the 'hear' sound, "
+                                       "not the 'her' sound."),
+    114: ("Alternate /a/ (ei, eigh, ey, ea, aigh)",
+                                       "tool says 'high'; UFLI has 'aigh'. Previously dropped, so aigh "
+                                       "was never taught at all."),
+    116: ("ough /aw/, /o/",            "tool wrote schwa for the second sound; UFLI has long o."),
+    117: ("Signal Vowels (c /s/, g /j/)",
+                                       "tool adds 's /z/'; UFLI's signal-vowel lesson is c and g only."),
+    127: ("bi-, tri-, uni-",           "tool drops the hyphen on 'tri'."),
+}
+
+# UFLI's real units are strictly contiguous blocks. The tool's 8 units are not
+# UFLI's and are not in numeric order -- Lesson 98 sits under "VCe", and 84-88
+# is placed before 77-83. Anything grouping by the tool's units shows lessons
+# out of teaching order.
+UFLI_UNITS = [
+    (1, 34, "Unit 1: Alphabet"),
+    (35, 41, "Unit 2: Alphabet Review & Longer Words"),
+    (42, 53, "Unit 3: Digraphs"),
+    (54, 62, "Unit 4: VCe"),
+    (63, 68, "Unit 5: Reading Longer Words"),
+    (69, 76, "Unit 6: Ending Spelling Patterns"),
+    (77, 83, "Unit 7: R-Controlled Vowels"),
+    (84, 88, "Unit 8: Long Vowel Teams"),
+    (89, 94, "Unit 9: Other Vowel Teams"),
+    (95, 98, "Unit 10: Diphthongs and Silent Letters"),
+    (99, 106, "Unit 11: Suffixes and Prefixes"),
+    (107, 110, "Unit 12: Suffix Spelling Changes"),
+    (111, 118, "Unit 13: Low Frequency Spelling"),
+    (119, 128, "Unit 14: Additional Affixes"),
+]
+
+
+def ufli_unit(n):
+    for lo, hi, name in UFLI_UNITS:
+        if lo <= n <= hi:
+            return name
+    raise ValueError(n)
 
 
 def parse_curriculum(html: str):
@@ -274,14 +347,18 @@ def build():
         for w in heart_unlock.get(n, []):
             if w not in hearts:
                 hearts.append(w)
-        if "note" in intro and "FLAGGED" in intro["note"]:
-            flags.append({"lesson": n, "skill": lessons[n]["skill"], "note": intro["note"]})
 
+        corrected, why = CURRICULUM_CORRECTIONS.get(n, (None, None))
+        if corrected:
+            flags.append({"lesson": n, "toolSays": lessons[n]["skill"],
+                          "ufliTeaches": corrected, "note": why})
         out.append({
             "lesson": n,
             "name": lessons[n]["name"],
-            "skill": lessons[n]["skill"],
-            "unit": lessons[n]["unit"],
+            "skill": corrected or lessons[n]["skill"],
+            "toolSays": lessons[n]["skill"] if corrected else None,
+            "unit": ufli_unit(n),
+            "toolUnit": lessons[n]["unit"],
             "introduces": intro,
             "allowedGraphemes": sorted(graphemes),
             "allowedSuffixes": sorted(suffixes),
@@ -306,7 +383,8 @@ def build():
                              "membership BEFORE testing letter patterns.",
         "source": "phonics-assessment-tool:/index.html curriculum object",
         "totalLessons": len(out),
-        "flaggedForTeacherReview": flags,
+        "correctedAgainstUFLI": flags,
+        "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool:/index.html carries these same typos and will re-import them unless fixed there too.",
         "letterPatternTaughtAt": LETTER_PATTERN_TAUGHT_AT,
         "lessons": out,
     }
@@ -317,9 +395,9 @@ def build():
           f"{len(out[40]['allowedHeartWords'])} heart words")
     print(f"lesson 128 allows {len(out[127]['allowedGraphemes'])} graphemes, "
           f"{len(out[127]['allowedHeartWords'])} heart words")
-    print(f"\n{len(flags)} item(s) flagged for teacher review:")
+    print(f"\n{len(flags)} lesson(s) corrected against UFLI:")
     for f in flags:
-        print(f"  Lesson {f['lesson']} ({f['skill']})")
+        print(f"  Lesson {f['lesson']:>3}: {f['toolSays']!r} -> {f['ufliTeaches']!r}")
 
 
 if __name__ == "__main__":

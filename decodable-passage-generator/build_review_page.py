@@ -15,7 +15,7 @@ OUT = pathlib.Path(__file__).parent / "sound-list-review.html"
 
 
 def compact(doc):
-    flagged = {f["lesson"]: f["note"] for f in doc["flaggedForTeacherReview"]}
+    flagged = {f["lesson"]: f["note"] for f in doc["correctedAgainstUFLI"]}
     rows, prev_hearts = [], []
     for L in doc["lessons"]:
         intro = L["introduces"]
@@ -108,7 +108,11 @@ section{margin-top:2.8rem}
   border-left:3px solid var(--flag);border-radius:3px;padding:.85rem 1rem}
 .flagcard .hd{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
 .flagcard .num{font-family:var(--serif);font-size:1.05rem;color:var(--flag)}
-.flagcard .says{font-family:var(--mono);font-size:.82rem}
+.flagcard .swap{display:flex;flex-wrap:wrap;gap:.4rem;align-items:baseline;margin-top:.3rem}
+.flagcard .was{font-family:var(--mono);font-size:.82rem;text-decoration:line-through;
+  opacity:.72}
+.flagcard .arw{color:var(--flag)}
+.flagcard .now{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--flag)}
 .flagcard p{margin:.45rem 0 0;font-size:.88rem;color:var(--ink)}
 
 /* picker */
@@ -244,19 +248,19 @@ sync(41);
 def build():
     doc = json.loads(SRC.read_text())
     rows = compact(doc)
-    flagged = doc["flaggedForTeacherReview"]
+    flagged = doc["correctedAgainstUFLI"]
     n_wb = len({r["n"] for r in rows if r["wb"]})
     final = rows[-1]
 
     cards = ""
     for f in flagged:
-        note = f["note"].replace("FLAGGED for teacher review.", "").strip()
-        says = note.split("'")[1] if "'" in note else f["skill"]
         cards += f"""
         <div class="flagcard">
-          <div class="hd"><span class="num">Lesson {f['lesson']}</span>
-            <span class="says">your tool says &ldquo;{f['skill']}&rdquo;</span></div>
-          <p>{note}</p>
+          <div class="hd"><span class="num">Lesson {f['lesson']}</span></div>
+          <div class="swap"><span class="was">{f['toolSays']}</span>
+            <span class="arw">&rarr;</span>
+            <span class="now">{f['ufliTeaches']}</span></div>
+          <p>{f['note']}</p>
         </div>"""
 
     page = f"""<title>Phonics Sound List &mdash; 128 Lessons</title>
@@ -271,23 +275,26 @@ def build():
   has been taught by that point &mdash; so a story can be checked against it word
   by word instead of by eye.</p>
   <p class="lede"><strong>Lessons are cumulative.</strong> A child on Lesson 41
-  has had 1 through 40.</p>
+  has had 1 through 40. UFLI publishes no other prerequisites &mdash; the sequence
+  is simply in order, which is what every sheet&rsquo;s opening banner says.</p>
 
   <div class="stats">
     <div class="stat"><div class="v">128</div><div class="k">Lessons</div></div>
     <div class="stat"><div class="v">{len(final['allG'])}</div><div class="k">Sounds by the end</div></div>
     <div class="stat"><div class="v">{len(final['allH'])}</div><div class="k">Heart words</div></div>
-    <div class="stat is-flag"><div class="v">{len(flagged)}</div><div class="k">Need your eye</div></div>
+    <div class="stat is-flag"><div class="v">{len(flagged)}</div><div class="k">Corrected vs UFLI</div></div>
     <div class="stat is-wb"><div class="v">{n_wb}</div><div class="k">Need a word list</div></div>
   </div>
 </header>
 
 <section>
-  <h2>Six places I had to guess</h2>
-  <p class="sub">Your tool's curriculum says something here that looks like a typo.
-  I made a call so the list could be built &mdash; but a wrong call puts a sound in
-  front of a child before they have been taught it. These are the ones worth
-  your time.</p>
+  <h2>{len(flagged)} lessons corrected against the UFLI manual</h2>
+  <p class="sub">Checked against UFLI Foundations' published Toolbox and Scope
+  &amp; Sequence. <strong>Your lesson order is right</strong> &mdash; every lesson number
+  teaches what UFLI says it teaches, in the right sequence. These {len(flagged)}
+  entries had typos in the wording; the corrections are applied here.
+  <strong>The same typos are still in your assessment tool</strong> and will come
+  back unless they are fixed there too.</p>
   <div class="flags">{cards}</div>
 </section>
 
@@ -315,7 +322,9 @@ def build():
 <footer>
   Built from <code>sound-list.json</code>, which is generated from the phonics
   assessment tool's own curriculum &mdash; so lesson names and order cannot drift.
-  Scope &amp; sequence follows UFLI Foundations; all passage text is original.
+  Lesson names and units verified against UFLI Foundations&rsquo; published Toolbox
+  and Scope &amp; Sequence, July 2026. Scope &amp; sequence is a teaching method and
+  free to follow; all passage text here is original.
   Heart words are from the public-domain Dolch list (1936).
 </footer>
 
