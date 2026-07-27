@@ -1,7 +1,7 @@
 {
  "model": "cumulative by lesson number: a child at lesson N has had 1..N",
  "heartWordContract": "allowedHeartWords are EXEMPT from forbiddenLetterPatterns. 'the' contains th and is legal from lesson 1 because it is learned by sight, not sounded out. Any checker must test heart-word membership BEFORE testing letter patterns.",
- "source": "phonics-assessment-tool:/index.html curriculum object",
+ "source": "phonics-assessment-tool/index.html curriculum object",
  "totalLessons": 128,
  "correctedAgainstUFLI": [
   {
@@ -107,7 +107,7 @@
    "note": "tool drops the hyphen on 'tri'."
   }
  ],
- "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool:/index.html carries these same typos and will re-import them unless fixed there too.",
+ "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool/index.html carries these same typos and will re-import them unless fixed there too.",
  "letterPatternTaughtAt": {
   "ff": 42,
   "ll": 42,

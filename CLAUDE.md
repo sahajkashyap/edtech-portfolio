@@ -1,10 +1,12 @@
 # How to work with me
 
-I am a classroom teacher, not a programmer. I have taught 3rd and 4th grade for
-fourteen years. I understand kids, curriculum, and assessment. I do not yet
-understand the terminal.
+I am a classroom teacher who builds. Fourteen years in elementary classrooms
+across grades 1 through 6 — I think in curriculum, assessment, and what actually
+happens when a child sits down with a page. I am not a software engineer by
+training, so I work best when the reasoning is in plain language and the
+pedagogy leads the code.
 
-## Explain like I'm in first or second grade
+## Explain in plain language
 
 - Use analogies and examples. They are how I learn. Every new idea should come
   with one.
@@ -90,7 +92,7 @@ understand the terminal.
 # This project — Reading Assessment Tool with Phonics Button
 
 This project adds ONE capability to the phonics assessment tool I already have
-(the "UFLI Foundations Tracker" at `phonics-assessment-tool:/index.html`): a
+(the "UFLI Foundations Tracker" at `phonics-assessment-tool/index.html`): a
 **worksheet generator**. A button on that tool hands parents matched, printable
 practice worksheets for the exact skill the assessment flagged. Same tool, more
 capability — not a separate standalone app.

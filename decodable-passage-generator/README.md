@@ -223,6 +223,6 @@ ones that changed what a child could read:
    document — every typo is a one- or two-character slip off that chart. Worth
    knowing which document to re-check against.
 
-**The same typos are still in `phonics-assessment-tool:/index.html`** and will be
+**The same typos are still in `phonics-assessment-tool/index.html`** and will be
 re-imported unless fixed there. `CURRICULUM_CORRECTIONS` is what stands between
 them and a child until then.

@@ -18,7 +18,7 @@ import pathlib
 import re
 import sys
 
-TOOL = pathlib.Path("../phonics-assessment-tool:/index.html")
+TOOL = pathlib.Path("../phonics-assessment-tool/index.html")
 OUT = pathlib.Path("sound-list.json")
 
 # ---------------------------------------------------------------------------
@@ -233,7 +233,7 @@ SECOND_SOUND_LATER = {
 # that tool so lesson names and order can never drift -- but we correct the
 # known errors here, in the open, rather than silently importing them.
 #
-# THE SAME FIXES ARE STILL NEEDED IN phonics-assessment-tool:/index.html.
+# THE SAME FIXES ARE STILL NEEDED IN phonics-assessment-tool/index.html.
 # Until they are made there, this layer is what stands between a typo and a
 # child. Every entry cites what the tool says and what UFLI actually teaches.
 # ---------------------------------------------------------------------------
@@ -381,10 +381,10 @@ def build():
                              "legal from lesson 1 because it is learned by sight, "
                              "not sounded out. Any checker must test heart-word "
                              "membership BEFORE testing letter patterns.",
-        "source": "phonics-assessment-tool:/index.html curriculum object",
+        "source": "phonics-assessment-tool/index.html curriculum object",
         "totalLessons": len(out),
         "correctedAgainstUFLI": flags,
-        "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool:/index.html carries these same typos and will re-import them unless fixed there too.",
+        "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool/index.html carries these same typos and will re-import them unless fixed there too.",
         "letterPatternTaughtAt": LETTER_PATTERN_TAUGHT_AT,
         "lessons": out,
     }

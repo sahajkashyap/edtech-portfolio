@@ -45,7 +45,7 @@ sheets is not. That is stated in the docs rather than implied away.
 
 | Project | What it is |
 |---|---|
-| `phonics-assessment-tool:` | UFLI Foundations tracker with a worksheet generator. All 128 skills produce printable practice sheets across six sheet types. |
+| `phonics-assessment-tool` | UFLI Foundations tracker with a worksheet generator. All 128 skills produce printable practice sheets across six sheet types. |
 | [`factor-field/`](factor-field/) | Times-tables practice tool. |
 | [`weekly-family-newsletter/`](weekly-family-newsletter/) | Family communication template. |
 

@@ -104,7 +104,7 @@ skill-appropriate content:
 ## Reference implementation
 
 The working generator + all short-vowel content live in
-`phonics-assessment-tool:/index.html` (the `WORKSHEETS` data object + the
+`phonics-assessment-tool/index.html` (the `WORKSHEETS` data object + the
 `buildWorksheetHTML()` renderer + the "Generate practice worksheets" button).
 Add a new skill = add one entry to `WORKSHEETS` keyed by the lesson name; the
 picker is generated from the tool's `curriculum` object so names/order always

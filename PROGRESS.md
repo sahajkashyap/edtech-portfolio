@@ -9,7 +9,7 @@ where we left off. Newest updates go at the top.
 
 **Done**
 - Built the **phonics worksheet generator** on the existing UFLI Foundations
-  Tracker (`phonics-assessment-tool:/index.html`): a "Generate practice
+  Tracker (`phonics-assessment-tool/index.html`): a "Generate practice
   worksheets" button + skill picker that produces a printable practice sheet
   for the exact skill the assessment flagged.
 - **All 128 skills generate** across six sheet types (sound patterns, magic-e,
