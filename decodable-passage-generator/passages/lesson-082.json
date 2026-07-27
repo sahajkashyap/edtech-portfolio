@@ -7,7 +7,7 @@
     "Then Kurt gets his turn on it.",
     "He bumps a rock and lands in dirt.",
     "His shirt gets dirt all on it.",
-    "His arm hurts a bit.",
+    "He curls up for a bit.",
     "Meg helps him up with her hand.",
     "Kurt grins and gets a third turn."
   ],
@@ -16,7 +16,7 @@
     "turn",
     "dirt",
     "shirt",
-    "hurts",
+    "curls",
     "third"
   ],
   "questions": [
@@ -26,7 +26,7 @@
     },
     {
       "ask": "What happened on Kurt's turn?",
-      "listenFor": "He bumped a rock, landed in the dirt, and his arm hurt. Listen for the rock."
+      "listenFor": "He bumped a rock, landed in the dirt, and curled up for a bit. Listen for the rock."
     },
     {
       "ask": "Do you think Kurt was brave to go again? Tell me why.",

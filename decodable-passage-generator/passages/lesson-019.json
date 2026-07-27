@@ -7,18 +7,31 @@
     "Sam dug a pit in the mud.",
     "The pup sat in the pit.",
     "Sam is mad. Up, pup, up!",
-    "But the pup dug. The pup dug up a fat bug.",
-    "It is a big fat bug!",
+    "But the pup dug. The pup dug up a bug.",
+    "It is a big bug!",
     "Sam is not mad at the pup.",
     "Sam can pat the pup. The pup can nap."
   ],
-  "warmup": ["dig", "dug", "pit", "mud", "bug", "pat"],
+  "warmup": [
+    "dig",
+    "dug",
+    "pit",
+    "mud",
+    "bug",
+    "pat"
+  ],
   "questions": [
-    {"ask": "Where did the pup sit?",
-     "listenFor": "In the pit Sam dug. This one is said right in the story, so if your child is stuck, point at that line and have them read it again instead of telling them the answer."},
-    {"ask": "Why is Sam not mad at the end?",
-     "listenFor": "Because the pup dug up a big fat bug. You are listening for the pup doing something good, not just \"because.\" If they say \"the bug,\" ask \"and who found it?\""},
-    {"ask": "Do you think Sam and the pup are friends? Tell me why you think so.",
-     "listenFor": "There is no wrong answer here. You are listening for a reason pulled from the story - the pat at the end, or digging together. A reason matters more than the answer."}
+    {
+      "ask": "Where did the pup sit?",
+      "listenFor": "In the pit Sam dug. This one is said right in the story, so if your child is stuck, point at that line and have them read it again instead of telling them the answer."
+    },
+    {
+      "ask": "Why is Sam not mad at the end?",
+      "listenFor": "Because the pup dug up a big bug. You are listening for the pup doing something good, not just \"because.\" If they say \"the bug,\" ask \"and who found it?\""
+    },
+    {
+      "ask": "Do you think Sam and the pup are friends? Tell me why you think so.",
+      "listenFor": "There is no wrong answer here. You are listening for a reason pulled from the story - the pat at the end, or digging together. A reason matters more than the answer."
+    }
   ]
 }

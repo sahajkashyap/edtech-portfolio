@@ -8,7 +8,7 @@
     "The ball rolls and rolls.",
     "It falls in a well!",
     "Bill yells for his dad.",
-    "Dad gets the ball for Bill.",
+    "Mom gets the ball for Bill.",
     "Bill hugs his dad."
   ],
   "warmup": [
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Who gets the ball back for Bill?",
-      "listenFor": "His dad. Follow up with \"and how did Dad know to come?\" to see if they linked the yell to the help."
+      "listenFor": "His dad. Follow up with \"and how did Mom know to come?\" to see if they linked the yell to the help."
     },
     {
       "ask": "Do you think Bill should roll the ball down the hill again? Tell me why.",

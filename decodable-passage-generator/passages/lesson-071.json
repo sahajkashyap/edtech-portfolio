@@ -7,7 +7,7 @@
     "Ben pitches a stick in the ditch.",
     "Meg fetches it and pitches it back.",
     "A duck on the hedge is the judge.",
-    "Ben hits the hedge and the duck quacks.",
+    "Ben pitches it in the hedge. The duck quacks.",
     "Meg wins the match and gets the badge.",
     "Then the pals munch fudge on the bridge."
   ],
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Why did Ben lose?",
-      "listenFor": "His stick hit the hedge and woke the duck. If they say \"Meg won,\" ask \"and what did Ben's stick do?\""
+      "listenFor": "His stick went in the hedge and woke the duck. If they say \"Meg won,\" ask \"and where did Ben's stick land?\""
     },
     {
       "ask": "Do you think a duck makes a good judge? Tell me why.",

@@ -19,6 +19,6 @@
     {"ask": "What do Jane and Pete give the rat?",
      "listenFor": "A bit of cake. Listen for them seeing that the cake is a trade, so the rat leaves the rice alone."},
     {"ask": "Do you think it was fair to give the rat cake? Tell me why.",
-     "listenFor": "Either answer is fine. You want a reason, like \"yes, he was hungry too\" or \"no, he stole first.\""}
+     "listenFor": "Either answer is fine. You want a reason, like \"yes, he was hungry too\" or \"no, he took the rice first.\""}
   ]
 }

@@ -5,7 +5,7 @@
     "Kids at school said a ghost lived there.",
     "At night it made a long, sad sound.",
     "The chef said it was just the wind.",
-    "But Meg went to look one dark night.",
+    "But Meg and the chef went one dark night.",
     "She saw a sign on a back door.",
     "In the dark she saw green eyes shine.",
     "It was a cat! No ghost at all."
@@ -25,11 +25,11 @@
     },
     {
       "ask": "What was really making the sound?",
-      "listenFor": "A cat. Meg found it behind the door with the STOP sign."
+      "listenFor": "A cat. Meg and the chef found it behind the door with the sign."
     },
     {
-      "ask": "Was it a good idea for Meg to go in? Why?",
-      "listenFor": "Either answer works. Listen for the thinking, not the verdict."
+      "ask": "Why did Meg take the chef along with her?",
+      "listenFor": "Either answer works. Listen for the thinking, not the verdict - a dark school is not a place to go on your own."
     }
   ]
 }

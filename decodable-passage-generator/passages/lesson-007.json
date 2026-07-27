@@ -1,15 +1,15 @@
 {
   "lesson": 7,
-  "title": "The Fat Mat",
+  "title": "Sam Sat at the Mat",
   "lines": [
-    "Sam sat at a fat mat.",
+    "Sam sat at a mat.",
     "A map is at the mat.",
-    "Pat the fat mat, Pam.",
-    "Pam sat at the fat mat.",
-    "Tam sat at the fat mat.",
+    "Pat the map, Pam.",
+    "Pam sat at the mat.",
+    "Tam sat at the mat.",
     "Pam sat at Sam. Sam is a mat!",
     "Tap! Tam sat at Pam.",
-    "Sam, Pam, Tam: a fat, fat mat!"
+    "Sam, Pam, Tam sat at a mat!"
   ],
   "warmup": [
     "sat",
@@ -30,7 +30,7 @@
     },
     {
       "ask": "What do you think happens to the mat next? Tell me why.",
-      "listenFor": "There is no right answer here. Listen for a reason pulled from the story, like three kids piled up or the mat getting fatter. A reason matters more than the guess."
+      "listenFor": "There is no right answer here. Listen for a reason pulled from the story, like three kids piled up or the mat sliding out. A reason matters more than the guess."
     }
   ]
 }

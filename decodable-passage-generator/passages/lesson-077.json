@@ -2,14 +2,14 @@
   "lesson": 77,
   "title": "The Star Card in the Barn",
   "lines": [
-    "Dan and Dad park the car by the farm.",
+    "Dan and Mom park the car by the farm.",
     "Dan starts to dig in the dark barn.",
     "He finds a card in a dusty jar.",
     "The card has a big gold star on it.",
     "It is hard to spot in the dark barn.",
     "Dan runs to the yard with the card.",
-    "Dad grins. That card was his as a kid.",
-    "Dad lets Dan hold it in the yard."
+    "Mom grins. Mom had that card as a kid.",
+    "Mom lets Dan hold it in the yard."
   ],
   "warmup": [
     "park",
@@ -29,8 +29,8 @@
       "listenFor": "It was too dark in the barn to spot the star. The answer sits one line above."
     },
     {
-      "ask": "How do you think Dad felt about the card? Tell me why.",
-      "listenFor": "Any answer with a reason. The grin, or the card being his as a kid, both work."
+      "ask": "How do you think Mom felt about the card? Tell me why.",
+      "listenFor": "Any answer with a reason. The grin, or the card being hers as a kid, both work."
     }
   ]
 }

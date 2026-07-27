@@ -5,7 +5,7 @@
     "Pam did nap on a cot.",
     "A tan cap sat on the cot.",
     "A cat did sit in the cap.",
-    "The cat is fat. The cap is not.",
+    "The cat can not fit in the cap.",
     "Pam did sit. Pam is mad!",
     "It is a cap, cat! Not a cot!",
     "Pop! The cat did tip on the mat.",
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Why could the cat not stay in the cap?",
-      "listenFor": "The cat is fat and the cap is small, so the cat did not fit. Listen for the idea of size, not just \"it fell.\""
+      "listenFor": "The cat did not fit - the cap is too small for it. Listen for the idea of size, not just \"it fell.\""
     },
     {
       "ask": "What do you think Pam should do with her cap now? Tell me why.",

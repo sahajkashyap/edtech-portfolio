@@ -4,10 +4,10 @@
   "lines": [
     "Ben has a cot. Ben naps.",
     "But a cot leg is bad.",
-    "The cot tips! Ben hits it.",
+    "The cot tips! Ben is on the rug.",
     "Ben is mad. Ben is not sad.",
-    "Ben gets a big fat log.",
-    "Ben cuts the log a lot.",
+    "Ben gets a big log.",
+    "Dad cuts the log a lot.",
     "Ben sets it up as a cot leg.",
     "Ben sits. It did not tip!",
     "Ben lets his cat nap on it."
@@ -23,7 +23,7 @@
   "questions": [
     {
       "ask": "What did Ben use to make a new cot leg?",
-      "listenFor": "A log that he cut. It is said in the story. Have your child point to the line that tells you, then read it out loud again."
+      "listenFor": "A log that Dad cut for him. It is said in the story. Have your child point to the line that tells you, then read it out loud again."
     },
     {
       "ask": "How do you know the fix worked?",
@@ -31,7 +31,7 @@
     },
     {
       "ask": "Do you think Ben is good at fixing things? Tell me why.",
-      "listenFor": "No wrong answer here. You want a reason pulled from the story - he cut the log himself, or the cot held him up. A reason beats a yes or no."
+      "listenFor": "No wrong answer here. You want a reason pulled from the story - he got the log and asked Dad to cut it, or the cot held him up. A reason beats a yes or no."
     }
   ]
 }

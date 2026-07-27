@@ -16,6 +16,7 @@ import re
 import sys
 
 import audit_passage as A
+from core_vocabulary import BLOCKED
 
 HERE = pathlib.Path(__file__).parent
 BANK = HERE / "word-bank.json"
@@ -72,6 +73,21 @@ def validate(spec):
             problems.append(f"question {i} needs both 'ask' and 'listenFor'")
     if len(spec["warmup"]) != WARMUP_COUNT:
         problems.append(f"{len(spec['warmup'])} warm-up words; needs exactly {WARMUP_COUNT}")
+
+    # 2a. Words that must never reach a child, however decodable they are.
+    #     This lived only in the word bank, which meant a writer could still use
+    #     one as long as the letters happened to be legal. The gate is where it
+    #     belongs -- the bank is a suggestion, the gate is the rule.
+    # Everything a parent or child lays eyes on, including the grown-up answer
+    # notes -- two blocked words were hiding in those, which nothing checked.
+    visible = set(story_words) | {t.lower() for t in words_in(spec["title"])}
+    visible |= {x.lower() for x in spec["warmup"]}
+    for q in spec["questions"]:
+        visible |= set(words_in(q.get("ask", ""))) | set(words_in(q.get("listenFor", "")))
+    for w in sorted(visible):
+        if w in BLOCKED:
+            problems.append(f"NOT FOR CHILDREN {w!r} — on the blocked list; "
+                            f"choose another word with the same sounds")
 
     # 2. every word must be decodable by the rules
     report = A.audit(story, n)

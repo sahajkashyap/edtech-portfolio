@@ -5,8 +5,8 @@
     "Jen has a small lamb that likes to climb.",
     "It got up on a rock and got stuck.",
     "A knot of rope was caught on its leg.",
-    "Jen fell on one knee to reach the lamb.",
-    "She had to wrap her thumb in a rag.",
+    "Jen went down on one knee to reach it.",
+    "She held the rope with a rag on her thumb.",
     "At last the knot came free.",
     "Now Jen knows where to keep her rope."
   ],
@@ -25,7 +25,7 @@
     },
     {
       "ask": "What was caught on the lamb's leg?",
-      "listenFor": "A knot of rope. Ask how Jen got it off."
+      "listenFor": "A knot of rope. Ask how Jen got it off, and why she put a rag on her thumb before she pulled."
     },
     {
       "ask": "What do you think Jen will do with the rope now? Tell me why.",

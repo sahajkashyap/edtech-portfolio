@@ -21,12 +21,31 @@ each word with which sound it uses is what resolves them.
 # for them at Lesson 19.
 # ---------------------------------------------------------------------------
 BLOCKED = {
-    "gun", "guns", "kill", "kills", "shot", "shoot", "gas", "bet", "bets",
-    "mob", "cop", "cops", "nag", "nags", "dam", "ban", "bans", "suck", "sucks",
-    "hell", "damn", "dumb", "stupid", "fat", "fatter", "fattest", "ugly",
-    "dead", "die", "died", "kick", "kicks", "hit", "hits", "slap", "slaps",
-    "gut", "rut", "pus", "bum", "butt", "junk", "drug", "drugs", "beer",
-    "wine", "bar", "bars", "cash", "loss", "sin", "sins", "war",
+    # Weapons and violence
+    "gun", "guns", "shot", "shoot", "shoots", "kill", "kills", "killed",
+    "stab", "stabs", "punch", "punches", "slap", "slaps", "smack", "smacks",
+    "whack", "whacks", "hit", "hits", "kick", "kicks", "kicked", "hurt",
+    "hurts", "fight", "fights", "fought", "war", "bomb", "bombs", "knife",
+    "blade", "sword", "spear", "arrow", "arrows", "gang", "gangs",
+    # Death
+    "dead", "die", "dies", "died", "dying", "death", "grave", "graves",
+    # Crime
+    "rob", "robs", "robbed", "steal", "steals", "stole", "thief", "theft",
+    "jail", "cop", "cops", "mob", "mobs", "crime", "cheat", "cheats",
+    # Substances and gambling
+    "beer", "wine", "ale", "rum", "gin", "keg", "drunk", "bar", "bars", "pub",
+    "drug", "drugs", "smoke", "smokes", "cigar", "bet", "bets", "gamble",
+    # Bodily
+    "bum", "butt", "butts", "gut", "guts", "pus", "fart", "farts", "poop",
+    "pee", "snot", "vomit", "puke", "spit", "spits", "burp", "burps",
+    # Appearance and unkindness -- the ones a parent minds most
+    "fat", "fatter", "fattest", "ugly", "uglier", "ugliest", "dumb", "dumber",
+    "stupid", "idiot", "fool", "fools", "lazy", "gross", "hate", "hates",
+    "hated", "weird", "freak", "loser",
+    # Coarse
+    "hell", "damn", "sin", "sins", "curse", "suck", "sucks",
+    # Miscellaneous unsuitable
+    "gas", "nag", "nags", "dam", "ban", "bans", "loss",
 }
 
 # ---------------------------------------------------------------------------
@@ -107,13 +126,13 @@ learn
 """.split())
 
 ADJECTIVES = set("""
-big fat sad mad glad bad red hot wet dry
+big sad mad glad bad red hot wet dry
 tall small long short thin thick quick slow fast
 soft hard warm cold loud proud kind wild mild bold
 clean neat sweet deep green bright light dark sharp smart
 happy funny sunny lucky
 smooth
-""".split()) - {"fat"}
+""".split())
 
 NOUNS_NO_PLURAL = set("""
 mud sand water milk air fun help

@@ -3,11 +3,11 @@
   "title": "Chop, Chop, Chad!",
   "lines": [
     "Chad has a big yam.",
-    "Chad has to chop it up.",
+    "Chad has to chop it up with Dad.",
     "Chad chops and chops.",
     "The yam is thick.",
     "His chum Meg picks up a pan.",
-    "Meg gets the pan hot.",
+    "Dad gets the pan hot.",
     "Then Chad tips in the yam chips.",
     "Such a rich dish for such chums!"
   ],
@@ -25,8 +25,8 @@
       "listenFor": "A big yam. It is stated in the story - if they guess, have them find the line with yam in it."
     },
     {
-      "ask": "What job does Meg do?",
-      "listenFor": "She gets the pan hot. You want them to see that the two friends did different parts of one job."
+      "ask": "Who gets the pan hot?",
+      "listenFor": "Dad does. Chad chops with Dad, Meg picks up the pan, Dad puts it on the heat - one job in three parts."
     },
     {
       "ask": "Do you think the dish was good? Tell me why.",

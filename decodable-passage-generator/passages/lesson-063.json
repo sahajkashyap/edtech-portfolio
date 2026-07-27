@@ -2,14 +2,14 @@
   "lesson": 63,
   "title": "Six Boxes",
   "lines": [
-    "Meg packs six boxes.",
+    "Lin packs six boxes.",
     "The boxes have dishes and socks.",
     "A fox hides in the last box.",
-    "Meg misses it and shuts the lid.",
+    "Lin misses it and shuts the lid.",
     "The box tips and the fox dashes off.",
-    "Meg gasps and grins.",
-    "Meg fixes the box and packs it.",
-    "Then Meg checks all six boxes."
+    "Lin gasps and grins.",
+    "Lin fixes the box and packs it.",
+    "Then Lin checks all six boxes."
   ],
   "warmup": [
     "boxes",
@@ -25,11 +25,11 @@
       "listenFor": "In the last box. It is stated right in the story - if your child cannot find it, have them go back and reread that line instead of telling them."
     },
     {
-      "ask": "Why does Meg check all six boxes at the end?",
+      "ask": "Why does Lin check all six boxes at the end?",
       "listenFor": "Cause and effect: she does not want another surprise. Any answer that connects the checking back to the fox is doing the thinking you want."
     },
     {
-      "ask": "Do you think Meg was cross with the fox? Tell me why.",
+      "ask": "Do you think Lin was cross with the fox? Tell me why.",
       "listenFor": "Either answer is fine. You are listening for a reason tied to the story - \"no, she grins\" or \"yes, it made a mess of her packing.\""
     }
   ]

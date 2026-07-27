@@ -2,12 +2,12 @@
   "lesson": 120,
   "title": "The Creature in the Picture",
   "lines": [
-    "Meg drew a picture of a creature.",
+    "Hana drew a picture of a creature.",
     "It had ten legs and a big grin.",
     "She hung it up next to her bed.",
     "In the night the picture fell down.",
     "The cat had made a mess of it.",
-    "Meg had to fix a big rip.",
+    "Hana had to fix a big rip.",
     "Now the creature has a patch on it."
   ],
   "warmup": [
@@ -25,7 +25,7 @@
     },
     {
       "ask": "What knocked the picture down?",
-      "listenFor": "The cat. Meg did not know that until the next morning."
+      "listenFor": "The cat. Hana did not know that until the next morning."
     },
     {
       "ask": "What would your creature look like? Why?",

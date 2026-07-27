@@ -7,7 +7,7 @@
     "Ben sets the cage up on the stage.",
     "\"This is Sage,\" Ben tells his class.",
     "Sage slips from the cage!",
-    "Ben is sad, but not in a rage.",
+    "Ben is sad, but brave on the stage.",
     "A bit of ham lands on the page.",
     "Sage runs back, and Ben shuts the cage."
   ],
@@ -16,7 +16,7 @@
     "huge",
     "stage",
     "page",
-    "rage",
+    "brave",
     "ham"
   ],
   "questions": [
@@ -30,7 +30,7 @@
     },
     {
       "ask": "Do you think Ben did the right thing when Sage got out? Tell me why.",
-      "listenFor": "Either answer works. Look for a reason from the story, like \"yes, he stayed calm instead of getting mad.\""
+      "listenFor": "Either answer works. Look for a reason from the story, like \"yes, he was brave and kept going in front of the class.\""
     }
   ]
 }

@@ -6,10 +6,10 @@
     "The cat did run at the rat.",
     "The rat ran up the rod.",
     "The cat did rip the rug!",
-    "Dad ran in. Dad is mad.",
+    "Mom ran in. Mom is mad.",
     "Bad cat! The rug has a rip.",
-    "Dad got a rag. Dad did rub the rug.",
-    "The rip is not big. Dad is not mad."
+    "Mom got a rag. Mom did rub the rug.",
+    "The rip is not big. Mom is not mad."
   ],
   "warmup": [
     "rat",
@@ -25,7 +25,7 @@
       "listenFor": "Ripped it. It is right in the story. If your child is stuck, point to the word rip and read that line again."
     },
     {
-      "ask": "How did Dad fix things?",
+      "ask": "How did Mom fix things?",
       "listenFor": "He got a rag and rubbed the rug, and the rip turned out to be small. Listen for the rag."
     },
     {

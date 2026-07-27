@@ -5,7 +5,7 @@
     "Ben and Pam make a fort in the yard.",
     "It starts with a big box and a card.",
     "The fort is dark in the back part.",
-    "Pam gets a jar and a short candle.",
+    "Pam gets a jar and a short lamp.",
     "Then a big dog jumps on the fort.",
     "It drops flat and Pam is sad.",
     "Ben starts the fort back up.",
@@ -22,7 +22,7 @@
   "questions": [
     {
       "ask": "What did Ben and Pam make the fort from?",
-      "listenFor": "A big box and a card. The jar and candle came after, for the dark part."
+      "listenFor": "A big box and a card. The jar and lamp came after, for the dark part."
     },
     {
       "ask": "What made the fort drop flat?",

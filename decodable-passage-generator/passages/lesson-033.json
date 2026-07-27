@@ -2,9 +2,9 @@
   "lesson": 33,
   "title": "The Cat at the Vet",
   "lines": [
-    "Meg has a cat. It is fat.",
+    "Meg has a cat. It is tan.",
     "The cat has a cut on his leg.",
-    "Dad gets the van.",
+    "Mom gets the van.",
     "The cat is mad. It hid.",
     "Meg got the cat. It yips.",
     "The vet is a big man.",
@@ -31,7 +31,7 @@
     },
     {
       "ask": "Do you think the cat will be scared next time? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the vet patted him and fixed the cut, or the cat hated the whole trip."
+      "listenFor": "There is no right answer. You want a reason from the story - the vet patted him and fixed the cut, or the whole trip was no fun at all."
     }
   ]
 }

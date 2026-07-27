@@ -5,7 +5,7 @@
     "Tim went to the shed for his ball.",
     "A big dog naps by that shed.",
     "Tim went slowly. Tim went softly.",
-    "But his foot hit a tin pan.",
+    "But his foot bumped a tin pan.",
     "It fell loudly on the rocks.",
     "The dog got up and looked at Tim.",
     "Then it licked his hand kindly."
@@ -25,7 +25,7 @@
     },
     {
       "ask": "What made the loud sound?",
-      "listenFor": "His foot hit a tin pan and it fell on the rocks."
+      "listenFor": "His foot bumped a tin pan and it fell on the rocks."
     },
     {
       "ask": "Do you think Tim was scared of the dog at first? Why?",

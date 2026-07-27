@@ -2,14 +2,14 @@
   "lesson": 21,
   "title": "The Dogs Got the Buns",
   "lines": [
-    "Dad set ten buns on a pan.",
+    "Mom set ten buns on a pan.",
     "Dogs! Ten dogs did get up.",
-    "The dogs got the buns. Dad is mad.",
+    "The dogs got the buns. Mom is mad.",
     "The dogs did dig in the mud.",
     "Buns in the mud! Bugs on the buns!",
-    "Dad can not get the buns.",
+    "Mom can not get the buns.",
     "But the pigs did get the buns.",
-    "Dad is not mad. The pigs get buns."
+    "Mom is not mad. The pigs get buns."
   ],
   "warmup": [
     "buns",
@@ -29,7 +29,7 @@
       "listenFor": "The pigs. Listen for pigs, not dogs - the dogs took them, the pigs finished them."
     },
     {
-      "ask": "Do you think Dad should bake more buns? Tell me why you think so.",
+      "ask": "Do you think Mom should bake more buns? Tell me why you think so.",
       "listenFor": "Either answer is fine. You are listening for a reason - the dogs would take them again, or everybody was hungry."
     }
   ]

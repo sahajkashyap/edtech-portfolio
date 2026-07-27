@@ -6,10 +6,11 @@
     "Nick has a sack of buns.",
     "The duck pecks at the sack.",
     "Nick picks up the sack.",
-    "The duck nips his sock!",
-    "Nick falls back on the dock.",
-    "The buns fall off the dock.",
-    "The duck gets the lot."
+    "The duck pecks at his sock!",
+    "Nick sits back on the dock.",
+    "A bun falls off. The duck gets it.",
+    "Nick picks up the sack of buns.",
+    "Nick and the duck sit on the dock."
   ],
   "warmup": [
     "duck",
@@ -22,11 +23,11 @@
   "questions": [
     {
       "ask": "What does the duck do to Nick's sock?",
-      "listenFor": "It nips it. This is stated in the story - if they guess, have them find the line with sock in it."
+      "listenFor": "It pecks at it. This is stated in the story - if they guess, have them find the line with sock in it."
     },
     {
-      "ask": "Why do the buns fall off the dock?",
-      "listenFor": "Nick fell back when the duck nipped him. You are listening for the chain of events, not just \"they fell.\""
+      "ask": "Why does a bun fall off the dock?",
+      "listenFor": "Nick sat back when the duck pecked at his sock. You are listening for the chain of events, not just \"it fell.\""
     },
     {
       "ask": "Do you think the duck planned this? Tell me why.",

@@ -2,13 +2,13 @@
   "lesson": 111,
   "title": "The Lost Dog",
   "lines": [
-    "Dan got a dollar from his gran.",
+    "Omar got a dollar from his gran.",
     "He ran to the shop by the barn.",
     "A dog ran in with a red collar.",
-    "Dan took it to the vet by the shop.",
+    "Omar took it to the vet by the shop.",
     "The vet read the tag on the collar.",
     "A sailor came in. \"That is my dog!\"",
-    "He gave Dan a dollar for his help."
+    "He gave Omar a dollar for his help."
   ],
   "warmup": [
     "barn",
@@ -28,7 +28,7 @@
       "listenFor": "The sailor. Note how the -or on the end says er."
     },
     {
-      "ask": "Will Dan keep the dollar or spend it? Why?",
+      "ask": "Will Omar keep the dollar or spend it? Why?",
       "listenFor": "Either answer is fine. You want a reason, not a right choice."
     }
   ]

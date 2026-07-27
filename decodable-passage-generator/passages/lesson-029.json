@@ -2,15 +2,15 @@
   "lesson": 29,
   "title": "The Jam Jug",
   "lines": [
-    "Tim has a job. Tim gets jam.",
+    "Raj has a job. Raj gets jam.",
     "The jam is in a big jug.",
-    "Tim can jog. Tim jogs a lot.",
-    "The jug tips! Jam is on Tim.",
-    "Jam is on his cap. Tim is sad.",
+    "Raj can jog. Raj jogs a lot.",
+    "The jug tips! Jam is on Raj.",
+    "Jam is on his cap. Raj is sad.",
     "But Dad is not mad.",
     "Dad gets a rag. Dad rubs it.",
-    "Tim gets a bun. Dad gets jam.",
-    "Tim did a jig. Dad did a jig."
+    "Raj gets a bun. Dad gets jam.",
+    "Raj did a jig. Dad did a jig."
   ],
   "warmup": [
     "jam",
@@ -22,7 +22,7 @@
   ],
   "questions": [
     {
-      "ask": "What happened while Tim was jogging?",
+      "ask": "What happened while Raj was jogging?",
       "listenFor": "The jug tipped and the jam went all over him. It is right there in the story. If they only say \"jam,\" ask \"and where did it go?\""
     },
     {
@@ -30,7 +30,7 @@
       "listenFor": "A rag. One word is a fine answer. Have them find the line and read it back so they can prove it."
     },
     {
-      "ask": "Do you think Tim had a good day or a bad day? Tell me why.",
+      "ask": "Do you think Raj had a good day or a bad day? Tell me why.",
       "listenFor": "Either answer works. You are listening for a reason from the story - the spilled jam, or the bun and the jig at the end. The reason is the whole point."
     }
   ]

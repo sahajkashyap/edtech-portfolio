@@ -2,11 +2,11 @@
   "lesson": 11,
   "title": "Tap the Tan Pan",
   "lines": [
+    "A man sat at a mat.",
     "Nan sat at a tin pan.",
     "Tap the pan, Nan!",
     "Sam sat at a tan pan.",
     "Pat the tan pan, Sam!",
-    "A man is at the mat.",
     "Nan! Sam! The man is a fan.",
     "Sit at the pan, man.",
     "Tap it, man! Tap the tin pan!"
@@ -25,8 +25,8 @@
       "listenFor": "Pans, a tin one and a tan one. If your child says just pans, ask which pan was Nan's, and let them find the line."
     },
     {
-      "ask": "Who came over to the mat?",
-      "listenFor": "A man. He liked the sound so much he is called a fan. Point at that line if your child needs it."
+      "ask": "Who was sitting at the mat the whole time?",
+      "listenFor": "A man - he is there in the very first line, before the tapping starts. He liked the sound so much he is called a fan. Point at that line if your child needs it."
     },
     {
       "ask": "What would you tap on to make a good sound? Tell me why that one.",

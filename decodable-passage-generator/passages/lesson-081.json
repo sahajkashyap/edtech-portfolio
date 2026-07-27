@@ -3,7 +3,7 @@
   "title": "The Bird in the Dirt",
   "lines": [
     "A girl finds a bird in the dirt.",
-    "The bird has a hurt wing.",
+    "The bird has a bad wing.",
     "Her shirt gets mud on it.",
     "First she gets a box and a rag.",
     "Then she turns a lamp on for it.",
@@ -15,14 +15,14 @@
     "girl",
     "bird",
     "dirt",
-    "hurt",
+    "curls",
     "shirt",
     "first"
   ],
   "questions": [
     {
       "ask": "What was wrong with the bird?",
-      "listenFor": "It had a hurt wing. 'It was in the dirt' is where it was, not what was wrong."
+      "listenFor": "It had a bad wing. 'It was in the dirt' is where it was, not what was wrong."
     },
     {
       "ask": "What did the girl get for the bird?",

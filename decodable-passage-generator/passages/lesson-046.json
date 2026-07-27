@@ -8,8 +8,8 @@
     "The moths run off to a shed.",
     "Ben runs to that shed.",
     "The moths sit on a rock.",
-    "Ben gets both of them back.",
-    "Then Ben shuts the lid on them."
+    "Ben will not shut them in that box.",
+    "Then Ben lets both of them run off."
   ],
   "warmup": [
     "moths",
@@ -29,8 +29,8 @@
       "listenFor": "On a rock by the shed. If they say only \"the shed,\" ask them what the moths were sitting on."
     },
     {
-      "ask": "Do you think Ben should keep the moths? Tell me why.",
-      "listenFor": "Either answer is correct. You are listening for a reason from the story, not just yes or no."
+      "ask": "Was Ben right to let the moths go? Tell me why.",
+      "listenFor": "Either answer is correct. The last two lines are the clue - he will not shut them in the box again. A moth is a bug, not a pet. You are listening for a reason from the story, not just yes or no."
     }
   ]
 }

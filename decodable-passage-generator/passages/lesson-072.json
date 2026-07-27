@@ -3,7 +3,7 @@
   "title": "The Lost Colt",
   "lines": [
     "A wild colt got lost in the cold.",
-    "A kind child went to find it.",
+    "A kind child and Mom went to find it.",
     "The child held a rope and a lamp.",
     "The colt was behind an old post.",
     "It was cold and it did not move.",
@@ -30,7 +30,7 @@
     },
     {
       "ask": "Do you think the child was brave? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason tied to the story - going out in the cold, or holding a wild colt."
+      "listenFor": "Either answer is fine. Listen for a reason tied to the story - going out in the cold with Mom, or holding a wild colt."
     }
   ]
 }

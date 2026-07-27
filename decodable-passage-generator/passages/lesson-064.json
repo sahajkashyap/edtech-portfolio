@@ -5,10 +5,10 @@
     "Ben filled a big pot with milk.",
     "Ben tipped it and the milk spilled.",
     "It dripped on the red rug.",
-    "Ben yelled for Dad.",
-    "Dad picked up a rag and mopped.",
-    "Dad dumped the wet rag in the tub.",
-    "Ben was sad, but Dad hugged him.",
+    "Ben yelled for Mom.",
+    "Mom picked up a rag and mopped.",
+    "Mom dumped the wet rag in the tub.",
+    "Ben was sad, but Mom hugged him.",
     "Then Ben helped and did not spill."
   ],
   "warmup": [
@@ -25,7 +25,7 @@
       "listenFor": "The red rug. This is stated in the story - point them back to that line rather than giving the answer."
     },
     {
-      "ask": "How did Dad help Ben?",
+      "ask": "How did Mom help Ben?",
       "listenFor": "He picked up the pot, gave Ben a rag, and dumped the wet rag in the tub. Any two of those three is plenty."
     },
     {

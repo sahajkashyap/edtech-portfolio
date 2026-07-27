@@ -1,21 +1,21 @@
 {
   "lesson": 54,
-  "title": "Dad and Jane Bake",
+  "title": "Mom and Jane Bake",
   "lines": [
-    "Dad and Jane bake a cake.",
+    "Mom and Jane bake a cake.",
     "The cake sits on a plate.",
     "A cat, Jake, hops up on the gate.",
     "Jake gets a lick of the cake!",
     "Jane yells, \"That is not for cats!\"",
-    "Dad will make a small cake for Jake.",
+    "Mom will make a small cake for Jake.",
     "Jake laps up his cake fast.",
-    "Dad and Jane take the big cake in."
+    "Mom and Jane take the big cake in."
   ],
   "warmup": ["bake", "cake", "plate", "gate", "make", "take"],
   "questions": [
     {"ask": "What does Jake the cat do to the big cake?",
      "listenFor": "He takes a lick of it. If they just say \"he ate it,\" ask them to find the line and read what he really did."},
-    {"ask": "How does Dad fix the problem?",
+    {"ask": "How does Mom fix the problem?",
      "listenFor": "He makes a small cake just for Jake. Listen for them naming the small cake, not only \"he was nice.\""},
     {"ask": "What do you think Jake will do next? Tell me why.",
      "listenFor": "Any guess is fine if it has a reason from the story, like \"go back to the gate, because he wants more cake.\""}

@@ -7,9 +7,9 @@
     "Tom lets Yam sit on a rug.",
     "But Yam is not fed yet.",
     "Yam runs at a big pot.",
-    "The pot tips. Nuts hit Yam.",
+    "The pot tips. Nuts pop up.",
     "Yes! Yam gets the nuts.",
-    "Tom is mad. Bad pig, Yam!",
+    "Tom is not mad. Tom fed Yam.",
     "Yam naps. Tom pats him."
   ],
   "warmup": [
@@ -31,7 +31,7 @@
     },
     {
       "ask": "Do you think Yam is a good pet? Tell me why you think so.",
-      "listenFor": "No wrong answer. You want a reason from the story - Yam knocked the pot over, or Yam naps quietly at the end. Reasons matter more than the yes or no."
+      "listenFor": "No wrong answer. You want a reason from the story - Yam knocked the pot over, or Yam naps quietly at the end. Tom does not blame Yam; he works out that the pig was hungry. Reasons matter more than the yes or no."
     }
   ]
 }
