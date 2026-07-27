@@ -58,7 +58,9 @@ IRREGULAR_WORDS = {
     "none": 999, "love": 999, "above": 999, "month": 999, "mother": 999,
     "other": 999, "brother": 999, "nothing": 999, "money": 999,
     # u saying /oo/
-    "put": 999, "pull": 999, "full": 999, "push": 999, "bush": 999, "bull": 999,
+    "put": 999, "push": 999, "bush": 999,
+    # -ull is explicitly taught at Lesson 43 (-all, -oll, -ull)
+    "pull": 43, "full": 43, "bull": 43,
     # a saying short o -- UFLI teaches this at Lesson 94 (a /o/, as in want)
     "wash": 94, "want": 94, "watch": 94, "swan": 94, "wasp": 94, "wand": 94,
     "was": 999, "what": 999, "water": 999,
