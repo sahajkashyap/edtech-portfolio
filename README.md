@@ -6,6 +6,12 @@ software constraints** — not "AI makes a worksheet," but systems where the
 pedagogy is written down as rules a machine can enforce and a second component
 can verify.
 
+**▶ Try the tools in your browser — nothing to install:**
+[Phonics Assessment Tracker](https://sahajkashyap.github.io/edtech-portfolio/phonics-assessment-tool/) ·
+[Factor Field](https://sahajkashyap.github.io/edtech-portfolio/factor-field/) ·
+[Math Tracker](https://sahajkashyap.github.io/edtech-portfolio/math-assessment-tool/) ·
+[A finished decodable sheet](https://sahajkashyap.github.io/edtech-portfolio/decodable-passage-generator/example-lesson-41.html)
+
 ---
 
 ## Start here: the Decodable Passage Engine
