@@ -142,6 +142,11 @@ patterns worth holding to:
   mess → adult anger → forgiveness. Vary the engine: curiosity, sharing,
   building, a surprise.
 - **`fat` is never a descriptor**, even of an animal, and never in a title.
+  The blocklist has **no exceptions**, including where it costs a lesson its
+  target sound. Lesson 7 teaches `f`, and `fat` is the only real English word
+  containing `f` that is decodable there — checked exhaustively. That lesson's
+  story practises the other letters and the gap is recorded on the index, which
+  is the honest trade. Do not carve out an exception to close it.
 - **Balance who helps.** The set once had Dad in 31 stories and Mom in 3, with
   the fixing and driving always male. Both are decodable everywhere.
 - **Vary the names.** Decodability constrains them hard, but Ana, Kim, Raj, Sal,

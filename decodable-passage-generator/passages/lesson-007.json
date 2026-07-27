@@ -1,36 +1,23 @@
 {
   "lesson": 7,
-  "title": "Sam Sat at the Mat",
+  "title": "A Map at the Mat",
   "lines": [
     "Sam sat at a mat.",
-    "A map is at the mat.",
-    "Pat the map, Pam.",
+    "A map is at the mat!",
+    "Pat the map, Sam.",
     "Pam sat at the mat.",
+    "Tap the map, Pam.",
     "Tam sat at the mat.",
-    "Pam sat at Sam. Sam is a mat!",
-    "Tap! Tam sat at Pam.",
-    "Sam, Pam, Tam sat at a mat!"
+    "Tap, tap! Tam is at the map.",
+    "Sam, Pam, Tam sat at the map."
   ],
-  "warmup": [
-    "sat",
-    "at",
-    "mat",
-    "map",
-    "pat",
-    "tap"
-  ],
+  "warmup": ["sat", "mat", "map", "pat", "tap", "at"],
   "questions": [
-    {
-      "ask": "Who sat down on the mat first?",
-      "listenFor": "Sam. It is the very first line. If your child guesses, have them go back and read line one again instead of you saying it."
-    },
-    {
-      "ask": "Who ended up sitting on Sam?",
-      "listenFor": "Pam. You are listening for the name, not the whole sentence. If they are unsure, have them find the line that says it."
-    },
-    {
-      "ask": "What do you think happens to the mat next? Tell me why.",
-      "listenFor": "There is no right answer here. Listen for a reason pulled from the story, like three kids piled up or the mat sliding out. A reason matters more than the guess."
-    }
+    {"ask": "Who sat at the mat first?",
+     "listenFor": "Sam. This one is in the first line - if they are not sure, have them put a finger on line one and read it again rather than telling them."},
+    {"ask": "What is at the mat?",
+     "listenFor": "A map. Listen for them finding it in line two. Reading the line out loud again is the answer, so let them do that."},
+    {"ask": "Would you like to sit at the map with them? Tell me why.",
+     "listenFor": "Either answer is fine. You are listening for a reason of their own - what they think is on the map, or who they would want with them."}
   ]
 }

@@ -15,6 +15,17 @@ import pathlib
 HERE = pathlib.Path(__file__).parent
 OUT = HERE / "index.html"
 
+# Lessons whose story cannot demonstrate the sound the lesson teaches, and why.
+# Recorded rather than papered over.
+TARGET_SOUND_NOTES = {
+    7: ("This story does not use an <strong>f</strong> word. With only "
+        "<em>a m s t p f</em> taught and no blends yet, the only real English "
+        "word containing f that a child can decode here is one we chose not to "
+        "put on a children's sheet. Lesson 8 adds <em>i</em> and <em>fit</em> "
+        "becomes available. The f practice for this lesson comes from the "
+        "worksheet generator instead."),
+}
+
 NO_PASSAGE_REASON = (
     "No decodable passage exists this early. A story needs a vocabulary, and "
     "these lessons are still introducing single letter-sounds — at Lesson 1 there "
@@ -71,6 +82,7 @@ details.card .story{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(
 details.card .story span{display:block}
 details.card .warm{margin-top:.45rem;font-size:.72rem;color:var(--muted);font-family:var(--mono)}
 details.card[open]{border-color:var(--accent)}
+details.card .tnote{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--warn);cursor:text}
 .card.none{opacity:.72;border-style:dashed}
 footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font-size:.82rem;color:var(--muted)}
 """
@@ -102,13 +114,16 @@ def build():
             if spec:
                 story = "".join(f"<span>{ln}</span>" for ln in spec["lines"])
                 warm = ", ".join(spec["warmup"])
+                note = TARGET_SOUND_NOTES.get(n)
+                flag = ' &middot; <span style="color:var(--warn)">see note</span>' if note else ''
+                note_html = (f'<div class="tnote">{note}</div>' if note else '')
                 body += (f'<details class="card"><summary>'
-                         f'<div class="n">Lesson {n}</div>'
+                         f'<div class="n">Lesson {n}{flag}</div>'
                          f'<div class="t">{spec["title"]}</div>'
                          f'<div class="s">{L["skill"]}</div></summary>'
                          f'<div class="story">{story}</div>'
                          f'<div class="warm">warm-up: {warm}</div>'
-                         f'</details>')
+                         f'{note_html}</details>')
             else:
                 body += (f'<div class="card none">'
                          f'<div class="n">Lesson {n}</div>'
