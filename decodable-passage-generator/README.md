@@ -183,20 +183,43 @@ Spelling alone cannot settle words like `lens` (is that `-s` a plural?), `snow`
 rather than quietly passed. **The fix is a word bank** — an approved word list
 per lesson with each word's grapheme breakdown. That is the next thing to build.
 
-## Flagged for teacher review
+## Verified against UFLI, July 2026
 
-`sound-list.json` carries a `flaggedForTeacherReview` list. These are places the
-source curriculum says something that looks like a typo, where a guess was made:
+An agent checked the whole list against UFLI Foundations' published Toolbox and
+Scope & Sequence.
 
-| Lesson | Tool says | Call made |
+**The lesson order is correct.** Every lesson number teaches what UFLI says it
+teaches, in the right sequence, and the count of 128 is right. The cumulative
+model — a child at lesson N has had 1..N — matches everything UFLI publishes;
+UFLI documents no prerequisites beyond plain sequence.
+
+**17 entries had typos**, now corrected in `CURRICULUM_CORRECTIONS` in
+`build_sound_list.py`, each citing what the tool says and what UFLI teaches. The
+ones that changed what a child could read:
+
+| Lesson | Tool said | UFLI teaches |
 |---|---|---|
-| 10 | `CVC Practice (g, i)` | g isn't taught until 16 — treated as practice only |
-| 11 | `Nasalized A (am, on)` | read as am/an |
-| 27 | `l /l/ Part 2, ai` | `ai` is taught at 84 — treated as l practice only |
-| 86 | `oa, ow, oe /ō/` | `ow` gated at 96 so *down* can't appear early |
-| 93 | `au, aw, ugh /aw/` | `ugh` read as `augh` |
-| 98 | `Silent Letters (kn, wr, mb, m)` | trailing `m` read as `mn` |
-| 114 | `Alternate /ā/ (ei, ey, eigh, high, ea)` | `high` dropped as a typo |
+| 94 | `schwa` | `ea` /ĕ/ (head) and `a` /ŏ/ (want) — UFLI has no schwa lesson |
+| 98 | silent letters `kn, wr, mb, m` | `kn, wr, mb` only — `mn` is taught nowhere in the 128 |
+| 114 | `... high ...` | `aigh` — previously dropped, so never taught at all |
+| 58 | `u` | `u_e`, and it carries a second sound /yū/ (cube) |
+| 90 | `oo` /ŭ/ | `oo` /ū/ — the breve reversed the sound |
+| 113 | `ear` /ɛr/ | the *hear* sound, not the *her* sound |
+| 116 | `ough` /ə/ | `ough` /ō/ |
+| 27 | `l /l/ Part 2, ai` | `l /l/ Part 2` — the stray letters are `-al`, not `ai` |
 
-**These need a teacher's eye.** Each one is a guess about what the curriculum
-meant, and a wrong guess puts an untaught sound in front of a child.
+**Two things worth knowing:**
+
+1. **The unit labels were not UFLI's.** UFLI has **14 units, all contiguous
+   blocks** of consecutive lessons. The tool had 8 units that were not in numeric
+   order — Lesson 98 filed under "VCe", lessons 84–88 placed before 77–83.
+   Anything grouping by those units showed lessons out of teaching order. The
+   real 14 are now in `UFLI_UNITS`.
+
+2. **The wording matches a Learning A-Z correlation chart**, not UFLI's own
+   document — every typo is a one- or two-character slip off that chart. Worth
+   knowing which document to re-check against.
+
+**The same typos are still in `phonics-assessment-tool:/index.html`** and will be
+re-imported unless fixed there. `CURRICULUM_CORRECTIONS` is what stands between
+them and a child until then.
