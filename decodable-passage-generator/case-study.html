@@ -1,0 +1,257 @@
+<title>Decodable Passage Engine &mdash; a correctness system for early reading</title>
+<style>
+:root{
+  --ink:#17212B; --paper:#F3F5F6; --card:#FFFFFF; --line:#DCE2E6;
+  --muted:#5F6B77; --accent:#1F5C8B; --warn:#A3521A; --good:#2F6B4F;
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --ink:#E3E9ED; --paper:#111820; --card:#19212B; --line:#2A343F;
+  --muted:#93A0AC; --accent:#79B2DF; --warn:#DFA063; --good:#7CC29C;}}
+:root[data-theme="dark"]{
+  --ink:#E3E9ED; --paper:#111820; --card:#19212B; --line:#2A343F;
+  --muted:#93A0AC; --accent:#79B2DF; --warn:#DFA063; --good:#7CC29C;}
+:root[data-theme="light"]{
+  --ink:#17212B; --paper:#F3F5F6; --card:#FFFFFF; --line:#DCE2E6;
+  --muted:#5F6B77; --accent:#1F5C8B; --warn:#A3521A; --good:#2F6B4F;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:52rem;margin:0 auto;padding:3rem 1.25rem 5rem}
+h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.1;letter-spacing:-.015em}
+h2{font-size:1.5rem;margin:0 0 .3rem}
+h3{font-size:1.05rem;margin:0 0 .2rem}
+p{margin:.7rem 0}
+.eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);font-weight:700}
+.lede{font-size:1.1rem;color:var(--muted);max-width:36em}
+header{border-bottom:2px solid var(--ink);padding-bottom:2rem;margin-bottom:2.5rem}
+section{margin-bottom:3rem}
+.sub{color:var(--muted);max-width:40em}
+code{font-family:var(--mono);font-size:.88em;background:var(--card);
+  border:1px solid var(--line);border-radius:2px;padding:.05rem .3rem}
+
+/* the one number that matters */
+.headline{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  padding:1.6rem 1.5rem;margin:1.8rem 0}
+.headline .k{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);font-weight:700}
+.barpair{display:grid;gap:1rem;margin-top:1rem}
+.brow .lab{display:flex;justify-content:space-between;font-size:.85rem;
+  margin-bottom:.3rem;font-variant-numeric:tabular-nums}
+.brow .lab b{font-family:var(--mono)}
+.track{height:16px;background:var(--line);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%}
+.track i.bad{background:var(--warn)}
+.track i.good{background:var(--good)}
+.headline .note{font-size:.85rem;color:var(--muted);margin-top:1rem}
+
+/* rounds */
+.round{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  padding:1.1rem 1.25rem;margin-bottom:.85rem;border-left:3px solid var(--accent)}
+.round.two{border-left-color:var(--warn)}
+.round.three{border-left-color:var(--good)}
+.round .n{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);font-weight:700}
+ul{margin:.6rem 0;padding-left:1.15rem}
+li{margin:.35rem 0}
+.pull{border-left:3px solid var(--warn);padding:.2rem 0 .2rem 1rem;
+  margin:1rem 0;font-family:var(--serif);font-size:1.1rem}
+
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--line);
+  vertical-align:top}
+th{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td.was{font-family:var(--mono);font-size:.82rem;text-decoration:line-through;opacity:.7}
+td.now{font-family:var(--mono);font-size:.82rem;color:var(--good)}
+.scroll{overflow-x:auto}
+
+/* status */
+.status{display:grid;gap:.4rem}
+.st{display:flex;gap:.7rem;align-items:baseline;padding:.45rem .7rem;
+  border:1px solid var(--line);border-radius:3px;background:var(--card);font-size:.92rem}
+.st .pip{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:700;padding:.1rem .4rem;border-radius:2px;flex:none;min-width:5.2rem;
+  text-align:center}
+.st .pip.b{background:var(--good);color:var(--paper)}
+.st .pip.n{background:var(--warn);color:var(--paper)}
+
+.arch{font-family:var(--mono);font-size:.78rem;line-height:1.5;background:var(--card);
+  border:1px solid var(--line);border-radius:4px;padding:1rem;overflow-x:auto;
+  white-space:pre;color:var(--ink)}
+footer{border-top:1px solid var(--line);padding-top:1.2rem;font-size:.85rem;
+  color:var(--muted)}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Case study &middot; EdTech portfolio</div>
+  <h1>A passage that is 98% correct is broken</h1>
+  <p class="lede">Building a correctness system for early-literacy text &mdash; where
+  nothing ships unless something that didn&rsquo;t write it can prove it&rsquo;s right.</p>
+</header>
+
+<section>
+  <h2>The problem</h2>
+  <p class="sub">Decodable stories are the hardest text in early literacy to write.
+  A child on Lesson 41 needs a story built <em>only</em> from the sounds taught
+  through Lesson 41. If one untaught letter pattern sneaks in &mdash; a single silent
+  <em>e</em>, one <code>sh</code> &mdash; the child can&rsquo;t decode it, so they guess.</p>
+  <p class="sub">Guessing is the precise habit decodable text exists to prevent. So
+  98% correct isn&rsquo;t 98% good. It&rsquo;s broken. And checking by eye doesn&rsquo;t
+  scale to 128 lessons.</p>
+</section>
+
+<section>
+  <h2>The result</h2>
+  <div class="headline">
+    <div class="k">Dictionary words wrongly judged readable at Lesson 41</div>
+    <div class="barpair">
+      <div class="brow">
+        <div class="lab"><span>First version of the checker</span><b>15,764 &nbsp;(18.1%)</b></div>
+        <div class="track"><i class="bad" style="width:100%"></i></div>
+      </div>
+      <div class="brow">
+        <div class="lab"><span>After three rounds of adversarial review</span><b>57 &nbsp;(0.07%)</b></div>
+        <div class="track"><i class="good" style="width:0.36%;min-width:3px"></i></div>
+      </div>
+    </div>
+    <p class="note">Out of 87,119 words. A <strong>277&times; reduction</strong>.
+    The 57 survivors are nearly all genuinely readable &mdash; <em>digs, dogs, kids,
+    mats, taps, quit, quiz</em>. <strong>71 regression tests</strong>, each one a word
+    that beat an earlier version.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Architecture</h2>
+  <p class="sub">The writer never checks its own work. That&rsquo;s the whole design.</p>
+<div class="arch">assessment tool's        ┌──────────────────────────┐
+curriculum ─────────────►│ build_sound_list.py      │
+                         │ + CURRICULUM_CORRECTIONS │──► sound-list.json
+                         │ + UFLI_UNITS             │    (the rulebook)
+                         └──────────────────────────┘              │
+                                                                   │
+   writer ──── draft ────►  audit_passage.py  ◄────────────────────┘
+      ▲                            │
+      │                            ▼
+      └──── violations ────  exit 1 = do not ship
+                                   │ exit 0
+                                   ▼
+                        story judge → check-pages.py → ship</div>
+  <ul class="sub">
+    <li><strong>The rulebook is generated, not typed</strong> &mdash; read from the
+      assessment tool&rsquo;s own curriculum, so names and order can&rsquo;t drift.</li>
+    <li><strong>The checker has no stake in the story.</strong> It didn&rsquo;t write it.</li>
+    <li><strong>Judgement calls are visible</strong> &mdash; every inference is a note
+      in source; every correction cites source against published standard.</li>
+    <li><strong>Silence is never approval.</strong> Empty input returns
+      &ldquo;NOT CHECKED&rdquo;, exit 1.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What the loop caught</h2>
+  <p class="sub">Three agents, none of which wrote the code they attacked.</p>
+
+  <div class="round">
+    <div class="n">Round 1 &middot; the checker was 18% wrong</div>
+    <p>It passed <em>picnic</em>, <em>basket</em>, <em>rabbit</em>, <em>little</em>,
+    <em>vein</em>, <em>gem</em>. Causes, each found by attack rather than review:</p>
+    <ul>
+      <li>Consonant clusters checked only at word <em>edges</em> &mdash; so anything
+        with a cluster in the middle sailed through</li>
+      <li>No syllable limit at all &mdash; <em>potato</em> passed at Lesson 12</li>
+      <li><code>ei</code> and <code>uy</code> missing from the rulebook &mdash;
+        <em>vein</em> passed at Lesson 34</li>
+      <li><code>y</code>-as-a-vowel never gated &mdash; <em>my</em> and <em>happy</em>
+        passed 43 lessons early</li>
+    </ul>
+  </div>
+
+  <div class="round two">
+    <div class="n">Round 2 &middot; the overcorrection was worse</div>
+    <p>Fixing round 1 traded false negatives for false <em>positives</em> &mdash; three
+    bad enough to make entire lessons impossible to write:</p>
+    <ul>
+      <li><strong>No word containing <code>q</code> passed at any lesson, ever.</strong>
+        Lesson 32 <em>is</em> the <code>qu</code> lesson, and it rejected
+        <em>quit</em>, <em>quiz</em>, <em>queen</em>.</li>
+      <li><em>milk</em>, <em>silk</em>, <em>self</em>, <em>elf</em>, <em>film</em>
+        blocked for 45 lessons &mdash; ordinary blends mistaken for silent-letter spellings</li>
+      <li><strong>Lesson 85 couldn&rsquo;t use <code>ea</code></strong> &mdash; the
+        grapheme Lesson 85 teaches</li>
+    </ul>
+    <div class="pull">An unwritable lesson is a harder failure than a bad word
+    slipping through: the generator produces nothing and nobody learns why.</div>
+  </div>
+
+  <div class="round three">
+    <div class="n">Round 3 &middot; checking the source data itself</div>
+    <p>An agent verified the curriculum against the published scope and sequence.
+    <strong>The lesson order was correct</strong> &mdash; but 17 entries carried typos.
+    Four changed what a child would see:</p>
+    <div class="scroll"><table>
+      <tr><th>Lesson</th><th>Source said</th><th>Actually teaches</th></tr>
+      <tr><td>94</td><td class="was">schwa</td><td class="now">ea /ĕ/ (head), a /ŏ/ (want)</td></tr>
+      <tr><td>98</td><td class="was">kn, wr, mb, m</td><td class="now">kn, wr, mb only</td></tr>
+      <tr><td>114</td><td class="was">… high …</td><td class="now">aigh</td></tr>
+      <tr><td>27</td><td class="was">l /l/ Part 2, ai</td><td class="now">l /l/ Part 2</td></tr>
+    </table></div>
+    <p>Lesson 94 was the largest: the source had a lesson teaching a concept the
+    published sequence does not contain, while omitting two real sound-spellings.
+    The agent also found the unit labels weren&rsquo;t the publisher&rsquo;s at all
+    &mdash; 14 contiguous units had been recorded as 8 that ran out of numeric order.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Decisions worth defending</h2>
+  <h3>Gate at the later sound, or mark the lesson</h3>
+  <p class="sub">Where one spelling has two sounds taught at different lessons
+  (<code>ow</code> in <em>snow</em> vs <em>cow</em>), an early gate lets an untaught
+  sound through and a late gate makes the teaching lesson unwritable. Resolution:
+  gate at first teaching, and mark the lesson as needing an approved word list.
+  31 of 128 lessons carry that flag.</p>
+
+  <h3>Record what cannot be solved</h3>
+  <p class="sub"><em>lens</em> and <em>gets</em> have identical spelling shapes; only
+  a dictionary knows one <code>-s</code> is a suffix. Rather than fake a rule, these
+  sit in a documented limitations list with the reason.</p>
+
+  <h3>Pedagogy constrains layout, not the reverse</h3>
+  <p class="sub">A K&ndash;2 child is still learning to hold a pencil, so writing lines
+  are 80px and drawing boxes get their own sheet. When a page overflows, the fix
+  comes out of adult text &mdash; never the child&rsquo;s working space. That rule
+  forced a 3-sheet packet to 4, which was the correct outcome.</p>
+</section>
+
+<section>
+  <h2>Honest status</h2>
+  <p class="sub">Stated plainly rather than implied away.</p>
+  <div class="status">
+    <div class="st"><span class="pip b">Built</span> Sound list, 128 lessons, verified against the published standard</div>
+    <div class="st"><span class="pip b">Built</span> Deterministic auditor with 71 regression tests</div>
+    <div class="st"><span class="pip b">Built</span> Page-fit checker, enforcing the child&rsquo;s working space</div>
+    <div class="st"><span class="pip b">Built</span> Two skills encoding the rules and the loop</div>
+    <div class="st"><span class="pip b">Built</span> One complete 4-page sheet &mdash; Lesson 41, hand-built</div>
+    <div class="st"><span class="pip n">Not yet</span> Writer agent generating the other 127 sheets</div>
+    <div class="st"><span class="pip n">Not yet</span> Word bank &mdash; per-lesson approved word lists</div>
+    <div class="st"><span class="pip n">Not yet</span> Story-quality judge</div>
+  </div>
+  <p class="sub" style="margin-top:1rem">The word bank is next, because it resolves
+  both the four known limitations and the 31 lessons flagged as needing one.</p>
+</section>
+
+<footer>
+  Built by a classroom teacher of fourteen years with Claude Code.
+  Scope and sequence is a shared teaching method and free to follow; sight words are
+  from the public-domain Dolch list (1936). No published program&rsquo;s wording, word
+  lists, or page design is reproduced &mdash; all passage text and layout is original.
+</footer>
+
+</div>

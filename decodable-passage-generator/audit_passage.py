@@ -271,13 +271,16 @@ def audit(text: str, lesson: int):
             flag("untaught letter", f"uses {', '.join(repr(c) for c in unknown)}")
             continue
 
-        # 2b. an irregular word whose sound cannot be read off its spelling
-        if bare in IRREGULAR_WORDS:
-            need = IRREGULAR_WORDS[bare]
+        # 2b. an irregular word whose sound cannot be read off its spelling.
+        # Check the root too, so "sons" is caught along with "son".
+        irr = bare if bare in IRREGULAR_WORDS else (
+              root if root in IRREGULAR_WORDS else None)
+        if irr:
+            need = IRREGULAR_WORDS[irr]
             if lesson < need:
                 where = ("never decodable — it has to be taught as a heart word"
                          if need == 999 else f"not decodable until Lesson {need}")
-                flag("irregular word", f"'{bare}' is {where}")
+                flag("irregular word", f"'{irr}' is {where}")
                 continue
 
         # 3. more syllables than the lesson allows. Counted on the WHOLE word,
@@ -323,6 +326,15 @@ def audit(text: str, lesson: int):
                       if when is None else
                       f"'{run}' is not taught until Lesson {when}")
             flag("untaught vowel pair", f"'{root}' contains {detail}")
+            continue
+
+        # 3d. a doubled consonant ENDING a word is the FLSZ family's territory
+        # (Lesson 42). Doubles in the middle of a word are fine — those live in
+        # two-syllable words, which the syllable rule already governs.
+        if lesson < 42 and re.search(r"([bcdgkmnprtvz])\1$", root):
+            flag("doubled ending",
+                 f"'{root}' ends in a doubled consonant; that spelling rule "
+                 f"starts at Lesson 42")
             continue
 
         # 4. silent e (VCe) before it is taught
@@ -440,6 +452,10 @@ SELFTEST = [
     (44, "ducks", True, "plural of a ck root; -s is taught at 20"),
     (51, "kings", True, "plural of an ng root"),
     (43, "egg", True, "one syllable, belongs beside off/all/ill"),
+    (41, "mitt", False, "doubled ending is the Lesson 42 rule"),
+    (41, "butt", False, "same"),
+    (41, "sons", False, "irregular root must be caught through the plural too"),
+    (32, "quit", True, "still fine after the doubled-ending rule"),
     (43, "odd", True, "same"),
     (65, "running", True, "Lesson 65 IS the -ing lesson"),
     (65, "sitting", True, "same"),
