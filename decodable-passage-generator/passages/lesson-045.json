@@ -1,0 +1,36 @@
+{
+  "lesson": 45,
+  "title": "The Fish Shop",
+  "lines": [
+    "Meg has a fish shop.",
+    "She sells fish in a dish.",
+    "A cat runs in the shop.",
+    "It picks up a fat fish.",
+    "Meg yells, and the cat runs off.",
+    "The cat naps in a shed.",
+    "The fish is not in the dish.",
+    "Meg shuts the shop and gets a dog."
+  ],
+  "warmup": [
+    "fish",
+    "shop",
+    "dish",
+    "shed",
+    "shuts",
+    "picks"
+  ],
+  "questions": [
+    {
+      "ask": "What does the cat take from the shop?",
+      "listenFor": "A fat fish. It is stated in the story - send them back to that line if they are not sure."
+    },
+    {
+      "ask": "Where does the cat go with the fish?",
+      "listenFor": "To a shed, where it naps. If they say only \"away,\" ask them to find the word that names the place."
+    },
+    {
+      "ask": "Why do you think Meg gets a dog? Tell me why.",
+      "listenFor": "Any reason tied to the story works - \"to keep cats out\" shows they connected the ending to the problem."
+    }
+  ]
+}

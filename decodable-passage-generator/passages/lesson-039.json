@@ -1,0 +1,36 @@
+{
+  "lesson": 39,
+  "title": "The Pup and the Nut",
+  "lines": [
+    "Gus is a pup.",
+    "He digs in the mud.",
+    "Gus digs up a nut.",
+    "A bug is on the nut!",
+    "The bug runs at Gus.",
+    "Gus runs to his hut.",
+    "The bug gets the nut.",
+    "Gus digs up ten nuts."
+  ],
+  "warmup": [
+    "pup",
+    "mud",
+    "digs",
+    "nut",
+    "bug",
+    "hut"
+  ],
+  "questions": [
+    {
+      "ask": "What does Gus dig up in the mud?",
+      "listenFor": "A nut. It is stated in the story, so if they guess, send them back to find the line instead of telling them."
+    },
+    {
+      "ask": "Why does Gus run to his hut?",
+      "listenFor": "The bug ran at him. You are listening for cause and effect - if they just say \"the bug,\" ask \"and what did the bug do?\""
+    },
+    {
+      "ask": "Do you think Gus was brave? Tell me why.",
+      "listenFor": "Either answer is fine. What you want is a reason tied to the story - \"no, he ran\" or \"yes, he dug up ten more.\""
+    }
+  ]
+}

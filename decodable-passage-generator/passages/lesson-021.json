@@ -1,0 +1,36 @@
+{
+  "lesson": 21,
+  "title": "The Dogs Got the Buns",
+  "lines": [
+    "Dad set ten buns on a pan.",
+    "Dogs! Ten dogs did get up.",
+    "The dogs got the buns. Dad is mad.",
+    "The dogs did go in the mud.",
+    "Buns in the mud! Bugs on the buns!",
+    "Dad can not get the buns.",
+    "But the pigs did get the buns.",
+    "Dad is not mad. The pigs get buns."
+  ],
+  "warmup": [
+    "buns",
+    "dogs",
+    "pigs",
+    "bugs",
+    "pan",
+    "mud"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the dogs take the buns?",
+      "listenFor": "Into the mud. It is stated in the story. If your child is unsure, point to the word mud and read that line again."
+    },
+    {
+      "ask": "Who ate the buns in the end?",
+      "listenFor": "The pigs. Listen for pigs, not dogs - the dogs took them, the pigs finished them."
+    },
+    {
+      "ask": "Do you think Dad should bake more buns? Tell me why you think so.",
+      "listenFor": "Either answer is fine. You are listening for a reason - the dogs would take them again, or everybody was hungry."
+    }
+  ]
+}

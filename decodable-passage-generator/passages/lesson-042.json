@@ -1,0 +1,35 @@
+{
+  "lesson": 42,
+  "title": "The Ball in the Well",
+  "lines": [
+    "Bill has a red ball.",
+    "He runs up a tall hill.",
+    "Bill tips the ball off.",
+    "The ball rolls and rolls.",
+    "It falls in a well!",
+    "Bill yells for his dad.",
+    "Dad gets the ball, and Bill hugs him."
+  ],
+  "warmup": [
+    "ball",
+    "hill",
+    "rolls",
+    "falls",
+    "well",
+    "yells"
+  ],
+  "questions": [
+    {
+      "ask": "Where does the ball land?",
+      "listenFor": "In a well. It is stated in the story - if they guess, have them find the line with the word well in it."
+    },
+    {
+      "ask": "Who gets the ball back for Bill?",
+      "listenFor": "His dad. Follow up with \"and how did Dad know to come?\" to see if they linked the yell to the help."
+    },
+    {
+      "ask": "Do you think Bill should roll the ball down the hill again? Tell me why.",
+      "listenFor": "Either answer is correct. Listen for a reason tied to what happened, like \"no, it fell in the well.\""
+    }
+  ]
+}

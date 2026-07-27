@@ -1,0 +1,32 @@
+{
+  "lesson": 82,
+  "title": "The Third Turn",
+  "lines": [
+    "Meg and Kurt run on the dirt path.",
+    "Meg gets the first turn on the sled.",
+    "Kurt has to stand and rest.",
+    "Then Kurt gets his turn on it.",
+    "He bumps a rock and lands in dirt.",
+    "His shirt gets dirt all on it.",
+    "His arm hurts a bit.",
+    "Meg helps him up with her hand.",
+    "She rubs the dirt off his shirt.",
+    "Kurt grins and gets a third turn.",
+    "This time he did not fall."
+  ],
+  "warmup": ["first", "turn", "dirt", "shirt", "hurts", "third"],
+  "questions": [
+    {
+      "ask": "Who got the first turn on the sled?",
+      "listenFor": "Meg. Kurt had to stand and rest. It is in the second and third lines."
+    },
+    {
+      "ask": "What happened on Kurt's turn?",
+      "listenFor": "He bumped a rock, landed in the dirt, and his arm hurt a bit. Listen for the rock, not just 'he fell.'"
+    },
+    {
+      "ask": "Do you think Meg was a good friend? Tell me why.",
+      "listenFor": "Either answer works. Listen for the reason, like helping him up, or rubbing the dirt off his shirt."
+    }
+  ]
+}

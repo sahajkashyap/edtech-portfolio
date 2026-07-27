@@ -1,0 +1,36 @@
+{
+  "lesson": 44,
+  "title": "The Duck on the Dock",
+  "lines": [
+    "A duck sits on the dock.",
+    "Nick has a sack of buns.",
+    "The duck pecks at the sack.",
+    "Nick picks up the sack.",
+    "The duck nips his sock!",
+    "Nick falls back on the dock.",
+    "The buns fall off the dock.",
+    "The duck gets the lot."
+  ],
+  "warmup": [
+    "duck",
+    "dock",
+    "sack",
+    "pecks",
+    "picks",
+    "sock"
+  ],
+  "questions": [
+    {
+      "ask": "What does the duck do to Nick's sock?",
+      "listenFor": "It nips it. This is stated in the story - if they guess, have them find the line with sock in it."
+    },
+    {
+      "ask": "Why do the buns fall off the dock?",
+      "listenFor": "Nick fell back when the duck nipped him. You are listening for the chain of events, not just \"they fell.\""
+    },
+    {
+      "ask": "Do you think the duck planned this? Tell me why.",
+      "listenFor": "Either answer is correct. What you want is a reason from the story, like \"yes, it pecked the sack first.\""
+    }
+  ]
+}

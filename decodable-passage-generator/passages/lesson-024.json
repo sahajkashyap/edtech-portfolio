@@ -1,0 +1,36 @@
+{
+  "lesson": 24,
+  "title": "The Rat on the Rug",
+  "lines": [
+    "A rat ran on the red rug.",
+    "The cat did run at the rat.",
+    "The rat ran up the rod.",
+    "The cat did rip the rug!",
+    "Dad ran in. Dad is mad.",
+    "Bad cat! The rug has a rip.",
+    "Dad got a rag. Dad did rub the rug.",
+    "The rip is not big. Dad is not mad."
+  ],
+  "warmup": [
+    "rat",
+    "ran",
+    "rug",
+    "red",
+    "rip",
+    "rub"
+  ],
+  "questions": [
+    {
+      "ask": "What did the cat do to the rug?",
+      "listenFor": "Ripped it. It is right in the story. If your child is stuck, point to the word rip and read that line again."
+    },
+    {
+      "ask": "How did Dad fix things?",
+      "listenFor": "He got a rag and rubbed the rug, and the rip turned out to be small. Listen for the rag."
+    },
+    {
+      "ask": "Do you think the cat meant to rip the rug? Tell me why you think so.",
+      "listenFor": "Either answer works. You are listening for a reason from the story, like the cat was chasing the rat and was not looking."
+    }
+  ]
+}

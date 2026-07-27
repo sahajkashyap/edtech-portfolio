@@ -1,0 +1,36 @@
+{
+  "lesson": 17,
+  "title": "A Bug on the Bus",
+  "lines": [
+    "Sam got on a big bus.",
+    "Sam got a tan bag.",
+    "A bun is in the bag.",
+    "But a bug got in the bag!",
+    "The bug bit the bun. Sam did sob.",
+    "A man got the bug in a cup.",
+    "Sam is not sad. The bug is not bad.",
+    "The bug got a bit. Sam got the bun."
+  ],
+  "warmup": [
+    "bus",
+    "bag",
+    "bun",
+    "bug",
+    "big",
+    "bit"
+  ],
+  "questions": [
+    {
+      "ask": "What got into Sam's bag?",
+      "listenFor": "A bug. It is right in the story. If your child guesses, point at the line with the word bug and read it again."
+    },
+    {
+      "ask": "How did the man help Sam?",
+      "listenFor": "He caught the bug in a cup. Listen for the cup - that is the turn in the story."
+    },
+    {
+      "ask": "Do you think Sam was kind to share the bun with the bug? Tell me why.",
+      "listenFor": "Any answer is fine. You are listening for a reason, like the bug was hungry too, or it was Sam's bun first."
+    }
+  ]
+}

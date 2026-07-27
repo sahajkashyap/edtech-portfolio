@@ -1,0 +1,24 @@
+{
+  "lesson": 57,
+  "title": "Pete and These Hens",
+  "lines": [
+    "Pete has five hens.",
+    "These hens like to hide.",
+    "The best hen is Eve.",
+    "Pete hunts for Eve at the lake.",
+    "Eve is not in the tall grass.",
+    "Steve the cat naps on a stone.",
+    "Eve sits on his back!",
+    "Steve gets up and Eve hops off.",
+    "Pete grins. That hen is brave."
+  ],
+  "warmup": ["hens", "hide", "lake", "stone", "brave", "five"],
+  "questions": [
+    {"ask": "Which hen does Pete hunt for?",
+     "listenFor": "Eve. If they can not recall the name, have them find the capital E on the page."},
+    {"ask": "Where is Eve hiding?",
+     "listenFor": "On Steve the cat's back. Listen for them putting the cat and the hen together, not just \"by the lake.\""},
+    {"ask": "Do you think Steve likes having a hen on him? Tell me why.",
+     "listenFor": "Either answer is fine. Look for a reason from the story, such as \"no, because he got up.\""}
+  ]
+}

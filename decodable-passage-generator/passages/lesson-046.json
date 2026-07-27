@@ -1,0 +1,36 @@
+{
+  "lesson": 46,
+  "title": "Moths in That Box",
+  "lines": [
+    "Ben has moths in a box.",
+    "This box has a red lid.",
+    "Then the lid falls off!",
+    "The moths run off to a shed.",
+    "Ben runs to that shed.",
+    "The moths sit on a rock.",
+    "Ben gets both of them back.",
+    "Then Ben lets them go."
+  ],
+  "warmup": [
+    "moths",
+    "this",
+    "then",
+    "that",
+    "both",
+    "them"
+  ],
+  "questions": [
+    {
+      "ask": "What is in Ben's box?",
+      "listenFor": "Moths. It is stated in the first line - have them reread it rather than telling them."
+    },
+    {
+      "ask": "Where does Ben find the moths?",
+      "listenFor": "On a rock by the shed. If they say only \"the shed,\" ask them what the moths were sitting on."
+    },
+    {
+      "ask": "Do you think Ben should let the moths go? Tell me why.",
+      "listenFor": "Either answer is correct. You are listening for a reason from the story, not just yes or no."
+    }
+  ]
+}

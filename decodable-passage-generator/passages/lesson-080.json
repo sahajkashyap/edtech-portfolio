@@ -1,0 +1,32 @@
+{
+  "lesson": 80,
+  "title": "Her Little Fern",
+  "lines": [
+    "Pam has a little fern in a pot.",
+    "She sets her fern on the top step.",
+    "Then a herd of big pigs runs past.",
+    "The pigs bump her fern off the step.",
+    "Her fern lands flat in the mud.",
+    "Pam is sad and her chin drops.",
+    "Dad helps her fill the pot back up.",
+    "She pats the mud in with her hands.",
+    "The fern is fine.",
+    "Pam sets her fern on the table.",
+    "The herd can not get it up there."
+  ],
+  "warmup": ["fern", "herd", "her", "step", "pigs", "mud"],
+  "questions": [
+    {
+      "ask": "What knocked the fern off the step?",
+      "listenFor": "The herd of pigs running past. If they say 'the pigs' that is right, and you can ask how many."
+    },
+    {
+      "ask": "How did Dad help Pam?",
+      "listenFor": "He helped her fill the pot back up, and she patted the mud in. Listen for both hands doing the job, not just Dad."
+    },
+    {
+      "ask": "Why do you think Pam put the fern on the table at the end?",
+      "listenFor": "Any answer with a reason. The last line hints that the pigs cannot reach it up there."
+    }
+  ]
+}

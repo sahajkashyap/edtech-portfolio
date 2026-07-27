@@ -1,0 +1,36 @@
+{
+  "lesson": 15,
+  "title": "Mud is Fun",
+  "lines": [
+    "Tim sat in the mud.",
+    "Mud is on Tim. Mud is on the cat.",
+    "Dad can not nap. Dad is up.",
+    "Not in the mud, Tim! Dad, it is fun!",
+    "Dad did sit in the mud!",
+    "Mud is on Dad. Mud is on the cap.",
+    "Tim is not sad. Dad is not mad.",
+    "Mud in the sun is fun."
+  ],
+  "warmup": [
+    "mud",
+    "sun",
+    "fun",
+    "cat",
+    "cap",
+    "sat"
+  ],
+  "questions": [
+    {
+      "ask": "Who sat down in the mud at the end?",
+      "listenFor": "Dad. The story says it plainly. If your child says Tim, point to the line and read it together."
+    },
+    {
+      "ask": "What did Dad say before he sat down?",
+      "listenFor": "Not in the mud, Tim. You want the idea that Dad said no first and then changed his mind - that change is the whole story."
+    },
+    {
+      "ask": "Do you think Dad had fun in the mud? Tell me why you think so.",
+      "listenFor": "There is no wrong answer. Listen for a reason from the story, like nobody was mad at the end, or he sat down himself."
+    }
+  ]
+}

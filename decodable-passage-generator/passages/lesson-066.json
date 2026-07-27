@@ -1,0 +1,24 @@
+{
+  "lesson": 66,
+  "title": "The Little Kitten",
+  "lines": [
+    "A little kitten sits on the table.",
+    "It bats at a red apple.",
+    "The apple rolls off the table.",
+    "It bumps a candle and a glass bottle.",
+    "The bottle tips and spills on the rug.",
+    "The kitten hides in a red mitten.",
+    "Meg picks up the apple and the bottle.",
+    "She rubs the chin of the little kitten.",
+    "The kitten naps in the mitten."
+  ],
+  "warmup": ["little", "kitten", "table", "apple", "bottle", "mitten"],
+  "questions": [
+    {"ask": "What knocked the candle and the bottle over?",
+     "listenFor": "The apple, after it rolled off the table. If they say \"the kitten,\" ask them to follow the apple line by line."},
+    {"ask": "Where did the kitten hide?",
+     "listenFor": "In a red mitten. Stated in the story - have them find the line and read it back to you."},
+    {"ask": "Do you think the kitten meant to make a mess? Tell me why.",
+     "listenFor": "Either answer is correct. You want a reason - \"no, it was just batting at the apple\" or \"yes, cats do that on purpose.\""}
+  ]
+}

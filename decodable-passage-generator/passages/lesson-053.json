@@ -1,0 +1,24 @@
+{
+  "lesson": 53,
+  "title": "Crab in the Sand",
+  "lines": [
+    "Beth digs in the wet sand.",
+    "She finds a small crab.",
+    "The crab grabs a stick.",
+    "Beth claps and jumps back.",
+    "The crab drops the stick.",
+    "It runs fast and slips in a crack.",
+    "Beth grins at the flat wet sand.",
+    "She sticks a twig in the sand.",
+    "The crab grabs it and is glad."
+  ],
+  "warmup": ["crab", "sand", "stick", "grabs", "fast", "slips"],
+  "questions": [
+    {"ask": "What does the crab grab first?",
+     "listenFor": "A stick. If they say the twig, point out the twig comes at the end and ask what came before it."},
+    {"ask": "Why does Beth jump back?",
+     "listenFor": "The crab grabbed the stick and surprised her. Cause and effect: the crab moved, so Beth jumped."},
+    {"ask": "Do you think Beth is scared of the crab? Tell me why.",
+     "listenFor": "Either answer is fine. Listen for evidence from the story, like \"she jumped back\" or \"no, she gave it a twig.\""}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "lesson": 16,
+  "title": "The Dog Got the Fig",
+  "lines": [
+    "Nan got a fat fig.",
+    "The fig sat on a mat. The dog got up.",
+    "Nip! The dog got the fig.",
+    "Nan is mad at the dog.",
+    "The dog did go dig in the mud.",
+    "The dog dug up a fig!",
+    "It is a mud fig. Nan got it.",
+    "Nan is not mad. The dog got a pat."
+  ],
+  "warmup": [
+    "got",
+    "fig",
+    "dog",
+    "dig",
+    "dug",
+    "mud"
+  ],
+  "questions": [
+    {
+      "ask": "What did the dog take off the mat?",
+      "listenFor": "The fig. The story says it. If your child is unsure, have them find the word fig and read that line again."
+    },
+    {
+      "ask": "Why did Nan stop being mad?",
+      "listenFor": "Because the dog dug up another fig for her. Listen for the dog making it right, not just \"she stopped.\""
+    },
+    {
+      "ask": "Would you eat a fig that came out of the mud? Tell me why or why not.",
+      "listenFor": "Either answer works. You are listening for a reason - it is dirty, or you could wash it. The reason is the thinking you want."
+    }
+  ]
+}

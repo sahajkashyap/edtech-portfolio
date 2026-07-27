@@ -1,0 +1,38 @@
+{
+  "lesson": 27,
+  "title": "The Bad Cot Leg",
+  "lines": [
+    "Ben has a cot. He naps on it.",
+    "But a cot leg is bad.",
+    "The cot tips! Ben hits the rug.",
+    "Ben is mad. He is not sad.",
+    "Ben gets a big fat log.",
+    "Ben cuts the log a lot.",
+    "He sets it up as a cot leg.",
+    "Ben sits. The cot did not tip!",
+    "Ben lets his cat nap on it.",
+    "Ben naps on the rug."
+  ],
+  "warmup": [
+    "leg",
+    "log",
+    "lets",
+    "lot",
+    "cuts",
+    "cot"
+  ],
+  "questions": [
+    {
+      "ask": "What did Ben use to fix the cot?",
+      "listenFor": "A log that he cut. It is said in the story. Have your child point to the line that tells you, then read it out loud again."
+    },
+    {
+      "ask": "How do you know the fix worked?",
+      "listenFor": "The cot did not tip when Ben sat on it. Listen for the sitting-and-not-tipping part, not just \"it worked.\""
+    },
+    {
+      "ask": "Do you think Ben is good at fixing things? Tell me why.",
+      "listenFor": "No wrong answer here. You want a reason pulled from the story - he cut the log himself, or the cot held him up. A reason beats a yes or no."
+    }
+  ]
+}

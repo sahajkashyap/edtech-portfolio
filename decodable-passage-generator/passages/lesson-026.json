@@ -1,0 +1,38 @@
+{
+  "lesson": 26,
+  "title": "The Lid in the Mud",
+  "lines": [
+    "Pam has a big red pot.",
+    "The pot has a tin lid.",
+    "A pup ran up. The pup got the lid!",
+    "Pam ran at the pup. The pup hid.",
+    "The lid is in the mud.",
+    "Pam is sad. Pam sat on a log.",
+    "The pup digs a lot in the mud.",
+    "The pup digs up the lid!",
+    "Pam hugs the pup. Pam is not mad.",
+    "The pup naps on Pam."
+  ],
+  "warmup": [
+    "lid",
+    "log",
+    "lot",
+    "mud",
+    "digs",
+    "pup"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the lid end up after the pup ran?",
+      "listenFor": "In the mud. It is said right in the story. If your child is stuck, point at that line and let them read it again rather than telling them."
+    },
+    {
+      "ask": "Why is Pam not mad at the end?",
+      "listenFor": "Because the pup dug the lid back up. Listen for the pup fixing what it did, not just \"because it is nice.\" If they say \"the lid,\" ask \"and who got it?\""
+    },
+    {
+      "ask": "Do you think the pup meant to be bad? Tell me why you think so.",
+      "listenFor": "There is no wrong answer. You are listening for a reason from the story - that the pup dug the lid up again, or that it hid. The reason matters more than the answer."
+    }
+  ]
+}

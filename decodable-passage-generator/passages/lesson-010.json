@@ -1,0 +1,36 @@
+{
+  "lesson": 10,
+  "title": "The Map in the Pit",
+  "lines": [
+    "Sam sat at a fan.",
+    "Pam sat at the fan.",
+    "A map is at Sam.",
+    "The fan is at the map.",
+    "Tip! The map is in the pit!",
+    "Tim sat at the pit.",
+    "Tim, tip the map at Sam.",
+    "Fan it, Pam! Fan Sam. Fan Tim!"
+  ],
+  "warmup": [
+    "fan",
+    "map",
+    "pit",
+    "tip",
+    "sat",
+    "at"
+  ],
+  "questions": [
+    {
+      "ask": "What made the map tip into the pit?",
+      "listenFor": "The fan, blowing on it. Lines four and five say it. Let your child read them again instead of you giving the answer."
+    },
+    {
+      "ask": "Who got the map back out?",
+      "listenFor": "Tim. He was sitting at the pit. If your child says Sam, ask them who the map got tipped to, and who did the tipping."
+    },
+    {
+      "ask": "Where would you keep the map so it stays safe? Tell me why.",
+      "listenFor": "Any place is fine. You are listening for a reason that shows they understood the fan was the problem, like away from the fan."
+    }
+  ]
+}

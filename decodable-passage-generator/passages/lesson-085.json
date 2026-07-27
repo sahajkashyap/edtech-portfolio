@@ -1,0 +1,32 @@
+{
+  "lesson": 85,
+  "title": "The Bee at the Beach",
+  "lines": [
+    "Meg and her dad went to the beach.",
+    "They had a meal of peach and tea.",
+    "A bee sat on the last bit of peach.",
+    "Meg let the bee have it.",
+    "Then she went to sleep in the sun.",
+    "She had a dream of a green sea.",
+    "In the dream she had feet like a fish.",
+    "She swam deep and fast.",
+    "Then Meg got up and ran to the sea.",
+    "It was cold and green on her feet.",
+    "It was the best day at the beach."
+  ],
+  "warmup": ["beach", "peach", "bee", "sleep", "dream", "green"],
+  "questions": [
+    {
+      "ask": "What did Meg and her dad eat at the beach?",
+      "listenFor": "A meal of peach and tea. If they say just peach, ask what they drank."
+    },
+    {
+      "ask": "What happened in Meg's dream?",
+      "listenFor": "She had feet like a fish and swam deep in a green sea. Listen for the fish feet, which is the fun part."
+    },
+    {
+      "ask": "Do you think Meg did the right thing with the bee? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason, like she gave up her last bit of peach, or bees can sting."
+    }
+  ]
+}

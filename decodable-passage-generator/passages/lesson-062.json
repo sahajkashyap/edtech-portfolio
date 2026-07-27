@@ -1,0 +1,24 @@
+{
+  "lesson": 62,
+  "title": "The Hens and the Rat",
+  "lines": [
+    "Ten hens live at the lake.",
+    "Jane and Pete give them rice.",
+    "At nine, the rice is gone!",
+    "The hens have not had a bite.",
+    "Pete finds a huge rat in the shed.",
+    "The rat has the rice in his hole.",
+    "Jane and Pete give the rat cake.",
+    "The rat naps in his hole.",
+    "At last the hens have rice."
+  ],
+  "warmup": ["hens", "lake", "nine", "cake", "huge", "hole"],
+  "questions": [
+    {"ask": "Who took the rice?",
+     "listenFor": "The huge rat in the shed. If they are not sure, have them reread the line about the shed."},
+    {"ask": "What do Jane and Pete give the rat?",
+     "listenFor": "A bit of cake. Listen for them seeing that the cake is a trade, so the rat leaves the rice alone."},
+    {"ask": "Do you think it was fair to give the rat cake? Tell me why.",
+     "listenFor": "Either answer is fine. You want a reason, like \"yes, he was hungry too\" or \"no, he stole first.\""}
+  ]
+}

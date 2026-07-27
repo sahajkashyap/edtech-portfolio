@@ -1,0 +1,36 @@
+{
+  "lesson": 7,
+  "title": "The Fat Mat",
+  "lines": [
+    "Sam sat at a fat mat.",
+    "A map is at the mat.",
+    "Pat the fat mat, Pam.",
+    "Pam sat at the fat mat.",
+    "Tam sat at the fat mat.",
+    "Pam sat at Sam. Sam is a mat!",
+    "Tap! Tam sat at Pam.",
+    "Sam, Pam, Tam: a fat, fat mat!"
+  ],
+  "warmup": [
+    "sat",
+    "at",
+    "mat",
+    "map",
+    "pat",
+    "tap"
+  ],
+  "questions": [
+    {
+      "ask": "Who sat down on the mat first?",
+      "listenFor": "Sam. It is the very first line. If your child guesses, have them go back and read line one again instead of you saying it."
+    },
+    {
+      "ask": "Who ended up sitting on Sam?",
+      "listenFor": "Pam. You are listening for the name, not the whole sentence. If they are unsure, have them find the line that says it."
+    },
+    {
+      "ask": "What do you think happens to the mat next? Tell me why.",
+      "listenFor": "There is no right answer here. Listen for a reason pulled from the story, like three kids piled up or the mat getting fatter. A reason matters more than the guess."
+    }
+  ]
+}

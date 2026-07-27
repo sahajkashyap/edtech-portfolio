@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decodable Passage &mdash; Lesson 86, oa, ow, oe /ō/</title>
+<style>
+  @page { size: letter; margin: 0.6in; }
+  * { box-sizing: border-box; }
+  body { font-family: "Century Gothic", "Verdana", sans-serif; color: #1a1a1a; background: #fff; margin: 0; line-height: 1.5; }
+
+  .toolbar { position: sticky; top: 0; z-index: 5; background: #f3efe7; border-bottom: 1px solid #d4c5b9; padding: 10px 16px; display: flex; gap: 14px; align-items: center; font-size: 13px; color: #4a3f2c; }
+  .toolbar button { padding: 8px 16px; font-size: 14px; border: none; background: #378ADD; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  .toolbar button:hover { background: #2966bb; }
+
+  /* Each .page is exactly one printed sheet: 8.5x11 letter minus 0.6in margins. */
+  .page { width: 7.3in; min-height: 9.8in; margin: 0 auto; background: #fff; position: relative; }
+
+  @media screen {
+    body { background: #e9e5de; }
+    .page { box-shadow: 0 2px 10px rgba(0,0,0,0.18); padding: 0.6in; width: 8.5in; min-height: 11in; margin: 24px auto; }
+  }
+  @media print {
+    .toolbar { display: none; }
+    .page { min-height: 0; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+  }
+
+  .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; margin-bottom: 5px; }
+  .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
+  h1 { font-size: 22px; margin: 4px 0 0; }
+  .nameline { display: flex; align-items: flex-end; gap: 10px; margin: 0; flex: none; }
+  .nameline .lbl { font-size: 15px; color: #333; padding-bottom: 3px; }
+  .nameline .rule { width: 3.1in; border-bottom: 1.8px solid #1a1a1a; height: 28px; margin-bottom: 5px; }
+
+  .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; text-align: right; line-height: 1.4; }
+
+  /* who the sheet belongs to — printed loud so nobody hands the wrong page to a kid */
+  .owner { display: inline-block; font-size: 11px; font-weight: bold; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px; }
+  .owner.adult { background: #4a3f2c; color: #f7f3ea; }
+  .owner.child { background: #378ADD; color: #fff; }
+
+  h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+  .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+
+  /* ---- prerequisite banner: the first thing a grown-up should read ---- */
+  .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
+            padding: 9px 13px; margin: 8px 0 3px; font-size: 13px; color: #4a3f2c; }
+  .prereq .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+               color: #8a5a12; font-weight: bold; margin-bottom: 5px; }
+  .prereq strong { color: #7a4e0c; }
+  .prereq p { margin: 4px 0 0; line-height: 1.45; }
+
+  /* ---- grown-up boxes ---- */
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
+  .tip p { margin: 3px 0; line-height: 1.38; }
+
+  .answers { margin: 6px 0 0 0; font-size: 13.8px; }
+  .answers .qa { margin: 0 0 4px 12px; line-height: 1.4; }
+  .answers .qa .qq { font-weight: bold; }
+  .answers .qa .aa { color: #555; }
+
+  /* ---- the picture ---- */
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
+  .art svg { display: block; width: 100%; height: auto; }
+  .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
+
+  /* ---- warm-up + heart words ---- */
+  .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
+  .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
+  .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
+
+  /* ---- the passage ---- */
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
+  .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
+  .passage .ln { display: block; }
+
+  /* ---- fluency tracker ---- */
+  .fluency { display: flex; align-items: center; gap: 14px; margin: 8px 0 0 12px; }
+  .fluency .star { width: 28px; height: 28px; border: 1.5px solid #1a1a1a; border-radius: 50%; display: inline-block; flex: none; }
+  .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .fluency .note { font-size: 11.5px; color: #777; }
+
+  /* ---- comprehension: wide lines for young hands ---- */
+  .q { font-size: 19px; margin: 0 0 34px 12px; }
+  .q .qtext { display: block; margin-bottom: 10px; }
+  .qline { display: block; border-bottom: 1.5px solid #999; height: 80px; }
+
+  /* ---- draw box: 50% bigger than the first draft ---- */
+  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 7.8in; margin: 2px 0 0 0; position: relative; }
+  .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ---- audit strip (grown-up sheet only) ---- */
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
+  .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
+  .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
+
+  .foot { margin-top: 4px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+</div>
+
+<!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
+<div class="page">
+
+  <span class="owner adult">Grown-up sheet &mdash; keep this one</span>
+  <div class="band">
+    <div>
+      <div class="tag">Decodable Passage &middot; Reading Foundations</div>
+      <h1>The Goat in the Boat</h1>
+    </div>
+    <div class="flagged">Lesson 86<br>oa, ow, oe /ō/</div>
+  </div>
+
+  <div class="prereq">
+    <div class="h">Before you start &middot; is your child ready for this one?</div>
+    <p><strong>This is Lesson 86. It assumes your child has already worked through Lessons 1&ndash;85.</strong> Each lesson only uses sounds taught in the
+    ones before it. If your child has not had those yet, this story will be too hard &mdash; not
+    because of anything they did, but because the sounds have not been introduced yet. Ask their
+    teacher which sheet to start with.</p>
+  </div>
+
+  <h2>Four minutes, in this order</h2>
+  <div class="tip">
+    <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you
+    think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
+    <p><strong>2. Cover the picture while they read.</strong> The picture is for understanding,
+    not for guessing words. Uncover it when they finish.</p>
+    <p><strong>3. Warm up on the 6 words,</strong> check off the heart words, then read the story.</p>
+    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Ask them to <strong>sound it
+    out</strong>, or to <strong>use their sound spelling</strong> &mdash; those are the words their
+    teacher uses, so home and school match. Tap under each letter as they go.</p>
+    <p><strong>5. Read it three times.</strong> The first read is work. The third read is reading.</p>
+    <p style="margin-top:7px; padding-top:6px; border-top:1px dotted #d9c7a8;">The story itself is
+    on the next sheet &mdash; read it once yourself before you begin.</p>
+  </div>
+
+  <h2>Checking they understood</h2>
+  <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
+  <div class="answers">
+    <p class="qa"><span class="qq">1. Why did the boat tip?</span><br><span class="aa">The goat stood up to blow at the crow. The crow itself did not tip the boat, so listen for the goat standing.</span></p>
+    <p class="qa"><span class="qq">2. How did Meg get the goat back?</span><br><span class="aa">She threw a rope, and the goat swam slowly to it. Two steps, so let them reread if they only get one.</span></p>
+    <p class="qa"><span class="qq">3. Do you think the goat will get back in the boat? Tell me why.</span><br><span class="aa">Either answer is fine. Listen for a reason from the story, like it got wet and cold, or it liked the slow ride.</span></p>
+  </div>
+
+  <div class="audit">
+    <div class="h">Why you can trust this page &middot; checked, word by word</div>
+    <p style="margin:0 0 5px;"><strong>Every one of the 89 words in this story can be
+    sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
+    If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
+    spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
+    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
+    <code>a</code> <code>and</code> <code>are</code> <code>be</code> <code>but</code> <code>can</code> <code>for</code> <code>have</code> <code>he</code> <code>in</code> <code>is</code> <code>my</code> <code>not</code> <code>of</code> <code>she</code> <code>the</code> <code>this</code> <code>to</code> <code>was</code> <code>we</code> <code>you</code>.<p style="margin-top:6px">This lesson uses <code>ea</code>, <code>ey</code>, <code>ow</code>, which can say more than one sound. Every word here was picked from an approved list so only the sound taught by Lesson 86 appears.</p></p>
+  </div>
+
+  <div class="foot">
+    <span>Grown-up sheet &mdash; Lesson 86, oa, ow, oe /ō/</span>
+    <span>Original text. Public-domain sight words only.</span>
+  </div>
+
+</div>
+
+<!-- ================= PAGE 2 — CHILD'S READING SHEET ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My reading page</div>
+      <h1>The Goat in the Boat</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <div class="art"><svg viewBox="0 0 660 250" role="img" aria-label="A simple line drawing of: kid, rock."><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="216" x2="642" y2="216"/><g transform="translate(146,112) scale(1.04)"><circle cx="50" cy="26" r="16" fill="#fff"/><circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/><path d="M43 32 q7 6 14 0"/><path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/><path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/><path d="M50 50 L32 62"/><path d="M50 50 L68 62"/></g><g transform="translate(400,112) scale(1.04)"><path d="M16 92 q4 -26 24 -30 q22 -12 34 8 q16 6 10 22 z" fill="#fff"/></g><path d="M50 216 l-4 -12 M56 216 l2 -14 M62 216 l6 -11" stroke-width="2"/><path d="M590 216 l-4 -12 M598 216 l2 -13" stroke-width="2"/></g></svg></div>
+  <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
+
+  <h2>Say these first</h2>
+  <div class="warm"><div>goat</div><div>coat</div><div>boat</div><div>slow</div><div>crow</div><div>throw</div></div>
+  <p class="rowlab">Heart words &mdash; the newest 9. Read each one, then check the box.</p>
+  <div class="hearts"><span class="hw"><span class="ubox"></span>not</span><span class="hw"><span class="ubox"></span>of</span><span class="hw"><span class="ubox"></span>she</span><span class="hw"><span class="ubox"></span>the</span><span class="hw"><span class="ubox"></span>this</span><span class="hw"><span class="ubox"></span>to</span><span class="hw"><span class="ubox"></span>was</span><span class="hw"><span class="ubox"></span>we</span><span class="hw"><span class="ubox"></span>you</span></div>
+
+  <h2>Read the story</h2>
+  <div class="passage">
+    <div class="ptitle">The Goat in the Boat</div>
+    <p>
+      <span class="ln">Meg had a goat with a black coat.</span>
+      <span class="ln">The goat got in a small red boat.</span>
+      <span class="ln">The boat went slow past a big rock.</span>
+      <span class="ln">A crow sat on the back of the boat.</span>
+      <span class="ln">The goat got up to blow at it.</span>
+      <span class="ln">The boat did tip and the goat fell in.</span>
+      <span class="ln">Meg had to throw a rope to it.</span>
+      <span class="ln">The goat swam slow to the rope.</span>
+      <span class="ln">The wet goat sat on the road and shivered.</span>
+      <span class="ln">Meg rubs the goat with a rag.</span>
+      <span class="ln">The coat is dry and the goat naps.</span>
+    </p>
+  </div>
+
+  <div class="fluency">
+    <span class="lbl">Read it 3 times</span>
+    <span class="star"></span><span class="star"></span><span class="star"></span>
+    <span class="note">Color one circle each time.</span>
+  </div>
+
+</div>
+
+<!-- ================= PAGE 3 — CHILD'S WORK SHEET ================= -->
+<div class="page">
+
+  <div class="band" style="margin-bottom:4px;">
+    <div>
+      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
+      <h1 style="font-size:18px;">The Goat in the Boat &mdash; my work page</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <h2 style="margin-top:12px;">Think about it</h2>
+
+  <div class="q"><span class="qtext">1. Why did the boat tip?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">2. How did Meg get the goat back?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">3. Do you think the goat will get back in the boat? Tell me why.</span><span class="qline"></span><span class="qline"></span></div>
+
+</div>
+
+<!-- ================= PAGE 4 — CHILD'S DRAWING SHEET ================= -->
+<div class="page">
+
+  <div class="band" style="margin-bottom:4px;">
+    <div>
+      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
+      <h1 style="font-size:18px;">The Goat in the Boat &mdash; my drawing page</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <h2 style="margin-top:12px;">Draw it</h2>
+  <p class="sub">Draw the last thing that happens in the story.</p>
+  <div class="drawbox"><span class="dlab">Your picture</span></div>
+
+</div>
+
+</body>
+</html>

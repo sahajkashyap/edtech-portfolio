@@ -1,0 +1,24 @@
+{
+  "lesson": 61,
+  "title": "Sage in the Cage",
+  "lines": [
+    "Ben has a huge cage.",
+    "A pet rat, Sage, is in the cage.",
+    "Ben sets the cage up on the stage.",
+    "He holds up a page for his class.",
+    "Sage slips from the cage!",
+    "Ben is sad, but not in a rage.",
+    "He sets a bit of ham on the page.",
+    "Sage runs back and gets it.",
+    "Ben shuts the cage. All clap."
+  ],
+  "warmup": ["cage", "huge", "stage", "page", "rage", "ham"],
+  "questions": [
+    {"ask": "What is Sage?",
+     "listenFor": "A pet rat. If they say \"a pet,\" ask what kind, and let them find it on the page."},
+    {"ask": "How does Ben get Sage back?",
+     "listenFor": "He puts a bit of ham on the page and waits. Listen for the ham as the reason Sage came back."},
+    {"ask": "Do you think Ben did the right thing when Sage got out? Tell me why.",
+     "listenFor": "Either answer works. Look for a reason from the story, like \"yes, he stayed calm instead of getting mad.\""}
+  ]
+}

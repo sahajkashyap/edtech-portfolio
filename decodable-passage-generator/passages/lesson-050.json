@@ -1,0 +1,35 @@
+{
+  "lesson": 50,
+  "title": "Which Shell?",
+  "lines": [
+    "Nick has shells in a sack.",
+    "Nick picks a thick red shell.",
+    "Which shell will Josh pick?",
+    "Josh picks it up. It is wet.",
+    "A bug is in his shell!",
+    "Josh yells and lets it fall.",
+    "When Josh picks a shell, he checks it."
+  ],
+  "warmup": [
+    "when",
+    "which",
+    "shell",
+    "thick",
+    "picks",
+    "yells"
+  ],
+  "questions": [
+    {
+      "ask": "What is in the shell Josh picks?",
+      "listenFor": "A bug. It is stated in the story - if they guess, send them back to that line."
+    },
+    {
+      "ask": "Why does Josh let the shell fall?",
+      "listenFor": "A bug was in it and it was wet. You want cause and effect, not just \"he dropped it.\""
+    },
+    {
+      "ask": "Do you think Josh will pick up more shells? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, but he checks them first now.\""
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "lesson": 34,
+  "title": "Liz Zips the Bag",
+  "lines": [
+    "Liz has a red bag. It can zip up.",
+    "Liz gets a bun. Liz gets a fig.",
+    "It is in the bag. Zip!",
+    "Liz runs up a big log.",
+    "A bug zips at Liz. It is big!",
+    "The bug zigs. The bug zags.",
+    "Liz zips the bag up. The bug sits.",
+    "Liz sits on the log. Liz has the bun.",
+    "Liz gets a bit. The bug gets a bit.",
+    "The bug is not mad. Liz is not sad."
+  ],
+  "warmup": [
+    "zip",
+    "zips",
+    "bag",
+    "bug",
+    "bun",
+    "fig"
+  ],
+  "questions": [
+    {
+      "ask": "What did Liz put in the bag?",
+      "listenFor": "A bun and a fig. If your child only names one, that is fine - ask \"what else?\" and let them look back."
+    },
+    {
+      "ask": "Why did Liz zip the bag up?",
+      "listenFor": "To keep the bug out of her food. The story does not say it in those words, so working it out together is the point."
+    },
+    {
+      "ask": "Do you think Liz did the right thing at the end? Tell me why.",
+      "listenFor": "There is no wrong answer. Listen for a reason - she shared, or the bug stopped being mad. A reason from the story beats a yes or no."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "lesson": 40,
+  "title": "The Hen on the Bed",
+  "lines": [
+    "Ben has a pet hen.",
+    "The hen naps on his bed.",
+    "Ben lets the hen nap.",
+    "Ben gets in bed. It is wet!",
+    "The hen sat in the wet fog.",
+    "Ben gets a rag and a mop.",
+    "Ben nods and gets in his bed."
+  ],
+  "warmup": [
+    "hen",
+    "bed",
+    "lets",
+    "gets",
+    "wet",
+    "pet"
+  ],
+  "questions": [
+    {
+      "ask": "Why is the bed wet?",
+      "listenFor": "The hen sat in the fog and then napped on the bed. If they only say \"the hen,\" ask \"and where had the hen been?\""
+    },
+    {
+      "ask": "What does Ben get to clean up?",
+      "listenFor": "A rag and a mop. This is stated right in the story - have them reread that line if they cannot find it."
+    },
+    {
+      "ask": "Do you think the hen should nap on the bed? Tell me why.",
+      "listenFor": "Either answer works. You are listening for a reason from the story, not just yes or no."
+    }
+  ]
+}

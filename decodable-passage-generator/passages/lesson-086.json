@@ -1,0 +1,39 @@
+{
+  "lesson": 86,
+  "title": "The Goat in the Boat",
+  "lines": [
+    "Meg had a goat with a black coat.",
+    "The goat got in a small red boat.",
+    "The boat went slow past a big rock.",
+    "A crow sat on the back of the boat.",
+    "The goat got up to blow at it.",
+    "The boat did tip and the goat fell in.",
+    "Meg had to throw a rope to it.",
+    "The goat swam slow to the rope.",
+    "The wet goat sat on the road and shivered.",
+    "Meg rubs the goat with a rag.",
+    "The coat is dry and the goat naps."
+  ],
+  "warmup": [
+    "goat",
+    "coat",
+    "boat",
+    "slow",
+    "crow",
+    "throw"
+  ],
+  "questions": [
+    {
+      "ask": "Why did the boat tip?",
+      "listenFor": "The goat stood up to blow at the crow. The crow itself did not tip the boat, so listen for the goat standing."
+    },
+    {
+      "ask": "How did Meg get the goat back?",
+      "listenFor": "She threw a rope, and the goat swam slowly to it. Two steps, so let them reread if they only get one."
+    },
+    {
+      "ask": "Do you think the goat will get back in the boat? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story, like it got wet and cold, or it liked the slow ride."
+    }
+  ]
+}
