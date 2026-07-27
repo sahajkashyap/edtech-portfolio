@@ -1,0 +1,36 @@
+{
+  "lesson": 22,
+  "title": "Kids in the Tub",
+  "lines": [
+    "The pup did dig in the mud.",
+    "Ten kids got a big tub.",
+    "The kids did tug the pup in the tub.",
+    "It got up. It did tip the tub!",
+    "Mud is on the kids!",
+    "The pup did nap on the cot.",
+    "The kids sob. The pup is not sad.",
+    "Get in the tub, kids!"
+  ],
+  "warmup": [
+    "kids",
+    "tub",
+    "pup",
+    "mud",
+    "tug",
+    "tip"
+  ],
+  "questions": [
+    {
+      "ask": "Why did the kids get a tub?",
+      "listenFor": "To wash the muddy pup. Listen for the mud - the tub only makes sense because the pup was dirty."
+    },
+    {
+      "ask": "How did the kids end up muddy?",
+      "listenFor": "The pup tipped the tub over. If your child says \"it just happened,\" have them read that line again."
+    },
+    {
+      "ask": "Do you think the pup will get in the tub next time? Tell me why you think so.",
+      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like the pup got away with it, or the kids will hold on tighter."
+    }
+  ]
+}

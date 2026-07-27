@@ -1,0 +1,36 @@
+{
+  "lesson": 9,
+  "title": "A Fin in the Pan",
+  "lines": [
+    "Tim sat at a tin pan.",
+    "A fin is in the pan!",
+    "It is a tan fin.",
+    "Sam! Sis! A fin is in it!",
+    "Nip, nip! The fin is at Sis.",
+    "Tip the pan, Tim!",
+    "Fan it, Sam. Fan the fin.",
+    "Nap, fin! Nap in the tin."
+  ],
+  "warmup": [
+    "fin",
+    "pan",
+    "tin",
+    "tan",
+    "nip",
+    "fan"
+  ],
+  "questions": [
+    {
+      "ask": "What was in the tin pan?",
+      "listenFor": "A fin, which means a fish. It is said in the second line. If your child is stuck, point at that line rather than telling them."
+    },
+    {
+      "ask": "Who did the fin nip?",
+      "listenFor": "Sis. You are listening for the name. If they say the girl, ask which one, and let them find the line that names her."
+    },
+    {
+      "ask": "Do you think the fin liked the tin better than the pan? Tell me why.",
+      "listenFor": "There is no wrong answer. Listen for a reason from the story, like the fin napped in the tin or it nipped when it was in the pan."
+    }
+  ]
+}

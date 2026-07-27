@@ -1,0 +1,36 @@
+{
+  "lesson": 47,
+  "title": "The Moth on the Path",
+  "lines": [
+    "Beth has a thin red hat.",
+    "Beth sits on the path with it.",
+    "A big moth sits on the hat.",
+    "The moth is thick and tan.",
+    "Beth picks up the hat.",
+    "Then the moth hops off with it!",
+    "Beth runs up the path.",
+    "Beth gets the hat back."
+  ],
+  "warmup": [
+    "thin",
+    "path",
+    "with",
+    "moth",
+    "thick",
+    "picks"
+  ],
+  "questions": [
+    {
+      "ask": "Where is Beth sitting?",
+      "listenFor": "On the path. It is stated in the second line - have them find it rather than telling them."
+    },
+    {
+      "ask": "Why does Beth run up the path?",
+      "listenFor": "The moth went off with her hat. You want cause and effect, not just \"she ran.\""
+    },
+    {
+      "ask": "Do you think the moth took the hat on purpose? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason tied to the story, like \"no, it just hopped off.\""
+    }
+  ]
+}

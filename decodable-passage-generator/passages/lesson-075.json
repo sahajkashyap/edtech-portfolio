@@ -1,0 +1,36 @@
+{
+  "lesson": 75,
+  "title": "The Candle on the Table",
+  "lines": [
+    "Meg has a little candle on the table.",
+    "It sits next to a bottle and an apple.",
+    "Meg picks up the bottle by the handle.",
+    "The bottle bumps the candle off the table.",
+    "The candle rolls behind a big box.",
+    "Mom tips the box up a little.",
+    "The candle rolls back to Meg.",
+    "That was a simple fix, and Meg grins."
+  ],
+  "warmup": [
+    "candle",
+    "table",
+    "bottle",
+    "handle",
+    "apple",
+    "simple"
+  ],
+  "questions": [
+    {
+      "ask": "What made the candle fall off the table?",
+      "listenFor": "The bottle bumped it when Meg lifted the handle. Send them back to that line."
+    },
+    {
+      "ask": "How did Mom get the candle back?",
+      "listenFor": "He tipped the big box up a little. Listen for the tipping, not just 'he got it.'"
+    },
+    {
+      "ask": "Do you think Meg will keep the candle there? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story."
+    }
+  ]
+}

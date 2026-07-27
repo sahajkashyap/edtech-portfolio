@@ -1,0 +1,28 @@
+{
+  "lesson": 103,
+  "title": "Undo the Tape",
+  "lines": [
+    "Gran sent Ben a box with a lock.",
+    "Ben was unhappy. He had no way in.",
+    "He sat and gave the lock a tug.",
+    "Mom said, \"Undo the tape on the back.\"",
+    "Ben did. The back of the box slid off.",
+    "Inside he found a red kite and a note.",
+    "Ben did not need to unlock it at all."
+  ],
+  "warmup": ["lock", "tug", "kite", "note", "back", "box"],
+  "questions": [
+    {
+      "ask": "Why was Ben unhappy at the start?",
+      "listenFor": "The box had a lock and he had no way in. Let them reread line two if they are not sure."
+    },
+    {
+      "ask": "What was inside the box?",
+      "listenFor": "A red kite and a note. If they only say the kite, ask what else."
+    },
+    {
+      "ask": "What do you think the note said? Why do you think that?",
+      "listenFor": "Anything is fine here - the story does not say. You want a guess with a reason behind it."
+    }
+  ]
+}

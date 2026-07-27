@@ -1,0 +1,35 @@
+{
+  "lesson": 109,
+  "title": "Riding to the Lake",
+  "lines": [
+    "Kate was riding her bike to a lake.",
+    "The sun was shining on the road.",
+    "A cat came sliding out from a shed.",
+    "Kate was taking a big turn.",
+    "She was smiling. Then she was not.",
+    "The bike slid, but Kate saved it.",
+    "Kate was smiling all the way home."
+  ],
+  "warmup": [
+    "riding",
+    "shining",
+    "sliding",
+    "taking",
+    "smiling",
+    "saved"
+  ],
+  "questions": [
+    {
+      "ask": "Where was Kate riding to?",
+      "listenFor": "The lake. First line - a quick win to start with."
+    },
+    {
+      "ask": "What came out from the shed?",
+      "listenFor": "A cat, sliding. If they say dog, have them go back and look."
+    },
+    {
+      "ask": "Why do you think Kate stopped smiling for a bit?",
+      "listenFor": "Any sensible reason - the cat, the turn, nearly falling. You want them to link two lines together."
+    }
+  ]
+}

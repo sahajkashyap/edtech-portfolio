@@ -1,0 +1,36 @@
+{
+  "lesson": 79,
+  "title": "The Fort in the Yard",
+  "lines": [
+    "Ben and Pam make a fort in the yard.",
+    "It starts with a big box and a card.",
+    "The fort is dark in the back part.",
+    "Pam gets a jar and a short lamp.",
+    "Then a big dog jumps on the fort.",
+    "It drops flat and Pam is sad.",
+    "Ben starts the fort back up.",
+    "The dog naps in the dark part."
+  ],
+  "warmup": [
+    "fort",
+    "yard",
+    "card",
+    "dark",
+    "part",
+    "short"
+  ],
+  "questions": [
+    {
+      "ask": "What did Ben and Pam make the fort from?",
+      "listenFor": "A big box and a card. The jar and lamp came after, for the dark part."
+    },
+    {
+      "ask": "What made the fort drop flat?",
+      "listenFor": "The big dog jumped on it. Send them back to that line if they guess."
+    },
+    {
+      "ask": "Do you think the dog helped or made a mess? Tell me why.",
+      "listenFor": "Either answer is fine. He broke it, but he ended up napping in it."
+    }
+  ]
+}

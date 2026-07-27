@@ -1,0 +1,35 @@
+{
+  "lesson": 85,
+  "title": "The Bee at the Beach",
+  "lines": [
+    "Ana and her mom went to the beach.",
+    "They had a meal of peach and tea.",
+    "A bee sat on the last bit of peach.",
+    "Ana let the bee have it.",
+    "Then she went to sleep in the sun.",
+    "She had a dream of a green sea.",
+    "Ana got up and ran to the deep sea."
+  ],
+  "warmup": [
+    "beach",
+    "peach",
+    "bee",
+    "sleep",
+    "dream",
+    "green"
+  ],
+  "questions": [
+    {
+      "ask": "What did Ana and her mom eat?",
+      "listenFor": "A meal of peach and tea."
+    },
+    {
+      "ask": "What did Ana dream about?",
+      "listenFor": "A green sea. Ask what she did next."
+    },
+    {
+      "ask": "Was Ana right to give the bee her peach? Tell me why.",
+      "listenFor": "Either answer works. Listen for the reason."
+    }
+  ]
+}

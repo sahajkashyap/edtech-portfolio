@@ -1,0 +1,36 @@
+{
+  "lesson": 55,
+  "title": "The White Kite",
+  "lines": [
+    "Mike has a white kite.",
+    "A big gust lifts it up and up.",
+    "The kite lands in a tall pine.",
+    "Mike can not get it.",
+    "Tall Jill rolls up on a bike.",
+    "Jill grabs the kite from the pine.",
+    "\"Get on,\" Jill tells Mike with a smile.",
+    "Mike and Jill ride for a mile."
+  ],
+  "warmup": [
+    "white",
+    "kite",
+    "pine",
+    "bike",
+    "smile",
+    "mile"
+  ],
+  "questions": [
+    {
+      "ask": "Where does the kite land?",
+      "listenFor": "In a tall pine tree. If they say \"a tree,\" that counts, but ask which line told them so."
+    },
+    {
+      "ask": "How does Jill help Mike?",
+      "listenFor": "She is tall enough to grab the kite. Listen for the reason she could reach it, not just \"she got it.\""
+    },
+    {
+      "ask": "Do you think Mike and Jill are pals? Tell me why.",
+      "listenFor": "Either answer is fine. You are listening for a reason from the story, like \"yes, she gave him a ride.\""
+    }
+  ]
+}

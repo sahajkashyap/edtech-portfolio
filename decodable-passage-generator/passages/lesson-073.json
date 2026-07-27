@@ -1,0 +1,36 @@
+{
+  "lesson": 73,
+  "title": "The Shy Fly",
+  "lines": [
+    "A shy fly zips by Tim.",
+    "Tim will try to catch it.",
+    "The fly lands on his dry hat.",
+    "Tim grabs, and the fly is in the sky.",
+    "Tim sits in the dry grass and sobs.",
+    "Mom asks him why he is so sad.",
+    "Tim tells Mom he lost his pet fly.",
+    "The fly lands on his hand and Tim grins."
+  ],
+  "warmup": [
+    "shy",
+    "fly",
+    "by",
+    "try",
+    "dry",
+    "sky"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the fly land at the end?",
+      "listenFor": "On Tim's hand. Stated in the last few lines - have them find it rather than telling them."
+    },
+    {
+      "ask": "Why was Tim sad?",
+      "listenFor": "He thought he had lost his pet fly. If they say \"it went in the sky,\" that is the same idea - accept it."
+    },
+    {
+      "ask": "Do you think a fly can be a pet? Tell me why.",
+      "listenFor": "No right answer. You are listening for a reason of their own - and it is a fun one to argue about."
+    }
+  ]
+}

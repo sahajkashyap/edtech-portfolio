@@ -1,0 +1,35 @@
+{
+  "lesson": 95,
+  "title": "The Coin in the Soil",
+  "lines": [
+    "A boy named Nick dug in the soil.",
+    "His toy spade tapped a hard, flat thing.",
+    "It was a coin, black with mud.",
+    "Nick made a lot of happy noise.",
+    "Meg ran up to join him.",
+    "They dug up a tin box of coins!",
+    "Mom said, \"We will boil the mud off.\""
+  ],
+  "warmup": [
+    "boy",
+    "soil",
+    "toy",
+    "coin",
+    "noise",
+    "join"
+  ],
+  "questions": [
+    {
+      "ask": "What did the toy spade tap?",
+      "listenFor": "A hard, flat thing that was a coin. Have them find the line."
+    },
+    {
+      "ask": "What did Nick and Meg dig up in the end?",
+      "listenFor": "A tin box full of coins - more than the one coin."
+    },
+    {
+      "ask": "What would you do with a box of old coins? Tell me why.",
+      "listenFor": "Any answer is fine. Listen for a reason of their own."
+    }
+  ]
+}

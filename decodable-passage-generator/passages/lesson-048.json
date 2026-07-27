@@ -1,0 +1,36 @@
+{
+  "lesson": 48,
+  "title": "Chop, Chop, Chad!",
+  "lines": [
+    "Chad has a big yam.",
+    "Chad has to chop it up with Dad.",
+    "Chad chops and chops.",
+    "The yam is thick.",
+    "His chum Meg picks up a pan.",
+    "Dad gets the pan hot.",
+    "Then Chad tips in the yam chips.",
+    "Such a rich dish for such chums!"
+  ],
+  "warmup": [
+    "chop",
+    "chops",
+    "chum",
+    "chips",
+    "thick",
+    "rich"
+  ],
+  "questions": [
+    {
+      "ask": "What does Chad chop up?",
+      "listenFor": "A big yam. It is stated in the story - if they guess, have them find the line with yam in it."
+    },
+    {
+      "ask": "Who gets the pan hot?",
+      "listenFor": "Dad does. Chad chops with Dad, Meg picks up the pan, Dad puts it on the heat - one job in three parts."
+    },
+    {
+      "ask": "Do you think the dish was good? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story, like \"yes, it says it was rich.\""
+    }
+  ]
+}

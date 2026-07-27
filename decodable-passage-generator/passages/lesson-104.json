@@ -1,0 +1,35 @@
+{
+  "lesson": 104,
+  "title": "Redo the Cake",
+  "lines": [
+    "Meg had a plan to make a cake.",
+    "She mixed it up and set it to bake.",
+    "But the cake came out flat and sad.",
+    "Mom said, \"You did not preheat it.\"",
+    "Meg had to redo the whole cake.",
+    "This time she did preheat it first.",
+    "The cake got tall. Meg had a grin."
+  ],
+  "warmup": [
+    "cake",
+    "bake",
+    "flat",
+    "tall",
+    "grin",
+    "plan"
+  ],
+  "questions": [
+    {
+      "ask": "What went wrong with the first cake?",
+      "listenFor": "It came out flat, because she did not preheat. Have them find the word preheat."
+    },
+    {
+      "ask": "What did Meg do the next time?",
+      "listenFor": "She did preheat it first, and the cake got tall. Both parts."
+    },
+    {
+      "ask": "Do you think Meg will forget to preheat again? Why?",
+      "listenFor": "Either answer. Listen for a reason - the flat cake, or the grin at the end."
+    }
+  ]
+}

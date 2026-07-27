@@ -1,0 +1,35 @@
+{
+  "lesson": 116,
+  "title": "Ben Bought Paints",
+  "lines": [
+    "Ben went to the shop with his gran.",
+    "He thought a red kite was best.",
+    "But then he saw a box of paints.",
+    "In the end he bought the paints.",
+    "He brought them home and started painting.",
+    "The kite can wait, he thought.",
+    "Now his room is full of bright art."
+  ],
+  "warmup": [
+    "shop",
+    "kite",
+    "paints",
+    "box",
+    "bright",
+    "room"
+  ],
+  "questions": [
+    {
+      "ask": "What did Ben nearly buy first?",
+      "listenFor": "A red kite. He changed his mind when he saw the paints."
+    },
+    {
+      "ask": "What is in Ben's room now?",
+      "listenFor": "Bright art that he painted. The last line says it."
+    },
+    {
+      "ask": "Would you pick the kite or the paints? Why?",
+      "listenFor": "Either choice is fine. The why is the part worth hearing."
+    }
+  ]
+}

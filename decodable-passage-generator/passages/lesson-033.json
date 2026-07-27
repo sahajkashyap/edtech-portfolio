@@ -1,0 +1,37 @@
+{
+  "lesson": 33,
+  "title": "The Cat at the Vet",
+  "lines": [
+    "Meg has a cat. It is tan.",
+    "The cat has a cut on his leg.",
+    "Mom gets the van.",
+    "The cat is mad. It hid.",
+    "Meg got the cat. It yips.",
+    "The vet is a big man.",
+    "The man pats the cat a lot.",
+    "The vet can fix the cut.",
+    "Meg hugs the cat. It naps."
+  ],
+  "warmup": [
+    "vet",
+    "van",
+    "cat",
+    "cut",
+    "fix",
+    "hugs"
+  ],
+  "questions": [
+    {
+      "ask": "Why did Meg take the cat to the vet?",
+      "listenFor": "The cat had a cut on his leg. It is in the second line. If they say \"he was sick,\" ask them to find the word that tells us."
+    },
+    {
+      "ask": "How do you know the cat did not want to go?",
+      "listenFor": "The cat was mad, the cat hid, and the cat yipped. Any one of those is a good answer - it is evidence, not a guess."
+    },
+    {
+      "ask": "Do you think the cat will be scared next time? Tell me why.",
+      "listenFor": "There is no right answer. You want a reason from the story - the vet patted him and fixed the cut, or the whole trip was no fun at all."
+    }
+  ]
+}

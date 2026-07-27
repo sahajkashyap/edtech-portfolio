@@ -1,0 +1,36 @@
+{
+  "lesson": 71,
+  "title": "The Big Match",
+  "lines": [
+    "Ben and Meg have a pitching match.",
+    "Both of them stand on the bridge.",
+    "Ben pitches a stick in the ditch.",
+    "Meg fetches it and pitches it back.",
+    "A duck on the hedge is the judge.",
+    "Ben pitches it in the hedge. The duck quacks.",
+    "Meg wins the match and gets the badge.",
+    "Then the pals munch fudge on the bridge."
+  ],
+  "warmup": [
+    "match",
+    "bridge",
+    "ditch",
+    "fetches",
+    "hedge",
+    "badge"
+  ],
+  "questions": [
+    {
+      "ask": "Who is the judge in this match?",
+      "listenFor": "A duck sitting on the hedge. Stated in the story - have them find that line and read it back."
+    },
+    {
+      "ask": "Why did Ben lose?",
+      "listenFor": "His stick went in the hedge and woke the duck. If they say \"Meg won,\" ask \"and where did Ben's stick land?\""
+    },
+    {
+      "ask": "Do you think a duck makes a good judge? Tell me why.",
+      "listenFor": "Silly question on purpose - any answer is right. You are listening for the reason after it, not the yes or no."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "lesson": 89,
+  "title": "The Book by the Brook",
+  "lines": [
+    "Ben took a good book to the brook.",
+    "He stood on a log made of wood.",
+    "A duck came to look at his book.",
+    "The wet log shook, and the book fell in!",
+    "Ben got a long stick with a hook.",
+    "He took the damp book home to dry.",
+    "Next time Ben will look for a dry log."
+  ],
+  "warmup": [
+    "took",
+    "book",
+    "brook",
+    "stood",
+    "wood",
+    "shook"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Ben stand to read his book?",
+      "listenFor": "On a log made of wood, by the brook. Have them point to that line."
+    },
+    {
+      "ask": "How did Ben get his book back?",
+      "listenFor": "With a long stick that had a hook on it."
+    },
+    {
+      "ask": "What do you think the duck wanted? Tell me why.",
+      "listenFor": "Any idea is fine if it comes from the story - listen for a reason."
+    }
+  ]
+}

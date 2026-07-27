@@ -1,0 +1,36 @@
+{
+  "lesson": 18,
+  "title": "Ben Met a Bug",
+  "lines": [
+    "Ben got a bug in a net.",
+    "The bug is a pet.",
+    "Ben set the bug in a tin.",
+    "The bug did not beg. It did not sit.",
+    "It got up. It got on the bed!",
+    "Dad met the bug on the bed.",
+    "The bug is not a pet. It is a bug.",
+    "Ben is sad. But Ben can get a pup."
+  ],
+  "warmup": [
+    "net",
+    "get",
+    "bed",
+    "met",
+    "set",
+    "pet"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Ben put the bug at first?",
+      "listenFor": "In a tin. The story says it. If your child is stuck, help them find the word tin and read that line again."
+    },
+    {
+      "ask": "Why did the bug end up going free?",
+      "listenFor": "It would not stay put - it climbed out and got on the bed. Listen for the bug not acting like a pet."
+    },
+    {
+      "ask": "Do you think a bug makes a good pet? Tell me why you think so.",
+      "listenFor": "Either answer works. You are listening for a reason, and a reason pulled from the story is best of all."
+    }
+  ]
+}

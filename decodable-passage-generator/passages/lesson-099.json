@@ -1,0 +1,35 @@
+{
+  "lesson": 99,
+  "title": "Six Boxes",
+  "lines": [
+    "Meg and Mom packed six boxes.",
+    "The first box had dishes and cups.",
+    "The next box had peaches and buns.",
+    "The last box had a big lid on top.",
+    "Meg lifted it. Foxes ran out!",
+    "Mom had to catch them in a net.",
+    "Now Meg looks in the boxes first."
+  ],
+  "warmup": [
+    "boxes",
+    "dishes",
+    "peaches",
+    "foxes",
+    "cups",
+    "lid"
+  ],
+  "questions": [
+    {
+      "ask": "What was in the first box?",
+      "listenFor": "Dishes and cups. If they guess, have them reread that line."
+    },
+    {
+      "ask": "What jumped out of the last box?",
+      "listenFor": "Foxes. Listen for the -es ending - that is this lesson."
+    },
+    {
+      "ask": "Will Meg lift a lid like that again? Why?",
+      "listenFor": "Either answer. Listen for a reason from the last line."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "lesson": 52,
+  "title": "The Pink Sock",
+  "lines": [
+    "Meg dips a pink sock in the sink.",
+    "The pink sock sinks!",
+    "\"The sock sank!\" Meg yells.",
+    "Mom thinks, then gets a long rod.",
+    "Tug, tug, tug at the pink sock.",
+    "The pink sock is back!",
+    "Meg tells Mom thank you.",
+    "Mom tells Meg to hang it up."
+  ],
+  "warmup": [
+    "pink",
+    "sink",
+    "sinks",
+    "thinks",
+    "sank",
+    "thank"
+  ],
+  "questions": [
+    {
+      "ask": "What happens to the sock in the sink?",
+      "listenFor": "It sinks. If they say \"it got wet,\" ask \"and then what did it do?\" to get them back to the word sinks."
+    },
+    {
+      "ask": "What does Mom use to get the sock back?",
+      "listenFor": "A long rod. This is stated in the story, so have them reread that line instead of telling them."
+    },
+    {
+      "ask": "What do you think Meg should do next time? Tell me why.",
+      "listenFor": "Any sensible plan is fine. You are listening for a because, such as \"hang it up, because it sank last time.\""
+    }
+  ]
+}

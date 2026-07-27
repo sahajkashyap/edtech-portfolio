@@ -1,0 +1,36 @@
+{
+  "lesson": 58,
+  "title": "Duke and the Tune",
+  "lines": [
+    "Ben has a cute mule, Duke.",
+    "Duke will not step up the path.",
+    "Ben yells at him. That is rude.",
+    "Duke just sits in the dust.",
+    "Ben hums a tune to Duke.",
+    "Duke gets up! That tune is fun.",
+    "Ben hums the whole time.",
+    "Duke and Ben step up the path."
+  ],
+  "warmup": [
+    "cute",
+    "mule",
+    "rude",
+    "tune",
+    "hums",
+    "whole"
+  ],
+  "questions": [
+    {
+      "ask": "What does Duke do when Ben yells?",
+      "listenFor": "He just sits in the dust. Yelling did not work. Have them find that line if they are unsure."
+    },
+    {
+      "ask": "What finally gets Duke to move?",
+      "listenFor": "Ben hums a tune. Listen for them naming the tune, not just \"Ben was nice.\""
+    },
+    {
+      "ask": "What do you think Ben will do the next time Duke stops? Tell me why.",
+      "listenFor": "Any answer with a reason works. \"Hum, because yelling did not work\" shows they followed the whole story."
+    }
+  ]
+}

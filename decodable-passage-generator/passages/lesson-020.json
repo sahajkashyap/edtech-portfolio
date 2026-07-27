@@ -1,0 +1,36 @@
+{
+  "lesson": 20,
+  "title": "Ten Cats, Ten Nuts",
+  "lines": [
+    "Meg got ten nuts in a pot.",
+    "Meg set the pot on a cot.",
+    "Ten cats did get up.",
+    "The cats did tip the pot.",
+    "Nuts on the mat! Nuts in the cup!",
+    "The cats bat the nuts. Meg is mad.",
+    "Meg sat on the mat. Meg can bat nuts.",
+    "Ten cats. Ten nuts. It is fun."
+  ],
+  "warmup": [
+    "nuts",
+    "cats",
+    "ten",
+    "pot",
+    "bat",
+    "cup"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Meg put the pot of nuts?",
+      "listenFor": "On a cot. The story says it. If your child guesses, have them find the word cot and read that line again."
+    },
+    {
+      "ask": "What did the cats do with the nuts?",
+      "listenFor": "They tipped the pot over and batted the nuts around. Listen for the batting - that is what turns the mess into a game."
+    },
+    {
+      "ask": "Do you think Meg is still mad at the end? Tell me why you think so.",
+      "listenFor": "There is no wrong answer. Listen for a reason from the story, like she sat down and joined in, or she said it was fun."
+    }
+  ]
+}

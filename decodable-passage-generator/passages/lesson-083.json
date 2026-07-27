@@ -1,0 +1,36 @@
+{
+  "lesson": 83,
+  "title": "Birds in the Dark Barn",
+  "lines": [
+    "A girl and her dad park by a barn.",
+    "It is dark and hard to spot the lamp.",
+    "First Mom trips on a jar of corn.",
+    "The corn spills all on the dirt.",
+    "Then birds turn up in the dark barn.",
+    "The girl claps her hands hard.",
+    "The birds turn and go.",
+    "Mom sorts the corn back in the jar."
+  ],
+  "warmup": [
+    "barn",
+    "dark",
+    "corn",
+    "first",
+    "girl",
+    "turn"
+  ],
+  "questions": [
+    {
+      "ask": "How did the corn end up on the dirt?",
+      "listenFor": "Mom tripped on the jar while hunting for the lamp in the dark."
+    },
+    {
+      "ask": "What did the girl do to make the birds go?",
+      "listenFor": "She clapped her hands hard. One short line, easy to skim past."
+    },
+    {
+      "ask": "Do you think the birds will come back? Tell me why.",
+      "listenFor": "Either answer is fine. The corn is back in the jar now."
+    }
+  ]
+}

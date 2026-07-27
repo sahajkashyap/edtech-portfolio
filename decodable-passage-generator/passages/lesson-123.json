@@ -1,0 +1,35 @@
+{
+  "lesson": 123,
+  "title": "A Windy Day",
+  "lines": [
+    "It was a windy, sunny day.",
+    "Tom took his kite up the rocky hill.",
+    "The kite went up fast. Tom was happy.",
+    "Then the wind took the kite away.",
+    "It got stuck up in a big tree.",
+    "Tom felt sad, but then he got lucky.",
+    "A tall lady got it down for him."
+  ],
+  "warmup": [
+    "sunny",
+    "happy",
+    "kite",
+    "hill",
+    "tree",
+    "sad"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the kite get stuck?",
+      "listenFor": "Up in a big tree. Line six."
+    },
+    {
+      "ask": "Who got the kite down?",
+      "listenFor": "A tall lady. Tom got lucky."
+    },
+    {
+      "ask": "How do you think Tom felt at the end? Why?",
+      "listenFor": "Any answer is fine, as long as they point to something in the story."
+    }
+  ]
+}

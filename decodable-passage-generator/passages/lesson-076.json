@@ -1,0 +1,36 @@
+{
+  "lesson": 76,
+  "title": "The Badge in the Ditch",
+  "lines": [
+    "Ben lost his little badge in a ditch.",
+    "It fell off his black vest.",
+    "Ben and Meg dig in the wet mud.",
+    "Meg finds a stick and a big rock.",
+    "Then Ben spots it next to the hedge.",
+    "The badge is stuck in thick mud.",
+    "He tugs it up and rubs the mud off.",
+    "Meg pins the badge back on his vest."
+  ],
+  "warmup": [
+    "badge",
+    "ditch",
+    "hedge",
+    "stick",
+    "thick",
+    "little"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Ben lose his badge?",
+      "listenFor": "In a ditch. It fell off his black vest."
+    },
+    {
+      "ask": "Who spotted the badge, Ben or Meg?",
+      "listenFor": "Ben spotted it by the hedge. Meg found a stick and a rock first - a nice trap for a fast guesser."
+    },
+    {
+      "ask": "Do you think Meg was a good friend? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason, like she helped him dig."
+    }
+  ]
+}

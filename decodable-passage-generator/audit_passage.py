@@ -58,7 +58,9 @@ IRREGULAR_WORDS = {
     "none": 999, "love": 999, "above": 999, "month": 999, "mother": 999,
     "other": 999, "brother": 999, "nothing": 999, "money": 999,
     # u saying /oo/
-    "put": 999, "pull": 999, "full": 999, "push": 999, "bush": 999, "bull": 999,
+    "put": 999, "push": 999, "bush": 999,
+    # -ull is explicitly taught at Lesson 43 (-all, -oll, -ull)
+    "pull": 43, "full": 43, "bull": 43,
     # a saying short o -- UFLI teaches this at Lesson 94 (a /o/, as in want)
     "wash": 94, "want": 94, "watch": 94, "swan": 94, "wasp": 94, "wand": 94,
     "was": 999, "what": 999, "water": 999,
@@ -80,6 +82,12 @@ IRREGULAR_WORDS = {
 # long i in "my" (73) and long e in "happy" (74) -- comes much later. Before
 # 73, y is therefore only legal as the first letter of a word.
 Y_AS_VOWEL_LESSON = 73
+
+# An OPEN syllable is a syllable ending in a single vowel, and that vowel says
+# its LONG sound: go, he, she, we, no, so, hi. UFLI teaches this at Lesson 66.
+# Before then a child reads the vowel short, so "no" comes out as /n/-/o/.
+# Found by reading a generated Lesson 12 story that used "No" and "So".
+OPEN_SYLLABLE_LESSON = 66
 
 # Soft c and soft g (c/g before e, i or y) are only taught at Lesson 117,
 # except word-final _ce / _ge which arrive at 60 / 61.
@@ -328,6 +336,16 @@ def audit(text: str, lesson: int):
             flag("untaught vowel pair", f"'{root}' contains {detail}")
             continue
 
+        # 3c-ii. an open syllable before open syllables are taught
+        # Matched on the WHOLE word, and only when the final vowel is the
+        # word's ONLY vowel: "he" and "go" are open syllables, but "bake" and
+        # "bone" are VCe words that happen to end the same way.
+        if lesson < OPEN_SYLLABLE_LESSON and re.fullmatch(r"[^aeiouy]*[aeiou]", bare):
+            flag("open syllable",
+                 f"'{bare}' ends in a single vowel saying its long sound; open "
+                 f"syllables start at Lesson {OPEN_SYLLABLE_LESSON}")
+            continue
+
         # 3d. a doubled consonant ENDING a word is the FLSZ family's territory
         # (Lesson 42). Doubles in the middle of a word are fine — those live in
         # two-syllable words, which the syllable rule already governs.
@@ -453,6 +471,16 @@ SELFTEST = [
     (51, "kings", True, "plural of an ng root"),
     (43, "egg", True, "one syllable, belongs beside off/all/ill"),
     (41, "mitt", False, "doubled ending is the Lesson 42 rule"),
+    (12, "no", False, "open syllable: a lesson 12 child reads /n/-/o/ short"),
+    (12, "so", False, "same"),
+    (30, "he", False, "open syllable, and h is taught but the long e is not"),
+    (66, "no", True, "open syllables are taught at 66"),
+    (66, "he", True, "same"),
+    (85, "see", True, "ee is a vowel team, not an open syllable"),
+    (85, "tea", True, "ea likewise"),
+    (54, "cake", True, "VCe, not an open syllable"),
+    (56, "bone", True, "same"),
+    (62, "have", True, "VCe exception, taught at 62"),
     (41, "butt", False, "same"),
     (41, "sons", False, "irregular root must be caught through the plural too"),
     (32, "quit", True, "still fine after the doubled-ending rule"),

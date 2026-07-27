@@ -1,0 +1,36 @@
+{
+  "lesson": 13,
+  "title": "Dad Did Nap",
+  "lines": [
+    "Dad is on a mat. Dad did nap.",
+    "Sam did tap Dad. Tap, tap, tap.",
+    "Dad did nap. Sam is sad.",
+    "Sam did tip a tin pot.",
+    "Pop! The pot did tip on the mat.",
+    "Dad did sit! Dad is not mad.",
+    "Dad did pat Sam.",
+    "Sam did nap. Dad did not!"
+  ],
+  "warmup": [
+    "nap",
+    "tap",
+    "tip",
+    "pot",
+    "mat",
+    "pat"
+  ],
+  "questions": [
+    {
+      "ask": "What did Sam tip over?",
+      "listenFor": "A tin pot. The story says it, so if your child is stuck, point to that line and let them read it again rather than telling them."
+    },
+    {
+      "ask": "Why did Dad finally sit up?",
+      "listenFor": "Because the pot tipped and went pop. You want the pot, not just \"because he woke up.\" If they say \"the noise,\" ask \"what made the noise?\""
+    },
+    {
+      "ask": "Do you think Dad should have gotten up sooner? Tell me why you think so.",
+      "listenFor": "There is no wrong answer. You are listening for a reason tied to the story - Sam was sad, or Dad was tired. The reason matters more than the answer."
+    }
+  ]
+}

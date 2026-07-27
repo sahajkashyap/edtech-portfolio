@@ -1,0 +1,36 @@
+{
+  "lesson": 25,
+  "title": "The Ram Ran",
+  "lines": [
+    "Ron has a ram. The ram is big.",
+    "The ram can run. Ron can not.",
+    "The ram got in the mud.",
+    "Ron did tug. The ram did not get up.",
+    "Mom got a hot bun in a pan.",
+    "The ram got up. It ran at the bun!",
+    "The ram got the bun. Ron got the ram.",
+    "Mom did hug Ron. The ram is not bad."
+  ],
+  "warmup": [
+    "ram",
+    "ran",
+    "run",
+    "mud",
+    "tug",
+    "bun"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the ram stop running?",
+      "listenFor": "In the mud. The story says it. If your child guesses, have them find the word mud and read that line again."
+    },
+    {
+      "ask": "What finally got the ram to stand up?",
+      "listenFor": "A bun in a pan. Listen for the bun - tugging did not work, food did."
+    },
+    {
+      "ask": "Do you think Ron should let the ram run loose again? Tell me why.",
+      "listenFor": "Any answer is fine. You are listening for a reason from the story, like the ram got muddy, or the ram likes to run."
+    }
+  ]
+}

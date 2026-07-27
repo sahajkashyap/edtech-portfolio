@@ -1,0 +1,36 @@
+{
+  "lesson": 8,
+  "title": "The Pip at the Pit",
+  "lines": [
+    "Tim sat at a pit.",
+    "A pip is at the mat.",
+    "Tip the pip at the pit, Tim.",
+    "The pip is at the pit!",
+    "Pat the pit, Sam.",
+    "Sip, pip. Sip, sip, sip.",
+    "Sam! Sis! Sit at the pit!",
+    "Tim sat. Sam sat. Sis sat at the pip."
+  ],
+  "warmup": [
+    "pit",
+    "sip",
+    "sit",
+    "tip",
+    "pat",
+    "sat"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Tim tip the pip?",
+      "listenFor": "Into the pit, the little hole he sat by. It is said in the third line. Point at that line and let your child read it again."
+    },
+    {
+      "ask": "What did Sam do to the pit?",
+      "listenFor": "Patted it, to pack the dirt down. You are listening for the word pat. A one word answer is a fine answer."
+    },
+    {
+      "ask": "What do you think the pip will turn into? Tell me why you think so.",
+      "listenFor": "A pip is a seed, so a plant or a tree is a lovely answer, but so is anything with a reason behind it. Listen for the why, not the what."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "lesson": 124,
+  "title": "Kindness for Gran",
+  "lines": [
+    "Gran had an illness and sat in bed.",
+    "Meg felt sadness when she saw her gran.",
+    "Meg made hot soup and took it up.",
+    "Gran's room was dark, so Meg lit a lamp.",
+    "Gran ate it all and sat up tall.",
+    "\"Your kindness made me well,\" said Gran.",
+    "Meg's sadness was gone. Now came gladness."
+  ],
+  "warmup": [
+    "bed",
+    "soup",
+    "lamp",
+    "dark",
+    "room",
+    "tall"
+  ],
+  "questions": [
+    {
+      "ask": "What did Meg make for her gran?",
+      "listenFor": "Hot soup in a big pot. It is in the third line, so a rereader can find it fast."
+    },
+    {
+      "ask": "Why did Meg light a lamp?",
+      "listenFor": "Gran's room was dark. Line four says it. Sadness, gladness, kindness, illness - -ness turns a describing word into a thing."
+    },
+    {
+      "ask": "What would you do for someone at home who felt sad? Why?",
+      "listenFor": "Any kind answer counts. You are listening for the because part, not for a right idea."
+    }
+  ]
+}

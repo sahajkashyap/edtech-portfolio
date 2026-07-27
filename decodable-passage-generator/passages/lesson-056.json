@@ -1,0 +1,36 @@
+{
+  "lesson": 56,
+  "title": "The Mole and the Bone",
+  "lines": [
+    "A mole digs a hole at home.",
+    "In the hole is a big bone.",
+    "The bone is stuck in a stone.",
+    "Mole gets a rope and a pole.",
+    "Tug, tug, tug with his nose!",
+    "The bone pops up!",
+    "Mole tugs it home to his den.",
+    "A long nap, with the bone on his nose."
+  ],
+  "warmup": [
+    "mole",
+    "hole",
+    "bone",
+    "stone",
+    "rope",
+    "pole"
+  ],
+  "questions": [
+    {
+      "ask": "What is the bone stuck in?",
+      "listenFor": "A stone. This is stated in the story, so send them back to the line rather than saying it for them."
+    },
+    {
+      "ask": "What two things does Mole use to pull the bone?",
+      "listenFor": "A rope and a pole. If they name only one, ask \"and what else did he get?\""
+    },
+    {
+      "ask": "Do you think the bone was worth all that work? Tell me why.",
+      "listenFor": "Either answer is correct. Listen for a reason, such as \"yes, because he naps with it at the end.\""
+    }
+  ]
+}

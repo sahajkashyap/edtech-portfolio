@@ -1,0 +1,35 @@
+{
+  "lesson": 87,
+  "title": "The Kite at Night",
+  "lines": [
+    "Meg tied a light to her big kite.",
+    "At night the kite went up high.",
+    "Ben ran up to see the bright light.",
+    "\"That is not a star,\" said Meg.",
+    "The wind was strong and the string snapped.",
+    "The kite fell, and Meg gave a sad sigh.",
+    "But Ben got it back, and they ate pie."
+  ],
+  "warmup": [
+    "night",
+    "light",
+    "bright",
+    "high",
+    "sigh",
+    "pie"
+  ],
+  "questions": [
+    {
+      "ask": "What did Ben think the light in the sky was?",
+      "listenFor": "A star. If your child is stuck, have them reread the line where Ben runs up."
+    },
+    {
+      "ask": "What made the kite fall?",
+      "listenFor": "The wind was strong, so the string snapped. Two steps - let them find both."
+    },
+    {
+      "ask": "Do you think Meg will fly her kite at night again? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "lesson": 68,
+  "title": "The Robot",
+  "lines": [
+    "Ben has a little robot.",
+    "The robot can make music.",
+    "Ben tells it to open the box.",
+    "The robot picks up a red tulip.",
+    "It gives the tulip to Mom.",
+    "Then the robot is silent. Ben taps it.",
+    "Mom picks gum off it with a pin.",
+    "The robot hums and Ben claps."
+  ],
+  "warmup": [
+    "little",
+    "picks",
+    "gum",
+    "pin",
+    "taps",
+    "claps"
+  ],
+  "questions": [
+    {
+      "ask": "What did the robot pick up?",
+      "listenFor": "A red tulip, which it gave to Mom. Stated in the story - send them back to the line."
+    },
+    {
+      "ask": "Why did the robot go silent?",
+      "listenFor": "A bit of gum was stuck in it. If they say \"it broke,\" ask \"what did Mom find inside?\""
+    },
+    {
+      "ask": "What do you think Ben should tell the robot to do next? Tell me why.",
+      "listenFor": "Anything goes here. You are listening for an idea plus a reason - that reason is the part worth praising."
+    }
+  ]
+}

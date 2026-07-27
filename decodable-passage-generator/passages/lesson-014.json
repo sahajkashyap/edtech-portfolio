@@ -1,0 +1,36 @@
+{
+  "lesson": 14,
+  "title": "A Cat in a Cap",
+  "lines": [
+    "Pam did nap on a cot.",
+    "A tan cap sat on the cot.",
+    "A cat did sit in the cap.",
+    "The cat can not fit in the cap.",
+    "Pam did sit. Pam is mad!",
+    "It is a cap, cat! Not a cot!",
+    "Pop! The cat did tip on the mat.",
+    "Pam is not mad. Pam can pat it."
+  ],
+  "warmup": [
+    "cat",
+    "cap",
+    "cot",
+    "can",
+    "nap",
+    "mat"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the cat try to sit?",
+      "listenFor": "In the cap. It is stated in the story. If your child guesses, have them find the line with the word cap and read it again."
+    },
+    {
+      "ask": "Why could the cat not stay in the cap?",
+      "listenFor": "The cat did not fit - the cap is too small for it. Listen for the idea of size, not just \"it fell.\""
+    },
+    {
+      "ask": "What do you think Pam should do with her cap now? Tell me why.",
+      "listenFor": "Any answer is fine - wash it, share it, give it to the cat. You are listening for a reason, and a reason that comes from the story is even better."
+    }
+  ]
+}

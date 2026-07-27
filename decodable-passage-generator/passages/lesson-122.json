@@ -1,0 +1,35 @@
+{
+  "lesson": 122,
+  "title": "A Foolish Wish",
+  "lines": [
+    "Gus is a pup with one big wish.",
+    "He wants to swim just like a fish.",
+    "That is a foolish wish for a pup.",
+    "Gus ran and jumped in the pond.",
+    "The pond was cold and greenish.",
+    "Gus did not swim well. Meg got him out.",
+    "Now Gus just sits and looks at fish."
+  ],
+  "warmup": [
+    "pup",
+    "wish",
+    "fish",
+    "swim",
+    "cold",
+    "jumped"
+  ],
+  "questions": [
+    {
+      "ask": "What did Gus wish for?",
+      "listenFor": "To swim like a fish. The first two lines say it."
+    },
+    {
+      "ask": "Who pulled Gus out of the pond?",
+      "listenFor": "Meg. Near the end, just after the line about swimming."
+    },
+    {
+      "ask": "What could Gus do instead of swimming? Why?",
+      "listenFor": "Any answer is fine - watch the fish, splash at the edge, stay with Meg. Listen for the because."
+    }
+  ]
+}

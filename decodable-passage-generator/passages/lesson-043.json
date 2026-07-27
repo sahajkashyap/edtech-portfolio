@@ -1,0 +1,37 @@
+{
+  "lesson": 43,
+  "title": "Pull, Bull, Pull!",
+  "lines": [
+    "Tim has a big bull.",
+    "The bull is on the hill.",
+    "Tim has a bag full of figs.",
+    "The bull tugs at the bag.",
+    "Tim pulls and pulls.",
+    "The bull will not let up.",
+    "Tim lets the bag fall.",
+    "The bull gets all the figs.",
+    "Tim will get figs up on the hill."
+  ],
+  "warmup": [
+    "bull",
+    "full",
+    "pulls",
+    "figs",
+    "hill",
+    "fall"
+  ],
+  "questions": [
+    {
+      "ask": "What is in the bag?",
+      "listenFor": "Figs. It is stated in the story - if they cannot find it, have them reread the third line rather than telling them."
+    },
+    {
+      "ask": "Why does Tim let the bag fall?",
+      "listenFor": "The bull would not let up, so Tim let go instead of pulling. You want cause and effect, not just \"it fell.\""
+    },
+    {
+      "ask": "Do you think Tim will bring figs up the hill again? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason that comes from the story, like \"yes, there are more figs up on the hill.\""
+    }
+  ]
+}

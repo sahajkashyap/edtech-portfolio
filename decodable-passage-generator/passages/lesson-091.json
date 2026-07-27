@@ -1,0 +1,35 @@
+{
+  "lesson": 91,
+  "title": "The Blue Bird Sam Built",
+  "lines": [
+    "Sam built a big bird from sticks and glue.",
+    "He made it blue with a few red dots.",
+    "The wind blew, and the bird flew up high!",
+    "It went up on the roof of the school.",
+    "A crew of kids ran to help Sam get it.",
+    "Tim held up a long tool and got it back.",
+    "The blue bird is home, and Sam grins."
+  ],
+  "warmup": [
+    "built",
+    "glue",
+    "blue",
+    "few",
+    "blew",
+    "flew"
+  ],
+  "questions": [
+    {
+      "ask": "What did Sam make his bird from?",
+      "listenFor": "Sticks and glue. Have them point to that line."
+    },
+    {
+      "ask": "How did the bird get up on the roof?",
+      "listenFor": "The wind blew it up there. It did not fly by itself."
+    },
+    {
+      "ask": "Would you have run to help Sam? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason of their own."
+    }
+  ]
+}

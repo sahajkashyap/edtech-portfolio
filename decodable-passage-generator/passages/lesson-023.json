@@ -1,0 +1,36 @@
+{
+  "lesson": 23,
+  "title": "The Hen in the Hut",
+  "lines": [
+    "Tom has a hen. It is his pet.",
+    "The hen hid in a hut.",
+    "Tom got in the hut. Tom did dig.",
+    "The hen hid in his hat!",
+    "The hat is on Tom.",
+    "Tom did not get it. Dad did.",
+    "Dad got the hat. The hen got up.",
+    "Tom did hug the hen."
+  ],
+  "warmup": [
+    "hen",
+    "hut",
+    "hid",
+    "hat",
+    "has",
+    "hug"
+  ],
+  "questions": [
+    {
+      "ask": "Where was the hen hiding?",
+      "listenFor": "In Tom's hat, right on his head. The story says it. If your child says the hut, read the line about the hat again together."
+    },
+    {
+      "ask": "Who found the hen?",
+      "listenFor": "Dad. Listen for Dad, not Tom - Tom looked everywhere but could not see his own hat."
+    },
+    {
+      "ask": "Why do you think the hen picked the hat? Tell me what you think.",
+      "listenFor": "Any answer is fine - it was warm, it was soft, it was a good hiding spot. You are listening for a reason, not a right answer."
+    }
+  ]
+}

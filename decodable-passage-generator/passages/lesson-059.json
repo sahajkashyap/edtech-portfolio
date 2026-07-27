@@ -1,0 +1,23 @@
+{
+  "lesson": 59,
+  "title": "The Note in the Tube",
+  "lines": [
+    "Jane and Pete hike to the lake.",
+    "Pete finds a tube in the mud.",
+    "A note is in the tube!",
+    "The note has a map on it.",
+    "The map has nine steps from the pine.",
+    "Jane digs and finds a white stone.",
+    "Pete rubs it. The stone has a shine.",
+    "Jane and Pete take the stone home."
+  ],
+  "warmup": ["lake", "tube", "note", "pine", "nine", "stone"],
+  "questions": [
+    {"ask": "What does Pete find in the mud?",
+     "listenFor": "A tube with a note in it. If they say just \"a note,\" ask what the note was inside of."},
+    {"ask": "How do Jane and Pete know where to dig?",
+     "listenFor": "The map on the note tells them nine steps from the pine. Listen for the map or the nine steps."},
+    {"ask": "What do you think the stone is? Tell me why.",
+     "listenFor": "There is no right answer here. You are listening for imagination plus a clue from the story, like \"it shines, so maybe it is a jewel.\""}
+  ]
+}

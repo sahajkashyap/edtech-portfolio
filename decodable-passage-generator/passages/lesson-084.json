@@ -1,0 +1,35 @@
+{
+  "lesson": 84,
+  "title": "The Rain and the Train",
+  "lines": [
+    "Today is a gray, wet day.",
+    "Ray can not play in the rain.",
+    "He has to stay in all day.",
+    "Then Dad hands him a train set.",
+    "Ray paints the train gray and red.",
+    "He runs it on the main hall rug.",
+    "The rain stops, but Ray will stay in."
+  ],
+  "warmup": [
+    "today",
+    "gray",
+    "rain",
+    "train",
+    "stay",
+    "play"
+  ],
+  "questions": [
+    {
+      "ask": "Why could Ray not play outside?",
+      "listenFor": "It was a gray, wet day and it was raining."
+    },
+    {
+      "ask": "What did Ray do with the train set?",
+      "listenFor": "He painted it gray and red, then ran it on the hall rug."
+    },
+    {
+      "ask": "Why do you think Ray stayed in? Tell me why.",
+      "listenFor": "Any answer with a reason. He liked the train best."
+    }
+  ]
+}

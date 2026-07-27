@@ -1,0 +1,37 @@
+{
+  "lesson": 37,
+  "title": "Tom and the Hog",
+  "lines": [
+    "Tom has a hog. It is not big.",
+    "The hog naps in a hot bog.",
+    "Tom got a mop and a pot.",
+    "Tom can not mop the hog.",
+    "The hog hops on a log.",
+    "The log tips! The hog is in.",
+    "Tom is not mad. Tom hops in.",
+    "Tom tugs. The hog got up.",
+    "The hog naps on a cot."
+  ],
+  "warmup": [
+    "hog",
+    "bog",
+    "mop",
+    "log",
+    "hops",
+    "pot"
+  ],
+  "questions": [
+    {
+      "ask": "What did Tom get to clean the hog?",
+      "listenFor": "A mop and a pot. If they name only one, ask \"what else?\" and let them look back at the line."
+    },
+    {
+      "ask": "What happened when the hog hopped on the log?",
+      "listenFor": "The log tipped and the hog went back in the bog. Have them find the line with the word log in it and read it back."
+    },
+    {
+      "ask": "Do you think Tom likes his hog? Tell me why you think so.",
+      "listenFor": "No wrong answer here. Listen for a reason from the story - Tom hopped in after him, or Tom was not mad. The reason is what you are listening for."
+    }
+  ]
+}

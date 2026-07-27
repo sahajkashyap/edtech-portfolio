@@ -102,6 +102,58 @@ Rules for it:
   `flaggedForTeacherReview` entries, say so here too: the grown-up should know
   the sheet rests on a judgement call.
 
+## Writing the story — what a test run taught us
+
+- **Use the word bank, not the rules.** `word-bank.json` lists the approved words
+  for each lesson. A writer reasoning from rules gets it wrong; a writer picking
+  from a proven list mostly cannot.
+- **Line length drives page height, not line count.** A line over ~9 words wraps
+  and costs a full line. At the later lessons, 6 lines of 9 words or fewer.
+- **Something must happen.** A small problem, a turn, an ending. "Sam sat. Sam
+  sat." passes every rule and fails the child. This is the part no checker can
+  do for you.
+- **The early lessons are the craft.** At Lesson 19 there are around 100 words
+  and no `and`, no `-s`, no `-ed`. Getting a real story out of that is the skill.
+- Run `validate_passage.py` and loop until it exits 0. Never edit the gate or
+  the bank to make a story pass — change the story.
+
+## What must never reach a child
+
+Confirmed by the teacher, July 2026, after a word-level review found `gun`,
+`kill`, `bet`, `mob` and `cop` sitting in the word bank — all perfectly
+decodable, all one generation away from a first-grade sheet.
+
+`core_vocabulary.BLOCKED` holds 132 words across weapons, death, crime,
+substances, gambling, bodily functions, appearance and unkindness.
+`validate_passage.py` enforces it over the story, the title, the warm-up words,
+the questions **and the grown-up answer notes** — two blocked words were once
+hiding in those, where nothing was looking.
+
+A parent scanning a sheet in a backpack does not read it in context. They see
+the word.
+
+Beyond single words, an independent reviewer reading all 123 stories found
+patterns worth holding to:
+
+- **An adult is named in the same sentence** as any fire, blade, hot pan, deep
+  water, or trip after dark. A story where children do an adult-risk job alone
+  is one a child can copy.
+- **Never call a character "bad."** Early stories drifted into a template of
+  mess → adult anger → forgiveness. Vary the engine: curiosity, sharing,
+  building, a surprise.
+- **`fat` is never a descriptor**, even of an animal, and never in a title.
+  The blocklist has **no exceptions**, including where it costs a lesson its
+  target sound. Lesson 7 teaches `f`, and `fat` is the only real English word
+  containing `f` that is decodable there — checked exhaustively. That lesson's
+  story practises the other letters and the gap is recorded on the index, which
+  is the honest trade. Do not carve out an exception to close it.
+- **Balance who helps.** The set once had Dad in 31 stories and Mom in 3, with
+  the fixing and driving always male. Both are decodable everywhere.
+- **Vary the names.** Decodability constrains them hard, but Ana, Kim, Raj, Sal,
+  Nita, Mina, Omar, Hana, Ravi and Lin all fit the same short patterns.
+- **Don't end on a small injustice** — an animal taking a child's food with no
+  repair reads fine once and sour six times.
+
 ## Sheet structure
 
 Follow the `phonics-worksheet` skill for all layout, space, and type rules —

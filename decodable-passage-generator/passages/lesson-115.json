@@ -1,0 +1,35 @@
+{
+  "lesson": 115,
+  "title": "Soup for the Crew",
+  "lines": [
+    "A group of kids made soup at camp.",
+    "Sam threw in beans, corn and nuts.",
+    "But the soup was blue! Why was that?",
+    "Tom held up a jug of blue glue.",
+    "\"That was not juice,\" said Meg.",
+    "The crew had to start a new pot.",
+    "This soup was good. They ate it all."
+  ],
+  "warmup": [
+    "group",
+    "soup",
+    "blue",
+    "glue",
+    "crew",
+    "juice"
+  ],
+  "questions": [
+    {
+      "ask": "What made the soup turn blue?",
+      "listenFor": "Blue glue that Tom put in by mistake. Line five gives it away."
+    },
+    {
+      "ask": "What did the crew do about the blue soup?",
+      "listenFor": "They started a new pot. The second soup was good."
+    },
+    {
+      "ask": "What should the crew do with the blue soup? Why?",
+      "listenFor": "Any sensible answer is fine - tip it out, wash the pot, start again. Listen for the reason: glue is not food."
+    }
+  ]
+}

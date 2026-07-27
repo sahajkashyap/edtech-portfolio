@@ -1,0 +1,35 @@
+{
+  "lesson": 119,
+  "title": "The Mission",
+  "lines": [
+    "Ben and Pam had a big mission.",
+    "Gran was on the train from the city.",
+    "They went to the station to meet her.",
+    "The station was full of moms, dads and kids.",
+    "Then Pam saw motion by the last car.",
+    "Gran had a big red hat on!",
+    "\"The mission went well,\" said Ben with a grin."
+  ],
+  "warmup": [
+    "train",
+    "hat",
+    "grin",
+    "car",
+    "red",
+    "kids"
+  ],
+  "questions": [
+    {
+      "ask": "What was Ben and Pam's mission?",
+      "listenFor": "To meet Gran at the station. The first three lines set it up."
+    },
+    {
+      "ask": "How did they spot Gran?",
+      "listenFor": "Pam saw motion by the last car, and Gran had a big red hat on."
+    },
+    {
+      "ask": "What would you wear so a friend could spot you? Why?",
+      "listenFor": "Any answer is fine. Listen for a reason tied to being easy to see."
+    }
+  ]
+}

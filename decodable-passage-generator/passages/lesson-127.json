@@ -1,0 +1,35 @@
+{
+  "lesson": 127,
+  "title": "One Wheel",
+  "lines": [
+    "Meg had a red tricycle with three wheels.",
+    "\"I can not ride a bicycle,\" said Meg.",
+    "At the fair, a clown rode a unicycle.",
+    "It had just one wheel!",
+    "\"If he can, so can I,\" said Meg.",
+    "She fell down, got up, and did it again.",
+    "Now Meg rides a bicycle every day."
+  ],
+  "warmup": [
+    "red",
+    "three",
+    "clown",
+    "fell",
+    "down",
+    "day"
+  ],
+  "questions": [
+    {
+      "ask": "How many wheels did the unicycle have?",
+      "listenFor": "One. Uni means one - the same one hiding inside unicycle. Tri is three, bi is two."
+    },
+    {
+      "ask": "What happened the first time Meg got on the bicycle?",
+      "listenFor": "She fell down, then got up and did it again. Line six holds the whole turn."
+    },
+    {
+      "ask": "What is something hard you kept trying? Why did you keep going?",
+      "listenFor": "Anything from swimming to tying a shoe. The why matters more than the what."
+    }
+  ]
+}

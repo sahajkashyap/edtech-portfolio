@@ -1,0 +1,36 @@
+{
+  "lesson": 81,
+  "title": "The Bird in the Dirt",
+  "lines": [
+    "A girl finds a bird in the dirt.",
+    "The bird has a bad wing.",
+    "Her shirt gets mud on it.",
+    "First she gets a box and a rag.",
+    "Then she turns a lamp on for it.",
+    "The bird curls up and naps.",
+    "On the third sun up, the wing is fine.",
+    "The girl lets it go in the yard."
+  ],
+  "warmup": [
+    "girl",
+    "bird",
+    "dirt",
+    "curls",
+    "shirt",
+    "first"
+  ],
+  "questions": [
+    {
+      "ask": "What was wrong with the bird?",
+      "listenFor": "It had a bad wing. 'It was in the dirt' is where it was, not what was wrong."
+    },
+    {
+      "ask": "What did the girl get for the bird?",
+      "listenFor": "A box, a rag, and a lamp. Three things - let them go back and count."
+    },
+    {
+      "ask": "Why do you think she let the bird go? Tell me why.",
+      "listenFor": "Any answer with a reason. The wing was fine by the third day."
+    }
+  ]
+}

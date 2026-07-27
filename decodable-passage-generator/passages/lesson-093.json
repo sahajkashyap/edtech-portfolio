@@ -1,0 +1,35 @@
+{
+  "lesson": 93,
+  "title": "The Cat in the Straw",
+  "lines": [
+    "Pam saw a small cat in the straw.",
+    "One paw was caught on a bit of rope.",
+    "The cat hissed and held up a sharp claw.",
+    "Pam had to haul the straw away.",
+    "She got the paw free with soft hands.",
+    "The cat did not run away.",
+    "It sat by Pam and licked its paw."
+  ],
+  "warmup": [
+    "saw",
+    "straw",
+    "paw",
+    "caught",
+    "claw",
+    "haul"
+  ],
+  "questions": [
+    {
+      "ask": "What was the cat's paw caught on?",
+      "listenFor": "A bit of rope in the straw. Have them find the line."
+    },
+    {
+      "ask": "What did the cat do at first when Pam came near?",
+      "listenFor": "It hissed and held up a claw. It was scared, not mean."
+    },
+    {
+      "ask": "Do you think the cat trusts Pam now? Tell me why.",
+      "listenFor": "Either answer is fine. The last line is the best clue."
+    }
+  ]
+}

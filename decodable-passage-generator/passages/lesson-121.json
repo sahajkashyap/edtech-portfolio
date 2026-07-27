@@ -1,0 +1,36 @@
+{
+  "lesson": 121,
+  "title": "The Painter and the Farmer",
+  "lines": [
+    "The farmer had a big old barn.",
+    "The paint on it was dull and gray.",
+    "A painter came out to help him.",
+    "She was an artist from the city.",
+    "She did not paint the barn red.",
+    "She made a big picture on it.",
+    "The farmer was cross, but now he is glad.",
+    "A visitor comes out to see it."
+  ],
+  "warmup": [
+    "barn",
+    "paint",
+    "city",
+    "red",
+    "help",
+    "gray"
+  ],
+  "questions": [
+    {
+      "ask": "What did the painter do to the barn?",
+      "listenFor": "She made a big picture on it instead of painting it red."
+    },
+    {
+      "ask": "How did the farmer feel at first?",
+      "listenFor": "Cross. He changed his mind by the end."
+    },
+    {
+      "ask": "Would you paint your house a picture or one plain color? Why?",
+      "listenFor": "Either answer is fine. The reason is the point."
+    }
+  ]
+}
