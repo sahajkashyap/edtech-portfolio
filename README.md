@@ -33,17 +33,30 @@ agents rather than by hoping.
 | First version of the checker | 15,764 of 87,119 (18.1%) |
 | After three rounds of adversarial review | **57 of 87,119 (0.07%)** |
 
-A 277× reduction. **71 regression tests**, every one a word that beat an earlier
+A 277× reduction. **81 regression tests**, every one a word that beat an earlier
 version.
+
+**123 of the 128 lessons now have a decodable story and a printable four-page
+packet** — 6,749 words, 492 pages, every one through the gate and every sheet
+measured to fit. Lessons 1–5 have none, because at Lesson 1 there are zero words
+a child can sound out and by Lesson 5 there are five. You cannot write a story
+from five words.
 
 Along the way the loop caught a checker that rejected every word containing `q`
 at every lesson, a rulebook that made three lessons impossible to write, and
 **17 typos in the source curriculum** — including a lesson that taught a concept
 the published scope and sequence does not contain.
 
-**Honest status:** the rulebook, the auditor, the page checker, two skills and
-one complete 4-page sheet are built. The writer that generates the other 127
-sheets is not. That is stated in the docs rather than implied away.
+**Honest status:** the rulebook, the auditor, the word bank, the page checker,
+the writer, two skills and 123 stories are built. Still open: a story-quality
+judge, and richer early vocabulary — `and` is unavailable until Lesson 35 and
+subject pronouns until 66, so the earliest stories repeat the character's name.
+Both are stated in the docs rather than implied away.
+
+Every word is also checked against a 132-word blocked list with no exceptions,
+covering the story, title, warm-up words, questions and the grown-up answer
+notes. An independent reviewer read all 123 stories for content a parent would
+object to; what it found is in the git history.
 
 ---
 
