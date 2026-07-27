@@ -63,6 +63,14 @@ a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .card .n{font-family:var(--mono);font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .card .t{font-weight:600;font-size:.95rem;margin:.1rem 0}
 .card .s{font-size:.75rem;color:var(--muted)}
+details.card{cursor:pointer}
+details.card summary{list-style:none;cursor:pointer}
+details.card summary::-webkit-details-marker{display:none}
+details.card .story{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--line);
+ font-size:.9rem;line-height:1.75;cursor:text}
+details.card .story span{display:block}
+details.card .warm{margin-top:.45rem;font-size:.72rem;color:var(--muted);font-family:var(--mono)}
+details.card[open]{border-color:var(--accent)}
 .card.none{opacity:.72;border-style:dashed}
 footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font-size:.82rem;color:var(--muted)}
 """
@@ -92,10 +100,15 @@ def build():
             n = L["lesson"]
             spec = passages.get(n)
             if spec:
-                body += (f'<a class="card" href="sheets/lesson-{n:03d}.html">'
+                story = "".join(f"<span>{ln}</span>" for ln in spec["lines"])
+                warm = ", ".join(spec["warmup"])
+                body += (f'<details class="card"><summary>'
                          f'<div class="n">Lesson {n}</div>'
                          f'<div class="t">{spec["title"]}</div>'
-                         f'<div class="s">{L["skill"]}</div></a>')
+                         f'<div class="s">{L["skill"]}</div></summary>'
+                         f'<div class="story">{story}</div>'
+                         f'<div class="warm">warm-up: {warm}</div>'
+                         f'</details>')
             else:
                 body += (f'<div class="card none">'
                          f'<div class="n">Lesson {n}</div>'
@@ -116,7 +129,7 @@ def build():
   <p class="lede">Each one uses only the sounds taught by that point. Every word was
   checked against the lesson's rulebook before the sheet was made &mdash; none of these
   were eyeballed. Click any lesson to open its four-page packet, then use the
-  <strong>Print / Save as PDF</strong> button.</p>
+  <strong>Print / Save as PDF</strong> button. Click any lesson below to read its story.</p>
   <div class="stats">
     <div class="stat"><div class="v">{len(passages)}</div><div class="k">Passages</div></div>
     <div class="stat"><div class="v">{words:,}</div><div class="k">Words written</div></div>
@@ -132,8 +145,9 @@ def build():
 
 <section>
   <h2>Every lesson</h2>
-  <p class="sub">Grouped by UFLI's real units. A dashed card means no passage exists
-  for that lesson.</p>
+  <p class="sub">Grouped by UFLI's real units. Click a lesson to read its story. A
+  dashed card means no passage exists for that lesson. The printable four-page packets
+  live beside this file in <code>sheets/</code>.</p>
   {body}
 </section>
 
