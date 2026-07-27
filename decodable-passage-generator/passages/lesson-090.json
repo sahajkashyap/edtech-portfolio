@@ -1,0 +1,35 @@
+{
+  "lesson": 90,
+  "title": "Noon at the Zoo",
+  "lines": [
+    "Meg went with her school to the zoo.",
+    "At noon she got a bag of food.",
+    "A goat came up and took the bag!",
+    "Meg ran, but the goat was fast.",
+    "It went up on the roof of the shed.",
+    "Sam got a long tool and got it back.",
+    "The food was gone, but the spoon was not."
+  ],
+  "warmup": [
+    "zoo",
+    "noon",
+    "food",
+    "roof",
+    "tool",
+    "spoon"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the goat go with the bag?",
+      "listenFor": "Up on the roof of the shed. Have them find that line."
+    },
+    {
+      "ask": "What was left in the bag at the end?",
+      "listenFor": "Only the spoon - the food was gone. Listen for both parts."
+    },
+    {
+      "ask": "Do you think Meg was cross at the goat? Tell me why.",
+      "listenFor": "Either answer is fine. Ask what in the story makes them think so."
+    }
+  ]
+}

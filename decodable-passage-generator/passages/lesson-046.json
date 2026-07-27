@@ -9,7 +9,7 @@
     "Ben runs to that shed.",
     "The moths sit on a rock.",
     "Ben gets both of them back.",
-    "Then Ben lets them go."
+    "Then Ben shuts the lid on them."
   ],
   "warmup": [
     "moths",
@@ -29,7 +29,7 @@
       "listenFor": "On a rock by the shed. If they say only \"the shed,\" ask them what the moths were sitting on."
     },
     {
-      "ask": "Do you think Ben should let the moths go? Tell me why.",
+      "ask": "Do you think Ben should keep the moths? Tell me why.",
       "listenFor": "Either answer is correct. You are listening for a reason from the story, not just yes or no."
     }
   ]

@@ -7,26 +7,29 @@
     "He has to stay in all day.",
     "Then Dad hands him a train set.",
     "Ray paints the train gray and red.",
-    "He sets it on the main hall rug.",
-    "The train can go a long way.",
-    "Ray plays with it all day.",
-    "Then the rain stops at last.",
-    "But Ray will stay in and play.",
-    "The train is the best way today."
+    "He runs it on the main hall rug.",
+    "The rain stops, but Ray will stay in."
   ],
-  "warmup": ["today", "gray", "rain", "train", "stay", "play"],
+  "warmup": [
+    "today",
+    "gray",
+    "rain",
+    "train",
+    "stay",
+    "play"
+  ],
   "questions": [
     {
       "ask": "Why could Ray not play outside?",
-      "listenFor": "It was a gray, wet day and it was raining. The first two lines hold the answer."
+      "listenFor": "It was a gray, wet day and it was raining."
     },
     {
       "ask": "What did Ray do with the train set?",
-      "listenFor": "He painted it gray and red, then ran it on the main hall rug. Two things, so listen for both."
+      "listenFor": "He painted it gray and red, then ran it on the hall rug."
     },
     {
-      "ask": "Why do you think Ray stayed in after the rain stopped?",
-      "listenFor": "Any answer with a reason. The last line hints he liked the train best, but a child may have their own idea."
+      "ask": "Why do you think Ray stayed in? Tell me why.",
+      "listenFor": "Any answer with a reason. He liked the train best."
     }
   ]
 }

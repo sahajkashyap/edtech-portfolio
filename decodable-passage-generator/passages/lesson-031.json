@@ -2,24 +2,36 @@
   "lesson": 31,
   "title": "The Fox in the Box",
   "lines": [
-    "Ben has a big box in the sun.",
+    "Ben has a big box.",
     "Six figs sit in the box.",
-    "A red fox got in the box!",
+    "A red fox got in it!",
     "The fox bit a fig. Yum!",
-    "The box tips. The fox can not get up.",
+    "The box tips. The fox is in.",
     "The fox yips. Ben runs up.",
-    "Ben can fix it. Ben tips the box up.",
-    "The fox runs. The fox runs a lot!",
-    "Ben has six figs. He has no fox.",
-    "Ben sits in the sun. He is not mad."
+    "Ben can fix it. Ben tips it.",
+    "The fox runs! It runs a lot.",
+    "Ben has six figs, not a fox."
   ],
-  "warmup": ["box", "fox", "six", "fix", "figs", "runs"],
+  "warmup": [
+    "box",
+    "fox",
+    "six",
+    "fix",
+    "figs",
+    "runs"
+  ],
   "questions": [
-    {"ask": "How many figs were in the box?",
-     "listenFor": "Six. A number is easy to skim past, so have them find the word six on the page and touch it."},
-    {"ask": "Why could the fox not get out?",
-     "listenFor": "The box tipped over with the fox inside. If they are stuck, read that line again and ask what happened to the box."},
-    {"ask": "Do you think Ben should have let the fox out? Tell me why.",
-     "listenFor": "There is no right answer. Listen for a reason - the fox was stuck, or the fox was eating his figs. Both are good thinking."}
+    {
+      "ask": "How many figs were in the box?",
+      "listenFor": "Six. A number is easy to skim past, so have them find the word six on the page and touch it."
+    },
+    {
+      "ask": "Why could the fox not get out?",
+      "listenFor": "The box tipped over with the fox inside. If they are stuck, read that line again and ask what happened to the box."
+    },
+    {
+      "ask": "Do you think Ben should have let the fox out? Tell me why.",
+      "listenFor": "There is no right answer. Listen for a reason - the fox was stuck, or the fox was eating his figs. Both are good thinking."
+    }
   ]
 }

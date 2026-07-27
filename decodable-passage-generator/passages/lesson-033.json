@@ -2,16 +2,15 @@
   "lesson": 33,
   "title": "The Cat at the Vet",
   "lines": [
-    "Meg has a cat. It is a fat cat.",
+    "Meg has a cat. It is fat.",
     "The cat has a cut on his leg.",
-    "Dad gets the van. Meg gets the cat.",
-    "The cat is mad. The cat hid.",
-    "Meg got the cat. It is not fun.",
-    "The van runs. The cat yips a lot.",
-    "The vet is a big man. He pats the cat.",
-    "The vet can fix the cut. The cat naps!",
-    "Meg hugs the cat. The cat is not mad.",
-    "We can go, Dad. The van is hot."
+    "Dad gets the van.",
+    "The cat is mad. It hid.",
+    "Meg got the cat. It yips.",
+    "The vet is a big man.",
+    "The man pats the cat a lot.",
+    "The vet can fix the cut.",
+    "Meg hugs the cat. It naps."
   ],
   "warmup": [
     "vet",
@@ -28,11 +27,11 @@
     },
     {
       "ask": "How do you know the cat did not want to go?",
-      "listenFor": "The cat was mad, the cat hid, and the cat yipped in the van. Any one of those is a good answer - it is evidence, not a guess."
+      "listenFor": "The cat was mad, the cat hid, and the cat yipped. Any one of those is a good answer - it is evidence, not a guess."
     },
     {
       "ask": "Do you think the cat will be scared next time? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the vet patted him and fixed the cut, or the ride was no fun. Follow the reason, not the answer."
+      "listenFor": "There is no right answer. You want a reason from the story - the vet patted him and fixed the cut, or the cat hated the whole trip."
     }
   ]
 }

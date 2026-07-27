@@ -1,0 +1,28 @@
+{
+  "lesson": 110,
+  "title": "The Funniest Pup",
+  "lines": [
+    "Six pups sat in a big box.",
+    "The tan pup hid in a red hat.",
+    "It was the funniest pup of all.",
+    "Meg tried to lift it out.",
+    "The pup cried and did not come out.",
+    "Then Sam held up a bit of meat.",
+    "Out it came! It was the happiest pup."
+  ],
+  "warmup": ["pups", "hid", "hat", "held", "meat", "box"],
+  "questions": [
+    {
+      "ask": "Where did the tan pup hide?",
+      "listenFor": "In a red hat. Second line. Have them point at it."
+    },
+    {
+      "ask": "What got the pup to come out?",
+      "listenFor": "A bit of meat that Sam held up. Listen for the meat, not just for Sam."
+    },
+    {
+      "ask": "Do you think that pup was really the funniest? Why?",
+      "listenFor": "Either answer. What you want is a reason - hiding in a hat is the one in the story."
+    }
+  ]
+}

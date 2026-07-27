@@ -9,16 +9,28 @@
     "Dan hops in and catches the stick.",
     "His pants have a patch of mud.",
     "He pitches the stick up the hill.",
-    "This time the pup catches it!",
-    "Dan claps and the pup runs to him."
+    "This time the pup catches it. Dan claps."
   ],
-  "warmup": ["fetch", "ditch", "catches", "patch", "pitches", "stick"],
+  "warmup": [
+    "fetch",
+    "ditch",
+    "catches",
+    "patch",
+    "pitches",
+    "stick"
+  ],
   "questions": [
-    {"ask": "Where did the stick land the first time?",
-     "listenFor": "In a wet ditch. Stated in the story - have them reread that line rather than telling them."},
-    {"ask": "Why does Dan have a patch of mud on his pants?",
-     "listenFor": "He hopped into the ditch to get the stick himself. Cause and effect - if they say \"mud,\" ask \"how did he get in the mud?\""},
-    {"ask": "Do you think the pup was scared of the ditch? Tell me why.",
-     "listenFor": "Either answer is correct. You want a reason from the text - \"it would not go in\" is exactly the kind of evidence you are after."}
+    {
+      "ask": "Where did the stick land the first time?",
+      "listenFor": "In a wet ditch. Stated in the story - have them reread that line rather than telling them."
+    },
+    {
+      "ask": "Why does Dan have a patch of mud on his pants?",
+      "listenFor": "He hopped into the ditch to get the stick himself. Cause and effect - if they say \"mud,\" ask \"how did he get in the mud?\""
+    },
+    {
+      "ask": "Do you think the pup was scared of the ditch? Tell me why.",
+      "listenFor": "Either answer is correct. You want a reason from the text - \"it would not go in\" is exactly the kind of evidence you are after."
+    }
   ]
 }

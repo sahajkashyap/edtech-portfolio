@@ -1,0 +1,35 @@
+{
+  "lesson": 118,
+  "title": "The School Ghost",
+  "lines": [
+    "Kids at school said a ghost lived there.",
+    "At night it made a long, sad sound.",
+    "The chef said it was just the wind.",
+    "But Meg went to look one dark night.",
+    "She saw a sign on a back door.",
+    "In the dark she saw green eyes shine.",
+    "It was a cat! No ghost at all."
+  ],
+  "warmup": [
+    "school",
+    "night",
+    "sound",
+    "dark",
+    "cat",
+    "green"
+  ],
+  "questions": [
+    {
+      "ask": "What did the kids think was in the school?",
+      "listenFor": "A ghost. It is in the very first line."
+    },
+    {
+      "ask": "What was really making the sound?",
+      "listenFor": "A cat. Meg found it behind the door with the STOP sign."
+    },
+    {
+      "ask": "Was it a good idea for Meg to go in? Why?",
+      "listenFor": "Either answer works. Listen for the thinking, not the verdict."
+    }
+  ]
+}

@@ -3,15 +3,14 @@
   "title": "Six Figs and a Pig",
   "lines": [
     "Tim has six figs in a tin.",
-    "Tim hid the tin in a big bin.",
+    "Tim hid the tin in a bin.",
     "A pig got in the bin!",
-    "The pig did not fit. The pig is big.",
+    "The pig did not fit. It is big.",
     "The pig tips the bin and sits.",
-    "Tim is sad. His figs sit in mud.",
-    "But the pig digs and digs.",
+    "His figs sit in the mud.",
+    "Tim is sad. But the pig digs.",
     "The pig digs up a big fig.",
-    "Tim bit it. Yum!",
-    "Tim and the pig sit in the sun."
+    "Tim bit it. Yum!"
   ],
   "warmup": [
     "figs",
@@ -24,15 +23,15 @@
   "questions": [
     {
       "ask": "Where did Tim hide the tin?",
-      "listenFor": "In a big bin. It is said in the story. If they guess, have them find the word bin and read that line again."
+      "listenFor": "In a bin. It is said in the story. If they guess, have them find the word bin and read that line again."
     },
     {
       "ask": "How did the figs end up in the mud?",
       "listenFor": "The pig got in the bin and tipped it over. Two steps, so it is fine to look back for both parts."
     },
     {
-      "ask": "Do you think Tim and the pig are friends now? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the pig dug a fig back up, or they sit in the sun together at the end."
+      "ask": "Do you think Tim is still cross with the pig at the end? Tell me why.",
+      "listenFor": "There is no right answer. You want a reason from the story - the pig dug a fig back up, or the pig wrecked the tin in the first place."
     }
   ]
 }

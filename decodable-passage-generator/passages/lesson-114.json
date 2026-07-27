@@ -1,0 +1,35 @@
+{
+  "lesson": 114,
+  "title": "The Great Steak",
+  "lines": [
+    "Dad set a great steak on a plate.",
+    "\"Do not break this plate,\" he said.",
+    "Tom took the plate to the table.",
+    "He did not see the cat on the mat.",
+    "Tom fell. The plate did break.",
+    "The cat ate that great steak up.",
+    "Tom did the dishes for a week."
+  ],
+  "warmup": [
+    "steak",
+    "break",
+    "great",
+    "plate",
+    "table",
+    "dishes"
+  ],
+  "questions": [
+    {
+      "ask": "Why did Tom fall?",
+      "listenFor": "He did not see the cat on the mat. It is in the fourth line."
+    },
+    {
+      "ask": "Who got to eat the steak?",
+      "listenFor": "The cat. Kids often love this one."
+    },
+    {
+      "ask": "Was doing the dishes fair? Why or why not?",
+      "listenFor": "Either side is fine. You want the reason they give."
+    }
+  ]
+}

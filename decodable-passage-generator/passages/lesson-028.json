@@ -2,16 +2,15 @@
   "lesson": 28,
   "title": "Wag Gets the Wet Wig",
   "lines": [
-    "Meg has a big pup. He is Wag.",
+    "Meg has a big pup, Wag.",
     "Wag can run. Wag can win!",
-    "Meg has a red wig on. It is fun.",
+    "Meg has a red wig on.",
     "Wag wags. Wag hits the wig!",
     "The wig got in a wet bog.",
     "The wig is wet. Meg is sad.",
-    "Wag runs in. Wag gets the wig.",
-    "Meg sets the wig in the hot sun.",
-    "Wag sits. Meg sits. We can not run.",
-    "The wig is not wet. Meg hugs Wag."
+    "Wag runs in. Wag gets it.",
+    "Meg sets the wig in the sun.",
+    "It is not wet! Meg hugs Wag."
   ],
   "warmup": [
     "wig",
@@ -28,7 +27,7 @@
     },
     {
       "ask": "What did Meg do to dry the wig?",
-      "listenFor": "She set it in the hot sun. It is said in the story. If they guess, have them find the line with the word sun in it."
+      "listenFor": "She set it in the sun. It is said in the story. If they guess, have them find the line with the word sun in it."
     },
     {
       "ask": "Do you think Meg should be mad at Wag? Tell me why or why not.",

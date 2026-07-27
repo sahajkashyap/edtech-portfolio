@@ -1,0 +1,35 @@
+{
+  "lesson": 112,
+  "title": "The Bear and the Pear",
+  "lines": [
+    "A brown bear sat by a pear tree.",
+    "The best pears were up in the air.",
+    "He got a chair, but it had a tear.",
+    "It fell, and the bear fell with it.",
+    "The bear sat down with a sad face.",
+    "Then the wind sent one pear down.",
+    "It fell by his paw. He ate it."
+  ],
+  "warmup": [
+    "bear",
+    "pear",
+    "tear",
+    "tree",
+    "paw",
+    "face"
+  ],
+  "questions": [
+    {
+      "ask": "Why did the bear get a chair?",
+      "listenFor": "To get up to the pears, which were high in the air. The answer is in the second and third lines."
+    },
+    {
+      "ask": "How did the bear get a pear in the end?",
+      "listenFor": "The wind sent one down. Point out that pear, bear, and tear all end the same way and rhyme."
+    },
+    {
+      "ask": "Do you think the bear will try the chair again? Why?",
+      "listenFor": "Either answer is fine. You are listening for a reason, not the right answer."
+    }
+  ]
+}

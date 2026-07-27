@@ -8,24 +8,29 @@
     "Meg finds a stick and a big rock.",
     "Then Ben spots it next to the hedge.",
     "The badge is stuck in thick mud.",
-    "Ben tugs and tugs at it.",
-    "He grabs it and rubs the mud off.",
-    "Meg pins the badge back on his vest.",
-    "Ben hugs Meg and grins."
+    "He tugs it up and rubs the mud off.",
+    "Meg pins the badge back on his vest."
   ],
-  "warmup": ["badge", "ditch", "hedge", "stick", "thick", "little"],
+  "warmup": [
+    "badge",
+    "ditch",
+    "hedge",
+    "stick",
+    "thick",
+    "little"
+  ],
   "questions": [
     {
       "ask": "Where did Ben lose his badge?",
-      "listenFor": "In a ditch. It fell off his black vest. If they say 'in the mud' that is close, and the ditch line will show them the rest."
+      "listenFor": "In a ditch. It fell off his black vest."
     },
     {
-      "ask": "Who spotted the badge first, Ben or Meg?",
-      "listenFor": "Ben spotted it by the hedge. Meg found a stick and a rock first, which is a nice trap for a fast guesser."
+      "ask": "Who spotted the badge, Ben or Meg?",
+      "listenFor": "Ben spotted it by the hedge. Meg found a stick and a rock first - a nice trap for a fast guesser."
     },
     {
-      "ask": "Do you think Ben was a good friend to Meg? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for the reason, like the hug at the end, or that Meg helped him dig."
+      "ask": "Do you think Meg was a good friend? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason, like she helped him dig."
     }
   ]
 }

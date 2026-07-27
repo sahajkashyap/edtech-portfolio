@@ -1,0 +1,35 @@
+{
+  "lesson": 126,
+  "title": "Is It Fixable?",
+  "lines": [
+    "Tom's bike had a bent chain.",
+    "\"Is it fixable?\" he said to Dad.",
+    "Dad took a look. \"The chain is, yes.\"",
+    "\"But this seat is not fixable at all.\"",
+    "They went to the shop for a washable seat.",
+    "Dad fixed the chain while Tom held the seat.",
+    "\"You are so likable, Dad,\" said Tom."
+  ],
+  "warmup": [
+    "bike",
+    "chain",
+    "seat",
+    "shop",
+    "look",
+    "held"
+  ],
+  "questions": [
+    {
+      "ask": "What part of the bike was not fixable?",
+      "listenFor": "The seat. Line four says it straight out - let them read it again."
+    },
+    {
+      "ask": "Why was the new seat a good pick?",
+      "listenFor": "It was washable, so it can be washed. Point at the -able ending doing that job."
+    },
+    {
+      "ask": "What is something of yours you would want to be fixable? Why?",
+      "listenFor": "A toy, a shoe, a book. The why is the part worth waiting for."
+    }
+  ]
+}

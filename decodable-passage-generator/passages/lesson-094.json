@@ -1,0 +1,35 @@
+{
+  "lesson": 94,
+  "title": "Bread in the Meadow",
+  "lines": [
+    "Sam wanted to have lunch in the meadow.",
+    "He had a heavy bag of fresh bread.",
+    "The weather was hot and his head got wet.",
+    "He spread a red rug on the grass.",
+    "A crow left a feather by his bread.",
+    "Then it took the bread and flew off!",
+    "Sam was not ready for that at all."
+  ],
+  "warmup": [
+    "bread",
+    "meadow",
+    "heavy",
+    "weather",
+    "head",
+    "spread"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Sam want to have his lunch?",
+      "listenFor": "In the meadow. Have them point to the first line."
+    },
+    {
+      "ask": "What did the crow leave, and what did it take?",
+      "listenFor": "It left a feather and took the bread. Listen for both."
+    },
+    {
+      "ask": "What do you think Sam did next? Tell me why.",
+      "listenFor": "Any idea is fine if it fits the story. Listen for a reason."
+    }
+  ]
+}

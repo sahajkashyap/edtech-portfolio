@@ -9,10 +9,15 @@ import subprocess
 import sys
 import pathlib
 import json
+import tempfile
 
 CHROME = "/Users/sahajkashyap/.claude/bin/chrome"
 BUDGET = 940.8  # px of usable height on one letter sheet at 0.6in margins
-TMP = pathlib.Path("/Users/sahajkashyap/.claude/jobs/efced4ce/tmp")
+# A private directory per run. A hardcoded shared path meant two agents
+# measuring different sheets at the same time overwrote each other's probe
+# files, so check-pages reported another lesson's heights -- the same sheet
+# measuring 980 then 900 with no change in between.
+TMP = pathlib.Path(tempfile.mkdtemp(prefix="checkpages-"))
 
 src_path = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "example-lesson-41.html")
 src = src_path.read_text()

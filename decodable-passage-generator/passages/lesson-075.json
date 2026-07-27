@@ -7,25 +7,30 @@
     "Meg picks up the bottle by the handle.",
     "The bottle bumps the candle off the table.",
     "The candle rolls behind a big box.",
-    "Meg can not get it.",
     "Dad tips the box up a little.",
     "The candle rolls back to Meg.",
-    "That was a simple fix.",
-    "Meg sets it on the table and grins."
+    "That was a simple fix, and Meg grins."
   ],
-  "warmup": ["candle", "table", "bottle", "handle", "apple", "simple"],
+  "warmup": [
+    "candle",
+    "table",
+    "bottle",
+    "handle",
+    "apple",
+    "simple"
+  ],
   "questions": [
     {
       "ask": "What made the candle fall off the table?",
-      "listenFor": "The bottle bumped it when Meg picked the bottle up by the handle. It is stated in the story, so send them back to that line rather than telling them."
+      "listenFor": "The bottle bumped it when Meg lifted the handle. Send them back to that line."
     },
     {
       "ask": "How did Dad get the candle back?",
-      "listenFor": "He tipped the big box up a little and the candle rolled back. Listen for the tipping, not just 'he got it.'"
+      "listenFor": "He tipped the big box up a little. Listen for the tipping, not just 'he got it.'"
     },
     {
-      "ask": "Do you think Meg should keep the candle on the table? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason tied to the story, like it fell once already, or the table is where she can see it."
+      "ask": "Do you think Meg will keep the candle there? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story."
     }
   ]
 }

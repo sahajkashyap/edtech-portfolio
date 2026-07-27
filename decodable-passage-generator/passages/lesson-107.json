@@ -1,0 +1,35 @@
+{
+  "lesson": 107,
+  "title": "The Frog That Slid",
+  "lines": [
+    "Ben was running to the pool.",
+    "He tripped and dropped his net.",
+    "A frog was hopping in the wet mud.",
+    "Ben stopped and grabbed at it.",
+    "The frog slipped from his hand.",
+    "It went swimming off in the pool.",
+    "Ben just grinned and sat in the mud."
+  ],
+  "warmup": [
+    "running",
+    "tripped",
+    "dropped",
+    "hopping",
+    "stopped",
+    "grabbed"
+  ],
+  "questions": [
+    {
+      "ask": "What did Ben drop?",
+      "listenFor": "His net, when he tripped. It is in the second line."
+    },
+    {
+      "ask": "Where did the frog go?",
+      "listenFor": "Swimming off in the pool. Listen for the -ing ending, which is what this lesson is about."
+    },
+    {
+      "ask": "Why do you think Ben grinned instead of getting cross?",
+      "listenFor": "Any reason is fine. Ask what was funny about him sitting in the mud."
+    }
+  ]
+}

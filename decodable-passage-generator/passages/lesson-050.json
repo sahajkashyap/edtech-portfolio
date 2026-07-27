@@ -2,13 +2,14 @@
   "lesson": 50,
   "title": "Which Shell?",
   "lines": [
-    "Nick has shells in a sack.",
+    "Nick has ten shells in a sack.",
     "Nick picks a thick red shell.",
     "Which shell will Josh pick?",
-    "Josh picks it up. It is wet.",
+    "When Josh picks it up, it is wet.",
     "A bug is in his shell!",
     "Josh yells and lets it fall.",
-    "When Josh picks a shell, he checks it."
+    "The bug runs back to the mud.",
+    "When Josh picks a shell, Josh checks it."
   ],
   "warmup": [
     "when",

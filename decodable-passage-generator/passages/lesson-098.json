@@ -1,0 +1,35 @@
+{
+  "lesson": 98,
+  "title": "The Lamb and the Knot",
+  "lines": [
+    "Jen has a small lamb that likes to climb.",
+    "It got up on a rock and got stuck.",
+    "A knot of rope was caught on its leg.",
+    "Jen fell on one knee to reach the lamb.",
+    "She had to wrap her thumb in a rag.",
+    "At last the knot came free.",
+    "Now Jen knows where to keep her rope."
+  ],
+  "warmup": [
+    "knows",
+    "rock",
+    "stuck",
+    "rope",
+    "caught",
+    "reach"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the lamb get stuck?",
+      "listenFor": "Up on a rock. Have them find that line."
+    },
+    {
+      "ask": "What was caught on the lamb's leg?",
+      "listenFor": "A knot of rope. Ask how Jen got it off."
+    },
+    {
+      "ask": "What do you think Jen will do with the rope now? Tell me why.",
+      "listenFor": "Any answer is fine. The last line gives a clue."
+    }
+  ]
+}

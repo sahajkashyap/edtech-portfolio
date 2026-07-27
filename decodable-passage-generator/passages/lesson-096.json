@@ -1,0 +1,35 @@
+{
+  "lesson": 96,
+  "title": "The Mouse in Our House",
+  "lines": [
+    "A brown mouse got in our house.",
+    "It went down and hid in a bag.",
+    "Tom found it and gave a loud shout.",
+    "The mouse ran out to the ground.",
+    "An owl in the tall tree gave a howl.",
+    "The mouse hid in a hole by the flower bed.",
+    "Now it is safe, and our house is too."
+  ],
+  "warmup": [
+    "mouse",
+    "house",
+    "brown",
+    "found",
+    "ground",
+    "owl"
+  ],
+  "questions": [
+    {
+      "ask": "Where did the mouse hide when it was in the house?",
+      "listenFor": "In a bag. Have them find that line and read it again."
+    },
+    {
+      "ask": "What made a howl in the tree?",
+      "listenFor": "An owl. Ask if that was a safe sound for a small mouse."
+    },
+    {
+      "ask": "Do you think the mouse will come back in? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story."
+    }
+  ]
+}

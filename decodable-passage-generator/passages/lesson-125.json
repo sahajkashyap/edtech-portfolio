@@ -1,0 +1,35 @@
+{
+  "lesson": 125,
+  "title": "Ben's Shipment",
+  "lines": [
+    "A big shipment came to Ben's shop.",
+    "The box sat on the pavement in the sun.",
+    "Ben made the payment and cut the box.",
+    "Inside was just sand and one small shell.",
+    "\"This shipment is not mine,\" said Ben.",
+    "The man in the van had made a mistake.",
+    "At noon he came back with red kites!"
+  ],
+  "warmup": [
+    "box",
+    "sand",
+    "shell",
+    "van",
+    "noon",
+    "shop"
+  ],
+  "questions": [
+    {
+      "ask": "What was in the first box?",
+      "listenFor": "Sand and one small shell. It is in line four and it is the joke of the story."
+    },
+    {
+      "ask": "Who made the mistake?",
+      "listenFor": "The man in the van. Line six says it plainly."
+    },
+    {
+      "ask": "Do you think Ben was cross with the man? Why?",
+      "listenFor": "Either answer works. Ask what in the story made them think so."
+    }
+  ]
+}

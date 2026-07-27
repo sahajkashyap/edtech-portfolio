@@ -1,0 +1,35 @@
+{
+  "lesson": 92,
+  "title": "The Boot and the Big Fish",
+  "lines": [
+    "Pam and Ben got in a small blue boat.",
+    "The moon was bright and the sea was cool.",
+    "They ate sweet fruit up on the seat.",
+    "A big gray fish came up to look.",
+    "Ben shook so much that his boot fell in.",
+    "The fish took the boot and swam off!",
+    "Ben went home with just one boot on."
+  ],
+  "warmup": [
+    "boat",
+    "moon",
+    "bright",
+    "sea",
+    "fruit",
+    "boot"
+  ],
+  "questions": [
+    {
+      "ask": "What were Pam and Ben eating in the boat?",
+      "listenFor": "Sweet fruit. Have them find that line and read it again."
+    },
+    {
+      "ask": "How did Ben lose his boot?",
+      "listenFor": "He shook, the boot fell in, and the fish took it."
+    },
+    {
+      "ask": "What do you think the fish did with the boot? Tell me why.",
+      "listenFor": "Any idea is fine. Ask what in the story made them think so."
+    }
+  ]
+}

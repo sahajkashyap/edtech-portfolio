@@ -5,27 +5,32 @@
     "Meg went to the store for corn.",
     "The store had no more corn at all.",
     "A man told Meg to try the farm.",
-    "Meg ran on a short path to the farm.",
-    "She had to hop past sharp thorns.",
+    "Meg ran a short path past sharp thorns.",
     "The corn was tall next to the barn.",
-    "Meg got a big bag of it.",
-    "She ran back home before dark.",
-    "Dad cut up the corn for a snack.",
-    "It was the best corn of all."
+    "Meg got a big bag and ran back.",
+    "She was home before dark.",
+    "Dad cut up the best corn of all."
   ],
-  "warmup": ["store", "corn", "more", "short", "thorns", "before"],
+  "warmup": [
+    "store",
+    "corn",
+    "more",
+    "short",
+    "thorns",
+    "before"
+  ],
   "questions": [
     {
       "ask": "Why did Meg go to the farm?",
-      "listenFor": "The store had no more corn, and a man told her to try the farm. Two steps, so let them reread if they only get one."
+      "listenFor": "The store had no more corn, and a man told her to try the farm."
     },
     {
-      "ask": "What did Meg have to hop past on the way?",
-      "listenFor": "Sharp thorns on the short path. It is one line, and it is the line most kids skim."
+      "ask": "What did Meg run past on the short path?",
+      "listenFor": "Sharp thorns. It is one line, and it is the line most kids skim."
     },
     {
       "ask": "Do you think Meg was glad she went? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason, like the last line about the best corn, or the long walk past the thorns."
+      "listenFor": "Either answer works. Listen for a reason, like the best corn at the end."
     }
   ]
 }

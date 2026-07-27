@@ -1,0 +1,35 @@
+{
+  "lesson": 105,
+  "title": "Tess Dislikes a Bath",
+  "lines": [
+    "Our cat Tess dislikes a bath.",
+    "She hid under the bed all day.",
+    "Sam got the tub and the soap.",
+    "Tess hissed. She distrusts that tub.",
+    "But Sam held up a fish in his hand.",
+    "Tess came out to get the fish.",
+    "Now Tess likes fish, but she still dislikes baths."
+  ],
+  "warmup": [
+    "cat",
+    "bath",
+    "tub",
+    "soap",
+    "fish",
+    "hid"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Tess hide?",
+      "listenFor": "Under the bed. Quick one - it is in the second line."
+    },
+    {
+      "ask": "What got Tess to come out?",
+      "listenFor": "The fish Sam held up. Listen for fish, not just Sam."
+    },
+    {
+      "ask": "Do you think Tess got a bath in the end? Why?",
+      "listenFor": "The story does not say, so both are right. You want the reason."
+    }
+  ]
+}

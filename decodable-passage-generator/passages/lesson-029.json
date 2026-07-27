@@ -2,15 +2,14 @@
   "lesson": 29,
   "title": "The Jam Jug",
   "lines": [
-    "Tim has a job. He gets the jam.",
+    "Tim has a job. Tim gets jam.",
     "The jam is in a big jug.",
     "Tim can jog. Tim jogs a lot.",
-    "The jug tips. The jam is on Tim!",
-    "Jam is on his cap. Jam is on him.",
-    "Tim is sad. But Dad is not mad.",
-    "Dad gets a rag. Dad rubs the cap.",
-    "Tim gets a bun. Dad gets the jam.",
-    "Tim bit the bun. It is not bad!",
+    "The jug tips! Jam is on Tim.",
+    "Jam is on his cap. Tim is sad.",
+    "But Dad is not mad.",
+    "Dad gets a rag. Dad rubs it.",
+    "Tim gets a bun. Dad gets jam.",
     "Tim did a jig. Dad did a jig."
   ],
   "warmup": [
@@ -24,10 +23,10 @@
   "questions": [
     {
       "ask": "What happened while Tim was jogging?",
-      "listenFor": "The jug tipped and the jam spilled on him. It is right there in the story. If they only say \"jam,\" ask \"and where did it go?\""
+      "listenFor": "The jug tipped and the jam went all over him. It is right there in the story. If they only say \"jam,\" ask \"and where did it go?\""
     },
     {
-      "ask": "What did Dad use to clean the cap?",
+      "ask": "What did Dad use to clean up?",
       "listenFor": "A rag. One word is a fine answer. Have them find the line and read it back so they can prove it."
     },
     {

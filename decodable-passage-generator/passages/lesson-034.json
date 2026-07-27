@@ -2,16 +2,15 @@
   "lesson": 34,
   "title": "Liz Zips the Bag",
   "lines": [
-    "Liz has a red bag. It can zip up.",
+    "Liz has a red bag. It zips.",
     "Liz gets a bun. Liz gets a fig.",
-    "It is in the bag. Zip!",
     "Liz runs up a big log.",
-    "A bug zips at Liz. It is big!",
+    "A bug zips at Liz!",
     "The bug zigs. The bug zags.",
-    "Liz zips the bag up. The bug sits.",
-    "Liz sits on the log. Liz has the bun.",
-    "Liz gets a bit. The bug gets a bit.",
-    "The bug is not mad. Liz is not sad."
+    "Liz zips the bag up. Zip!",
+    "The bug sits. It is mad.",
+    "Liz sets a bit on the log.",
+    "The bug gets it. It is not mad."
   ],
   "warmup": [
     "zip",
@@ -23,7 +22,7 @@
   ],
   "questions": [
     {
-      "ask": "What did Liz put in the bag?",
+      "ask": "What two things did Liz get?",
       "listenFor": "A bun and a fig. If your child only names one, that is fine - ask \"what else?\" and let them look back."
     },
     {

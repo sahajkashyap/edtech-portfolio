@@ -2,16 +2,15 @@
   "lesson": 30,
   "title": "Yam the Pig",
   "lines": [
-    "Tom has a pet pig. It is Yam.",
-    "Yam is big. Yam can run a lot.",
-    "Tom lets Yam sit on the rug.",
+    "Tom has a pet pig, Yam.",
+    "Yam is big. Yam can run.",
+    "Tom lets Yam sit on a rug.",
     "But Yam is not fed yet.",
-    "Yam gets up. Yam runs at the pot.",
-    "The pot tips. Nuts hit the rug.",
+    "Yam runs at a big pot.",
+    "The pot tips. Nuts hit Yam.",
     "Yes! Yam gets the nuts.",
-    "Tom is mad. But Yam is not sad yet.",
-    "Yam naps on the rug. Tom gets a rag.",
-    "Tom can not be mad at Yam."
+    "Tom is mad. Bad pig, Yam!",
+    "Yam naps. Tom pats him."
   ],
   "warmup": [
     "yam",
@@ -24,15 +23,15 @@
   "questions": [
     {
       "ask": "Why did Yam run at the pot?",
-      "listenFor": "Because Yam had not been fed yet and the nuts were in the pot. If they say \"he was hungry,\" ask them to find the line that tells us."
+      "listenFor": "Because Yam had not been fed yet. If they say \"he was hungry,\" ask them to find the line that tells us - the word yet is the clue."
     },
     {
-      "ask": "What did Tom get at the end, and why?",
-      "listenFor": "A rag, because the nuts and the pot made a mess on the rug. The why is not spelled out, so it is fine to work it out together."
+      "ask": "What was in the pot?",
+      "listenFor": "Nuts. Have your child find the word nuts on the page and touch it - proving it beats remembering it."
     },
     {
       "ask": "Do you think Yam is a good pet? Tell me why you think so.",
-      "listenFor": "No wrong answer. You want a reason from the story - Yam took the nuts, or Yam naps sweetly on the rug. Reasons matter more than the yes or no."
+      "listenFor": "No wrong answer. You want a reason from the story - Yam knocked the pot over, or Yam naps quietly at the end. Reasons matter more than the yes or no."
     }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "lesson": 102,
+  "title": "The Helpful Pup",
+  "lines": [
+    "Our pup Bud has no teeth at all.",
+    "Bud is toothless, but he is helpful.",
+    "Meg lost a sock and felt hopeless.",
+    "She looked in the box. No sock.",
+    "Bud went to sniff at the rug.",
+    "He dug up the sock with his gums.",
+    "Meg was thankful for her toothless pup."
+  ],
+  "warmup": ["pup", "teeth", "sock", "rug", "dug", "gums"],
+  "questions": [
+    {
+      "ask": "What did Meg lose?",
+      "listenFor": "A sock. Simple to find - have them put a finger on the line that says it."
+    },
+    {
+      "ask": "How did Bud get the sock out?",
+      "listenFor": "He dug it up with his gums, because he has no teeth. Listen for both halves of that."
+    },
+    {
+      "ask": "Do you think a toothless pup can still be a good pet? Why?",
+      "listenFor": "Any answer is fine. You are listening for a because, not for the right opinion."
+    }
+  ]
+}

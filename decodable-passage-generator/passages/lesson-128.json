@@ -1,0 +1,35 @@
+{
+  "lesson": 128,
+  "title": "A Bit of Kindness",
+  "lines": [
+    "Rosa found a small pup in the yard.",
+    "It was wet and helpless in the cold rain.",
+    "Rosa took it in and got it dry.",
+    "Her mom said, \"That was kindness.\"",
+    "They made a sign, and a girl came.",
+    "\"That is my pup!\" She held out a payment.",
+    "\"No,\" said Rosa. \"Just come back to play.\""
+  ],
+  "warmup": [
+    "pup",
+    "yard",
+    "rain",
+    "cold",
+    "dry",
+    "girl"
+  ],
+  "questions": [
+    {
+      "ask": "Where did Rosa find the pup?",
+      "listenFor": "In the yard, in the cold rain. The first two lines both help."
+    },
+    {
+      "ask": "What did Rosa say when the girl held out a payment?",
+      "listenFor": "She said no, and asked the girl to come back to play instead."
+    },
+    {
+      "ask": "Would you have taken the payment? Why?",
+      "listenFor": "There is no right answer here. Listen for a reason that fits the story."
+    }
+  ]
+}

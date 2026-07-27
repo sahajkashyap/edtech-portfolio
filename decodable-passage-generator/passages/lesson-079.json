@@ -6,27 +6,31 @@
     "It starts with a big box and a card.",
     "The fort is dark in the back part.",
     "Pam gets a jar and a short candle.",
-    "Ben sets the jar on the sand.",
-    "Then a big dog runs in the yard.",
-    "He jumps on the fort and it drops.",
-    "Pam and Ben are sad for a bit.",
-    "Then Ben starts the fort back up.",
-    "This time the dog can help.",
-    "He naps in the dark part of the fort."
+    "Then a big dog jumps on the fort.",
+    "It drops flat and Pam is sad.",
+    "Ben starts the fort back up.",
+    "The dog naps in the dark part."
   ],
-  "warmup": ["fort", "yard", "card", "dark", "part", "short"],
+  "warmup": [
+    "fort",
+    "yard",
+    "card",
+    "dark",
+    "part",
+    "short"
+  ],
   "questions": [
     {
       "ask": "What did Ben and Pam make the fort from?",
-      "listenFor": "A big box and a card. The jar and candle came after, for the dark part, so listen for the order."
+      "listenFor": "A big box and a card. The jar and candle came after, for the dark part."
     },
     {
-      "ask": "What knocked the fort down?",
-      "listenFor": "The big dog jumped on it. Right in the text, so send them back to that line if they guess."
+      "ask": "What made the fort drop flat?",
+      "listenFor": "The big dog jumped on it. Send them back to that line if they guess."
     },
     {
       "ask": "Do you think the dog helped or made a mess? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason from the story, like he broke it first, or he ended up napping in it."
+      "listenFor": "Either answer is fine. He broke it, but he ended up napping in it."
     }
   ]
 }

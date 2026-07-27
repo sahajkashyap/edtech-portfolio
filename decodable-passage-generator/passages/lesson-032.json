@@ -2,24 +2,36 @@
   "lesson": 32,
   "title": "Sam Did Not Quit",
   "lines": [
-    "Sam has a big job. He digs a pit.",
-    "The mud is wet. The sun is hot.",
-    "Sam digs a lot. Sam gets hot.",
-    "Can we quit? Not yet!",
-    "Dad digs. Sam digs. We can not quit.",
-    "Sam hits a tin box in the mud.",
-    "Sam tugs the lid up. It is a map!",
-    "Sam is not sad. Sam did not quit!",
-    "Dad pats Sam. It is a big job.",
-    "We can dig up a lot!"
+    "Sam has a big job.",
+    "Sam digs a pit in the mud.",
+    "The sun is hot. Sam is hot.",
+    "Can Sam quit? Not yet!",
+    "Dad digs. Sam digs a lot.",
+    "Sam hits a tin box!",
+    "Sam tugs the lid up.",
+    "It is a map! Sam sits up.",
+    "Sam did not quit. Dad pats him."
   ],
-  "warmup": ["digs", "mud", "box", "lid", "job", "pit"],
+  "warmup": [
+    "digs",
+    "mud",
+    "box",
+    "lid",
+    "job",
+    "pit"
+  ],
   "questions": [
-    {"ask": "What was in the tin box?",
-     "listenFor": "A map. It is said in the story. Have your child find the line and read it back so they can show you they know."},
-    {"ask": "Why did Sam want to quit?",
-     "listenFor": "Digging was hard - the mud was wet, the sun was hot, and he got hot. Any one of those reasons counts."},
-    {"ask": "Do you think Sam was glad he kept going? Tell me why.",
-     "listenFor": "No wrong answer. You are listening for a reason from the story - he found the map, or Dad patted him. The because is what you want."}
+    {
+      "ask": "What was in the tin box?",
+      "listenFor": "A map. It is said in the story. Have your child find the line and read it back so they can show you they know."
+    },
+    {
+      "ask": "Why did Sam want to quit?",
+      "listenFor": "Digging was hard - the sun was hot and Sam got hot. Either half of that is a good answer."
+    },
+    {
+      "ask": "Do you think Sam was glad he kept digging? Tell me why.",
+      "listenFor": "No wrong answer. You are listening for a reason from the story - he found the map, or Dad patted him. The because is what you want."
+    }
   ]
 }

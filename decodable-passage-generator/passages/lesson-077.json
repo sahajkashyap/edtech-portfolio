@@ -6,27 +6,31 @@
     "Dan starts to dig in the dark barn.",
     "He finds a card in a dusty jar.",
     "The card has a big gold star on it.",
-    "It is hard to spot in the dark.",
-    "Dan runs to the yard with it.",
-    "The star is red and gold in the sun.",
-    "Dad grins at the card for a long time.",
-    "That card was his on this farm.",
-    "Dad lets Dan hold it.",
-    "Dan hugs Dad in the yard."
+    "It is hard to spot in the dark barn.",
+    "Dan runs to the yard with the card.",
+    "Dad grins. That card was his as a kid.",
+    "Dad lets Dan hold it in the yard."
   ],
-  "warmup": ["park", "car", "barn", "dark", "card", "star"],
+  "warmup": [
+    "park",
+    "car",
+    "barn",
+    "dark",
+    "card",
+    "star"
+  ],
   "questions": [
     {
       "ask": "What did Dan find in the jar?",
-      "listenFor": "A card with a big gold star on it. Point back to the line if they guess, rather than telling them."
+      "listenFor": "A card with a big gold star on it. Point back to the line if they guess."
     },
     {
-      "ask": "Why did Dan run out to the yard?",
-      "listenFor": "It was too dark in the barn to see the card. The story says so one line above, so this is a two-line hunt."
+      "ask": "Why did Dan run to the yard?",
+      "listenFor": "It was too dark in the barn to spot the star. The answer sits one line above."
     },
     {
-      "ask": "How do you think Dad felt when he saw the card? Tell me why.",
-      "listenFor": "Any answer with a reason. Listen for the grin, or for the card being his when he was small on this same farm."
+      "ask": "How do you think Dad felt about the card? Tell me why.",
+      "listenFor": "Any answer with a reason. The grin, or the card being his as a kid, both work."
     }
   ]
 }

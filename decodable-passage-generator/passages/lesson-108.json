@@ -1,0 +1,35 @@
+{
+  "lesson": 108,
+  "title": "The Wettest Jump",
+  "lines": [
+    "It was the hottest day of all.",
+    "Meg and Tim went to the pool.",
+    "Tim said, \"My splash is bigger.\"",
+    "Meg said, \"Mine is the biggest.\"",
+    "They got wetter and wetter.",
+    "Then Dad ran in with a big jump.",
+    "Meg and Tim got the wettest of all."
+  ],
+  "warmup": [
+    "pool",
+    "bigger",
+    "biggest",
+    "wetter",
+    "wettest",
+    "jump"
+  ],
+  "questions": [
+    {
+      "ask": "What were Meg and Tim arguing about?",
+      "listenFor": "Whose splash was bigger. Have them read the two quotes."
+    },
+    {
+      "ask": "Who made the biggest splash in the end?",
+      "listenFor": "Dad. The last line does not name him, so they must hold on to the line before."
+    },
+    {
+      "ask": "Do you think Meg and Tim minded getting wet? Why?",
+      "listenFor": "Either answer. The hot day is a good reason to point at."
+    }
+  ]
+}

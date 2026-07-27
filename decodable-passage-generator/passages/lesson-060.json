@@ -3,21 +3,34 @@
   "title": "The Space Ship",
   "lines": [
     "Jane and Ben make a space ship.",
-    "Jane and Ben use a box and tape.",
-    "Jane picks a place on the grass.",
-    "\"This is space,\" she tells Ben.",
+    "A big box and lots of tape!",
+    "A flat place on the grass is best.",
+    "\"This is space,\" Jane tells Ben.",
     "Ben has a big grin on his face.",
     "Jane and Ben race and hop in.",
     "The ship is not fast. It is a box.",
-    "But Jane and Ben can be in space!"
+    "But in space, a box is fine!"
   ],
-  "warmup": ["space", "place", "face", "race", "ship", "box"],
+  "warmup": [
+    "space",
+    "place",
+    "face",
+    "race",
+    "ship",
+    "box"
+  ],
   "questions": [
-    {"ask": "What do Jane and Ben use to make the ship?",
-     "listenFor": "A big box and tape. It is stated in the story, so have them find the line."},
-    {"ask": "Does the ship really fly? How do you know?",
-     "listenFor": "No. The story says it is not fast, it is a box. Listen for them using that line as the reason."},
-    {"ask": "Where do you think their ship goes? Tell me why.",
-     "listenFor": "Anything imaginative counts. You want a because, like \"to the moon, because they said it was space.\""}
+    {
+      "ask": "What do Jane and Ben use to make the ship?",
+      "listenFor": "A big box and tape. It is stated in the story, so have them find the line."
+    },
+    {
+      "ask": "Does the ship really fly? How do you know?",
+      "listenFor": "No. The story says it is not fast, it is a box. Listen for them using that line as the reason."
+    },
+    {
+      "ask": "Where do you think their ship goes? Tell me why.",
+      "listenFor": "Anything imaginative counts. You want a because, like \"to the moon, because they said it was space.\""
+    }
   ]
 }

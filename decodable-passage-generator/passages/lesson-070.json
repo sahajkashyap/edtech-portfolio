@@ -9,16 +9,28 @@
     "She steps to the side and slips.",
     "The fudge lands on a hedge.",
     "The duck hops up and licks it.",
-    "Meg is sad. But the judge grins.",
-    "He hands Meg a badge and a hug."
+    "The judge grins and hands Meg a badge."
   ],
-  "warmup": ["fudge", "bridge", "edge", "hedge", "badge", "judge"],
+  "warmup": [
+    "fudge",
+    "bridge",
+    "edge",
+    "hedge",
+    "badge",
+    "judge"
+  ],
   "questions": [
-    {"ask": "Where did the fudge land?",
-     "listenFor": "On a hedge. Stated in the story - point them at that line rather than saying it for them."},
-    {"ask": "Why did Meg step to the side?",
-     "listenFor": "The duck was on the edge of the bridge and would not move. If they say \"she slipped,\" ask \"what happened before that?\""},
-    {"ask": "Do you think Meg should get a badge if her fudge fell? Tell me why.",
-     "listenFor": "There is no right answer. Listen for a reason - she still made it, or the duck was not her fault."}
+    {
+      "ask": "Where did the fudge land?",
+      "listenFor": "On a hedge. Stated in the story - point them at that line rather than saying it for them."
+    },
+    {
+      "ask": "Why did Meg step to the side?",
+      "listenFor": "The duck was on the edge of the bridge and would not move. If they say \"she slipped,\" ask \"what happened before that?\""
+    },
+    {
+      "ask": "Do you think Meg should get a badge if her fudge fell? Tell me why.",
+      "listenFor": "There is no right answer. Listen for a reason - she still made it, or the duck was not her fault."
+    }
   ]
 }

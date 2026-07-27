@@ -8,25 +8,28 @@
     "Meg let the bee have it.",
     "Then she went to sleep in the sun.",
     "She had a dream of a green sea.",
-    "In the dream she had feet like a fish.",
-    "She swam deep and fast.",
-    "Then Meg got up and ran to the sea.",
-    "It was cold and green on her feet.",
-    "It was the best day at the beach."
+    "Meg got up and ran to the deep sea."
   ],
-  "warmup": ["beach", "peach", "bee", "sleep", "dream", "green"],
+  "warmup": [
+    "beach",
+    "peach",
+    "bee",
+    "sleep",
+    "dream",
+    "green"
+  ],
   "questions": [
     {
-      "ask": "What did Meg and her dad eat at the beach?",
-      "listenFor": "A meal of peach and tea. If they say just peach, ask what they drank."
+      "ask": "What did Meg and her dad eat?",
+      "listenFor": "A meal of peach and tea."
     },
     {
-      "ask": "What happened in Meg's dream?",
-      "listenFor": "She had feet like a fish and swam deep in a green sea. Listen for the fish feet, which is the fun part."
+      "ask": "What did Meg dream about?",
+      "listenFor": "A green sea. Ask what she did next."
     },
     {
-      "ask": "Do you think Meg did the right thing with the bee? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason, like she gave up her last bit of peach, or bees can sting."
+      "ask": "Was Meg right to give the bee her peach? Tell me why.",
+      "listenFor": "Either answer works. Listen for the reason."
     }
   ]
 }
