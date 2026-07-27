@@ -81,8 +81,17 @@ def build_html(spec):
                    f'so only the sound taught by Lesson {n} appears.</p>')
 
     warm_html = "".join(f"<div>{esc(w)}</div>" for w in warm)
+    # By the late lessons there are 24 heart words, which cost the child's page
+    # about an inch and a half. A reader who has known "a" and "the" for ninety
+    # lessons does not need to check them off; show the most recent ones.
+    HEART_SHOWN = 9
+    shown = hearts[-HEART_SHOWN:] if len(hearts) > HEART_SHOWN else hearts
+    heart_label = ("Heart words &mdash; read each one, then check the box."
+                   if len(shown) == len(hearts) else
+                   f"Heart words &mdash; the newest {len(shown)}. "
+                   f"Read each one, then check the box.")
     heart_html = "".join(
-        f'<span class="hw"><span class="ubox"></span>{esc(w)}</span>' for w in hearts)
+        f'<span class="hw"><span class="ubox"></span>{esc(w)}</span>' for w in shown)
     line_html = "\n      ".join(f'<span class="ln">{esc(l)}</span>' for l in lines)
     q_child = "\n  ".join(
         f'<div class="q"><span class="qtext">{i}. {esc(q["ask"])}</span>'
@@ -182,7 +191,7 @@ def build_html(spec):
 
   <h2>Say these first</h2>
   <div class="warm">{warm_html}</div>
-  <p class="rowlab">Heart words &mdash; read each one, then check the box.</p>
+  <p class="rowlab">{heart_label}</p>
   <div class="hearts">{heart_html}</div>
 
   <h2>Read the story</h2>

@@ -89,6 +89,17 @@ PROPS = {
     "puddle": ('<path d="M6 92 q6 -22 30 -24 q22 -12 46 -2 q16 2 12 26 z" fill="#e6e0d6"/>'
                '<path d="M26 80 q12 -6 22 -2" stroke-width="2"/>'
                '<path d="M56 74 q12 -5 22 -1" stroke-width="2"/>'),
+    "kid": ('<circle cx="50" cy="26" r="16" fill="#fff"/>'
+            '<circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/>'
+            '<path d="M43 32 q7 6 14 0"/>'
+            '<path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/>'
+            '<path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/>'
+            '<path d="M50 50 L32 62"/><path d="M50 50 L68 62"/>'),
+    "sled": ('<path d="M12 74 L78 74 q14 0 14 10 L20 84 z" fill="#fff"/>'
+             '<path d="M12 88 L92 88"/>'
+             '<line x1="24" y1="84" x2="24" y2="88"/><line x1="64" y1="84" x2="64" y2="88"/>'
+             '<path d="M92 88 q10 0 8 -8"/>'),
+    "hill": ('<path d="M2 96 q26 -50 50 -50 q26 0 46 50 z" fill="#fff"/>'),
     "log": ('<path d="M14 62 L80 62 q12 14 0 28 L14 90 z" fill="#fff"/>'
             '<ellipse cx="14" cy="76" rx="9" ry="14" fill="#fff"/>'
             '<ellipse cx="14" cy="76" rx="4" ry="6"/>'),
@@ -111,6 +122,10 @@ TRIGGERS = {
     "star": ["star", "stars"], "flower": ["flower", "flowers", "plant"],
     "rock": ["rock", "rocks"], "log": ["log", "logs"],
     "puddle": ["mud", "pond", "puddle", "water", "lake"],
+    "kid": ["kid", "kids", "girl", "boy", "child", "sam", "tim", "pam", "dan",
+            "meg", "nick", "ben", "tom", "jen", "max", "kit", "pat"],
+    "sled": ["sled", "sleds", "cart", "wagon"],
+    "hill": ["hill", "hills", "mountain"],
 }
 
 

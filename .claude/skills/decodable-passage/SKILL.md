@@ -102,6 +102,21 @@ Rules for it:
   `flaggedForTeacherReview` entries, say so here too: the grown-up should know
   the sheet rests on a judgement call.
 
+## Writing the story — what a test run taught us
+
+- **Use the word bank, not the rules.** `word-bank.json` lists the approved words
+  for each lesson. A writer reasoning from rules gets it wrong; a writer picking
+  from a proven list mostly cannot.
+- **Line length drives page height, not line count.** A line over ~9 words wraps
+  and costs a full line. At the later lessons, 6 lines of 9 words or fewer.
+- **Something must happen.** A small problem, a turn, an ending. "Sam sat. Sam
+  sat." passes every rule and fails the child. This is the part no checker can
+  do for you.
+- **The early lessons are the craft.** At Lesson 19 there are around 100 words
+  and no `and`, no `-s`, no `-ed`. Getting a real story out of that is the skill.
+- Run `validate_passage.py` and loop until it exits 0. Never edit the gate or
+  the bank to make a story pass — change the story.
+
 ## Sheet structure
 
 Follow the `phonics-worksheet` skill for all layout, space, and type rules —

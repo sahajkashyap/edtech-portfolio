@@ -1,0 +1,34 @@
+{
+  "lesson": 100,
+  "title": "The Fastest Sled in Town",
+  "lines": [
+    "Meg said, \"My sled is the fastest.\"",
+    "\"Mine is faster,\" said Nick.",
+    "They went up the tallest hill by a tree.",
+    "Meg went fast. Nick went faster.",
+    "Then a brown dog slid past on a lid.",
+    "Meg had to grin. That dog is the fastest!"
+  ],
+  "warmup": [
+    "sled",
+    "hill",
+    "brown",
+    "slid",
+    "grin",
+    "tree"
+  ],
+  "questions": [
+    {
+      "ask": "Who slid past Meg and Nick on the hill?",
+      "listenFor": "The brown dog, on a lid. It is right there in the story - if your child guesses, have them reread that line instead of being told."
+    },
+    {
+      "ask": "What did Meg and Nick each say about their own sled?",
+      "listenFor": "Each one said his or her sled was the quickest. Listen for the compare words - fastest, faster."
+    },
+    {
+      "ask": "Do you think Meg was cross at the end? Tell me why you think so.",
+      "listenFor": "Either answer is fine. Listen for a reason from the story - the grin, or the dog beating them both."
+    }
+  ]
+}

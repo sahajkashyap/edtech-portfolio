@@ -15,6 +15,21 @@ each word with which sound it uses is what resolves them.
 """
 
 # ---------------------------------------------------------------------------
+# Never put these in front of a child, however decodable they are. A first-grade
+# practice sheet with "gun" on it generates a parent phone call, and the sheet is
+# the last place anyone would think to look. Found by a writer agent that reached
+# for them at Lesson 19.
+# ---------------------------------------------------------------------------
+BLOCKED = {
+    "gun", "guns", "kill", "kills", "shot", "shoot", "gas", "bet", "bets",
+    "mob", "cop", "cops", "nag", "nags", "dam", "ban", "bans", "suck", "sucks",
+    "hell", "damn", "dumb", "stupid", "fat", "fatter", "fattest", "ugly",
+    "dead", "die", "died", "kick", "kicks", "hit", "hits", "slap", "slaps",
+    "gut", "rut", "pus", "bum", "butt", "junk", "drug", "drugs", "beer",
+    "wine", "bar", "bars", "cash", "loss", "sin", "sins", "war",
+}
+
+# ---------------------------------------------------------------------------
 # Words whose spelling is ambiguous: which sound does THIS word use, and from
 # which lesson is it therefore safe? This is the data the auditor cannot infer.
 # ---------------------------------------------------------------------------
@@ -60,9 +75,58 @@ AMBIGUOUS = {
     "moth": 47, "with": 47, "cloth": 47, "tooth": 47, "teeth": 47,
 
     # u_e saying /oo/ (58) vs /yoo/ (58, second sound)
-    "tube": 58, "tune": 58, "rude": 58, "June": 58,
+    "tube": 58, "tune": 58, "rude": 58,
     "cube": 58, "cute": 58, "mule": 58, "huge": 61,
 }
+
+# ---------------------------------------------------------------------------
+# Which words may take which endings. Without this the generator cheerfully
+# produces "alled", "aboutly" and "ams" -- an inflection engine with no idea what
+# a word IS. English needs a part of speech, and there is no tagger here, so the
+# tagging is explicit and reviewable.
+# ---------------------------------------------------------------------------
+VERBS = set("""
+sit run hop jump nap dig rub tap pat pack pick kick lick tick lock rock
+help rest test list jump bump dump pump stamp camp
+stop step stand stick spin spill slip slap snap swim grab grin grip trip
+drip drop bend send lend mend land sand
+bake make take wake rake shake name tame save wave date skate race place
+bite shine dive drive ride slide smile hope vote hide
+catch match fetch judge
+call fall fill pull toss miss kiss pass yell tell sell smell spell
+fish wish dish rush brush wash
+melt felt hold fold told
+paint plant point join boil spoil
+play stay say pray sway
+read eat clean dream reach teach speak
+look cook shook cool
+count shout
+turn burn curl
+start park bark mark
+learn
+""".split())
+
+ADJECTIVES = set("""
+big fat sad mad glad bad red hot wet dry
+tall small long short thin thick quick slow fast
+soft hard warm cold loud proud kind wild mild bold
+clean neat sweet deep green bright light dark sharp smart
+happy funny sunny lucky
+smooth
+""".split()) - {"fat"}
+
+NOUNS_NO_PLURAL = set("""
+mud sand water milk air fun help
+""".split())
+
+# Function words take no ending at all. Without this the bank offers "alls",
+# "abouts" and "ams".
+FUNCTION_WORDS = set("""
+a an as at is in on of it up us am be he she we me my by if do to no so go or
+the and but not can that this these those then them there they both just next
+than when which more most very too out our all about off am was were has had
+have some any each both her his him one two who why how what where
+""".split())
 
 # ---------------------------------------------------------------------------
 # The core vocabulary. Grouped only to make it readable and reviewable by a
@@ -110,6 +174,19 @@ den hen men pen ten
 bed fed led red wed
 beg leg peg
 gem hem
+# --- workhorse words a story cannot do without ---
+fast last past cast mast vast
+went sent spent
+just must dust rust crust trust
+next text
+than that then them this
+both
+no so go he she we me be
+mine nine fine wine vine
+bottom button kitten mitten
+soft lost cost
+help held melt felt belt built
+milk silk self shelf film
 # --- verbs and words that make stories move ---
 sit sat run ran hop hopped jump nap naps naps
 had has run runs sits gets rubs naps digs taps
@@ -159,7 +236,7 @@ smile mile pile while
 bone cone stone phone home nose rose close those
 hope rope note vote
 hole mole pole whole
-cute cube tube tune June rude mule huge
+cute cube tube tune rude mule huge
 # --- endings (63-76) ---
 boxes dishes wishes foxes
 jumped helped landed rested wanted
@@ -213,10 +290,12 @@ def word_list():
     for w in AMBIGUOUS:
         if w not in words:
             words.append(w)
-    return sorted(words)
+    return sorted(w for w in words if w not in BLOCKED)
 
 
 if __name__ == "__main__":
     ws = word_list()
-    print(f"{len(ws)} distinct words")
-    print(f"{len(AMBIGUOUS)} of them carry an explicit sound tag")
+    print(f"{len(ws)} distinct words after blocking {len(BLOCKED)} unsuitable ones")
+    print(f"{len(AMBIGUOUS)} carry an explicit sound tag")
+    leaked = sorted(set(ws) & BLOCKED)
+    print(f"blocked words that leaked through: {leaked or 'none'}")

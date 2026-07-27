@@ -15,7 +15,62 @@ import json
 import pathlib
 
 import audit_passage as A
-from core_vocabulary import AMBIGUOUS, word_list
+from core_vocabulary import (AMBIGUOUS, ADJECTIVES, BLOCKED, FUNCTION_WORDS,
+                             NOUNS_NO_PLURAL, VERBS, word_list)
+
+# Suffix -> the lesson that teaches it. Inflected forms are generated so the
+# lesson that teaches a suffix can actually use words carrying it: before this,
+# the -er/-est lesson had no -er/-est word in its own bank.
+SUFFIXES = {"s": 20, "es": 63, "ed": 64, "ing": 65, "er": 100, "est": 100,
+            "ly": 101}
+DOUBLING_LESSON = 107   # running, bigger  -- the doubling rule
+DROP_E_LESSON = 109     # making, hoping   -- the drop-e rule
+VOWELS = set("aeiou")
+
+
+def inflect(base):
+    """Inflected forms of a base word, with the lesson each becomes legal.
+
+    Only words tagged as verbs or adjectives are inflected. Without that check
+    the generator produces "alled" and "aboutly" -- confidently wrong English
+    that would end up on a child's page.
+    """
+    out = {}
+    is_verb = base in VERBS
+    is_adj = base in ADJECTIVES
+    pluralisable = not (is_verb or is_adj or base in NOUNS_NO_PLURAL
+                        or base in FUNCTION_WORDS or len(base) < 3)
+
+    def add(form, lesson):
+        out.setdefault(form, lesson)
+
+    def stems(suf, suf_lesson):
+        """(form, lesson) for plain, doubled and drop-e spellings."""
+        if base.endswith("e") and suf[0] in "aeiou":
+            add(base[:-1] + suf, max(suf_lesson, DROP_E_LESSON))
+        else:
+            add(base + suf, suf_lesson)
+        if (len(base) >= 3 and base[-1] not in VOWELS and base[-2] in VOWELS
+                and base[-3] not in VOWELS and base[-1] not in "wxy"):
+            add(base + base[-1] + suf, max(suf_lesson, DOUBLING_LESSON))
+
+    if (is_verb or pluralisable) and base not in FUNCTION_WORDS:
+        if base.endswith(("s", "x", "z", "ch", "sh")):
+            add(base + "es", 63)
+        else:
+            add(base + "s", 20)
+
+    if is_verb:
+        stems("ed", 64)
+        stems("ing", 65)
+
+    if is_adj:
+        stems("er", 100)
+        stems("est", 100)
+        add(base + "ly", 101)
+
+    return out
+
 
 OUT = pathlib.Path(__file__).parent / "word-bank.json"
 TOTAL = 128
@@ -38,6 +93,21 @@ def earliest_lesson(word: str):
 def build():
     words = word_list()
     bank, never, overrides = {}, [], 0
+    generated = 0
+
+    # inflected forms, each only as early as BOTH its base and its suffix allow
+    extra = {}
+    for base in words:
+        base_lesson = earliest_lesson(base)
+        if base_lesson is None:
+            continue
+        for form, suf_lesson in inflect(base).items():
+            if form in words or form in BLOCKED or form in extra:
+                continue
+            lesson = max(base_lesson, suf_lesson)
+            if A.audit(form, lesson)["clean"]:
+                extra[form] = lesson
+    generated = len(extra)
 
     for w in words:
         rule_lesson = earliest_lesson(w)
@@ -58,6 +128,9 @@ def build():
 
         bank.setdefault(lesson, []).append(w)
 
+    for form, lesson in extra.items():
+        bank.setdefault(lesson, []).append(form)
+
     cumulative, running = {}, []
     for n in range(1, TOTAL + 1):
         running.extend(sorted(bank.get(n, [])))
@@ -69,6 +142,7 @@ def build():
                "lesson wins. Words whose spelling has two sounds carry a human "
                "tag in core_vocabulary.AMBIGUOUS, which overrides the rule.",
         "totalWords": len(words),
+        "generatedInflections": generated,
         "placed": sum(len(v) for v in bank.values()),
         "humanTagOverrides": overrides,
         "neverDecodable": sorted(never),
@@ -78,7 +152,8 @@ def build():
     OUT.write_text(json.dumps(doc, indent=1) + "\n")
 
     print(f"wrote {OUT}")
-    print(f"  {len(words)} words in; {doc['placed']} placed; {len(never)} never decodable")
+    print(f"  {len(words)} base words + {generated} inflected forms; "
+          f"{doc['placed']} placed; {len(never)} never decodable")
     print(f"  {overrides} placed by human sound-tag rather than by rule\n")
     for n in (5, 10, 19, 41, 53, 62, 76, 88, 97, 128):
         avail = cumulative[n]
