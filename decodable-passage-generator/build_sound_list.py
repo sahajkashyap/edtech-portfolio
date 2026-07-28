@@ -341,9 +341,12 @@ def build():
     if HEART.WORDS:
         for hw in HEART.WORDS:
             heart_unlock.setdefault(hw.lesson, []).append(hw.word)
-            heart_detail[hw.word] = {"boxes": hw.boxes, "heart": hw.heart,
-                                     "lesson": hw.lesson,
-                                     "regular": hw.regular}
+            heart_detail[hw.word] = {
+                "boxes": hw.boxes(),
+                "regularFrom": [r for _, r in hw.graphemes],
+                "lesson": hw.lesson,
+                "why": hw.note,
+            }
     else:
         for info in heart_by_unit.values():
             heart_unlock.setdefault(info["firstLesson"], []).extend(info["words"])
@@ -380,6 +383,9 @@ def build():
             "allowedPatterns": sorted(patterns),
             "allowedHeartWords": sorted(hearts),
             "newHeartWords": sorted(heart_unlock.get(n, [])),
+            "heartsAtThisLesson": {
+                hw.word: hw.hearts_at(n) for hw in HEART.available(n)
+            } if HEART.WORDS else {},
             "requiresWordBank": [
                 {"spelling": sp, "secondSoundAt": at, "why": why}
                 for L2, items in SECOND_SOUND_LATER.items() if L2 <= n

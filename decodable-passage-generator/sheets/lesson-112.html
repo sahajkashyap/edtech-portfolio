@@ -42,7 +42,7 @@
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
   .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
@@ -53,7 +53,7 @@
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 9px 13px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
   .tip p { margin: 3px 0; line-height: 1.38; }
 
@@ -63,19 +63,24 @@
   .answers .qa .aa { color: #555; }
 
   /* ---- the picture ---- */
-  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
   .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
+.hwrow { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 1px 12px; align-items: flex-start; }
+  .hwcard { text-align: center; }
+  .hwcard svg { display: block; }
+  .hwword { font-size: 12px; color: #666; margin-top: 1px; letter-spacing: 0.04em; }
+
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
   .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
   .passage .ln { display: block; }
@@ -96,11 +101,11 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 4px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -159,8 +164,10 @@
     sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
     If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
     spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
-    <code>a</code> <code>and</code> <code>are</code> <code>be</code> <code>but</code> <code>can</code> <code>come</code> <code>for</code> <code>have</code> <code>he</code> <code>in</code> <code>is</code> <code>make</code> <code>my</code> <code>not</code> <code>of</code> <code>said</code> <code>she</code> <code>the</code> <code>this</code> <code>to</code> <code>was</code> <code>we</code> <code>you</code>.<p style="margin-top:6px">This lesson uses <code>ey</code>, <code>ou</code>, <code>ear</code>, which can say more than one sound. Every word here was picked from an approved list so only the sound taught by Lesson 112 appears.</p></p>
+    <p style="margin:0;">The only words not sounded out are the 72 heart words
+    taught so far &mdash; and even those are mostly regular. Only the marked part of each
+    is learned by heart. The newest are
+    <code>where</code> <code>who</code> <code>woman</code> <code>would</code> <code>you</code> <code>your</code>.<p style="margin-top:6px">This lesson uses <code>ey</code>, <code>ou</code>, <code>ear</code>, which can say more than one sound. Every word here was picked from an approved list so only the sound taught by Lesson 112 appears.</p></p>
   </div>
 
   <div class="foot">
@@ -187,8 +194,8 @@
 
   <h2>Say these first</h2>
   <div class="warm"><div>bear</div><div>pear</div><div>tear</div><div>tree</div><div>paw</div><div>face</div></div>
-  <p class="rowlab">Heart words &mdash; the newest 9. Read each one, then check the box.</p>
-  <div class="hearts"><span class="hw"><span class="ubox"></span>of</span><span class="hw"><span class="ubox"></span>said</span><span class="hw"><span class="ubox"></span>she</span><span class="hw"><span class="ubox"></span>the</span><span class="hw"><span class="ubox"></span>this</span><span class="hw"><span class="ubox"></span>to</span><span class="hw"><span class="ubox"></span>was</span><span class="hw"><span class="ubox"></span>we</span><span class="hw"><span class="ubox"></span>you</span></div>
+
+  <h2>Heart words</h2><p class="rowlab">Say it. Say each sound. The <span style="color:#b23f28">&hearts;</span> box is the part to learn by heart.</p><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 81 41" width="81" height="41" role="img" aria-label="laugh, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">l</text><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">au</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/><rect x="56" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="68" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">gh</text><path transform="translate(68,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg></div></div>
 
   <h2>Read the story</h2>
   <div class="passage">

@@ -11,12 +11,12 @@
     "The rain stops, but Ray will stay in."
   ],
   "warmup": [
-    "today",
     "gray",
     "rain",
     "train",
     "stay",
-    "play"
+    "play",
+    "day"
   ],
   "questions": [
     {
