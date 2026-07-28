@@ -154,6 +154,30 @@ patterns worth holding to:
 - **Don't end on a small injustice** — an animal taking a child's food with no
   repair reads fine once and sour six times.
 
+## Story length scales with the language available
+
+Confirmed by the teacher, July 2026. The gate does not demand a fixed length.
+It reads how many words can be *sounded out* at that lesson and scales:
+
+| Words a child can sound out | Minimum lines | Minimum words | Warm-up words |
+|---|---|---|---|
+| under 12 | 4 | 14 | 4 |
+| under 30 | 5 | 20 | 5 |
+| 30 or more | 6 | 25 | 6 |
+
+At Lesson 6 a child can sound out **eight words**. Demanding six lines and
+twenty-five words from those made every word appear six times, and that padding
+is what made the earliest sheets read like a grown-up giving instructions rather
+than a story. A four-line story that does one thing beats an eight-line one that
+repeats itself.
+
+Two constraints that bite hardest and are easy to forget:
+
+- **No `-s` until Lesson 20.** No third-person verbs at all before then, so
+  everything is imperatives, `is`, or a past form that happens to be CVC.
+- **No blends until Lesson 53.** That rules out *stop, help, hand, fast, best*
+  and most action verbs from the entire first half.
+
 ## Sheet structure
 
 Follow the `phonics-worksheet` skill for all layout, space, and type rules —

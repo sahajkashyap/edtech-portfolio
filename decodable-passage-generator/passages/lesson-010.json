@@ -1,36 +1,32 @@
 {
   "lesson": 10,
-  "title": "Tip It In",
+  "title": "The Map and the Fan",
   "lines": [
-    "Tim and Sis sat at a pit.",
-    "Tim is at a tin. Tip it in, Tim!",
-    "The tin fit in the pit!",
-    "Sis is at a tin pan. Tip it, Sis!",
-    "Sis! The pan is at the pit.",
-    "Sit as Tim sat, Sis. Tip it in!",
-    "The pan is in the pit!",
-    "Tim and Sis pat and pat."
+    "A fan is at the mat.",
+    "The map is at the mat.",
+    "Fan it, Tim! Fan the map.",
+    "The map is in the pit!",
+    "Nan and Tim sit at the pit."
   ],
   "warmup": [
+    "fan",
+    "mat",
+    "map",
     "pit",
-    "tin",
-    "tip",
-    "fit",
-    "pan",
     "sit"
   ],
   "questions": [
     {
-      "ask": "What did Tim tip into the pit?",
-      "listenFor": "A tin. Line two says it. If your child is stuck, put a finger on that line and let them read it again."
+      "ask": "Where does the map end up?",
+      "listenFor": "In the pit. The fourth line says so."
     },
     {
-      "ask": "What did Sis tip?",
-      "listenFor": "A tin pan. Line four says it. A short answer is a fine answer here."
+      "ask": "Who is at the pit at the end?",
+      "listenFor": "Nan and Tim. The last line names them."
     },
     {
-      "ask": "Sis missed the first time. What do you think helped her get it in? Tell me why.",
-      "listenFor": "Any thoughtful answer counts. You are listening for a reason, such as she sat where Tim sat, or she tried again."
+      "ask": "What do you think they will do next? Tell me.",
+      "listenFor": "Any idea. Getting the map back is the likely one, but anything they can explain is fine."
     }
   ]
 }

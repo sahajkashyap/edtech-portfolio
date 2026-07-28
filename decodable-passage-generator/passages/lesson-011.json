@@ -1,36 +1,32 @@
 {
   "lesson": 11,
-  "title": "Tap the Tin Pan",
+  "title": "I Am Nan",
   "lines": [
-    "Nan sat at a tin pan. Tap, tap!",
-    "Sam sat at a tan pan. Pat, pat!",
-    "Pam is in a nap at the mat.",
-    "Sit, Nan! Sit, Sam!",
-    "Nan and Sam sit. Tap the mat, Nan.",
-    "Pam sat! Pam is at the tin pan.",
-    "Tap it, Pam! Pat it, Nan! Tap, Sam!",
-    "Nan and Sam and Pam tap and tap."
+    "I am Nan. I am at a tan pan.",
+    "Tap the tan pan, Nan!",
+    "Tap, tap, tap.",
+    "Pam is in a nap!",
+    "Nan and Tim sit. Pam is in a nap."
   ],
   "warmup": [
-    "pan",
     "tan",
-    "tin",
+    "pan",
     "tap",
-    "pat",
-    "nap"
+    "nap",
+    "sit"
   ],
   "questions": [
     {
-      "ask": "What was Pam doing while Nan and Sam tapped?",
-      "listenFor": "Having a nap. Line three says it. If your child is not sure, let them reread that line rather than being told."
+      "ask": "What is Nan tapping?",
+      "listenFor": "A tan pan. The first line tells you, and the second says it again."
     },
     {
-      "ask": "What did Nan tap once she sat down?",
-      "listenFor": "The mat, which is much quieter than a tin pan. Line five says it."
+      "ask": "Why do Nan and Tim sit down?",
+      "listenFor": "Pam is asleep. Listen for them connecting the nap to the stopping — that is the whole story."
     },
     {
-      "ask": "Why do you think Nan and Sam stopped tapping the pans? Tell me what you think.",
-      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like they did not want to wake Pam up."
+      "ask": "What would you do so as not to wake someone? Tell me.",
+      "listenFor": "Any sensible idea — tiptoe, whisper, go to another room."
     }
   ]
 }
