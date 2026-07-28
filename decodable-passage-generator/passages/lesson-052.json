@@ -5,13 +5,13 @@
     "Meg dips a pink sock in the sink.",
     "The pink sock sank!",
     "\"Where did it go?\" said Meg.",
-    "Mom thinks, then gets a long rod.",
-    "Tug, tug, tug! And there it is!",
+    "Mom thinks, then gets a thin net.",
+    "Tug, tug! Up it pops with junk on it.",
     "The pink sock is back, and it is wet.",
-    "\"Thank you, Mom,\" said Meg with a wink.",
+    "\"Thank you, Mom,\" said Meg with a hug.",
     "\"Hang it up,\" said Mom. \"Not in the sink!\""
   ],
-  "warmup": ["pink", "sink", "sank", "thinks", "thank", "wink"],
+  "warmup": ["pink", "sink", "sank", "thinks", "thank", "junk"],
   "questions": [
     {
       "ask": "What happens to the sock in the sink?",
@@ -19,7 +19,7 @@
     },
     {
       "ask": "What does Mom use to get the sock back?",
-      "listenFor": "A long rod. This is stated in the story, so have them reread that line instead of telling them."
+      "listenFor": "A thin net. This is stated in the story, so have them reread that line instead of telling them."
     },
     {
       "ask": "What do you think Meg should do next time? Tell me why.",

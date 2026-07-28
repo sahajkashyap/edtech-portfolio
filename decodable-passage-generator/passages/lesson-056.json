@@ -1,14 +1,14 @@
 {
   "lesson": 56,
-  "title": "The Stone and the Mole",
+  "title": "The Stone and the Frog",
   "lines": [
     "Rose digs a hole at home.",
     "A big stone is stuck in it.",
     "\"We can tug it up,\" said Mom.",
     "She gets a rope and a long pole.",
     "They tug and tug and the stone pops up.",
-    "A mole hops up with a wet nose!",
-    "\"That was my home,\" said the mole.",
+    "A frog hops up with a wet nose!",
+    "\"That was my home,\" said the frog.",
     "So Rose and Mom set the stone back."
   ],
   "warmup": [
@@ -16,8 +16,8 @@
     "stone",
     "rope",
     "pole",
-    "mole",
-    "nose"
+    "nose",
+    "home"
   ],
   "questions": [
     {
@@ -26,11 +26,11 @@
     },
     {
       "ask": "Who was living under the stone?",
-      "listenFor": "A mole. It says so in the story, so point at the line rather than telling them."
+      "listenFor": "A frog. It says so in the story, so point at the line rather than telling them."
     },
     {
       "ask": "Why do you think Rose and Mom set the stone back?",
-      "listenFor": "Any answer with a reason is right. Listen for something like \"so the mole gets his home back.\""
+      "listenFor": "Any answer with a reason is right. Listen for something like \"so the frog gets his home back.\""
     }
   ]
 }

@@ -4,10 +4,10 @@
   "lines": [
     "Kids at school said a ghost lived there.",
     "At night it made a long, sad sound.",
-    "The chef said it was just the wind.",
-    "But Meg and the chef went one dark night.",
-    "She saw a sign on a back door.",
-    "In the dark she saw green eyes shine.",
+    "The cook said it was just a machine.",
+    "But Meg and Mom went one dark night.",
+    "Meg saw a sign on a back door.",
+    "She gave it a tug. Green eyes shone!",
     "It was a cat! No ghost at all."
   ],
   "warmup": [
@@ -25,11 +25,11 @@
     },
     {
       "ask": "What was really making the sound?",
-      "listenFor": "A cat. Meg and the chef found it behind the door with the sign."
+      "listenFor": "A cat, in back of the door with the sign on it. The cook had guessed wrong."
     },
     {
-      "ask": "Why did Meg take the chef along with her?",
-      "listenFor": "Either answer works. Listen for the thinking, not the verdict - a dark school is not a place to go on your own."
+      "ask": "Why did Meg take Mom along with her?",
+      "listenFor": "Listen for the thinking, not the verdict - a dark school at night is not a place to go on your own."
     }
   ]
 }

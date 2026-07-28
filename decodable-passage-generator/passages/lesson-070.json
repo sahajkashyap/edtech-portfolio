@@ -1,28 +1,28 @@
 {
   "lesson": 70,
-  "title": "Fudge for the Judge",
+  "title": "Fudge on the Bridge",
   "lines": [
     "Meg has a box of fudge.",
     "She runs it up to the bridge.",
     "A big duck sits on the edge.",
-    "Meg stops. The duck will not budge.",
+    "Meg stops. The duck will not move.",
     "She steps to the side and slips.",
-    "The fudge lands on a hedge.",
+    "The fudge lands on a big rock.",
     "The duck hops up and licks it.",
-    "The judge grins and hands Meg a badge."
+    "Mom hands Meg a badge for the best fudge."
   ],
   "warmup": [
     "fudge",
     "bridge",
     "edge",
-    "hedge",
     "badge",
-    "judge"
+    "duck",
+    "licks"
   ],
   "questions": [
     {
       "ask": "Where did the fudge land?",
-      "listenFor": "On a hedge. Stated in the story - point them at that line rather than saying it for them."
+      "listenFor": "On a big rock. Stated in the story - point them at that line rather than saying it for them."
     },
     {
       "ask": "Why did Meg step to the side?",

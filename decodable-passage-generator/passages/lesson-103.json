@@ -1,20 +1,27 @@
 {
   "lesson": 103,
-  "title": "Undo the Tape",
+  "title": "Unwrap the Box",
   "lines": [
-    "Gran sent Ben a box with a lock.",
+    "Gran sent Ben a box wrapped up in tape.",
     "Ben was unhappy. He had no way in.",
-    "He sat and gave the lock a tug.",
-    "Mom said, \"Undo the tape on the back.\"",
-    "Ben did. The back of the box slid off.",
+    "He sat and gave the box a tug.",
+    "Mom said, \"Unwrap the tape on the back.\"",
+    "Ben unwrapped it. The lid slid off.",
     "Inside he found a red kite and a note.",
-    "Ben did not need to unlock it at all."
+    "Now Ben was unhappy no more."
   ],
-  "warmup": ["lock", "tug", "kite", "note", "back", "box"],
+  "warmup": [
+    "lid",
+    "tug",
+    "kite",
+    "note",
+    "back",
+    "box"
+  ],
   "questions": [
     {
       "ask": "Why was Ben unhappy at the start?",
-      "listenFor": "The box had a lock and he had no way in. Let them reread line two if they are not sure."
+      "listenFor": "The box was wrapped in tape and he had no way in. Let them reread line two."
     },
     {
       "ask": "What was inside the box?",

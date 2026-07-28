@@ -1,27 +1,27 @@
 {
   "lesson": 28,
-  "title": "The Web at the Hut",
+  "title": "The Web at the Den",
   "lines": [
-    "Deb, Ned and Wag run to the hut.",
+    "Deb, Ned and Wag run to the den.",
     "It is wet in the fog.",
     "A big web is up at the top.",
     "\"I can bat it,\" said Ned.",
     "\"Do not! A bug is in it,\" said Deb.",
     "Deb gets a peg and pins the web up.",
     "\"We can get in,\" said Ned. Wag wags.",
-    "Deb, Ned and Wag nap in the hut."
+    "Deb, Ned and Wag nap in the den."
   ],
   "warmup": [
     "wet",
     "wags",
-    "hut",
+    "den",
     "peg",
     "bug",
     "fog"
   ],
   "questions": [
     {
-      "ask": "What was up at the top of the hut?",
+      "ask": "What was up at the top of the den?",
       "listenFor": "A big web. Line three says it. If your child is stuck, put a finger on that line and let them read it again."
     },
     {

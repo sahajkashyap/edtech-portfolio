@@ -3,7 +3,7 @@
   "title": "The Coin in the Soil",
   "lines": [
     "A boy named Nick dug in the soil.",
-    "His toy spade tapped a hard, flat thing.",
+    "His toy shovel tapped a hard, flat thing.",
     "It was a coin, black with mud.",
     "Nick made a lot of happy noise.",
     "Meg ran up to join him.",
@@ -20,7 +20,7 @@
   ],
   "questions": [
     {
-      "ask": "What did the toy spade tap?",
+      "ask": "What did the toy shovel tap?",
       "listenFor": "A hard, flat thing that was a coin. Have them find the line."
     },
     {

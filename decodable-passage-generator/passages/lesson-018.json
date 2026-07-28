@@ -1,36 +1,36 @@
 {
   "lesson": 18,
-  "title": "Ben and Meg Get a Cod",
+  "title": "Ben and Meg Get a Bug",
   "lines": [
-    "Dad and Ben and Meg got a big net.",
-    "\"A big cod is in the bog,\" said Ben.",
-    "Dad set the net in the bog.",
-    "Ben and Meg did tug and tug.",
-    "The net got a cod and a bug!",
-    "\"Do not get the bug,\" said Meg.",
-    "Ben did tip the bug in the mud.",
-    "Mom got a pot and fed Ben and Meg."
+    "Ben and Meg got a big net.",
+    "\"A bug can get in it,\" said Ben.",
+    "Ben set the net in the mud.",
+    "Ben and Meg sit. It is fun to sit.",
+    "A big bug got in the net!",
+    "Ben fed the bug a bit of a bun.",
+    "\"A bug is not a pet,\" said Meg.",
+    "Ben set the bug in the mud. It dug!"
   ],
   "warmup": [
     "net",
     "set",
     "get",
     "fed",
-    "cod",
-    "bog"
+    "pet",
+    "bun"
   ],
   "questions": [
     {
-      "ask": "What came up in the net?",
-      "listenFor": "A cod and a bug. The story says both. If your child names only one, have them read that line again."
+      "ask": "What got in the net?",
+      "listenFor": "A big bug. The story says it. If your child is unsure, have them find the word bug and read that line again."
     },
     {
-      "ask": "Who set the net in the bog?",
-      "listenFor": "Dad. Listen for Dad - Ben and Meg did the tugging, but Dad was the one at the water."
+      "ask": "Why did Ben put the bug back in the mud?",
+      "listenFor": "Meg said a bug is not a pet. Listen for them linking what Meg said to what Ben did next - those two lines go together."
     },
     {
-      "ask": "Why do you think Meg said not to get the bug? Tell me what you think.",
-      "listenFor": "Any answer is fine - a bug is not for the pot, or the bug was better off in the mud. You want a reason, not a right answer."
+      "ask": "Would you have kept the bug or let it go? Tell me why.",
+      "listenFor": "Either answer is fine - the bug lives in the mud, or it would be fun to watch. You want a reason, not a right answer."
     }
   ]
 }

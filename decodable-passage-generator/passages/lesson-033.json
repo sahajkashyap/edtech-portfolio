@@ -7,7 +7,7 @@
     "\"The vet can fix it,\" said Mom.",
     "Mom gets the van, but the cat hid!",
     "Gus got it and set it on his lap.",
-    "The vet sets a pad on the cut leg.",
+    "The vet gets a wet rag and dabs it.",
     "\"You have a big, tan cat,\" he said.",
     "Gus hugs it. The cat naps in the van."
   ],
@@ -16,13 +16,13 @@
     "van",
     "cat",
     "cut",
-    "pad",
+    "rag",
     "naps"
   ],
   "questions": [
     {
       "ask": "Why did Gus take the cat to the vet?",
-      "listenFor": "The cat had a cut on its leg. It is in the first line. If they say \"it was sick,\" ask them to find the words that tell us."
+      "listenFor": "The cat had a cut. It is in the first line. If they say \"it was sick,\" ask them to find the words that tell us."
     },
     {
       "ask": "How do you know the cat did not want to go?",
@@ -30,7 +30,7 @@
     },
     {
       "ask": "Do you think the cat will hide next time? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the vet was gentle and put a pad on the cut, or the cat hid at the start anyway. The because is the point."
+      "listenFor": "There is no right answer. You want a reason from the story - the vet was gentle and used a wet rag on the cut, or the cat hid at the start anyway. The because is the point."
     }
   ]
 }

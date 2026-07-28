@@ -1,35 +1,36 @@
 {
   "lesson": 125,
-  "title": "Ben's Shipment",
+  "title": "The Basement Cat",
   "lines": [
-    "A big shipment came to Ben's shop.",
-    "The box sat on the pavement in the sun.",
-    "Ben made the payment and cut the box.",
-    "Inside was just sand and one small shell.",
-    "\"This shipment is not mine,\" said Ben.",
-    "The man in the van had made a mistake.",
-    "At noon he came back with red kites!"
+    "Ben heard a movement down in the basement.",
+    "For a moment he stood still on the step.",
+    "He took a lamp and went down to look.",
+    "A small gray cat sat in a box.",
+    "Ben's fear turned into excitement.",
+    "He and Mom made an agreement.",
+    "The cat can stay if Ben feeds it.",
+    "Now it naps on the pavement in the sun."
   ],
   "warmup": [
     "box",
-    "sand",
-    "shell",
-    "van",
-    "noon",
-    "shop"
+    "cat",
+    "lamp",
+    "step",
+    "gray",
+    "stay"
   ],
   "questions": [
     {
-      "ask": "What was in the first box?",
-      "listenFor": "Sand and one small shell. It is in line four and it is the joke of the story."
+      "ask": "What did Ben hear at the start?",
+      "listenFor": "A movement in the basement. Line one says it, and it is what sets the story off."
     },
     {
-      "ask": "Who made the mistake?",
-      "listenFor": "The man in the van. Line six says it plainly."
+      "ask": "What was the agreement Ben made with Mom?",
+      "listenFor": "The cat can stay if Ben feeds it. Two people agree - that is what an agreement is."
     },
     {
-      "ask": "Do you think Ben was cross with the man? Why?",
-      "listenFor": "Either answer works. Ask what in the story made them think so."
+      "ask": "Would you have gone down the steps? Why?",
+      "listenFor": "Either answer is fine. Ask what they would have taken with them."
     }
   ]
 }

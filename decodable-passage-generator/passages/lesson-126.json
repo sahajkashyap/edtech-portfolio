@@ -1,35 +1,35 @@
 {
   "lesson": 126,
-  "title": "Is It Fixable?",
+  "title": "A Comfortable Seat",
   "lines": [
-    "Tom's bike had a bent chain.",
-    "\"Is it fixable?\" he said to Mom.",
-    "Mom took a look. \"The chain is, yes.\"",
-    "\"But this seat is not fixable at all.\"",
-    "They went to the shop for a washable seat.",
-    "Mom fixed the chain while Tom held the seat.",
-    "\"You are so likable, Mom,\" said Tom."
+    "The seat on Tom's bike was hard.",
+    "\"It is not comfortable,\" he said to Mom.",
+    "They went to the shop to look.",
+    "One seat was soft but very breakable.",
+    "Tom picked a thick one that was unbreakable.",
+    "Tom held the bike. Mom fixed the seat on.",
+    "Now his long rides are enjoyable."
   ],
   "warmup": [
-    "bike",
-    "chain",
     "seat",
+    "bike",
     "shop",
-    "held",
-    "went"
+    "soft",
+    "hard",
+    "held"
   ],
   "questions": [
     {
-      "ask": "What part of the bike was not fixable?",
-      "listenFor": "The seat. Line four says it straight out - let them read it again."
+      "ask": "What was wrong with the old seat?",
+      "listenFor": "It was hard, so it was not comfortable. Line one and line two together."
     },
     {
-      "ask": "Why was the new seat a good pick?",
-      "listenFor": "It was washable, so it can be washed. Point at the -able ending doing that job."
+      "ask": "Why did Tom pick the thick seat?",
+      "listenFor": "It was unbreakable. The other one was breakable - able to be broken. Point at the -able ending doing that job."
     },
     {
-      "ask": "What is something of yours you would want to be fixable? Why?",
-      "listenFor": "A toy, a shoe, a book. The why is the part worth waiting for."
+      "ask": "What is something of yours you wish were unbreakable? Why?",
+      "listenFor": "A toy, a cup, a tablet. The why is the part worth waiting for."
     }
   ]
 }

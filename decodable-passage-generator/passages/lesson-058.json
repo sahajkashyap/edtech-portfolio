@@ -1,22 +1,22 @@
 {
   "lesson": 58,
-  "title": "Duke and the Cube",
+  "title": "Duke and the Tube",
   "lines": [
     "Ben has one cute mule, Duke.",
     "Once, Duke sat in the dust.",
     "He will not get up at all.",
     "\"Up, Duke!\" said Ben. The mule just sits.",
-    "Ben gets a cube of yam from a tube.",
-    "He hums a tune and lifts up the cube.",
-    "Duke gets up fast and grabs the yam.",
+    "So Ben gets a long tube from his bag.",
+    "He hums a tune in the tube.",
+    "Duke jumps up fast to see it!",
     "Then they step up the path and go home."
   ],
   "warmup": [
     "cute",
     "mule",
     "dust",
+    "just",
     "tube",
-    "cube",
     "tune"
   ],
   "questions": [
@@ -26,11 +26,11 @@
     },
     {
       "ask": "What finally gets Duke up on his feet?",
-      "listenFor": "A cube of yam out of the tube. If they say \"the tune,\" that is close - ask what Ben lifted up as he hummed."
+      "listenFor": "The tune Ben hums in the tube. If they say \"the tube,\" ask what Ben did with it."
     },
     {
       "ask": "What do you think Ben will take next time? Tell me why.",
-      "listenFor": "Any answer with a reason. Listen for something like \"yam, because that is what got Duke moving.\""
+      "listenFor": "Any answer with a reason. Listen for something like \"the tube, because that tune got Duke moving.\""
     }
   ]
 }

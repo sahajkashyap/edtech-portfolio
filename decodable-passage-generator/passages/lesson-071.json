@@ -5,32 +5,32 @@
     "Ben and Meg have a pitching match.",
     "Both of them stand on the bridge.",
     "Ben pitches a stick in the ditch.",
-    "Meg fetches it and pitches it back.",
-    "A duck on the hedge is the judge.",
-    "Ben pitches it in the hedge. The duck quacks.",
+    "Meg catches it and pitches it back.",
+    "Mom sits on the edge and checks the match.",
+    "Ben pitches it in the mud. Miss!",
     "Meg wins the match and gets the badge.",
-    "Then the pals munch fudge on the bridge."
+    "Then the pals split the fudge on the bridge."
   ],
   "warmup": [
     "match",
     "bridge",
     "ditch",
-    "fetches",
-    "hedge",
-    "badge"
+    "edge",
+    "badge",
+    "fudge"
   ],
   "questions": [
     {
-      "ask": "Who is the judge in this match?",
-      "listenFor": "A duck sitting on the hedge. Stated in the story - have them find that line and read it back."
+      "ask": "Who checks the match?",
+      "listenFor": "Mom, sitting on the edge of the bridge. Stated in the story - have them find that line and read it back."
     },
     {
       "ask": "Why did Ben lose?",
-      "listenFor": "His stick went in the hedge and woke the duck. If they say \"Meg won,\" ask \"and where did Ben's stick land?\""
+      "listenFor": "His last stick went in the mud. If they say \"Meg won,\" ask \"and where did Ben's stick land?\""
     },
     {
-      "ask": "Do you think a duck makes a good judge? Tell me why.",
-      "listenFor": "Silly question on purpose - any answer is right. You are listening for the reason after it, not the yes or no."
+      "ask": "What do you think the pals did with the fudge? Tell me why.",
+      "listenFor": "The story says they split it. Listen for the reason after it - they are pals, or Meg shared even though she won."
     }
   ]
 }

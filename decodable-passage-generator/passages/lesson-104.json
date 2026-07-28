@@ -1,14 +1,14 @@
 {
   "lesson": 104,
-  "title": "Redo the Cake",
+  "title": "Meg at the Preschool",
   "lines": [
-    "Meg had a plan to make a cake.",
-    "She mixed it up and set it to bake.",
-    "But the cake came out flat and sad.",
-    "Mom said, \"You did not preheat it.\"",
-    "Meg had to redo the whole cake.",
-    "This time she did preheat it first.",
-    "The cake got tall. Meg had a grin."
+    "Meg helps at the preschool down the street.",
+    "She had a plan to bake a cake.",
+    "The first cake came out flat and sad.",
+    "Meg had to reread the plan two times.",
+    "The pan was too big! That was it.",
+    "She had to remake the whole cake.",
+    "The next cake got tall. Meg had a grin."
   ],
   "warmup": [
     "cake",
@@ -21,15 +21,15 @@
   "questions": [
     {
       "ask": "What went wrong with the first cake?",
-      "listenFor": "It came out flat, because she did not preheat. Have them find the word preheat."
+      "listenFor": "It came out flat. The pan was too big. Have them find the word pan."
     },
     {
-      "ask": "What did Meg do the next time?",
-      "listenFor": "She did preheat it first, and the cake got tall. Both parts."
+      "ask": "What did Meg do to work out the problem?",
+      "listenFor": "She had to reread the plan. Point out the word reread - read it again."
     },
     {
-      "ask": "Do you think Meg will forget to preheat again? Why?",
-      "listenFor": "Either answer. Listen for a reason - the flat cake, or the grin at the end."
+      "ask": "When is it good to reread a thing? Tell me why.",
+      "listenFor": "Any answer is fine. Listen for a reason - you missed a bit, you forgot a step."
     }
   ]
 }

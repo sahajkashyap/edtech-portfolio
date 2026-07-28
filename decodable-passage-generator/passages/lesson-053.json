@@ -5,7 +5,7 @@
     "Beth and Raj dig in the wet sand.",
     "A small crab jumps up from the sand!",
     "Beth claps and steps back fast.",
-    "\"Do not grab it,\" said Raj. \"It nips.\"",
+    "\"Do not grab it,\" said Raj. \"It can pinch.\"",
     "The crab grabs a stick and slips off.",
     "It hid in a crack next to a rock.",
     "Raj sticks a twig in the flat sand.",
@@ -22,7 +22,7 @@
   "questions": [
     {
       "ask": "Why does Raj say not to grab the crab?",
-      "listenFor": "It nips. It is right there in his line of talking - have them find the quote marks."
+      "listenFor": "It can pinch. It is right there in his line of talking - have them find the quote marks."
     },
     {
       "ask": "Where does the crab hide?",

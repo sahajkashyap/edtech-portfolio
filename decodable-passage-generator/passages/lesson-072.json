@@ -1,28 +1,28 @@
 {
   "lesson": 72,
-  "title": "The Lost Colt",
+  "title": "The Lost Pup",
   "lines": [
-    "A wild colt got lost in the cold.",
+    "A wild pup got lost in the cold.",
     "A kind child and Mom went to find it.",
     "The child held a rope and a lamp.",
-    "The colt was behind an old post.",
+    "The pup was behind an old gate.",
     "It was cold and it did not move.",
     "The child told it to hold still.",
-    "The child was bold and held the rope.",
-    "The colt is home and it is not cold."
+    "Most pups run off, but this one did not.",
+    "The pup is home and it is not cold."
   ],
   "warmup": [
     "wild",
-    "colt",
     "cold",
     "kind",
     "child",
-    "behind"
+    "behind",
+    "told"
   ],
   "questions": [
     {
-      "ask": "Where was the colt hiding?",
-      "listenFor": "Behind an old post. Stated in the story - have them go back and find it themselves."
+      "ask": "Where was the pup hiding?",
+      "listenFor": "Behind an old gate. Stated in the story - have them go back and find it themselves."
     },
     {
       "ask": "What did the child bring along?",
@@ -30,7 +30,7 @@
     },
     {
       "ask": "Do you think the child was brave? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason tied to the story - going out in the cold with Mom, or holding a wild colt."
+      "listenFor": "Either answer is fine. Listen for a reason tied to the story - going out in the cold with Mom, or holding on to a wild pup."
     }
   ]
 }

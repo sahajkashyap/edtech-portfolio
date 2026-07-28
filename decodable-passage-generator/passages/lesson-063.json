@@ -6,18 +6,18 @@
     "She tosses in dishes and socks.",
     "A fox naps in the last box!",
     "Lin shuts the lid and does not see him.",
-    "Lin lifts the box. It tips. The fox dashes!",
+    "Lin lifts the box. It tips. The fox runs!",
     "\"What does a fox want with dishes?\" she said.",
     "Lin fixes the box and packs it.",
-    "Then she checks the two boxes."
+    "Then she checks it and wishes for no foxes."
   ],
   "warmup": [
     "boxes",
     "dishes",
     "tosses",
-    "dashes",
     "fixes",
-    "fox"
+    "wishes",
+    "foxes"
   ],
   "questions": [
     {

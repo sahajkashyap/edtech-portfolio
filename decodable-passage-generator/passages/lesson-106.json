@@ -6,23 +6,30 @@
     "Dad said, \"This is unsafe. Fix it.\"",
     "Jack was unhappy, but he was helpful.",
     "He slowly set the socks in a bin.",
-    "He had to redo the shelf three times.",
-    "At last the room was spotless.",
+    "He had to restack the shelf three times.",
+    "At last he had it all set neatly.",
     "Dad said, \"That was helpful. Thanks!\""
   ],
-  "warmup": ["room", "mess", "socks", "bin", "shelf", "three"],
+  "warmup": [
+    "room",
+    "mess",
+    "socks",
+    "bin",
+    "shelf",
+    "three"
+  ],
   "questions": [
     {
       "ask": "What did Dad say about the room?",
       "listenFor": "That it was unsafe and had to be fixed. Have them find the word unsafe."
     },
     {
-      "ask": "How many times did Jack redo the shelf?",
+      "ask": "How many times did Jack restack the shelf?",
       "listenFor": "Three. If they say the wrong number, send them back to that line instead of correcting them."
     },
     {
       "ask": "Do you think Jack felt better at the end? Why do you think so?",
-      "listenFor": "Either answer. Listen for a reason from the story - spotless, or what Dad said last."
+      "listenFor": "Either answer. Listen for a reason from the story - the neat room, or what Dad said last."
     }
   ]
 }

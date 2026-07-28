@@ -5,11 +5,11 @@
     "Pam, Dan and Sal ran in the sun.",
     "\"I am it!\" said Pam. She ran at Dan.",
     "Dan ran and ran. Pam can not tag him.",
-    "Sal is a tot. She sat and was sad.",
+    "Sal is not big. She sat and was sad.",
     "Pam ran to Sal. \"Can we tag Dan?\"",
     "Sal and Pam ran at Dan and got him!",
-    "\"Sal got me!\" said Dan. Sal ran and ran.",
-    "\"Sal is it!\" said Pam. Sal ran at Dan."
+    "\"Sal got me! I am it,\" said Dan.",
+    "Sal and Pam ran. Sal is a pal!"
   ],
   "warmup": [
     "ran",
@@ -17,7 +17,7 @@
     "sad",
     "sat",
     "can",
-    "tot"
+    "am"
   ],
   "questions": [
     {
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Why was Sal sitting down and feeling sad?",
-      "listenFor": "She is a tot, so she was not in the game. Line four says it. Let them reread it rather than being told."
+      "listenFor": "She is not big, so she was left out of the game. Line four says it. Let them reread it rather than being told."
     },
     {
       "ask": "Pam asked Sal to help her tag Dan. Was that a good idea? Tell me why.",

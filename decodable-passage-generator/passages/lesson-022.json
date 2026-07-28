@@ -1,9 +1,9 @@
 {
   "lesson": 22,
-  "title": "Kim and the Kit",
+  "title": "Kim and the Ten Kids",
   "lines": [
-    "Ten kids get a big kit.",
-    "In it, Kim gets pegs and a net.",
+    "Ten kids sit in the sun.",
+    "Kim gets pegs and a big net.",
     "The kids dig and set up the pegs.",
     "But a peg is bad and did not fit.",
     "Kim gets a tin pin and taps it in.",
@@ -13,23 +13,23 @@
   ],
   "warmup": [
     "kids",
-    "kit",
     "pegs",
     "net",
     "pin",
-    "fits"
+    "fits",
+    "den"
   ],
   "questions": [
     {
-      "ask": "What did the ten kids get?",
-      "listenFor": "A big kit, with pegs and a net in it. Lines one and two say it. Let your child reread rather than telling them."
+      "ask": "What did Kim get to make the den?",
+      "listenFor": "Pegs and a big net. Line two says it. Let your child reread rather than telling them."
     },
     {
       "ask": "What did Kim use when the peg did not fit?",
       "listenFor": "A tin pin. Line five says it. One word is plenty here."
     },
     {
-      "ask": "What would you make with a kit like that? Tell me why.",
+      "ask": "What would you make with pegs and a net? Tell me why.",
       "listenFor": "Any answer is a good answer. You are listening for the reason behind it, not the thing itself."
     }
   ]

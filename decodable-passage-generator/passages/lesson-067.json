@@ -4,33 +4,33 @@
   "lines": [
     "Tom packs his backpack for camp.",
     "In it he has a hotdog and a napkin.",
-    "Dan tosses in catnip for his cat.",
-    "Tom and Dan hike up to the hilltop.",
+    "Dan's kitten is hidden in the backpack!",
+    "Tom and Dan walk up the big hill.",
     "At sunset Tom cannot get his hotdog.",
-    "Dan grins. The cat is sitting on it.",
+    "Dan grins. The kitten is sitting on it.",
     "Tom is upset. The hotdog is a mess.",
-    "Dan gives him a muffin and Tom grins."
+    "Dan hands him a muffin and Tom grins."
   ],
   "warmup": [
     "packs",
     "camp",
-    "tosses",
-    "hike",
+    "kitten",
+    "hill",
     "grins",
     "sitting"
   ],
   "questions": [
     {
       "ask": "What was in Tom's backpack?",
-      "listenFor": "A hotdog, a napkin, and catnip. Stated in the story - have them find the lines instead of listing it for them."
+      "listenFor": "A hotdog, a napkin, and Dan's kitten. Stated in the story - have them find the lines instead of listing it for them."
     },
     {
       "ask": "Why is Tom upset?",
-      "listenFor": "The cat sat on his hotdog and squashed it. If they only say \"the cat,\" ask \"and what did the cat do?\""
+      "listenFor": "The kitten sat on his hotdog and squashed it. If they only say \"the kitten,\" ask \"and what did the kitten do?\""
     },
     {
-      "ask": "Do you think Dan should have put the catnip in Tom's backpack? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason tied to the story - the catnip is what pulled the cat in."
+      "ask": "How do you think the kitten got in the backpack? Tell me why.",
+      "listenFor": "Any answer is fine. Listen for a reason tied to the story - the hotdog was in there, and nobody was looking."
     }
   ]
 }

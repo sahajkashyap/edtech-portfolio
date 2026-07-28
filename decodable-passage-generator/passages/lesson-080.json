@@ -1,36 +1,36 @@
 {
   "lesson": 80,
-  "title": "Her Little Fern",
+  "title": "Her Little Plant",
   "lines": [
-    "Pam has a little fern in a pot.",
-    "She sets her fern on the top step.",
-    "Then a herd of big pigs runs past.",
-    "The pigs bump her fern off the step.",
-    "Her fern lands flat in the mud.",
-    "Dad helps her fill the pot back up.",
-    "She pats the mud in with her hands.",
-    "Pam sets her fern up on the table."
+    "Her sister sets a pot on the step.",
+    "A little plant sits up in her pot.",
+    "Then a big pig runs past and bumps it.",
+    "The pot lands under the step in mud.",
+    "Pam and her sister fill it back up.",
+    "Dad hands them a cup to help.",
+    "After that, they pat the mud in.",
+    "Her plant sits safe in the corner."
   ],
   "warmup": [
-    "fern",
-    "herd",
     "her",
+    "pot",
     "step",
-    "pigs",
-    "mud"
+    "mud",
+    "pig",
+    "hands"
   ],
   "questions": [
     {
-      "ask": "What knocked the fern off the step?",
-      "listenFor": "The herd of big pigs running past. If they say 'the pigs,' ask how many."
+      "ask": "What knocked the pot off the step?",
+      "listenFor": "A big pig that ran past. Have them point to that line."
     },
     {
-      "ask": "How did Pam and Dad fix the fern?",
-      "listenFor": "Dad filled the pot back up and Pam patted the mud in. Listen for both of them."
+      "ask": "Who filled the pot back up?",
+      "listenFor": "Pam and her sister. Dad only handed them a cup - listen for that."
     },
     {
-      "ask": "Why do you think Pam put the fern on the table?",
-      "listenFor": "Any answer with a reason. The pigs cannot reach it up there."
+      "ask": "Why do you think they put the plant in the corner?",
+      "listenFor": "Any answer with a reason. No pig can bump it over there."
     }
   ]
 }

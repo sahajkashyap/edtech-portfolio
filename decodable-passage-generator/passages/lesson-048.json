@@ -1,23 +1,23 @@
 {
   "lesson": 48,
-  "title": "Chad Chops a Yam",
+  "title": "Chad Chops the Ham",
   "lines": [
     "Dad and Chad walk to a shop with Meg.",
-    "They get a big yam and a bun.",
-    "At the hut, Chad chops chips from the yam.",
-    "Dad gets a pan hot and tips them in.",
-    "\"Such a rich dish!\" said Meg, his chum.",
+    "They get a ham and a bag of chips.",
+    "At the shed, Chad chops the ham up.",
+    "Dad gets a pan hot and tips it in.",
+    "\"Such a rich dish!\" said Meg, his pal.",
     "Meg has much of it, and Chad has less.",
     "A chip is on his chin.",
-    "Meg chops the bun. Chad has the big bit."
+    "Meg has a chip. She lets Chad have it."
   ],
   "warmup": [
     "chops",
     "chips",
-    "chum",
     "chin",
     "much",
-    "rich"
+    "rich",
+    "such"
   ],
   "questions": [
     {
@@ -25,8 +25,8 @@
       "listenFor": "Dad does. Chad chops, Dad cooks - two jobs, two people. Have them find the line with pan in it."
     },
     {
-      "ask": "Why does Chad get the big bit of the bun?",
-      "listenFor": "Meg ate most of the chips and Chad only had one, on his chin, so she made it fair. You want cause and effect, not just \"she was nice.\""
+      "ask": "Why does Meg let Chad have her chip?",
+      "listenFor": "Meg ate much of the dish and Chad had less, so she made it fair. You want cause and effect, not just \"she was nice.\""
     },
     {
       "ask": "Was that a fair thing for Meg to do? Tell me why.",

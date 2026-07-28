@@ -2,27 +2,34 @@
   "lesson": 102,
   "title": "The Helpful Pup",
   "lines": [
-    "Our pup Bud has no teeth at all.",
-    "Bud is toothless, but he is helpful.",
-    "Meg lost a sock and felt hopeless.",
-    "She looked in the box. No sock.",
-    "Bud went to sniff at the rug.",
-    "He dug up the sock and set it in her hand.",
-    "Meg was thankful for her toothless pup."
+    "Our pup Bud is small and harmless.",
+    "But Bud is helpful when a sock gets lost.",
+    "Meg lost a sock and felt sad.",
+    "She looked in the box. It was useless.",
+    "Bud went to smell the rug.",
+    "He dug up the sock for her.",
+    "Meg was thankful for her helpful pup."
   ],
-  "warmup": ["pup", "teeth", "sock", "rug", "dug", "hand"],
+  "warmup": [
+    "pup",
+    "sock",
+    "rug",
+    "dug",
+    "lost",
+    "felt"
+  ],
   "questions": [
     {
       "ask": "What did Meg lose?",
       "listenFor": "A sock. Simple to find - have them put a finger on the line that says it."
     },
     {
-      "ask": "How did Bud get the sock back to Meg?",
-      "listenFor": "He dug it up and set it in her hand. Listen for both halves of that."
+      "ask": "How did Bud find the sock?",
+      "listenFor": "He went to smell the rug, then dug it up. Listen for both halves of that."
     },
     {
-      "ask": "Do you think a toothless pup can still be a good pet? Why?",
-      "listenFor": "Any answer is fine. You are listening for a because, not for the right opinion."
+      "ask": "When has someone been helpful to you? Tell me about it.",
+      "listenFor": "Any story is fine. You are listening for them to use the word helpful themselves."
     }
   ]
 }

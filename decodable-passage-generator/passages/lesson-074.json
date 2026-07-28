@@ -3,10 +3,10 @@
   "title": "The Funny Puppy",
   "lines": [
     "Meg has a funny little puppy.",
-    "The puppy digs by the hedge.",
+    "The puppy digs by the pond.",
     "It finds a penny in the mud.",
     "The puppy runs to a lady on the path.",
-    "The lady has a baby in a sling.",
+    "A little baby sits by the lady.",
     "The baby is happy and claps.",
     "The puppy drops the penny by the baby.",
     "The lady gives it back to Meg."
@@ -22,7 +22,7 @@
   "questions": [
     {
       "ask": "What did the puppy dig up?",
-      "listenFor": "A penny, out of the mud by the hedge. Stated in the story - point them back to the line."
+      "listenFor": "A penny, out of the mud by the pond. Stated in the story - point them back to the line."
     },
     {
       "ask": "Who did the puppy give the penny to?",

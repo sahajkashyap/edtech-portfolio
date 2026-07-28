@@ -1,19 +1,19 @@
 {
   "lesson": 89,
-  "title": "The Book by the Brook",
+  "title": "The Book by the Pond",
   "lines": [
-    "Ben took a good book to the brook.",
+    "Ben took a good book to the pond.",
     "He stood on a log made of wood.",
     "A duck came to look at his book.",
     "The wet log shook, and the book fell in!",
     "Ben got a long stick with a hook.",
-    "He took the damp book home to dry.",
+    "He took the wet book home to dry.",
     "Next time Ben will look for a dry log."
   ],
   "warmup": [
     "took",
     "book",
-    "brook",
+    "hook",
     "stood",
     "wood",
     "shook"
@@ -21,7 +21,7 @@
   "questions": [
     {
       "ask": "Where did Ben stand to read his book?",
-      "listenFor": "On a log made of wood, by the brook. Have them point to that line."
+      "listenFor": "On a log made of wood, by the pond. Have them point to that line."
     },
     {
       "ask": "How did Ben get his book back?",

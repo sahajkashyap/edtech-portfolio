@@ -1,9 +1,9 @@
 {
   "lesson": 69,
-  "title": "Fetch",
+  "title": "Catch!",
   "lines": [
     "Dan tosses a stick for his pup.",
-    "The pup runs to fetch it.",
+    "The pup runs to catch it.",
     "The stick lands in a wet ditch.",
     "The pup will not go in the ditch.",
     "Dan hops in and catches the stick.",
@@ -12,8 +12,8 @@
     "This time the pup catches it. Dan claps."
   ],
   "warmup": [
-    "fetch",
     "ditch",
+    "catch",
     "catches",
     "patch",
     "pitches",

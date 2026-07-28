@@ -3,15 +3,15 @@
   "title": "Mud is Fun",
   "lines": [
     "Tim sat in the mud. Mud is fun!",
-    "A pup did sit in the mud.",
+    "A pup sat in the mud.",
     "Mud is on Tim. Mud is on the pup.",
-    "Dad did sit up. \"Not in the mud, Tim!\"",
+    "Dad sat up. \"Not in the mud, Tim!\"",
     "\"Do it, Dad! It is fun,\" said Tim.",
-    "Dad did sit in the mud!",
+    "Dad sat in the mud!",
     "Mud is on Dad. It is on us!",
     "It is fun to nap in the sun."
   ],
-  "warmup": ["mud", "sun", "fun", "pup", "sit", "up"],
+  "warmup": ["mud", "sun", "fun", "pup", "sat", "up"],
   "questions": [
     {
       "ask": "Who sat down in the mud at the end?",

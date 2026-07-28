@@ -1,19 +1,19 @@
 {
   "lesson": 117,
-  "title": "The Gem in the City",
+  "title": "The Stone in the City",
   "lines": [
     "Ten mice live in a big city.",
     "They race past the shops at night.",
-    "One night a mouse found a gem.",
+    "One night a mouse found a huge stone.",
     "It sat on the edge of a step.",
-    "The gem was as big as an ice cube.",
+    "The stone was as bright as ice.",
     "The mice set it in a cage.",
     "Now it lights up the mouse den.",
     "It is the best lamp in the city."
   ],
   "warmup": [
     "city",
-    "gem",
+    "huge",
     "race",
     "edge",
     "cage",
@@ -21,15 +21,15 @@
   ],
   "questions": [
     {
-      "ask": "Where did the mouse find the gem?",
+      "ask": "Where did the mouse find the stone?",
       "listenFor": "On the edge of a step. Line four."
     },
     {
-      "ask": "What do the mice use the gem for?",
+      "ask": "What do the mice use the stone for?",
       "listenFor": "As a lamp to light up their den."
     },
     {
-      "ask": "What would you do with that gem? Why?",
+      "ask": "What would you do with that stone? Why?",
       "listenFor": "Any answer is fine. You are after the reason behind it."
     }
   ]

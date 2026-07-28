@@ -3,12 +3,12 @@
   "title": "The Bug and the Bun",
   "lines": [
     "Bob got on the big bus.",
-    "A bun and a fig sat in the bag.",
+    "A bun and a nut sat in the bag.",
     "A bug got in and bit the bun!",
-    "\"Do not nip the bun!\" said Bob.",
+    "\"Do not dig in it, bug!\" said Bob.",
     "But the bug got a big bit of it.",
     "A man on the bus got a cup.",
-    "The man did tip the bug in the cup.",
+    "Bob got the bug in the cup.",
     "Bob got the bun. The bug got a bit."
   ],
   "warmup": [
@@ -26,7 +26,7 @@
     },
     {
       "ask": "How did the man on the bus help?",
-      "listenFor": "He tipped the bug into a cup. Listen for the cup - that is the turn in the story."
+      "listenFor": "He got a cup so Bob could move the bug. Listen for the cup - that is the turn in the story, and notice that Bob does the moving himself."
     },
     {
       "ask": "Do you think Bob should have shared the bun? Tell me why.",

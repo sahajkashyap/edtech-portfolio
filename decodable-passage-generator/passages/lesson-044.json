@@ -1,36 +1,36 @@
 {
   "lesson": 44,
-  "title": "The Duck on the Dock",
+  "title": "The Duck on the Deck",
   "lines": [
-    "Nick and Dad sit on the dock.",
+    "Nick and Dad sit on the deck.",
     "Nick has a sack of buns.",
-    "A duck pecks at the sack!",
+    "A duck tugs at the sack!",
     "He picks it up and backs up.",
-    "The duck pecks at his red sock.",
+    "The duck taps at his red sock.",
     "Nick sits back and a bun falls off.",
     "The duck gets it. \"What luck!\" said Dad.",
     "It goes to Nick and naps."
   ],
   "warmup": [
     "duck",
-    "dock",
+    "deck",
     "sack",
-    "pecks",
     "picks",
-    "sock"
+    "sock",
+    "luck"
   ],
   "questions": [
     {
-      "ask": "What does the duck peck at after the sack?",
+      "ask": "What does the duck tap at after the sack?",
       "listenFor": "Nick's red sock. This is stated in the story - if they guess, have them find the line with the word sock in it."
     },
     {
       "ask": "Why does a bun fall off?",
-      "listenFor": "Nick sat back when the duck pecked at his sock. You are listening for the chain of events, not just \"it fell.\""
+      "listenFor": "Nick sat back when the duck tapped at his sock. You are listening for the chain of events, not just \"it fell.\""
     },
     {
       "ask": "Do you think the duck planned this? Tell me why.",
-      "listenFor": "Either answer is correct. What you want is a reason from the story, like \"yes, it pecked the sack first\" or \"no, ducks just peck at things.\""
+      "listenFor": "Either answer is correct. What you want is a reason from the story, like \"yes, it tugged at the sack first\" or \"no, ducks just poke at things.\""
     }
   ]
 }

@@ -1,31 +1,31 @@
 {
   "lesson": 127,
-  "title": "One Wheel",
+  "title": "Meg and the Unicorn",
   "lines": [
-    "Meg had a red tricycle with three wheels.",
-    "\"I can not ride a bicycle,\" said Meg.",
-    "At the fair, a clown rode a unicycle.",
-    "It had just one wheel!",
-    "\"If he can, so can I,\" said Meg.",
-    "She fell down, got up, and did it again.",
-    "Now Meg rides a bicycle every day."
+    "Meg rode a red tricycle with three wheels.",
+    "She wants a bicycle, but two wheels tip.",
+    "Her dad got her a unicorn helmet.",
+    "\"A unicorn has one horn. Uni means one.\"",
+    "\"Tri is three and bi is two,\" he said.",
+    "Meg fell down, got up, and went again.",
+    "Now Meg rides her bicycle every day."
   ],
   "warmup": [
     "red",
     "three",
-    "clown",
     "fell",
     "down",
-    "day"
+    "day",
+    "horn"
   ],
   "questions": [
     {
-      "ask": "How many wheels did the unicycle have?",
-      "listenFor": "One. Uni means one - the same one hiding inside unicycle. Tri is three, bi is two."
+      "ask": "How many wheels does a tricycle have? A bicycle?",
+      "listenFor": "Three and two. Tri is three, bi is two, uni is one - the same one hiding inside unicorn."
     },
     {
       "ask": "What happened the first time Meg got on the bicycle?",
-      "listenFor": "She fell down, then got up and did it again. Line six holds the whole turn."
+      "listenFor": "She fell down, then got up and went again. Line six holds the whole turn."
     },
     {
       "ask": "What is something hard you kept trying? Why did you keep going?",

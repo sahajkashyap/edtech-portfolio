@@ -1,17 +1,17 @@
 {
   "lesson": 97,
-  "title": "The Cow and the Stew",
+  "title": "The Cow and the Beans",
   "lines": [
-    "Nick made a big pot of stew in town.",
-    "A crowd came to sit on the ground.",
-    "He had to boil it a long time.",
-    "Then a brown cow stuck its head in!",
-    "The stew spilled out on the soil.",
+    "Nick got a new pot at the shop.",
+    "He had to boil the beans a long time.",
+    "A crowd sat down on the brown soil.",
+    "Then a cow stuck its head in the pot!",
+    "The beans spilled out on the ground.",
     "Nick had to frown and count his coins.",
     "But the crowd found bread, and all was good."
   ],
   "warmup": [
-    "stew",
+    "new",
     "crowd",
     "boil",
     "brown",
@@ -20,12 +20,12 @@
   ],
   "questions": [
     {
-      "ask": "What did Nick make for the crowd?",
-      "listenFor": "A big pot of stew. Have them point to the first line."
+      "ask": "What was Nick making for the crowd?",
+      "listenFor": "Beans, boiled in his new pot. Have them point to line two."
     },
     {
-      "ask": "What went wrong with the stew?",
-      "listenFor": "A brown cow stuck its head in and it spilled on the soil."
+      "ask": "What went wrong with the beans?",
+      "listenFor": "A cow stuck its head in the pot and they spilled on the ground."
     },
     {
       "ask": "How do you think Nick felt at the end? Tell me why.",

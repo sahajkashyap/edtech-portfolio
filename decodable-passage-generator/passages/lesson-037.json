@@ -1,36 +1,36 @@
 {
   "lesson": 37,
-  "title": "Fog on the Bog",
+  "title": "Fog on the Log",
   "lines": [
-    "Fog sat on the bog. Tom and Mom jog.",
-    "\"I can not see the hut,\" said Mom.",
-    "Tom did look and look in the fog.",
-    "A red pot! It sits on a log.",
-    "\"The pot is at the hut!\" said Tom.",
-    "Mom and Tom jog to the red pot.",
-    "The hut sits at the log, in the fog.",
-    "\"You got us to the hut,\" said Mom."
+    "Fog! Tom and Mom can not see a lot.",
+    "\"The dog is not in his box,\" said Mom.",
+    "Tom and Mom look and look in the fog.",
+    "A red pot! It is on the log.",
+    "\"The dog naps at the log!\" said Tom.",
+    "Mom and Tom run to the red pot.",
+    "The dog got up and ran to Tom.",
+    "\"You got us to the dog,\" said Mom."
   ],
   "warmup": [
     "fog",
-    "bog",
-    "jog",
     "log",
     "pot",
-    "got"
+    "got",
+    "dog",
+    "box"
   ],
   "questions": [
     {
-      "ask": "Why could Mom not see the hut?",
+      "ask": "Why could Mom and Tom not see the dog?",
       "listenFor": "The fog. Lines one and two say it. Let your child reread rather than being told."
     },
     {
-      "ask": "What did Tom spot that showed him where the hut was?",
+      "ask": "What did Tom spot that showed him where the dog was?",
       "listenFor": "A red pot sitting on a log. Lines four and five say it. This is the turn of the story."
     },
     {
-      "ask": "What would you use to mark the way to your door? Tell me why that.",
-      "listenFor": "Any answer counts. You are listening for a reason that shows they understood why the red pot worked in fog."
+      "ask": "What would you use to mark a path so you could find it in fog? Tell me why that.",
+      "listenFor": "Any answer counts. You are listening for a reason that shows they understood why a red pot works in fog."
     }
   ]
 }

@@ -6,10 +6,10 @@
     "The pup got the rag and ran!",
     "\"Get it, Reg!\" said Mom. He ran and ran.",
     "The pup ran up on the rug.",
-    "Reg did run and did not get the rag.",
-    "Reg sat and did not run.",
-    "The pup ran up and did rub on him.",
-    "Reg got the rag and did hug the pup."
+    "Reg ran, but he did not get the rag.",
+    "Reg sat on the rug. He did not run.",
+    "The pup ran up to him and rubs him.",
+    "Reg gets the rag and hugs the pup."
   ],
   "warmup": [
     "rag",
@@ -17,7 +17,7 @@
     "ran",
     "run",
     "rug",
-    "rub"
+    "rubs"
   ],
   "questions": [
     {
