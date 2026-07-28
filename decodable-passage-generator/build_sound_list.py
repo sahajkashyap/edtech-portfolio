@@ -18,6 +18,8 @@ import pathlib
 import re
 import sys
 
+import heart_words as HEART
+
 TOOL = pathlib.Path("../phonics-assessment-tool/index.html")
 OUT = pathlib.Path("sound-list.json")
 
@@ -331,10 +333,20 @@ def build():
     if sorted(lessons) != list(range(1, 129)):
         sys.exit(f"Expected lessons 1-128, got {len(lessons)}")
 
-    # Heart words unlock at the lowest-numbered lesson of the unit that owns them.
-    heart_unlock = {}
-    for info in heart_by_unit.values():
-        heart_unlock.setdefault(info["firstLesson"], []).extend(info["words"])
+    # Heart words come from heart_words.py, which knows which lesson each word
+    # arrives at AND which part of it is irregular. If that list is empty we
+    # fall back to the tool's coarse per-unit grouping (3 words per unit, 24 in
+    # total), which is a simplification of what a real programme teaches.
+    heart_unlock, heart_detail = {}, {}
+    if HEART.WORDS:
+        for hw in HEART.WORDS:
+            heart_unlock.setdefault(hw.lesson, []).append(hw.word)
+            heart_detail[hw.word] = {"boxes": hw.boxes, "heart": hw.heart,
+                                     "lesson": hw.lesson,
+                                     "regular": hw.regular}
+    else:
+        for info in heart_by_unit.values():
+            heart_unlock.setdefault(info["firstLesson"], []).extend(info["words"])
 
     out, graphemes, suffixes, prefixes, patterns, hearts, flags = [], [], [], [], [], [], []
     for n in range(1, 129):
@@ -367,6 +379,7 @@ def build():
             "allowedPrefixes": sorted(prefixes),
             "allowedPatterns": sorted(patterns),
             "allowedHeartWords": sorted(hearts),
+            "newHeartWords": sorted(heart_unlock.get(n, [])),
             "requiresWordBank": [
                 {"spelling": sp, "secondSoundAt": at, "why": why}
                 for L2, items in SECOND_SOUND_LATER.items() if L2 <= n
@@ -378,6 +391,10 @@ def build():
 
     doc = {
         "model": "cumulative by lesson number: a child at lesson N has had 1..N",
+        "heartWordDetail": heart_detail,
+        "heartWordSource": ("heart_words.py — per lesson, with the irregular "
+                            "part of each word marked" if HEART.WORDS else
+                            "the assessment tool's per-unit grouping (coarse)"),
         "heartWordContract": "allowedHeartWords are EXEMPT from "
                              "forbiddenLetterPatterns. 'the' contains th and is "
                              "legal from lesson 1 because it is learned by sight, "
