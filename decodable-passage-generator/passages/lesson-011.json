@@ -1,32 +1,32 @@
 {
   "lesson": 11,
-  "title": "I Am Nan",
+  "title": "I Tap a Tin Pan",
   "lines": [
-    "I am Nan. I am at a tan pan.",
-    "Tap the tan pan, Nan!",
-    "Tap, tap, tap.",
-    "Pam is in a nap!",
-    "Nan and Tim sit. Pam is in a nap."
+    "I am Tim. I tap a tin pan.",
+    "Tap, tap, tap!",
+    "Nan and Pip nap. It is a nap mat.",
+    "I sit. I fan Nan and Pip.",
+    "I nap as Nan and Pip nap."
   ],
   "warmup": [
-    "tan",
-    "pan",
     "tap",
+    "tin",
+    "pan",
     "nap",
-    "sit"
+    "fan"
   ],
   "questions": [
     {
-      "ask": "What is Nan tapping?",
-      "listenFor": "A tan pan. The first line tells you, and the second says it again."
+      "ask": "What is Tim tapping?",
+      "listenFor": "A tin pan. The first line says it. Ask them what a tin pan would sound like."
     },
     {
-      "ask": "Why do Nan and Tim sit down?",
-      "listenFor": "Pam is asleep. Listen for them connecting the nap to the stopping — that is the whole story."
+      "ask": "What does Tim do when he sees Nan and Pip napping?",
+      "listenFor": "He sits down — he stops tapping — and fans them. Line four says it. Listen for them linking the napping to the stopping; that is the whole story."
     },
     {
-      "ask": "What would you do so as not to wake someone? Tell me.",
-      "listenFor": "Any sensible idea — tiptoe, whisper, go to another room."
+      "ask": "What do you do to stay quiet when someone at home is asleep? Tell me.",
+      "listenFor": "Any sensible idea — tiptoe, whisper, shut the door, go to another room."
     }
   ]
 }

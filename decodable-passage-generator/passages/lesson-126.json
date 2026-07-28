@@ -2,13 +2,20 @@
   "lesson": 126,
   "title": "A Comfortable Seat",
   "lines": [
-    "The seat on Tom's bike was hard.",
-    "\"It is not comfortable,\" he said to Mom.",
-    "They went to the shop to look.",
+    "Tom rides his bike to school each day.",
+    "But the seat on his bike was hard.",
+    "\"It is not comfortable,\" he told Mom.",
+    "Tom taped a soft rag on it.",
+    "The rag slid off on the first hill.",
+    "So they went to the bike shop to look.",
     "One seat was soft but very breakable.",
+    "\"That one will crack,\" said the man.",
     "Tom picked a thick one that was unbreakable.",
+    "It cost a bit more, but it will last.",
     "Tom held the bike. Mom fixed the seat on.",
-    "Now his long rides are enjoyable."
+    "He sat on it and gave a big grin.",
+    "Now his long rides are enjoyable.",
+    "Tom rides all the way to school and back."
   ],
   "warmup": [
     "seat",
@@ -20,8 +27,8 @@
   ],
   "questions": [
     {
-      "ask": "What was wrong with the old seat?",
-      "listenFor": "It was hard, so it was not comfortable. Line one and line two together."
+      "ask": "What did Tom try first to fix the seat?",
+      "listenFor": "He taped a soft rag on it. The rag slid off on the first hill."
     },
     {
       "ask": "Why did Tom pick the thick seat?",

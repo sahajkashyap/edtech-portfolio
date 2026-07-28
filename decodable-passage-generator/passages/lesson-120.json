@@ -2,30 +2,37 @@
   "lesson": 120,
   "title": "A Picture of an Adventure",
   "lines": [
-    "Hana drew a picture of a big adventure.",
+    "Hana likes to draw best of all.",
+    "She made a picture of a big adventure.",
     "In it she rode a green dragon.",
+    "It took her all day to get it right.",
     "She hung the picture next to her bed.",
     "In the night the picture fell down.",
     "The cat had made a mess of it.",
-    "Hana had to fix a big rip.",
-    "Now her adventure has a patch on it."
+    "There was a long rip in the sky.",
+    "Hana felt sad. She got some tape.",
+    "But the tape did not stick at all.",
+    "Then Hana had a much better plan.",
+    "She cut a patch and drew a rock.",
+    "Now the green dragon stands on that rock.",
+    "Hana likes the picture better than at first."
   ],
   "warmup": [
     "green",
     "night",
     "cat",
     "bed",
-    "fix",
+    "rock",
     "rip"
   ],
   "questions": [
     {
       "ask": "What was in Hana's picture?",
-      "listenFor": "A big adventure - she rode a green dragon. Lines one and two go together."
+      "listenFor": "A big adventure - she rode a green dragon. Lines two and three go together."
     },
     {
-      "ask": "What knocked the picture down?",
-      "listenFor": "The cat. Hana did not know that until the next morning."
+      "ask": "What did Hana try first, and did it work?",
+      "listenFor": "Tape. It did not stick at all, so she cut a patch instead."
     },
     {
       "ask": "What adventure would you draw? Why?",

@@ -1,32 +1,32 @@
 {
   "lesson": 9,
-  "title": "A Pin in the Pan",
+  "title": "A Pin in the Nap Mat",
   "lines": [
-    "Nan sat at a tin pan.",
-    "A pin is in the pan!",
-    "Tip it, Nan. Tip the pan.",
-    "The pin is in a tin.",
-    "Nan and Tim nap."
+    "Nan and Nat pat a tan nap mat.",
+    "A pin is in the mat!",
+    "Tip it, Nan. Tip the mat.",
+    "The pin is in a pin tin.",
+    "Nan and Nat nap."
   ],
   "warmup": [
-    "tin",
-    "pan",
+    "pat",
+    "tan",
+    "nap",
     "pin",
-    "tip",
-    "nap"
+    "tin"
   ],
   "questions": [
     {
-      "ask": "What was in the pan?",
-      "listenFor": "A pin. The second line says so, and it ends with an exclamation mark."
+      "ask": "What did Nan and Nat find in the mat?",
+      "listenFor": "A pin. Line two says it, and the exclamation mark is the clue that it was a surprise."
     },
     {
-      "ask": "Where does the pin end up?",
-      "listenFor": "In a tin. Let them find the fourth line and read it again."
+      "ask": "Where did the pin go?",
+      "listenFor": "Into a pin tin. Line four says it. If they say \"the mat,\" have them read that line again."
     },
     {
-      "ask": "Why do you think Nan put the pin in a tin?",
-      "listenFor": "Looking for the idea that a loose pin is not safe. \"So no one sits on it\" is exactly right."
+      "ask": "This is a nap mat — the children lie down on it. Why do you think a pin should not be left in it? Tell me.",
+      "listenFor": "Their own thinking. \"You would lie on it\" or \"it would poke you\" is exactly the idea. The story does not say it out loud, so this one is theirs to work out."
     }
   ]
 }

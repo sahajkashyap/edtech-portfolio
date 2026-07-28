@@ -2,14 +2,15 @@
   "lesson": 45,
   "title": "The Fish Shop",
   "lines": [
-    "Kim has a fish shop on the deck.",
-    "She sells fish in a red dish.",
-    "A cat runs in and picks up a fish.",
+    "Kim has a fish shop. She sells fish.",
+    "A cat picks up a big fish and runs.",
     "\"Not the big fish!\" yells Kim.",
-    "Kim shuts the shop and runs at the cat.",
-    "It runs to a shed. Six wet cats!",
-    "\"We have lots of fish,\" said Kim.",
-    "She fills a dish. The cats rush in."
+    "Kim shuts the shop and runs to the cat.",
+    "The cat runs to a shed. Six wet cats!",
+    "\"You can have the fish,\" said Kim.",
+    "Kim gets a big dish and fills it up.",
+    "The six cats run to the dish.",
+    "Kim is not mad. She has lots of fish."
   ],
   "warmup": [
     "fish",
@@ -22,15 +23,15 @@
   "questions": [
     {
       "ask": "What does the cat take from the shop?",
-      "listenFor": "A big fish. It is stated in the story - send them back to that line if they are not sure."
+      "listenFor": "A big fish. Line two says it - send them back to that line if they are not sure."
     },
     {
-      "ask": "What does Kim find in the shed?",
+      "ask": "What does Kim find at the shed?",
       "listenFor": "Six wet cats. If they say only \"cats,\" ask them to find the word that tells how many."
     },
     {
-      "ask": "Why do you think Kim fills a dish for the cats?",
-      "listenFor": "Any reason tied to the story works - \"the cats are hungry\" or \"the cat took a fish to feed them\" both show they connected the shed to the ending."
+      "ask": "Kim was yelling at the start and not mad at the end. What do you think changed her mind? Tell me.",
+      "listenFor": "Their own thinking. Seeing the six wet cats is the moment it turns, but the story never says so out loud - that is theirs to put together."
     }
   ]
 }

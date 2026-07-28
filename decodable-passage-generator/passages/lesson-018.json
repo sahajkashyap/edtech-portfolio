@@ -1,36 +1,35 @@
 {
   "lesson": 18,
-  "title": "Ben and Meg Get a Bug",
+  "title": "A Bug in the Mud",
   "lines": [
-    "Ben and Meg got a big net.",
-    "\"A bug can get in it,\" said Ben.",
-    "Ben set the net in the mud.",
-    "Ben and Meg sit. It is fun to sit.",
-    "A big bug got in the net!",
-    "Ben fed the bug a bit of a bun.",
+    "Ben and Meg dug in the mud.",
+    "\"A bug!\" said Meg. \"Get the net.\"",
+    "Ben set the net on the big bug.",
+    "It did not tug. It sat in the net.",
+    "Ben fed it a bit of a bun.",
     "\"A bug is not a pet,\" said Meg.",
     "Ben set the bug in the mud. It dug!"
   ],
   "warmup": [
+    "dug",
+    "mud",
     "net",
     "set",
-    "get",
     "fed",
-    "pet",
     "bun"
   ],
   "questions": [
     {
-      "ask": "What got in the net?",
-      "listenFor": "A big bug. The story says it. If your child is unsure, have them find the word bug and read that line again."
+      "ask": "What did Ben and Meg find when they dug in the mud?",
+      "listenFor": "A bug. Meg spots it in line two. If your child is unsure, have them find the word bug and read that line again."
     },
     {
       "ask": "Why did Ben put the bug back in the mud?",
       "listenFor": "Meg said a bug is not a pet. Listen for them linking what Meg said to what Ben did next - those two lines go together."
     },
     {
-      "ask": "Would you have kept the bug or let it go? Tell me why.",
-      "listenFor": "Either answer is fine - the bug lives in the mud, or it would be fun to watch. You want a reason, not a right answer."
+      "ask": "The bug started digging the moment it was back in the mud. What does that tell you about where it belongs? Tell me.",
+      "listenFor": "Their own thinking. \"That is its home\" is the idea. The story shows it rather than saying it, so this one is theirs to work out."
     }
   ]
 }

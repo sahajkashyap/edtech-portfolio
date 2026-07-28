@@ -1,32 +1,34 @@
 {
   "lesson": 10,
-  "title": "The Map and the Fan",
+  "title": "The Tin in the Pit",
   "lines": [
-    "A fan is at the mat.",
-    "The map is at the mat.",
-    "Fan it, Tim! Fan the map.",
-    "The map is in the pit!",
-    "Nan and Tim sit at the pit."
+    "Pam and Tim sit. It is a map!",
+    "A pit is in the map!",
+    "Tap at it, Tim. Tap, tap.",
+    "Pam and Tim sit at the pit.",
+    "A tin is in the pit. Tip it!",
+    "A tin man is in it!",
+    "Pam and Tim pat the tin man."
   ],
   "warmup": [
-    "fan",
-    "mat",
+    "tap",
     "map",
     "pit",
-    "sit"
+    "tin",
+    "pat"
   ],
   "questions": [
     {
-      "ask": "Where does the map end up?",
-      "listenFor": "In the pit. The fourth line says so."
+      "ask": "What did Pam and Tim see drawn on the map?",
+      "listenFor": "A pit. Line two says it. Tapping at it, in line three, is them pointing at the spot."
     },
     {
-      "ask": "Who is at the pit at the end?",
-      "listenFor": "Nan and Tim. The last line names them."
+      "ask": "What was inside the tin?",
+      "listenFor": "A tin man. Line six says it. Let them read that line back rather than being told."
     },
     {
-      "ask": "What do you think they will do next? Tell me.",
-      "listenFor": "Any idea. Getting the map back is the likely one, but anything they can explain is fine."
+      "ask": "If you dug up a tin, what would you want to find in it? Tell me.",
+      "listenFor": "Anything at all. You are listening for an idea of their own, not a right answer."
     }
   ]
 }

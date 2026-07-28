@@ -2,30 +2,37 @@
   "lesson": 125,
   "title": "The Basement Cat",
   "lines": [
-    "Ben heard a movement down in the basement.",
-    "For a moment he stood still on the step.",
-    "He took a lamp and went down to look.",
-    "A small gray cat sat in a box.",
+    "Ben was in bed when he heard a sound.",
+    "It came from down in the basement.",
+    "For a moment he just sat still.",
+    "Then he heard a small movement.",
+    "Ben got Mom and told her about it.",
+    "Mom came down the dark steps with him.",
+    "She held the lamp. Ben went in front.",
+    "At first they saw just cans and rags.",
+    "Then a box in the back tipped over.",
+    "Ben got down and had a look.",
+    "A small gray cat sat in the box.",
     "Ben's fear turned into excitement.",
-    "He and Mom made an agreement.",
-    "The cat can stay if Ben feeds it.",
-    "Now it naps on the pavement in the sun."
+    "\"Can it stay?\" he asked. \"If you feed it.\"",
+    "That was the agreement Ben and Mom made.",
+    "Now the cat naps on the warm pavement."
   ],
   "warmup": [
     "box",
     "cat",
     "lamp",
-    "step",
+    "sound",
     "gray",
     "stay"
   ],
   "questions": [
     {
       "ask": "What did Ben hear at the start?",
-      "listenFor": "A movement in the basement. Line one says it, and it is what sets the story off."
+      "listenFor": "A sound from the basement, then a small movement. Lines one to four."
     },
     {
-      "ask": "What was the agreement Ben made with Mom?",
+      "ask": "What was the agreement Ben and Mom made?",
       "listenFor": "The cat can stay if Ben feeds it. Two people agree - that is what an agreement is."
     },
     {

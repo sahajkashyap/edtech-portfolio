@@ -3,13 +3,14 @@
   "title": "Tim and the Big Box",
   "lines": [
     "\"Can I have the big box?\" said Tim.",
-    "\"Yes,\" said Dad. \"It can be a den.\"",
-    "Tim set it on the rug. A cat den!",
-    "But the cat did not get in the box.",
-    "The cat sat on top and had a nap.",
-    "Tim set his red hat in the box.",
+    "\"Yes,\" said Dad. \"It can be a cat den.\"",
+    "Tim set the box on the rug.",
+    "\"Get in, cat,\" said Tim. But it did not.",
+    "It sat on top. Tim was sad.",
+    "Tim got his red hat.",
+    "He set it in the box.",
     "The cat hops in and naps on the hat.",
-    "\"The cat has a den,\" said Dad. Tim nods."
+    "\"You did it, Tim,\" said Dad. Tim nods."
   ],
   "warmup": [
     "box",
@@ -21,16 +22,16 @@
   ],
   "questions": [
     {
-      "ask": "What did Tim want the big box for?",
-      "listenFor": "To make a den for his cat. Line three says it. If your child is stuck, let them reread that line."
+      "ask": "What did Tim want the big box to be?",
+      "listenFor": "A den for the cat. Line two says it. If your child is stuck, let them reread that line."
     },
     {
       "ask": "What did Tim put in the box to get the cat to go in?",
-      "listenFor": "His red hat. Line six says it. One word is plenty."
+      "listenFor": "His red hat. Lines six and seven say it. One word is plenty."
     },
     {
-      "ask": "Why do you think the hat worked? Tell me what you think.",
-      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like it was soft, or it smelled of Tim."
+      "ask": "Why do you think the hat worked when asking did not? Tell me.",
+      "listenFor": "Their own thinking. Soft, warm, or it smelled of Tim are all good. The story never says, which is why this one belongs to them."
     }
   ]
 }

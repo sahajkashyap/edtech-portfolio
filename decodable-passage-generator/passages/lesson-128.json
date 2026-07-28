@@ -2,13 +2,20 @@
   "lesson": 128,
   "title": "A Bit of Kindness",
   "lines": [
-    "Rosa found a small pup in the yard.",
-    "It was wet and shaking in the cold rain.",
+    "Rosa was in the yard when the rain came.",
+    "She heard a small sound by the fence.",
+    "A pup sat there, wet and shaking with cold.",
+    "It had no tag and it was thin.",
     "Rosa took it in and got it dry.",
-    "Her mom said, \"That was kindness.\"",
-    "They made a sign. It was helpful.",
-    "A thankful girl came. \"That is my pup!\"",
-    "She held out a reward. Rosa said no.",
+    "She fed it and it went to sleep.",
+    "\"That was kindness,\" said her mom.",
+    "Rosa was hopeful the pup had a home.",
+    "She went to each house on her street.",
+    "But no one had lost a pup at all.",
+    "So Rosa made a sign. It was helpful.",
+    "A thankful girl came the next day.",
+    "\"That is my pup, Sam!\" she said.",
+    "She held out a reward, but Rosa said no.",
     "\"Just come back to play,\" said Rosa."
   ],
   "warmup": [
@@ -22,11 +29,11 @@
   "questions": [
     {
       "ask": "Where did Rosa find the pup?",
-      "listenFor": "In the yard, in the cold rain. The first two lines both help."
+      "listenFor": "In the yard by the fence, wet and shaking in the cold rain. The first three lines help."
     },
     {
-      "ask": "What did Rosa say when the girl held out a reward?",
-      "listenFor": "She said no, and asked the girl to come back to play instead."
+      "ask": "What did Rosa try before she made the sign?",
+      "listenFor": "She went to each house on her street, but no one had lost a pup."
     },
     {
       "ask": "Would you have taken the reward? Why?",

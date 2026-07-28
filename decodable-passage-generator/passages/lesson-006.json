@@ -1,30 +1,32 @@
 {
   "lesson": 6,
-  "title": "Sam and the Mat",
+  "title": "Tap and Pat",
   "lines": [
-    "Sam sat at the mat.",
-    "Pat the mat, Sam!",
+    "I am Sam. I tap the mat.",
     "Tap, tap, tap.",
-    "Pam and Sam tap the mat."
+    "I am Pam. I pat the mat.",
+    "Pat, pat, pat.",
+    "Sam and Pam sat. Tap and pat!",
+    "Tap, pat, tap, pat!"
   ],
   "warmup": [
     "sat",
     "mat",
-    "pat",
-    "tap"
+    "tap",
+    "pat"
   ],
   "questions": [
     {
-      "ask": "Who sat at the mat first?",
-      "listenFor": "Sam. It is the very first line — point at it rather than telling them."
+      "ask": "Who taps the mat?",
+      "listenFor": "Sam. It is the first line. Point at the line and let them read it again rather than telling them."
     },
     {
-      "ask": "Who taps the mat at the end?",
-      "listenFor": "Pam and Sam, together. The last line says so."
+      "ask": "Who pats the mat?",
+      "listenFor": "Pam. Line three says it. A tap is one finger; a pat is a whole hand — you can show them the difference on the table."
     },
     {
-      "ask": "What sound does the mat make? Show me.",
-      "listenFor": "No right answer. Let them tap the table and make the sound themselves."
+      "ask": "Make up a tapping and patting beat for me. Show me.",
+      "listenFor": "No right answer. Let them lead and you copy them — that is the game the two children in the story are playing."
     }
   ]
 }

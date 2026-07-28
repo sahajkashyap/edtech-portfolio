@@ -4,12 +4,13 @@
   "lines": [
     "Gus has a tan cat. It has a cut.",
     "\"What can I do?\" said Gus.",
-    "\"The vet can fix it,\" said Mom.",
+    "\"A vet can fix a cut,\" said Mom.",
+    "\"Vets fix pets. We can get in the van.\"",
     "Mom gets the van, but the cat hid!",
     "Gus got it and set it on his lap.",
-    "The vet gets a wet rag and dabs it.",
-    "\"You have a big, tan cat,\" he said.",
-    "Gus hugs it. The cat naps in the van."
+    "The vet has a wet rag. She rubs it.",
+    "\"You have a big, tan cat,\" she said.",
+    "The cat naps on his lap in the van."
   ],
   "warmup": [
     "vet",
@@ -21,16 +22,16 @@
   ],
   "questions": [
     {
-      "ask": "Why did Gus take the cat to the vet?",
-      "listenFor": "The cat had a cut. It is in the first line. If they say \"it was sick,\" ask them to find the words that tell us."
+      "ask": "What is a vet?",
+      "listenFor": "Someone who fixes pets. Mom says it in lines three and four. This is the word the whole story rests on, so it is worth checking they have it."
     },
     {
       "ask": "How do you know the cat did not want to go?",
       "listenFor": "The cat hid when Mom got the van. That is evidence, not a guess - have them find the line and read it back."
     },
     {
-      "ask": "Do you think the cat will hide next time? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the vet was gentle and used a wet rag on the cut, or the cat hid at the start anyway. The because is the point."
+      "ask": "The cat hid at the start and napped on the way home. What do you think changed for it? Tell me.",
+      "listenFor": "Their own thinking. The story shows both moments but never explains the change, so this one is theirs to work out."
     }
   ]
 }
