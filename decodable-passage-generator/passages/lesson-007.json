@@ -1,11 +1,13 @@
 {
   "lesson": 7,
-  "title": "A Map at the Mat",
+  "title": "Pat the Map",
   "lines": [
-    "Sam sat at a mat.",
-    "A map! Tap the map, Sam.",
-    "Pam sat at the map.",
-    "Sam and Pam pat the map."
+    "I am Tam. Sam and Pam sat.",
+    "The map! Pat the map, Sam.",
+    "Pat, pat, pat.",
+    "Tap the map, Pam. Tap, tap, tap.",
+    "Tam, Sam and Pam tap at the map.",
+    "As I tap, Sam and Pam pat."
   ],
   "warmup": [
     "sat",
@@ -15,16 +17,16 @@
   ],
   "questions": [
     {
-      "ask": "What did Sam find?",
-      "listenFor": "A map. The second line begins with it, and the exclamation mark is a clue."
+      "ask": "Who is telling this story?",
+      "listenFor": "Tam. The first line says \"I am Tam.\" If they are unsure, ask them who the word I means here."
     },
     {
-      "ask": "Who sat at the map?",
-      "listenFor": "Pam. If they say Sam, have them look again at the line with Pam in it."
+      "ask": "What are Tam, Sam and Pam patting and tapping?",
+      "listenFor": "The map. It is in nearly every line — let them find one and read it back to you."
     },
     {
-      "ask": "Where do you think the map goes? Tell me.",
-      "listenFor": "Anything they like. You are listening for an idea of their own."
+      "ask": "A rolled-up map will not lie flat. What would you do to it? Show me.",
+      "listenFor": "Any idea of their own. Patting it flat is what the children do, but smoothing it, holding the corners or kneeling on the edge are all good thinking."
     }
   ]
 }

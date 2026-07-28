@@ -3,12 +3,12 @@
   "title": "Sal Is It",
   "lines": [
     "Pam, Dan and Sal ran in the sun.",
-    "\"I am it!\" said Pam. She ran at Dan.",
+    "\"I am it!\" said Pam. She ran to Dan.",
     "Dan ran and ran. Pam can not tag him.",
     "Sal is not big. She sat and was sad.",
     "Pam ran to Sal. \"Can we tag Dan?\"",
-    "Sal and Pam ran at Dan and got him!",
-    "\"Sal got me! I am it,\" said Dan.",
+    "Sal and Pam ran and Sal got Dan!",
+    "\"Sal got me! Sal is it,\" said Dan.",
     "Sal and Pam ran. Sal is a pal!"
   ],
   "warmup": [
@@ -17,20 +17,20 @@
     "sad",
     "sat",
     "can",
-    "am"
+    "him"
   ],
   "questions": [
     {
-      "ask": "Who was it at the start of the game?",
-      "listenFor": "Pam. Line two says it. If your child is not sure, put a finger on that line and let them read it again."
+      "ask": "Who could Pam not tag on her own?",
+      "listenFor": "Dan. Line three says it - he ran and ran. If your child is not sure, put a finger on that line and let them read it again."
     },
     {
       "ask": "Why was Sal sitting down and feeling sad?",
-      "listenFor": "She is not big, so she was left out of the game. Line four says it. Let them reread it rather than being told."
+      "listenFor": "She is not big, so she was left out of the running. Line four says it. Let them reread it rather than being told."
     },
     {
-      "ask": "Pam asked Sal to help her tag Dan. Was that a good idea? Tell me why.",
-      "listenFor": "Either answer works. You are listening for a reason from the story, like two runners are faster than one, or Sal was left out before."
+      "ask": "Pam asked Sal to help her tag Dan. What do you think of that? Tell me.",
+      "listenFor": "Their own thinking. Two runners are faster than one, or Sal had been left out - either reason shows they read the whole story, not just the end."
     }
   ]
 }

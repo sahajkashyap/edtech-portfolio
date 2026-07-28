@@ -4,10 +4,18 @@
   "lines": [
     "Meg rode a red tricycle with three wheels.",
     "She wants a bicycle, but two wheels tip.",
-    "Her dad got her a unicorn helmet.",
+    "For her big day, Dad got her one.",
+    "He got her a unicorn helmet as well.",
     "\"A unicorn has one horn. Uni means one.\"",
     "\"Tri is three and bi is two,\" he said.",
-    "Meg fell down, got up, and went again.",
+    "Meg got on. The bicycle went down fast.",
+    "She fell in the grass and felt cross.",
+    "\"I will just ride my tricycle,\" she said.",
+    "But the tricycle was small for her now.",
+    "Her legs did not fit under the handles.",
+    "So Meg got up and went again.",
+    "Dad held the back of the bicycle at first.",
+    "Then he let go, and Meg did not fall.",
     "Now Meg rides her bicycle every day."
   ],
   "warmup": [
@@ -24,8 +32,8 @@
       "listenFor": "Three and two. Tri is three, bi is two, uni is one - the same one hiding inside unicorn."
     },
     {
-      "ask": "What happened the first time Meg got on the bicycle?",
-      "listenFor": "She fell down, then got up and went again. Line six holds the whole turn."
+      "ask": "Why did Meg stop riding the tricycle?",
+      "listenFor": "It was small for her now, and her legs did not fit under the handles."
     },
     {
       "ask": "What is something hard you kept trying? Why did you keep going?",

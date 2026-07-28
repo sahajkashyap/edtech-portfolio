@@ -1,36 +1,36 @@
 {
   "lesson": 29,
-  "title": "Raj and the Jam Jug",
+  "title": "Raj and the Jam",
   "lines": [
-    "Raj had a job. He got the jam.",
-    "Mom had buns. The jam was in a jug.",
-    "Raj runs to Mom. He has the big jug.",
-    "The jug tips! Jam is on his cap.",
-    "\"Look at the jam,\" said Raj. He was sad.",
-    "But Raj gets a rag and rubs the cap.",
+    "Raj had a job. He got the jam pot.",
+    "Mom had buns. Raj runs to Mom.",
+    "The lid was not on. The pot tips!",
+    "Jam is on his cap! Raj was sad.",
+    "\"I did not set the lid on,\" said Raj.",
+    "Raj gets a rag and rubs the cap.",
     "\"Raj did a big job,\" said Mom.",
     "Raj has a jam bun and a big hug."
   ],
   "warmup": [
     "jam",
-    "jug",
     "job",
+    "pot",
+    "lid",
     "rag",
-    "cap",
     "bun"
   ],
   "questions": [
     {
-      "ask": "What was Raj carrying to Mom?",
-      "listenFor": "The big jug of jam. Lines two and three say it. Let your child reread rather than being told."
+      "ask": "What was Raj's job?",
+      "listenFor": "To get the jam pot and take it to Mom. Lines one and two say it."
     },
     {
-      "ask": "Who got the jam off the cap?",
-      "listenFor": "Raj did, with a rag. Line six says it. If they say Mom, ask them to find the line with the rag in it."
+      "ask": "Why did the jam come out of the pot?",
+      "listenFor": "The lid was not on. Line three says it, and Raj says so himself in line five. If they say \"it tipped,\" ask them why that mattered."
     },
     {
-      "ask": "Raj was sad, and then he was not. What do you think changed? Tell me why.",
-      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like he fixed the cap himself."
+      "ask": "Raj said the lid was his mistake and then he cleaned it up himself. What do you think of that? Tell me.",
+      "listenFor": "Their own thinking. There is no right answer - you are listening for a reason, not a verdict."
     }
   ]
 }

@@ -2,13 +2,20 @@
   "lesson": 123,
   "title": "A Windy Day",
   "lines": [
-    "It was a windy, sunny day.",
+    "It was a windy, sunny day in May.",
     "Tom took his kite up the rocky hill.",
     "The kite went up fast. Tom was happy.",
     "Then the wind took the kite away.",
     "It got stuck up in a big tree.",
-    "Tom felt sad, but then he got lucky.",
-    "A tall lady got it down for him."
+    "Tom felt sad. The string hung down low.",
+    "He jumped up but he was too small.",
+    "He got a box to stand on.",
+    "The box did not hold him. He got down.",
+    "Then Tom ran back and got a rake.",
+    "Mom held the rake up next to him.",
+    "Tom hooked the string and gave it a tug.",
+    "The kite fell down into the long grass.",
+    "\"You got that,\" said Mom. Tom just grins."
   ],
   "warmup": [
     "sunny",
@@ -21,11 +28,11 @@
   "questions": [
     {
       "ask": "Where did the kite get stuck?",
-      "listenFor": "Up in a big tree. Line six."
+      "listenFor": "Up in a big tree, with the string hanging down low. Lines five and six."
     },
     {
-      "ask": "Who got the kite down?",
-      "listenFor": "A tall lady. Tom got lucky."
+      "ask": "What did Tom try first, and what worked in the end?",
+      "listenFor": "He jumped, then stood on a box. The rake worked, with Mom holding it up next to him."
     },
     {
       "ask": "How do you think Tom felt at the end? Why?",

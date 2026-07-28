@@ -2,13 +2,20 @@
   "lesson": 119,
   "title": "The Big Question",
   "lines": [
+    "Gran had been away on a long vacation.",
+    "Today she comes back on a train.",
     "Ben and Pam had one big question.",
     "Which train was Gran on?",
-    "They went to the station to find out.",
-    "The station was full of moms, dads and kids.",
-    "Then Pam saw a red hat by a car.",
+    "Mom drove them to the station to find out.",
+    "The station was full of moms and kids.",
+    "A train came in. They ran to look.",
+    "Gran was not on it. Pam felt sad.",
+    "\"Gran has a red hat,\" said Ben.",
+    "So Pam sat and did not stop looking.",
+    "Then she saw a red hat by a car.",
     "It was Gran, back from her vacation!",
-    "\"We found her!\" said Ben with a grin."
+    "\"We found her!\" said Ben with a grin.",
+    "Gran had a small gift for each of them."
   ],
   "warmup": [
     "train",
@@ -21,11 +28,11 @@
   "questions": [
     {
       "ask": "What was Ben and Pam's big question?",
-      "listenFor": "Which train Gran was on. The first two lines set it up."
+      "listenFor": "Which train Gran was on. Lines three and four set it up."
     },
     {
-      "ask": "How did Pam spot Gran?",
-      "listenFor": "She saw a red hat by a car. Listen for the hat."
+      "ask": "What happened when the first train came in?",
+      "listenFor": "They ran to look, but Gran was not on it. Pam felt sad."
     },
     {
       "ask": "What would you wear so a friend could spot you? Why?",

@@ -1,36 +1,35 @@
 {
   "lesson": 28,
-  "title": "The Web at the Den",
+  "title": "Wag Gets Wet",
   "lines": [
-    "Deb, Ned and Wag run to the den.",
-    "It is wet in the fog.",
-    "A big web is up at the top.",
-    "\"I can bat it,\" said Ned.",
-    "\"Do not! A bug is in it,\" said Deb.",
-    "Deb gets a peg and pins the web up.",
-    "\"We can get in,\" said Ned. Wag wags.",
-    "Deb, Ned and Wag nap in the den."
+    "Deb, Ned and Wag run in the fog.",
+    "Wag digs in the mud. Wag is wet!",
+    "\"Look at Wag,\" said Deb. \"He is wet.\"",
+    "Ned gets a big rag and rubs his legs.",
+    "Deb rubs him and Wag wags and wags.",
+    "\"We can set him in his den,\" said Ned.",
+    "Wag naps in the den. He is not wet."
   ],
   "warmup": [
     "wet",
     "wags",
     "den",
-    "peg",
-    "bug",
+    "rag",
+    "rubs",
     "fog"
   ],
   "questions": [
     {
-      "ask": "What was up at the top of the den?",
-      "listenFor": "A big web. Line three says it. If your child is stuck, put a finger on that line and let them read it again."
+      "ask": "How did Wag get wet?",
+      "listenFor": "He dug in the mud. Line two says it. If your child is stuck, put a finger on that line and let them read it again."
     },
     {
-      "ask": "Why did Deb tell Ned not to bat the web?",
-      "listenFor": "Because a bug was living in it. Line five says it. This is the turn of the story, so it is worth a little talk."
+      "ask": "What did Ned use to rub Wag?",
+      "listenFor": "A big rag. Line four says it. One word is plenty here."
     },
     {
-      "ask": "What would you have done about the web? Tell me why.",
-      "listenFor": "Either answer is fine. You are listening for the reason, not the choice."
+      "ask": "Wag wagged and wagged while Deb rubbed him. What do you think he was telling them? Tell me.",
+      "listenFor": "Their own thinking. A dog has no words, so a wag is how he says it - the story never explains it, which is the point of the question."
     }
   ]
 }

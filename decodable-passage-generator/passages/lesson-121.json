@@ -2,31 +2,37 @@
   "lesson": 121,
   "title": "The Painter and the Farmer",
   "lines": [
-    "The farmer had a big old barn.",
-    "The paint on it was cracked and gray.",
-    "A painter came out to help him.",
-    "She was an artist from the city.",
-    "She did not paint the barn red.",
-    "She made a big picture on it.",
-    "The farmer was cross, but now he is glad.",
-    "A visitor comes out to see it."
+    "Nell lives on a farm with her dad.",
+    "Her dad is a farmer with a big barn.",
+    "The paint on the barn was cracked and gray.",
+    "Nell said it made the farm look sad.",
+    "So they got a painter to fix it up.",
+    "The painter had just red paint in her van.",
+    "Red on red on red, just like the rest.",
+    "Then Nell had a much better plan.",
+    "\"Can you paint a big picture on it?\"",
+    "The painter was an artist from the city.",
+    "She made a farm and a sun on it.",
+    "Dad was cross at first, but now he grins.",
+    "A visitor comes out each day to look.",
+    "Nell tells them her dad has the best barn."
   ],
   "warmup": [
     "barn",
     "paint",
     "city",
     "red",
-    "help",
+    "farm",
     "gray"
   ],
   "questions": [
     {
-      "ask": "What did the painter do to the barn?",
-      "listenFor": "She made a big picture on it instead of painting it red."
+      "ask": "What was wrong with the barn at the start?",
+      "listenFor": "The paint was cracked and gray, and Nell said it made the farm look sad."
     },
     {
-      "ask": "How did the farmer feel at first?",
-      "listenFor": "Cross. He changed his mind by the end."
+      "ask": "Whose plan was the big picture?",
+      "listenFor": "Nell's. She asked the painter for it in line nine."
     },
     {
       "ask": "Would you paint your house a picture or one plain color? Why?",

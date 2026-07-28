@@ -1,36 +1,35 @@
 {
   "lesson": 21,
-  "title": "The Bugs in the Bins",
+  "title": "Ten Bugs and Ten Bins",
   "lines": [
-    "Ben and Meg got ten tin bins.",
+    "Ben and Meg dug up ten bugs.",
     "\"Bugs can nap in the bins,\" said Ben.",
-    "Meg dug and got bugs and buds.",
-    "The bugs did not nap. The bugs dug!",
-    "Ten bugs got up and got in the beds!",
-    "Mom and Dad did not nap.",
-    "\"Get the bugs!\" said Mom.",
-    "Ben and Meg set the bugs in the mud."
+    "But bugs dig. The bugs dug and dug.",
+    "Ten bugs got up and got in the mud.",
+    "\"See? Bugs do not nap in bins,\" said Meg.",
+    "Ben and Meg dug a pit in the mud.",
+    "The bugs dig in it. It is a den."
   ],
   "warmup": [
-    "bins",
-    "bugs",
-    "buds",
-    "beds",
     "dug",
-    "mud"
+    "bugs",
+    "bins",
+    "mud",
+    "pit",
+    "den"
   ],
   "questions": [
     {
-      "ask": "What did Ben and Meg put the bugs in?",
-      "listenFor": "Ten tin bins. The story says it. If your child is unsure, point to the word bins and read that line again."
+      "ask": "Where did Ben put the ten bugs at first?",
+      "listenFor": "In the bins. Line two says it. If your child is unsure, point to the word bins and read that line again."
     },
     {
-      "ask": "Why did Mom and Dad not get a nap?",
-      "listenFor": "Because the bugs got out and got in the beds. Listen for the bugs in the beds - that is the problem in the story."
+      "ask": "What did the bugs do in the bins?",
+      "listenFor": "They dug, and they got out. Lines three and four say it. Listen for them noticing that bugs dig - that is why the bins never worked."
     },
     {
-      "ask": "Do you think the mud was a good spot for the bugs? Tell me why.",
-      "listenFor": "Any answer is fine. You are listening for a reason - bugs dig in mud, or the bins were never going to hold them."
+      "ask": "Ben and Meg dug the bugs a pit instead. What do you think a bug needs? Tell me.",
+      "listenFor": "Any answer with a reason behind it. Mud to dig in is the story's answer, but food, water and a dark spot are all good thinking."
     }
   ]
 }

@@ -1,36 +1,36 @@
 {
   "lesson": 22,
-  "title": "Kim and the Ten Kids",
+  "title": "Kip Gets a Den",
   "lines": [
     "Ten kids sit in the sun.",
-    "Kim gets pegs and a big net.",
-    "The kids dig and set up the pegs.",
-    "But a peg is bad and did not fit.",
-    "Kim gets a tin pin and taps it in.",
-    "The pin fits, and the net is up!",
-    "Ten kids sit in it. It is a den!",
+    "Kip is a pup. Kip naps in the mud.",
+    "Kim gets sad. The mud is not a bed.",
+    "\"Kip can get a den,\" said Kim.",
+    "The kids get a big tin bin and mats.",
+    "Kim tips the bin and sets mats in it.",
+    "Kip gets in. It fits! Kip naps.",
     "\"Kim did it,\" said a kid, and Kim nods."
   ],
   "warmup": [
     "kids",
-    "pegs",
-    "net",
-    "pin",
-    "fits",
-    "den"
+    "bin",
+    "mats",
+    "naps",
+    "tips",
+    "fits"
   ],
   "questions": [
     {
-      "ask": "What did Kim get to make the den?",
-      "listenFor": "Pegs and a big net. Line two says it. Let your child reread rather than telling them."
+      "ask": "Where was Kip napping at the start?",
+      "listenFor": "In the mud. Line two says it. That is the problem Kim notices."
     },
     {
-      "ask": "What did Kim use when the peg did not fit?",
-      "listenFor": "A tin pin. Line five says it. One word is plenty here."
+      "ask": "What did the kids use to make Kip a den?",
+      "listenFor": "A big tin bin and some mats. Lines five and six say it. Let your child reread rather than telling them."
     },
     {
-      "ask": "What would you make with pegs and a net? Tell me why.",
-      "listenFor": "Any answer is a good answer. You are listening for the reason behind it, not the thing itself."
+      "ask": "Kim tipped the bin on its side before putting the mats in. Why do you think she did that? Tell me.",
+      "listenFor": "Their own thinking. So Kip could walk in, or so it made a roof, are both good. The story shows the tipping but never explains it."
     }
   ]
 }

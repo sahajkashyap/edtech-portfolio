@@ -2,13 +2,20 @@
   "lesson": 124,
   "title": "Kindness for Gran",
   "lines": [
-    "Gran had a sickness and sat in bed.",
-    "Meg felt sadness when she saw her gran.",
-    "Meg made hot soup and took it up.",
-    "Gran's room was dark, so Meg lit a lamp.",
+    "Gran had a sickness and stayed in bed.",
+    "Meg saw her and felt a big sadness.",
+    "Gran did not want to sit up at all.",
+    "Meg took her a doll to hold.",
+    "Gran said thank you, but still felt bad.",
+    "\"What can I do?\" Meg asked her dad.",
+    "\"Gran likes soup,\" said Dad. \"I will help.\"",
+    "Dad and Meg made hot soup in a pot.",
+    "Meg took it up the steps to Gran.",
+    "The room was dark, so Dad lit a lamp.",
     "Gran ate it all and sat up tall.",
     "\"Your kindness made me well,\" said Gran.",
-    "Meg's sadness had turned into happiness."
+    "Meg's sadness had turned into happiness.",
+    "Now Meg and Dad make soup each week."
   ],
   "warmup": [
     "bed",
@@ -20,12 +27,12 @@
   ],
   "questions": [
     {
-      "ask": "What did Meg make for her gran?",
-      "listenFor": "Hot soup in a big pot. It is in the third line, so a rereader can find it fast."
+      "ask": "What did Meg try first, and did it help?",
+      "listenFor": "She took Gran a doll to hold. Gran said thank you but still felt bad."
     },
     {
-      "ask": "Why did Meg light a lamp?",
-      "listenFor": "Gran's room was dark. Line four says it. Sadness, happiness, kindness, sickness - -ness turns a describing word into a thing."
+      "ask": "Who made the soup with Meg?",
+      "listenFor": "Her dad. He said Gran likes soup and that he would help. Sadness, happiness, kindness, sickness - -ness turns a describing word into a thing."
     },
     {
       "ask": "What would you do for someone at home who felt sad? Why?",

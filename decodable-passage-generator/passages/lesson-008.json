@@ -1,32 +1,32 @@
 {
   "lesson": 8,
-  "title": "A Map at the Pit",
+  "title": "Fit It at the Pit",
   "lines": [
-    "Tim sat at a pit.",
-    "A map is at the pit!",
-    "Tip it, Tim. Tip it.",
-    "The map is a fit.",
-    "Tim and Pam sit at the map."
+    "I am Tim. Sam is at a pit.",
+    "It is a mat. Fit it at the pit!",
+    "Tip it, Sam. Pat it, Tim.",
+    "The mat fit! Tim and Sam sit.",
+    "Sip, Tim. Sip, Sam. Sip, sip!"
   ],
   "warmup": [
-    "sat",
     "pit",
     "tip",
+    "pat",
     "fit",
-    "sit"
+    "sip"
   ],
   "questions": [
     {
-      "ask": "What is at the pit?",
-      "listenFor": "A map. It is in the second line. Point at the line rather than saying it."
+      "ask": "Where are Tim and Sam?",
+      "listenFor": "At a pit — the sand pit. Line one says it. Let them find the word pit rather than being told."
     },
     {
-      "ask": "Who sits at the map at the end?",
-      "listenFor": "Tim and Pam. The last line names them both."
+      "ask": "What do Tim and Sam do once the mat fits?",
+      "listenFor": "They sit down, and then they sip. The last two lines say it."
     },
     {
-      "ask": "What would you do with a map? Tell me why.",
-      "listenFor": "Any answer. Listen for a reason of their own."
+      "ask": "Where would you spread a mat to sit? Tell me why you picked that spot.",
+      "listenFor": "Any spot they can give a reason for. You are listening for the because, not the place."
     }
   ]
 }

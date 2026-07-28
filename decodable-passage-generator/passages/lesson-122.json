@@ -2,13 +2,21 @@
   "lesson": 122,
   "title": "A Silly Wish",
   "lines": [
-    "Gus is a pup with one big wish.",
+    "Meg has a pup. His name is Gus.",
+    "Gus sits and looks at the fish tank.",
     "He wants to swim just like a fish.",
     "That is a silly wish for a pup.",
-    "Gus ran and jumped in the brownish pond.",
-    "The cold made his nose go pinkish.",
-    "Gus did not swim well. Meg got him out.",
-    "Now Gus just sits and looks at fish."
+    "Gus jumped up at the tank and slid.",
+    "Meg held the tank so it did not tip.",
+    "\"You can not swim in there,\" she said.",
+    "Meg felt sad. Then she had a plan.",
+    "She got a big tub from the shed.",
+    "Mom and Meg fill it in the sun.",
+    "Gus jumped in with a big splash.",
+    "The cold made his black nose go pinkish.",
+    "Soon the water was brownish with mud.",
+    "Gus moves his legs and swims a bit.",
+    "Now Gus is as happy as a fish."
   ],
   "warmup": [
     "pup",
@@ -21,15 +29,15 @@
   "questions": [
     {
       "ask": "What did Gus wish for?",
-      "listenFor": "To swim like a fish. The first two lines say it."
+      "listenFor": "To swim like a fish. Lines two and three say it."
     },
     {
-      "ask": "What color was the pond, and what color was Gus's nose?",
-      "listenFor": "Brownish and pinkish. The -ish ending means sort of that color, not quite."
+      "ask": "What did Meg get from the shed, and why?",
+      "listenFor": "A big tub, so Gus had water of his own. The fish tank was not safe."
     },
     {
-      "ask": "What could Gus do instead of swimming? Why?",
-      "listenFor": "Any answer is fine - watch the fish, splash at the edge, stay with Meg. Listen for the because."
+      "ask": "What else could Meg have done for Gus? Why?",
+      "listenFor": "Any kind answer counts. The story says brownish and pinkish, not brown and pink - sort of that color. Let them try an -ish word of their own."
     }
   ]
 }
