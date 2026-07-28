@@ -11,7 +11,14 @@
     "\"That was my home,\" said the mole.",
     "So Rose and Mom set the stone back."
   ],
-  "warmup": ["hole", "stone", "rope", "pole", "mole", "nose"],
+  "warmup": [
+    "hole",
+    "stone",
+    "rope",
+    "pole",
+    "mole",
+    "nose"
+  ],
   "questions": [
     {
       "ask": "What does Mom get to help tug the stone?",
@@ -22,7 +29,7 @@
       "listenFor": "A mole. It says so in the story, so point at the line rather than telling them."
     },
     {
-      "ask": "Why do you think Rose and Mom set the stone back? Tell me why.",
+      "ask": "Why do you think Rose and Mom set the stone back?",
       "listenFor": "Any answer with a reason is right. Listen for something like \"so the mole gets his home back.\""
     }
   ]

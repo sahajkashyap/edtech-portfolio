@@ -114,9 +114,16 @@ def build_html(spec):
         f'<div class="q"><span class="qtext">{i}. {esc(q["ask"])}</span>'
         f'<span class="qline"></span><span class="qline"></span></div>'
         for i, q in enumerate(questions, 1))
+    def trim(note, n=150):
+        note = " ".join(note.split())
+        if len(note) <= n:
+            return note
+        cut = note[:n].rsplit(". ", 1)[0]
+        return (cut + ".") if len(cut) > 40 else note[:n].rsplit(" ", 1)[0] + "..."
+
     q_adult = "\n    ".join(
         f'<p class="qa"><span class="qq">{i}. {esc(q["ask"])}</span><br>'
-        f'<span class="aa">{esc(q["listenFor"])}</span></p>'
+        f'<span class="aa">{esc(trim(q["listenFor"]))}</span></p>'
         for i, q in enumerate(questions, 1))
 
     return f"""<!DOCTYPE html>
@@ -154,23 +161,26 @@ def build_html(spec):
     teacher which sheet to start with.</p>
   </div>
 
-  <h2>Four minutes, in this order</h2>
+  <h2>Five minutes, in this order</h2>
   <div class="tip">
     <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you
     think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
-    <p><strong>2. Cover the picture while they read.</strong> The picture is for understanding,
-    not for guessing words. Uncover it when they finish.</p>
-    <p><strong>3. Warm up on the {len(warm)} words,</strong> check off the heart words, then read the story.</p>
+    <p><strong>2. Cover the picture while they read.</strong> It is there for understanding, not
+    for guessing words. Uncover it when they finish.</p>
+    <p><strong>3. Warm up on the words,</strong> check off the heart words, then read the story.</p>
     <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Ask them to <strong>sound it
-    out</strong>, or to <strong>use their sound spelling</strong> &mdash; those are the words their
-    teacher uses, so home and school match. Tap under each letter as they go.</p>
-    <p><strong>5. Read it three times.</strong> The first read is work. The third read is reading.</p>
-    <p style="margin-top:7px; padding-top:6px; border-top:1px dotted #d9c7a8;">The story itself is
-    on the next sheet &mdash; read it once yourself before you begin.</p>
+    out</strong> or <strong>use their sound spelling</strong> &mdash; the words their teacher uses.
+    Tap under each letter as they go.</p>
+    <p><strong>5. Read it three times,</strong> then <strong>draw what happened.</strong> The
+    drawing is the comprehension check at this age &mdash; no writing needed, and the picture shows
+    you what they understood.</p>
+    <p style="margin-top:6px; padding-top:5px; border-top:1px dotted #d9c7a8;"><strong>The last
+    sheet of questions is extra.</strong> Reading and drawing is the work &mdash; stopping there is
+    finishing.</p>
   </div>
 
-  <h2>Checking they understood</h2>
-  <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
+  <h2>If they want the questions</h2>
+  <p class="sub">Optional. They work just as well asked out loud over the drawing.</p>
   <div class="answers">
     {q_adult}
   </div>
@@ -229,24 +239,7 @@ def build_html(spec):
 
 </div>
 
-<!-- ================= PAGE 3 — CHILD'S WORK SHEET ================= -->
-<div class="page">
-
-  <div class="band" style="margin-bottom:4px;">
-    <div>
-      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">{esc(title)} &mdash; my work page</h1>
-    </div>
-    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
-  </div>
-
-  <h2 style="margin-top:12px;">Think about it</h2>
-
-  {q_child}
-
-</div>
-
-<!-- ================= PAGE 4 — CHILD'S DRAWING SHEET ================= -->
+<!-- ================= PAGE 3 — DRAW WHAT HAPPENED ================= -->
 <div class="page">
 
   <div class="band" style="margin-bottom:4px;">
@@ -257,9 +250,32 @@ def build_html(spec):
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <h2 style="margin-top:12px;">Draw it</h2>
-  <p class="sub">Draw the last thing that happens in the story.</p>
+  <h2 style="margin-top:12px;">Draw the story</h2>
+  <p class="sub">Read it again if you need to. Then draw what happened.</p>
   <div class="drawbox"><span class="dlab">Your picture</span></div>
+
+</div>
+
+<!-- ============ PAGE 4 — QUESTIONS, ONLY IF THEY WANT THEM ============ -->
+<div class="page">
+
+  <div class="band" style="margin-bottom:4px;">
+    <div>
+      <span class="owner extra" style="margin-bottom:4px;">If you want more</span>
+      <h1 style="font-size:18px;">{esc(title)} &mdash; talk about it</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <div class="optional">
+    <strong>This page is extra.</strong> Reading the story and drawing the picture is the
+    work. If your reader has had enough, stop there &mdash; they have done it. These are
+    for a child who wants more, and they are just as good asked out loud as written down.
+  </div>
+
+  {q_child}
+
+</div>
 
 </div>
 

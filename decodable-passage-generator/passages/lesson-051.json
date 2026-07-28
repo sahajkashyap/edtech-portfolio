@@ -29,7 +29,7 @@
       "listenFor": "The bug. Listen for them to connect the bug's line of talking with the dogs sitting down at the end."
     },
     {
-      "ask": "Why do you think the dogs sat down that time? Tell me why.",
+      "ask": "Why do you think the dogs sat down that time?",
       "listenFor": "Either answer is fine. You want a reason tied to the story, like \"the song was better with two of them.\""
     }
   ]
