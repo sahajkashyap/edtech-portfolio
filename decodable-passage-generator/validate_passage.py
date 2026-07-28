@@ -16,6 +16,8 @@ import re
 import sys
 
 import audit_passage as A
+import props
+import word_age
 from core_vocabulary import BLOCKED
 
 HERE = pathlib.Path(__file__).parent
@@ -110,6 +112,14 @@ def validate(spec):
         if w in BLOCKED:
             problems.append(f"NOT FOR CHILDREN {w!r} — on the blocked list; "
                             f"choose another word with the same sounds")
+
+    # 2b. Decodable is not the same as understood. A child can sound out `cod`
+    #     perfectly at Lesson 18 and have no idea what it means -- it is learned
+    #     at age 11.5. This gate asks the other question.
+    names = props.find_names(story)
+    for w, why in sorted(word_age.scan(
+            " ".join([story, spec["title"]] + spec["warmup"]), names).items()):
+        problems.append(f"TOO OLD {w!r} — {why}")
 
     # 2. every word must be decodable by the rules
     report = A.audit(story, n)
