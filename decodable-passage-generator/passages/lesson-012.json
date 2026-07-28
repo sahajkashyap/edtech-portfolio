@@ -2,28 +2,33 @@
   "lesson": 12,
   "title": "The Pot on Top",
   "lines": [
-    "Mom sat a tin pot on top.",
-    "A tot is at the pot.",
-    "Tip! Pop! The pot is not on top.",
-    "Mom, a mop! Tom, a mop!",
-    "Mop it, Tom. Mop, mop, mop.",
-    "Mom sat the tin pot on top.",
-    "Sit on the mat, tot! Sit and pat it.",
-    "Mom and Tom pat the tot."
+    "Mom sat a pot on top.",
+    "A tot is at the pot!",
+    "Pop! The pot is not on top.",
+    "Mop it, Tom. Mop it, Mom.",
+    "The pot is on top.",
+    "The tot is in a nap."
   ],
-  "warmup": ["pot", "top", "mop", "pop", "not", "tot"],
+  "warmup": [
+    "pot",
+    "top",
+    "tot",
+    "mop",
+    "pop",
+    "nap"
+  ],
   "questions": [
     {
-      "ask": "Who tipped the pot off the top?",
-      "listenFor": "The tot, the little one. Lines two and three tell the story of it. Let your child read them again if they are unsure."
+      "ask": "What happens to the pot?",
+      "listenFor": "The tot taps it and it falls. Lines two and three tell it together."
     },
     {
-      "ask": "What did Mom and Tom use to clean it up?",
-      "listenFor": "A mop. One word is plenty. If your child is stuck, ask what Mom called for right after the pot went pop."
+      "ask": "Who mops it up?",
+      "listenFor": "Tom and Mom, both. The fourth line names them."
     },
     {
-      "ask": "Do you think the tot will go for the pot again? Tell me why you think so.",
-      "listenFor": "Either answer is good. You are listening for a reason from the story, like the pot is back up on top, or tots always try again."
+      "ask": "What would you have said to the tot? Tell me.",
+      "listenFor": "Any kind answer. You are listening for something gentle rather than cross."
     }
   ]
 }

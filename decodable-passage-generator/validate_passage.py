@@ -23,9 +23,27 @@ BANK = HERE / "word-bank.json"
 SOUND_LIST = HERE / "sound-list.json"
 PASSAGES = HERE / "passages"
 
-MIN_LINES, MAX_LINES = 6, 12
-MIN_WORDS, MAX_WORDS = 25, 90
-WARMUP_COUNT = 6
+MAX_LINES, MAX_WORDS = 12, 90
+
+# How long a story may be depends on how much language exists yet. At Lesson 6
+# a child can sound out eight words; demanding six lines and twenty-five words
+# from those forces every word to appear six times, and the padding is what
+# makes those sheets read like instructions rather than a story. A four-line
+# story that does one thing beats an eight-line one that repeats itself.
+#
+# (pool of words to sound out) -> (min lines, min words, warm-up count)
+LENGTH_BANDS = [
+    (12, (4, 14, 4)),
+    (30, (5, 20, 5)),
+    (10 ** 9, (6, 25, 6)),
+]
+
+
+def limits_for(pool_size):
+    for ceiling, band in LENGTH_BANDS:
+        if pool_size < ceiling:
+            return band
+    return LENGTH_BANDS[-1][1]
 
 
 def bank_for(lesson):
@@ -61,18 +79,22 @@ def validate(spec):
     story = " ".join(lines)
     story_words = words_in(story)
 
-    # 1. shape
-    if not MIN_LINES <= len(lines) <= MAX_LINES:
-        problems.append(f"{len(lines)} lines; needs {MIN_LINES}-{MAX_LINES}")
-    if not MIN_WORDS <= len(story_words) <= MAX_WORDS:
-        problems.append(f"{len(story_words)} words; needs {MIN_WORDS}-{MAX_WORDS}")
+    # 1. shape, scaled to how much language the lesson actually has
+    soundable = [w for w in bank if w not in hearts]
+    min_lines, min_words, warmup_count = limits_for(len(soundable))
+    if not min_lines <= len(lines) <= MAX_LINES:
+        problems.append(f"{len(lines)} lines; needs {min_lines}-{MAX_LINES} "
+                        f"({len(soundable)} words can be sounded out at this lesson)")
+    if not min_words <= len(story_words) <= MAX_WORDS:
+        problems.append(f"{len(story_words)} words; needs {min_words}-{MAX_WORDS}")
     if len(spec["questions"]) != 3:
         problems.append(f"{len(spec['questions'])} questions; needs exactly 3")
     for i, q in enumerate(spec["questions"], 1):
         if not q.get("ask") or not q.get("listenFor"):
             problems.append(f"question {i} needs both 'ask' and 'listenFor'")
-    if len(spec["warmup"]) != WARMUP_COUNT:
-        problems.append(f"{len(spec['warmup'])} warm-up words; needs exactly {WARMUP_COUNT}")
+    if len(spec["warmup"]) != warmup_count:
+        problems.append(f"{len(spec['warmup'])} warm-up words; needs exactly "
+                        f"{warmup_count} at this lesson")
 
     # 2a. Words that must never reach a child, however decodable they are.
     #     This lived only in the word bank, which meant a writer could still use
@@ -132,8 +154,10 @@ def validate(spec):
     if len(set(lines)) < len(lines):
         problems.append("a line is repeated verbatim")
     distinct = len(set(story_words))
-    if distinct < 12:
-        problems.append(f"only {distinct} distinct words — too repetitive to be a story")
+    floor = min(12, max(6, len(soundable) + len(hearts) - 2))
+    if distinct < floor:
+        problems.append(f"only {distinct} distinct words — needs {floor} to be a "
+                        f"story rather than a chant")
 
     return problems
 

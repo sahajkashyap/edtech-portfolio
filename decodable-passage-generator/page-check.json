@@ -1,19 +1,19 @@
 {
  "lesson-006": {
   "heights": [
-   889,
-   896,
+   851,
+   736,
    769,
-   877
+   904
   ],
   "overflowing": [],
   "measured": true
  },
  "lesson-007": {
   "heights": [
-   889,
-   896,
-   796,
+   851,
+   736,
+   769,
    904
   ],
   "overflowing": [],
@@ -21,9 +21,9 @@
  },
  "lesson-008": {
   "heights": [
-   889,
-   896,
-   798,
+   851,
+   776,
+   769,
    904
   ],
   "overflowing": [],
@@ -31,8 +31,8 @@
  },
  "lesson-009": {
   "heights": [
-   889,
-   896,
+   851,
+   776,
    769,
    904
   ],
@@ -41,29 +41,29 @@
  },
  "lesson-010": {
   "heights": [
-   870,
-   896,
-   798,
-   877
+   851,
+   776,
+   796,
+   904
   ],
   "overflowing": [],
   "measured": true
  },
  "lesson-011": {
   "heights": [
-   889,
-   896,
-   798,
-   904
+   851,
+   776,
+   769,
+   877
   ],
   "overflowing": [],
   "measured": true
  },
  "lesson-012": {
   "heights": [
-   909,
-   896,
-   798,
+   851,
+   816,
+   769,
    904
   ],
   "overflowing": [],

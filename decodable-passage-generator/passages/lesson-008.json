@@ -1,29 +1,32 @@
 {
   "lesson": 8,
-  "title": "Tim and the Pip",
+  "title": "A Map at the Pit",
   "lines": [
     "Tim sat at a pit.",
-    "A pip is at the mat.",
-    "Sis! Tip the pip at the pit!",
-    "The pip fit! It fit at the pit.",
-    "Pat it, Tim. Pat, pat, pat.",
-    "Sip, pip! Sip and sit.",
-    "Tim and Sis sat at the pit.",
-    "It is a pip pit!"
+    "A map is at the pit!",
+    "Tip it, Tim. Tip it.",
+    "The map is a fit.",
+    "Tim and Pam sit at the map."
   ],
-  "warmup": ["pit", "tip", "fit", "sip", "sit", "pat"],
+  "warmup": [
+    "sat",
+    "pit",
+    "tip",
+    "fit",
+    "sit"
+  ],
   "questions": [
     {
-      "ask": "Where did Sis tip the pip?",
-      "listenFor": "Into the pit, the little hole Tim sat by. Line three says it. Point at that line and let your child read it again."
+      "ask": "What is at the pit?",
+      "listenFor": "A map. It is in the second line. Point at the line rather than saying it."
     },
     {
-      "ask": "Did the pip fit in the pit?",
-      "listenFor": "Yes. Line four says it twice. If your child is unsure, ask them to find the word fit."
+      "ask": "Who sits at the map at the end?",
+      "listenFor": "Tim and Pam. The last line names them both."
     },
     {
-      "ask": "What do you think will come up out of that pit? Tell me why you think so.",
-      "listenFor": "A pip is a seed, so a plant or a tree is a lovely answer, but so is anything with a reason behind it. Listen for the why, not the what."
+      "ask": "What would you do with a map? Tell me why.",
+      "listenFor": "Any answer. Listen for a reason of their own."
     }
   ]
 }

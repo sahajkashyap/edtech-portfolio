@@ -1,36 +1,32 @@
 {
   "lesson": 9,
-  "title": "A Pin in the Mat",
+  "title": "A Pin in the Pan",
   "lines": [
-    "Tim sat at a mat. Nan sat at it.",
-    "A pin is in the mat!",
-    "A tin pin! It is at Tim.",
-    "Tip the mat, Nan. Tip it!",
-    "The pin is in a pan.",
-    "Nan sat the pin in a tin.",
-    "The tin is at Nan. The pin is in.",
-    "Tim and Nan sit at the mat."
+    "Nan sat at a tin pan.",
+    "A pin is in the pan!",
+    "Tip it, Nan. Tip the pan.",
+    "The pin is in a tin.",
+    "Nan and Tim nap."
   ],
   "warmup": [
-    "pin",
     "tin",
     "pan",
-    "mat",
+    "pin",
     "tip",
-    "sat"
+    "nap"
   ],
   "questions": [
     {
-      "ask": "What was in the mat?",
-      "listenFor": "A pin. Line two says it. If your child is not sure, point at that line and let them read it again rather than telling them."
+      "ask": "What was in the pan?",
+      "listenFor": "A pin. The second line says so, and it ends with an exclamation mark."
     },
     {
-      "ask": "Where did Nan put the pin so it was out of the way?",
-      "listenFor": "In a tin. Line six says it. One word is plenty."
+      "ask": "Where does the pin end up?",
+      "listenFor": "In a tin. Let them find the fourth line and read it again."
     },
     {
-      "ask": "Why do you think Nan moved the pin? Tell me what you think.",
-      "listenFor": "There is no wrong answer. Listen for a reason of their own, such as it could poke someone, or so it does not get lost."
+      "ask": "Why do you think Nan put the pin in a tin?",
+      "listenFor": "Looking for the idea that a loose pin is not safe. \"So no one sits on it\" is exactly right."
     }
   ]
 }

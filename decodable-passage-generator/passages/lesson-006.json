@@ -1,36 +1,30 @@
 {
   "lesson": 6,
-  "title": "Pat and Tap",
+  "title": "Sam and the Mat",
   "lines": [
     "Sam sat at the mat.",
-    "Pat the mat, Sam! Pat, pat, pat!",
-    "Pam sat as Sam sat.",
-    "Tap the mat, Pam! Tap, tap!",
-    "Pat and tap! Pat and tap!",
-    "Tam sat at the mat. I am Tam!",
-    "Pat, Tam! Tap, Tam! Pat and tap!",
-    "Sam and Pam and Tam tap and tap."
+    "Pat the mat, Sam!",
+    "Tap, tap, tap.",
+    "Pam and Sam tap the mat."
   ],
   "warmup": [
     "sat",
-    "at",
     "mat",
     "pat",
-    "tap",
-    "as"
+    "tap"
   ],
   "questions": [
     {
       "ask": "Who sat at the mat first?",
-      "listenFor": "Sam. It is the very first line. If your child is not sure, put a finger on that line and let them read it again rather than telling them."
+      "listenFor": "Sam. It is the very first line — point at it rather than telling them."
     },
     {
-      "ask": "Who came to the mat last?",
-      "listenFor": "Tam. Line six says it. A one word answer is a fine answer here."
+      "ask": "Who taps the mat at the end?",
+      "listenFor": "Pam and Sam, together. The last line says so."
     },
     {
-      "ask": "What would you tap to make a good sound? Tell me why that one.",
-      "listenFor": "Any answer is a good answer. You are listening for a reason of their own, and it is a lovely excuse to go and tap on something together."
+      "ask": "What sound does the mat make? Show me.",
+      "listenFor": "No right answer. Let them tap the table and make the sound themselves."
     }
   ]
 }

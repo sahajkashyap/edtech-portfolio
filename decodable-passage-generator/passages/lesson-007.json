@@ -1,36 +1,30 @@
 {
   "lesson": 7,
-  "title": "A Map and the Sap",
+  "title": "A Map at the Mat",
   "lines": [
-    "Sam sat at a map.",
-    "Tap at the map, Sam.",
-    "The map! At the mat!",
-    "Sam and Pam sat at the mat.",
-    "Pat at the mat, Pam.",
-    "Sap! Sap at the mat!",
-    "Tam sat at the sap.",
-    "Sam and Pam and Tam tap at the sap."
+    "Sam sat at a mat.",
+    "A map! Tap the map, Sam.",
+    "Pam sat at the map.",
+    "Sam and Pam pat the map."
   ],
   "warmup": [
-    "map",
-    "mat",
     "sat",
+    "map",
     "tap",
-    "pat",
-    "at"
+    "pat"
   ],
   "questions": [
     {
-      "ask": "Who was sitting at the map at the start?",
-      "listenFor": "Sam. It is the first line. If your child is stuck, point at that line and let them read it again rather than telling them."
+      "ask": "What did Sam find?",
+      "listenFor": "A map. The second line begins with it, and the exclamation mark is a clue."
     },
     {
-      "ask": "What did they find at the mat?",
-      "listenFor": "Sap, the sticky juice that runs out of a tree. Line six says it. If they say sticky, that counts."
+      "ask": "Who sat at the map?",
+      "listenFor": "Pam. If they say Sam, have them look again at the line with Pam in it."
     },
     {
-      "ask": "If you drew a map, where would it take us? Tell me why there.",
-      "listenFor": "Any place is a good answer. You are listening for the reason, and it is a lovely chance to draw a map together after."
+      "ask": "Where do you think the map goes? Tell me.",
+      "listenFor": "Anything they like. You are listening for an idea of their own."
     }
   ]
 }
