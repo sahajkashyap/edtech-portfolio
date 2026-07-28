@@ -1,28 +1,21 @@
 {
   "lesson": 52,
-  "title": "The Pink Sock",
+  "title": "Where Did the Pink Sock Go?",
   "lines": [
     "Meg dips a pink sock in the sink.",
-    "The pink sock sinks!",
-    "\"The sock sank!\" Meg yells.",
+    "The pink sock sank!",
+    "\"Where did it go?\" said Meg.",
     "Mom thinks, then gets a long rod.",
-    "Tug, tug, tug at the pink sock.",
-    "The pink sock is back!",
-    "Meg tells Mom thank you.",
-    "Mom tells Meg to hang it up."
+    "Tug, tug, tug! And there it is!",
+    "The pink sock is back, and it is wet.",
+    "\"Thank you, Mom,\" said Meg with a wink.",
+    "\"Hang it up,\" said Mom. \"Not in the sink!\""
   ],
-  "warmup": [
-    "pink",
-    "sink",
-    "sinks",
-    "thinks",
-    "sank",
-    "thank"
-  ],
+  "warmup": ["pink", "sink", "sank", "thinks", "thank", "wink"],
   "questions": [
     {
       "ask": "What happens to the sock in the sink?",
-      "listenFor": "It sinks. If they say \"it got wet,\" ask \"and then what did it do?\" to get them back to the word sinks."
+      "listenFor": "It sinks. If they say \"it got wet,\" ask \"and then what did it do?\" to get them back to the word sank."
     },
     {
       "ask": "What does Mom use to get the sock back?",

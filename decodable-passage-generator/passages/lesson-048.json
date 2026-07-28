@@ -1,36 +1,29 @@
 {
   "lesson": 48,
-  "title": "Chop, Chop, Chad!",
+  "title": "Chad Chops a Yam",
   "lines": [
-    "Chad has a big yam.",
-    "Chad has to chop it up with Dad.",
-    "Chad chops and chops.",
-    "The yam is thick.",
-    "His chum Meg picks up a pan.",
-    "Dad gets the pan hot.",
-    "Then Chad tips in the yam chips.",
-    "Such a rich dish! Such chums!"
+    "Dad and Chad walk to a shop.",
+    "They get a big yam and a bun.",
+    "At the hut, Chad chops the yam to chips.",
+    "Dad gets a pan hot and tips them in.",
+    "\"Such a rich dish!\" said his chum Meg.",
+    "Meg has much of it, and Chad has less.",
+    "A chip is on his chin.",
+    "\"You can have the bun, Chad,\" said Meg."
   ],
-  "warmup": [
-    "chop",
-    "chops",
-    "chum",
-    "chips",
-    "thick",
-    "rich"
-  ],
+  "warmup": ["chops", "chips", "chum", "chin", "much", "rich"],
   "questions": [
     {
-      "ask": "What does Chad chop up?",
-      "listenFor": "A big yam. It is stated in the story - if they guess, have them find the line with yam in it."
-    },
-    {
       "ask": "Who gets the pan hot?",
-      "listenFor": "Dad does. Chad chops with Dad, Meg picks up the pan, Dad puts it on the heat - one job in three parts."
+      "listenFor": "Dad does. Chad chops, Dad cooks - two jobs, two people. Have them find the line with pan in it."
     },
     {
-      "ask": "Do you think the dish was good? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason from the story, like \"yes, it says it was rich.\""
+      "ask": "Why does Meg give Chad the bun?",
+      "listenFor": "She ate most of the chips and he only has one, on his chin. You want cause and effect, not just \"she was nice.\""
+    },
+    {
+      "ask": "Was that a kind thing for Meg to do? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, because Chad had hardly any left.\""
     }
   ]
 }

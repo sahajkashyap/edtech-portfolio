@@ -2,15 +2,14 @@
   "lesson": 31,
   "title": "The Fox in the Box",
   "lines": [
-    "Ben has a big box.",
-    "Six figs sit in the box.",
-    "A red fox got in it!",
-    "The fox bit a fig. Yum!",
-    "The box tips. The fox is in.",
-    "The fox yips. Ben runs up.",
-    "Ben can fix it. Ben tips it.",
-    "The fox runs! It runs a lot.",
-    "Ben has six figs, not a fox."
+    "Ben has a box. Six figs are in it.",
+    "A red fox got in the box!",
+    "The fox bit a fig and sat.",
+    "The box tips. The fox can not get up.",
+    "\"Can you fix it, Dad?\" said Ben.",
+    "Dad tips the box up and the fox runs.",
+    "\"Look at him run!\" said Ben.",
+    "Ben has six figs, but not a fox."
   ],
   "warmup": [
     "box",
@@ -18,7 +17,7 @@
     "six",
     "fix",
     "figs",
-    "runs"
+    "tips"
   ],
   "questions": [
     {
@@ -30,8 +29,8 @@
       "listenFor": "The box tipped over with the fox inside. If they are stuck, read that line again and ask what happened to the box."
     },
     {
-      "ask": "Do you think Ben should have let the fox out? Tell me why.",
-      "listenFor": "There is no right answer. Listen for a reason - the fox was stuck, or the fox was eating his figs. Both are good thinking."
+      "ask": "Do you think Ben was right to ask Dad for help? Tell me why.",
+      "listenFor": "There is no right answer. Listen for a reason - the box was heavy, or a fox is a wild animal and not a pet. Both are good thinking."
     }
   ]
 }

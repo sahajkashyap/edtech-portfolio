@@ -1,16 +1,16 @@
 {
   "lesson": 36,
-  "title": "Six Figs and a Pig",
+  "title": "Six Figs in a Tin",
   "lines": [
     "Sal has six figs in a tin.",
-    "Sal hid the tin in a bin.",
-    "A pig got in the bin!",
-    "The pig did not fit. It is big.",
-    "The pig tips the bin and sits.",
-    "The figs sit in the mud.",
-    "Sal is sad. But the pig digs.",
-    "The pig digs up a big fig.",
-    "Sal bit it. Yum!"
+    "He hid the tin in a big bin.",
+    "A pig tips the bin and sits in it.",
+    "The figs are in the mud!",
+    "\"Do not sit on the figs,\" said Sal.",
+    "The pig digs and digs in the mud.",
+    "It digs up a big fig!",
+    "Sal is not mad at the pig.",
+    "He fed the pig a fig and a bun."
   ],
   "warmup": [
     "figs",
@@ -22,16 +22,16 @@
   ],
   "questions": [
     {
-      "ask": "Where did Sal hide the tin?",
-      "listenFor": "In a bin. It is said in the story. If they guess, have them find the word bin and read that line again."
+      "ask": "Where did Sal hide the tin of figs?",
+      "listenFor": "In a big bin. It is said right in the story. If they guess, have them find the word bin and read that line again."
     },
     {
       "ask": "How did the figs end up in the mud?",
-      "listenFor": "The pig got in the bin and tipped it over. Two steps, so it is fine to look back for both parts."
+      "listenFor": "The pig got in the bin and tipped it over. That is two steps, so it is fine for them to look back and find both parts."
     },
     {
-      "ask": "Do you think Sal is still cross with the pig at the end? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the pig dug a fig back up, or the pig wrecked the tin in the first place."
+      "ask": "Why do you think Sal is not mad at the pig? Tell me why.",
+      "listenFor": "There is no right answer. You want a reason from the story - the pig dug a fig back up, or Sal likes the pig anyway. The reason is the part you are listening for."
     }
   ]
 }

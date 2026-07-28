@@ -1,17 +1,36 @@
 {
   "lesson": 41,
   "title": "Mud Pig",
-  "lines": ["Sam has a pig.", "The pig is big.", "Sam and the pig sit in the sun.",
-            "The pig runs to the mud.", "The pig sits in the mud.",
-            "Sam gets a rag and a tub.", "Sam rubs the pig in the tub.",
-            "The pig is wet. Sam is wet!", "The pig naps in the sun."],
-  "warmup": ["pig", "mud", "sun", "tub", "rag", "wet"],
+  "lines": [
+    "Sam has a big pig and a red tub.",
+    "The pig naps in the hot sun.",
+    "It gets up and runs to the mud.",
+    "\"Not the mud!\" said Sam.",
+    "Sam gets the tub and a big rag.",
+    "He rubs and rubs. The pig sits in it.",
+    "The pig is wet. Sam is wet!",
+    "\"You can nap in the sun,\" said Sam."
+  ],
+  "warmup": [
+    "pig",
+    "mud",
+    "sun",
+    "tub",
+    "rag",
+    "wet"
+  ],
   "questions": [
-    {"ask": "Why is Sam wet?",
-     "listenFor": "Looking for cause and effect: Sam washed the pig, so Sam got wet too. If they just say \"the tub,\" ask \"and what happened in the tub?\""},
-    {"ask": "What did Sam use to get the pig clean?",
-     "listenFor": "A rag and a tub. This one is stated right in the story - if they can't find it, have them reread that line rather than telling them."},
-    {"ask": "Do you think the pig liked the tub? Tell me why.",
-     "listenFor": "Either answer is correct. You are listening for a reason tied to the story - \"no, because it ran to the mud\" or \"yes, because it naps at the end.\""}
+    {
+      "ask": "What does Sam use to get the pig clean?",
+      "listenFor": "A tub and a big rag. This one is stated right in the story - if they cannot find it, have them reread that line rather than telling them."
+    },
+    {
+      "ask": "Why is Sam wet at the end?",
+      "listenFor": "Looking for cause and effect: Sam washed the pig in the tub, so Sam got wet too. If they just say \"the tub,\" ask \"and what happened in the tub?\""
+    },
+    {
+      "ask": "Do you think the pig liked the tub? Tell me why.",
+      "listenFor": "Either answer is correct. You are listening for a reason tied to the story - \"no, it ran to the mud\" or \"yes, it sat in the tub and got a nap after.\""
+    }
   ]
 }

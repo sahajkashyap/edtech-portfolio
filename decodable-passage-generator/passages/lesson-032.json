@@ -2,23 +2,22 @@
   "lesson": 32,
   "title": "Sam Did Not Quit",
   "lines": [
-    "Sam has a big job.",
-    "Sam digs a pit in the mud.",
-    "The sun is hot. Sam is hot.",
-    "Can Sam quit? Not yet!",
-    "Dad digs. Sam digs a lot.",
-    "Sam taps a tin box!",
-    "Sam tugs the lid up.",
-    "It is a map! Sam sits up.",
-    "Sam did not quit. Dad pats him."
+    "Sam and Dad dig in the hot sun.",
+    "\"Can I quit?\" said Sam. \"It is hot.\"",
+    "\"Do not quit yet,\" said Dad. \"Dig a bit.\"",
+    "Sam digs and taps a tin box!",
+    "Sam tugs at the lid and it pops up.",
+    "A map is in the box!",
+    "\"You did not quit,\" said Dad.",
+    "Sam and Dad sit and look at the map."
   ],
   "warmup": [
     "digs",
-    "mud",
     "box",
     "lid",
-    "job",
-    "pit"
+    "map",
+    "tugs",
+    "sun"
   ],
   "questions": [
     {
@@ -27,11 +26,11 @@
     },
     {
       "ask": "Why did Sam want to quit?",
-      "listenFor": "Digging was hard - the sun was hot and Sam got hot. Either half of that is a good answer."
+      "listenFor": "Digging was hard and the sun was hot. Either half of that is a good answer."
     },
     {
       "ask": "Do you think Sam was glad he kept digging? Tell me why.",
-      "listenFor": "No wrong answer. You are listening for a reason from the story - he found the map, or Dad patted him. The because is what you want."
+      "listenFor": "No wrong answer. You are listening for a reason from the story - he found the map, or he and Dad sit and look at it together at the end. The because is what you want."
     }
   ]
 }

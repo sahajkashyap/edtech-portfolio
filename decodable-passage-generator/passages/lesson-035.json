@@ -3,22 +3,21 @@
   "title": "Sam and the Ham",
   "lines": [
     "Dad had a ham in a pan.",
-    "Sam is a cat. Sam is bad.",
-    "Sam sat on a mat and had a nap.",
-    "The ham is hot. Sam ran to it.",
-    "Sam had a bit and ran!",
-    "Dad is mad at Sam. Bad cat!",
-    "Sam hid in a bag and sat.",
-    "Dad had jam and a bun.",
-    "Sam ran to Dad. Dad pats him."
+    "Sam the cat had a nap on a mat.",
+    "The ham was hot. Sam ran at the pan!",
+    "Sam got a bit of ham and ran.",
+    "\"Sam! What a cat!\" said Dad.",
+    "Sam hid in a bag and sat and sat.",
+    "Dad had jam on a bun. Sam ran up.",
+    "\"You can have a bit, Sam,\" said Dad."
   ],
   "warmup": [
     "ham",
     "pan",
     "mat",
-    "bad",
     "ran",
-    "jam"
+    "jam",
+    "nap"
   ],
   "questions": [
     {
@@ -30,8 +29,8 @@
       "listenFor": "In a bag. Have them find the word bag on the page and touch it - proving it beats remembering it."
     },
     {
-      "ask": "Do you think Dad stayed mad at Sam? Tell me why you think so.",
-      "listenFor": "No wrong answer. Listen for a reason from the story - Dad patted Sam at the end, or Sam ran back to him. The because is what you are after."
+      "ask": "Do you think Dad stayed cross with Sam? Tell me why you think so.",
+      "listenFor": "No wrong answer. Listen for a reason from the story - Dad offered Sam a bit at the end, or Sam ran back to him. The because is what you are after."
     }
   ]
 }

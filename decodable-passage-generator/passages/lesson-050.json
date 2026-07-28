@@ -2,35 +2,35 @@
   "lesson": 50,
   "title": "Which Shell?",
   "lines": [
-    "Nick has ten shells in a sack.",
-    "Nick picks a thick red shell.",
-    "Which shell will Josh pick?",
-    "When Josh picks it up, it is wet.",
-    "A bug is in his shell!",
-    "Josh yells and lets it fall.",
-    "The bug runs back to the mud.",
-    "When Josh picks a shell, Josh checks it."
+    "Nan has ten shells in a red sack.",
+    "\"Which shell do you want?\" she said.",
+    "Ted could not pick. He had to check them.",
+    "When he got a wet shell, a bug fell!",
+    "Ted let it fall. Nan did not yell.",
+    "\"A bug would not want that,\" said Nan.",
+    "When Ted picks a shell, he checks it well.",
+    "Which shell did he pick? The thin red shell."
   ],
   "warmup": [
-    "when",
     "which",
+    "when",
     "shell",
-    "thick",
-    "picks",
-    "yells"
+    "sack",
+    "thin",
+    "yell"
   ],
   "questions": [
     {
-      "ask": "What is in the shell Josh picks?",
+      "ask": "What falls out of the wet shell?",
       "listenFor": "A bug. It is stated in the story - if they guess, send them back to that line."
     },
     {
-      "ask": "Why does Josh let the shell fall?",
-      "listenFor": "A bug was in it and it was wet. You want cause and effect, not just \"he dropped it.\""
+      "ask": "Which shell does Ted pick in the end?",
+      "listenFor": "The thin red shell. It is the very last line, so have them reread it."
     },
     {
-      "ask": "Do you think Josh will pick up more shells? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, but he checks them first now.\""
+      "ask": "What do you think Nan meant about the bug? Tell me why.",
+      "listenFor": "Any sensible idea works, like \"a bug does not want to be picked up.\" You are listening for a because."
     }
   ]
 }

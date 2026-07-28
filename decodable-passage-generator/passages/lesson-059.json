@@ -2,22 +2,35 @@
   "lesson": 59,
   "title": "The Note in the Tube",
   "lines": [
-    "Jane and Pete hike to the lake.",
-    "Pete finds a tube in the mud.",
-    "A note is in the tube!",
-    "The note has a map on it.",
-    "The map has nine steps from the pine.",
-    "Jane digs and finds a white stone.",
-    "Pete rubs it. The stone has a shine.",
-    "Jane and Pete take the stone home."
+    "Jane and Pete hike up to the lake.",
+    "Pete finds a tube stuck in the mud.",
+    "A note is in it with a map.",
+    "\"Nine steps from the pine,\" said Jane.",
+    "They dig and dig in the damp sand.",
+    "Pete lifts up a white stone.",
+    "\"Hide it for the next kid,\" said Jane.",
+    "So they did, and left a note in it."
   ],
-  "warmup": ["lake", "tube", "note", "pine", "nine", "stone"],
+  "warmup": [
+    "lake",
+    "tube",
+    "note",
+    "pine",
+    "nine",
+    "stone"
+  ],
   "questions": [
-    {"ask": "What does Pete find in the mud?",
-     "listenFor": "A tube with a note in it. If they say just \"a note,\" ask what the note was inside of."},
-    {"ask": "How do Jane and Pete know where to dig?",
-     "listenFor": "The map on the note tells them nine steps from the pine. Listen for the map or the nine steps."},
-    {"ask": "What do you think the stone is? Tell me why.",
-     "listenFor": "There is no right answer here. You are listening for imagination plus a clue from the story, like \"it shines, so maybe it is a jewel.\""}
+    {
+      "ask": "What does Pete find stuck in the mud?",
+      "listenFor": "A tube, with a note and a map in it."
+    },
+    {
+      "ask": "How do Jane and Pete know where to dig?",
+      "listenFor": "The map says nine steps from the pine. Send them back to that line."
+    },
+    {
+      "ask": "Would you have hidden the stone again, or kept it? Tell me why.",
+      "listenFor": "Either answer is right. Listen for a reason, such as \"hide it, so the next kid gets a turn.\""
+    }
   ]
 }

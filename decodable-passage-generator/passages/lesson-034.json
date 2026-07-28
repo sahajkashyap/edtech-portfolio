@@ -2,19 +2,18 @@
   "lesson": 34,
   "title": "Liz Zips the Bag",
   "lines": [
-    "Liz has a red bag. It zips.",
-    "Liz gets a bun. Liz gets a fig.",
-    "Liz runs up a big log.",
-    "A bug zips at Liz!",
-    "The bug zigs. The bug zags.",
-    "Liz zips the bag up. Zip!",
-    "The bug sits. It is mad.",
-    "Liz sets a bit on the log.",
-    "The bug gets it. It is not mad."
+    "Liz has a red bag and it zips up.",
+    "A bun, a fig and jam are in it.",
+    "A big bug zips at the bag. Zap!",
+    "Liz zips the bag up. \"Not yet, bug!\"",
+    "The bug sits on a log and is mad.",
+    "\"You can have a bit,\" said Liz.",
+    "Liz sets a bit of bun on the log.",
+    "The bug has the bit and is not mad."
   ],
   "warmup": [
-    "zip",
     "zips",
+    "zap",
     "bag",
     "bug",
     "bun",
@@ -22,8 +21,8 @@
   ],
   "questions": [
     {
-      "ask": "What two things did Liz get?",
-      "listenFor": "A bun and a fig. If your child only names one, that is fine - ask \"what else?\" and let them look back."
+      "ask": "What did Liz have in the bag?",
+      "listenFor": "A bun, a fig and jam. If your child only names one, that is fine - ask \"what else?\" and let them look back."
     },
     {
       "ask": "Why did Liz zip the bag up?",
@@ -31,7 +30,7 @@
     },
     {
       "ask": "Do you think Liz did the right thing at the end? Tell me why.",
-      "listenFor": "There is no wrong answer. Listen for a reason - she shared, or the bug stopped being mad. A reason from the story beats a yes or no."
+      "listenFor": "There is no wrong answer. Listen for a reason - she shared, or the bug stopped being cross. A reason from the story beats a yes or no."
     }
   ]
 }

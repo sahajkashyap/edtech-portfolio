@@ -1,23 +1,36 @@
 {
   "lesson": 54,
-  "title": "Mom and Jane Bake",
+  "title": "Who Licks the Cake?",
   "lines": [
-    "Mom and Jane bake a cake.",
-    "The cake sits on a plate.",
-    "A cat, Jake, hops up on the gate.",
-    "Jake gets a lick of the cake!",
-    "Jane yells, \"That is not for cats!\"",
-    "Mom will make a small cake for Jake.",
-    "Jake laps up his cake fast.",
-    "Mom and Jane take the big cake in."
+    "Mom and Jane bake a big cake.",
+    "They set it on a plate and go in.",
+    "Jake the cat hops up on the gate.",
+    "He gets a lick of that cake!",
+    "\"Who did that?\" said Jane. \"Jake did!\"",
+    "Mom said, \"We can make a small cake.\"",
+    "They bake it, and Jake laps it up.",
+    "They take the big cake in on its plate."
   ],
-  "warmup": ["bake", "cake", "plate", "gate", "make", "take"],
+  "warmup": [
+    "bake",
+    "cake",
+    "plate",
+    "gate",
+    "make",
+    "take"
+  ],
   "questions": [
-    {"ask": "What does Jake the cat do to the big cake?",
-     "listenFor": "He takes a lick of it. If they just say \"he ate it,\" ask them to find the line and read what he really did."},
-    {"ask": "How does Mom fix the problem?",
-     "listenFor": "He makes a small cake just for Jake. Listen for them naming the small cake, not only \"he was nice.\""},
-    {"ask": "What do you think Jake will do next? Tell me why.",
-     "listenFor": "Any guess is fine if it has a reason from the story, like \"go back to the gate, because he wants more cake.\""}
+    {
+      "ask": "What does Jake the cat do to the big cake?",
+      "listenFor": "He takes a lick of it. If they just say \"he ate it,\" ask them to find the line and read what he really did."
+    },
+    {
+      "ask": "How do Mom and Jane fix the problem?",
+      "listenFor": "They bake a small cake just for Jake. Listen for them naming the small cake, not only \"they were nice.\""
+    },
+    {
+      "ask": "What do you think Jake will do next? Tell me why.",
+      "listenFor": "Any guess is fine if it has a reason from the story, like \"go back to the gate, because he wants more cake.\""
+    }
   ]
 }

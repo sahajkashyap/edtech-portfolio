@@ -2,14 +2,14 @@
   "lesson": 42,
   "title": "The Ball in the Well",
   "lines": [
-    "Bill has a red ball.",
-    "Bill runs up a tall hill.",
-    "Bill tips the ball off the hill.",
-    "The ball rolls and rolls.",
+    "Bill has a red ball and a tall hill.",
+    "He rolls the ball off the top.",
     "It falls in a well!",
-    "Bill yells and yells.",
-    "Mom gets the ball to Bill.",
-    "Bill hugs his dad."
+    "\"Dad! The ball fell in!\" yells Bill.",
+    "Dad dips a net in the well.",
+    "He tugs and tugs and gets the ball.",
+    "\"Your ball is a mess,\" said Dad.",
+    "\"I want to fill a tub,\" said Bill."
   ],
   "warmup": [
     "ball",
@@ -25,12 +25,12 @@
       "listenFor": "In a well. It is stated in the story - if they guess, have them find the line with the word well in it."
     },
     {
-      "ask": "Who gets the ball back to Bill?",
-      "listenFor": "His dad. Follow up with \"and how did Mom know to come?\" to see if they linked the yell to the help."
+      "ask": "How does Dad get the ball back?",
+      "listenFor": "He dips a net in the well and tugs. Follow up with \"and how did Dad know to come?\" to see if they linked the yell to the help."
     },
     {
-      "ask": "Do you think Bill should roll the ball down the hill again? Tell me why.",
-      "listenFor": "Either answer is correct. Listen to a reason tied to what happened, like \"no, it fell in the well.\""
+      "ask": "Why do you think Bill wants to fill a tub? Tell me why.",
+      "listenFor": "Any reason tied to the story works - \"the ball is a mess\" shows they connected the ending back to the well."
     }
   ]
 }

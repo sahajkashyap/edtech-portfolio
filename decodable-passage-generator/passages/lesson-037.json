@@ -1,37 +1,37 @@
 {
   "lesson": 37,
-  "title": "Tom and the Hog",
+  "title": "The Hog in the Bog",
   "lines": [
-    "Tom has a hog. It is not big.",
-    "The hog naps in a hot bog.",
-    "Tom got a mop and a pot.",
-    "Tom can not mop the hog.",
-    "The hog hops on a log.",
-    "The log tips! The hog is in.",
-    "Tom is not mad. Tom hops in.",
-    "Tom tugs. The hog got up.",
-    "The hog naps on a cot."
+    "Tom has a hog and a big mop.",
+    "The hog hops in a hot bog.",
+    "\"Not the bog!\" said Tom.",
+    "The hog nods and naps in the mud.",
+    "Tom got a pot and a rag.",
+    "He mops the hog on a log.",
+    "The log tips! Tom sits in the mud.",
+    "The hog tugs him up on the log.",
+    "Tom hugs the hog. He is not mad."
   ],
   "warmup": [
     "hog",
     "bog",
     "mop",
     "log",
-    "hops",
-    "pot"
+    "pot",
+    "hops"
   ],
   "questions": [
     {
       "ask": "What did Tom get to clean the hog?",
-      "listenFor": "A mop and a pot. If they name only one, ask \"what else?\" and let them look back at the line."
+      "listenFor": "A pot and a rag. If they name only one, ask \"and what else?\" and let them go back and find the line."
     },
     {
-      "ask": "What happened when the hog hopped on the log?",
-      "listenFor": "The log tipped and the hog went back in the bog. Have them find the line with the word log in it and read it back."
+      "ask": "What happened when Tom mopped the hog on the log?",
+      "listenFor": "The log tipped and Tom landed in the mud. Have them find the line with the word log in it and read it back to you."
     },
     {
       "ask": "Do you think Tom likes his hog? Tell me why you think so.",
-      "listenFor": "No wrong answer here. Listen for a reason from the story - Tom hopped in after him, or Tom was not mad. The reason is what you are listening for."
+      "listenFor": "No wrong answer here. Listen for a reason from the story - the hog tugged him up, or Tom hugged the hog and was not mad."
     }
   ]
 }

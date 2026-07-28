@@ -1,36 +1,36 @@
 {
   "lesson": 16,
-  "title": "The Dog Got the Fig",
+  "title": "Gus and the Pig",
   "lines": [
-    "Nan got a fig.",
-    "The fig sat on a mat. The dog got up.",
-    "Nip! The dog got the fig.",
-    "Nan is mad at the dog.",
-    "The dog did dig in the mud.",
-    "The dog dug up a fig!",
-    "It is a mud fig. Nan got it.",
-    "Nan is not mad. The dog got a pat."
+    "Gus got a pup and a pig.",
+    "The pup can tug. The pig can dig.",
+    "\"Dig up a fig,\" said Gus.",
+    "The pig dug and dug in the mud.",
+    "The pig dug up a tin mug!",
+    "\"It is not a fig,\" said Gus.",
+    "A fig is in the mug!",
+    "Gus did pat the pig and the pup."
   ],
   "warmup": [
-    "got",
-    "fig",
-    "dog",
     "dig",
     "dug",
-    "mud"
+    "fig",
+    "mug",
+    "pig",
+    "tug"
   ],
   "questions": [
     {
-      "ask": "What did the dog take off the mat?",
-      "listenFor": "The fig. The story says it. If your child is unsure, have them find the word fig and read that line again."
+      "ask": "What did the pig dig up?",
+      "listenFor": "A tin mug. The story says it. If your child is unsure, have them find the word mug and read that line again."
     },
     {
-      "ask": "Why did Nan stop being mad?",
-      "listenFor": "Because the dog dug up another fig for her. Listen for the dog making it right, not just \"she stopped.\""
+      "ask": "Was Gus happy at the end? How can you tell?",
+      "listenFor": "Yes - he patted the pig and the pup. Listen for the pat, and for the fig turning up inside the mug after all."
     },
     {
-      "ask": "Would you eat a fig that came out of the mud? Tell me why or why not.",
-      "listenFor": "Either answer works. You are listening for a reason - it is dirty, or you could wash it. The reason is the thinking you want."
+      "ask": "What do you think the pig will dig up next? Tell me why.",
+      "listenFor": "Any answer works. You are listening for a reason - the pig likes figs, or the pig digs in mud, so it will come up muddy."
     }
   ]
 }

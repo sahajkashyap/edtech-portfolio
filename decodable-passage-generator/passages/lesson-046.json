@@ -1,36 +1,36 @@
 {
   "lesson": 46,
-  "title": "Moths in That Box",
+  "title": "Mud, Then Baths",
   "lines": [
-    "Ben has moths in a box.",
-    "This box has a red lid.",
-    "Then the lid falls off!",
-    "The moths run off to a shed.",
-    "Ben runs to that shed.",
-    "The moths sit on a rock.",
-    "Ben will not shut them in that box.",
-    "Then Ben lets both of them run off."
+    "Sal and Lin have big dogs.",
+    "They let them run up the hill.",
+    "Both dogs dig and get mud on their legs.",
+    "\"Baths!\" said Sal. \"Both of them.\"",
+    "Sal fills a tub and Lin gets a rag.",
+    "Then the dogs run off!",
+    "Sal and Lin look. They are in that tub!",
+    "\"They did want baths,\" said Lin."
   ],
   "warmup": [
-    "moths",
-    "this",
+    "both",
+    "them",
     "then",
     "that",
-    "both",
-    "them"
+    "baths",
+    "mud"
   ],
   "questions": [
     {
-      "ask": "What is in Ben's box?",
-      "listenFor": "Moths. It is stated in the first line - have them reread it rather than telling them."
+      "ask": "How do the dogs get mud on them?",
+      "listenFor": "They dig on the hill. The third line says it - have your child find the word dig."
     },
     {
-      "ask": "Where does Ben find the moths?",
-      "listenFor": "On a rock by the shed. If they say only \"the shed,\" ask them what the moths were sitting on."
+      "ask": "Where are the dogs at the end?",
+      "listenFor": "In the tub. If they say \"they ran off,\" ask what happened after that."
     },
     {
-      "ask": "Was Ben right to let the moths go? Tell me why.",
-      "listenFor": "Either answer is correct. The last two lines are the clue - he will not shut them in the box again. A moth is a bug, not a pet. You are listening for a reason from the story, not just yes or no."
+      "ask": "Do you think the dogs like baths? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason, like \"yes, they got in the tub themselves.\""
     }
   ]
 }

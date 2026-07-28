@@ -2,31 +2,24 @@
   "lesson": 13,
   "title": "Dad Did Nap",
   "lines": [
-    "Dad is on a mat. Dad did nap.",
-    "Sam did tap Dad. Tap, tap, tap.",
-    "Dad did nap. Sam is sad.",
-    "Sam did tip a tin pot.",
+    "Dad did nap on a mat.",
+    "\"Sit, Dad!\" said Sam. Tap, tap, tap.",
+    "Dad did nod. Dad did nap.",
+    "Sam is sad. Sam did tip a tin pot.",
     "Pop! The pot did tip on the mat.",
-    "Dad did sit! Dad is not mad.",
-    "Dad did pat Sam.",
+    "Dad did sit! \"I am not mad,\" said Dad.",
+    "Dad did pat Sam. \"Sit and sip,\" said Dad.",
     "Sam did nap. Dad did not!"
   ],
-  "warmup": [
-    "nap",
-    "tap",
-    "tip",
-    "pot",
-    "mat",
-    "pat"
-  ],
+  "warmup": ["nap", "tap", "nod", "tip", "pot", "pat"],
   "questions": [
     {
       "ask": "What did Sam tip over?",
       "listenFor": "A tin pot. The story says it, so if your child is stuck, point to that line and let them read it again rather than telling them."
     },
     {
-      "ask": "Why did Dad finally sit up?",
-      "listenFor": "Because the pot tipped and went pop. You want the pot, not just \"because he woke up.\" If they say \"the noise,\" ask \"what made the noise?\""
+      "ask": "What did Dad say when he sat up?",
+      "listenFor": "I am not mad. You want the idea that Dad was not cross, even after the pot went pop. Let them find the line with said in it."
     },
     {
       "ask": "Do you think Dad should have gotten up sooner? Tell me why you think so.",

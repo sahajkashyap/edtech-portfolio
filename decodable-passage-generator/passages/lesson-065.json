@@ -1,36 +1,29 @@
 {
   "lesson": 65,
-  "title": "Camping",
+  "title": "Camping by the Pond",
   "lines": [
-    "Sam and Pam are camping at the pond.",
-    "Pam is fishing and Sam is resting.",
-    "Pam is yelling. A big fish is tugging!",
-    "Pam is slipping in the wet mud.",
+    "Sam and Pam are camping by the pond.",
+    "Pam has been fishing and Sam is resting.",
+    "\"A big fish!\" Pam is yelling.",
+    "She is slipping in the wet mud.",
     "Sam is jumping up to grab Pam.",
-    "Both of them are pulling and pulling.",
-    "It lands in the pot with a thump.",
-    "Sam is grinning and Pam is munching fish."
+    "They are both pulling and will not let go.",
+    "The fish flips into the pot with a thump!",
+    "\"That fish can jump,\" said Sam, grinning."
   ],
-  "warmup": [
-    "camping",
-    "fishing",
-    "resting",
-    "yelling",
-    "jumping",
-    "pulling"
-  ],
+  "warmup": ["camping", "fishing", "resting", "yelling", "jumping", "pulling"],
   "questions": [
     {
-      "ask": "What was Sam doing while Pam was fishing?",
-      "listenFor": "Resting. It is in the second line - send them back to it rather than telling them."
+      "ask": "What is Sam doing while Pam is fishing?",
+      "listenFor": "Resting. It is in the second line."
     },
     {
-      "ask": "Why did Sam jump up?",
-      "listenFor": "Pam was slipping in the mud and needed help. If they just say \"the fish,\" ask \"and what was happening to Pam?\""
+      "ask": "Why does Sam jump up?",
+      "listenFor": "Pam is slipping in the wet mud, so he grabs her."
     },
     {
-      "ask": "Do you think you would like camping by a pond? Tell me why.",
-      "listenFor": "There is no right answer here. You are listening for a reason of their own - the fish, the mud, sleeping outside."
+      "ask": "Would you like camping by a pond? Tell me why.",
+      "listenFor": "Either answer is right. This one is just for talking — listen for a reason."
     }
   ]
 }

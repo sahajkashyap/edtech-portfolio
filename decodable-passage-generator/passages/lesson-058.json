@@ -1,36 +1,29 @@
 {
   "lesson": 58,
-  "title": "Duke and the Tune",
+  "title": "Duke and the Cube",
   "lines": [
-    "Ben has a cute mule, Duke.",
-    "Duke will not step up the path.",
-    "Ben yells at him. That is rude.",
-    "Duke just sits in the dust.",
-    "Ben hums a tune to Duke.",
-    "Duke gets up! That tune is fun.",
-    "Ben hums the whole time.",
-    "Duke and Ben step up the path."
+    "Ben has one cute mule, Duke.",
+    "Once, Duke sat in the dust.",
+    "He will not get up at all.",
+    "\"Up, Duke!\" said Ben. Duke just sits.",
+    "Ben gets a tube with a cube in it.",
+    "He hums a tune and lifts up the cube.",
+    "Duke gets up fast and grabs the cube.",
+    "Then they step up the path and go home."
   ],
-  "warmup": [
-    "cute",
-    "mule",
-    "rude",
-    "tune",
-    "hums",
-    "whole"
-  ],
+  "warmup": ["cute", "mule", "dust", "tube", "cube", "tune"],
   "questions": [
     {
-      "ask": "What does Duke do when Ben yells?",
-      "listenFor": "He just sits in the dust. Yelling did not work. Have them find that line if they are unsure."
+      "ask": "What does Duke do when Ben tells him to get up?",
+      "listenFor": "Nothing — he just sits. The line says \"Duke just sits.\""
     },
     {
-      "ask": "What finally gets Duke to move?",
-      "listenFor": "Ben hums a tune. Listen for them naming the tune, not just \"Ben was nice.\""
+      "ask": "What finally gets Duke up on his feet?",
+      "listenFor": "The cube from the tube. If they say \"the tune\", that is close — ask what Ben was holding up."
     },
     {
-      "ask": "What do you think Ben will do the next time Duke stops? Tell me why.",
-      "listenFor": "Any answer with a reason works. \"Hum, because yelling did not work\" shows they followed the whole story."
+      "ask": "What do you think Ben will take next time? Tell me why.",
+      "listenFor": "Any answer with a reason. Listen for something like \"a cube, because that is what worked.\""
     }
   ]
 }

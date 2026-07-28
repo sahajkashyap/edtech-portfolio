@@ -1,36 +1,36 @@
 {
   "lesson": 20,
-  "title": "Ten Cats, Ten Nuts",
+  "title": "Ten Nuts in Ten Cups",
   "lines": [
-    "Meg got ten nuts in a pot.",
-    "Meg set the pot on a cot.",
-    "Ten cats did get up.",
-    "The cats did tip the pot.",
-    "Nuts on the mat! Nuts in the cup!",
-    "The cats bat the nuts. Meg is mad.",
-    "Meg sat on the mat. Meg can bat nuts.",
-    "Ten cats. Ten nuts. It is fun."
+    "Meg got ten nuts and ten cups.",
+    "\"A nut can fit in a cup,\" said Meg.",
+    "Meg set the cups on the mats.",
+    "Ten cats got up and did tip the cups!",
+    "Nuts on the mats! Nuts in the pots!",
+    "\"Do not bat the nuts,\" said Meg.",
+    "A cat did tip a nut in a cup.",
+    "\"Ten nuts! Ten cups!\" said Meg."
   ],
   "warmup": [
     "nuts",
+    "cups",
     "cats",
-    "ten",
-    "pot",
-    "bat",
-    "cup"
+    "mats",
+    "pots",
+    "bat"
   ],
   "questions": [
     {
-      "ask": "Where did Meg put the pot of nuts?",
-      "listenFor": "On a cot. The story says it. If your child guesses, have them find the word cot and read that line again."
+      "ask": "Where did Meg set the cups?",
+      "listenFor": "On the mats. The story says it. If your child guesses, have them find the word mats and read that line again."
     },
     {
-      "ask": "What did the cats do with the nuts?",
-      "listenFor": "They tipped the pot over and batted the nuts around. Listen for the batting - that is what turns the mess into a game."
+      "ask": "What did the cats do at the very end?",
+      "listenFor": "They tipped a nut back into a cup. Listen for the nut going back in - the cats put it right by accident."
     },
     {
-      "ask": "Do you think Meg is still mad at the end? Tell me why you think so.",
-      "listenFor": "There is no wrong answer. Listen for a reason from the story, like she sat down and joined in, or she said it was fun."
+      "ask": "Do you think the cats were helping Meg? Tell me why you think so.",
+      "listenFor": "Either answer works. You are listening for a reason from the story, like they made the mess first, or they put a nut back."
     }
   ]
 }

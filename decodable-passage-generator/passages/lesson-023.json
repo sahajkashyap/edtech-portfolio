@@ -1,36 +1,36 @@
 {
   "lesson": 23,
-  "title": "The Hen in the Hut",
+  "title": "The Hen on the Hat",
   "lines": [
-    "Tom has a hen. It is his pet.",
-    "The hen hid in a hut.",
-    "Tom got in the hut. Tom did dig.",
-    "The hen hid in his hat!",
-    "The hat is on Tom.",
-    "Tom did not get it. Dad did.",
-    "Dad got the hat. The hen got up.",
-    "Tom did hug the hen."
+    "Kip had a pet hen. He fed it nuts.",
+    "The hen did hop up on his hat!",
+    "\"Hop up!\" said Kip. The hen did hum.",
+    "\"It is hot in the sun,\" said Mom.",
+    "\"The hat can be a hut,\" said Dad.",
+    "\"Can a hen nap on me?\" said Kip.",
+    "\"It can,\" said Dad. \"The hen is not mad.\"",
+    "Kip sat in the sun. The hen did nap."
   ],
   "warmup": [
     "hen",
-    "hut",
-    "hid",
     "hat",
-    "has",
-    "hug"
+    "hut",
+    "hop",
+    "hot",
+    "hum"
   ],
   "questions": [
     {
-      "ask": "Where was the hen hiding?",
-      "listenFor": "In Tom's hat, right on his head. The story says it. If your child says the hut, read the line about the hat again together."
+      "ask": "Where did the hen sit?",
+      "listenFor": "Up on Kip's hat. The story says it. If your child is stuck, have them find the word hat and read that line again."
     },
     {
-      "ask": "Who found the hen?",
-      "listenFor": "Dad. Listen for Dad, not Tom - Tom looked everywhere but could not see his own hat."
+      "ask": "Why did Dad say the hat was like a hut?",
+      "listenFor": "Because the sun was hot and the hat gave the hen shade. Listen for hot and sun - Dad is explaining, not joking."
     },
     {
-      "ask": "Why do you think the hen picked the hat? Tell me what you think.",
-      "listenFor": "Any answer is fine - it was warm, it was soft, it was a good hiding spot. You are listening for a reason, not a right answer."
+      "ask": "Would you let a hen nap on you? Tell me why or why not.",
+      "listenFor": "Either answer works. You are listening for a reason - it would tickle, it would be warm, or you would want to move."
     }
   ]
 }

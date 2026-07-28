@@ -1,36 +1,36 @@
 {
   "lesson": 22,
-  "title": "Kids in the Tub",
+  "title": "The Kids and the Kit",
   "lines": [
-    "The pup did dig in the mud.",
-    "Ten kids got a big tub.",
-    "The kids did tug the pup in the tub.",
-    "It got up. It did tip the tub!",
-    "Mud is on the kids!",
-    "The pup did nap on the cot.",
-    "The kids sob. The pup is not sad.",
-    "Get in the tub, kids!"
+    "Ten kids got a big kit.",
+    "In it: a net, a pen, and a pad!",
+    "\"Can I get the net?\" said a kid.",
+    "The kids did dig a pit in the mud.",
+    "A big bug got in the pit!",
+    "A kid got the bug in the net.",
+    "\"It is not a pet,\" said Mom.",
+    "The kids did tip the bug in the mud."
   ],
   "warmup": [
     "kids",
-    "tub",
-    "pup",
-    "mud",
-    "tug",
-    "tip"
+    "kit",
+    "kid",
+    "net",
+    "pit",
+    "bug"
   ],
   "questions": [
     {
-      "ask": "Why did the kids get a tub?",
-      "listenFor": "To wash the muddy pup. Listen for the mud - the tub only makes sense because the pup was dirty."
+      "ask": "What was in the kit?",
+      "listenFor": "A net, a pen, and a pad. The story lists all three. If your child names one, have them read that line again."
     },
     {
-      "ask": "How did the kids end up muddy?",
-      "listenFor": "The pup tipped the tub over. If your child says \"it just happened,\" have them read that line again."
+      "ask": "What did the kids do with the bug at the end?",
+      "listenFor": "They tipped it back into the mud and let it go. Listen for letting it go, not keeping it."
     },
     {
-      "ask": "Do you think the pup will get in the tub next time? Tell me why you think so.",
-      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like the pup got away with it, or the kids will hold on tighter."
+      "ask": "Do you think a bug makes a good pet? Tell me why you think so.",
+      "listenFor": "Either answer works. You are listening for a reason, and a reason pulled from the story is best of all."
     }
   ]
 }

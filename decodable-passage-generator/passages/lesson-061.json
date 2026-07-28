@@ -1,19 +1,19 @@
 {
   "lesson": 61,
-  "title": "Sage in the Cage",
+  "title": "Sage on the Stage",
   "lines": [
-    "Ben has a huge cage.",
-    "A pet rat, Sage, is in the cage.",
-    "Ben sets the cage up on the stage.",
-    "\"This is Sage,\" Ben tells his class.",
-    "Sage slips from the cage!",
-    "Ben is sad, but brave on the stage.",
-    "A bit of ham lands on the page.",
-    "Sage runs back, and Ben shuts the cage."
+    "Ben has a huge cage on the stage.",
+    "\"This is Sage, my pet rat,\" said Ben.",
+    "Sage hops from the cage and runs off!",
+    "The class gasps, but Ben is brave.",
+    "He sets a bit of ham on a page.",
+    "Sage sniffs the ham and runs back.",
+    "Ben shuts the cage and grins.",
+    "\"That rat and his ham!\" said Ben."
   ],
   "warmup": [
-    "cage",
     "huge",
+    "cage",
     "stage",
     "page",
     "brave",
@@ -22,15 +22,15 @@
   "questions": [
     {
       "ask": "What is Sage?",
-      "listenFor": "A pet rat. If they say \"a pet,\" ask what kind, and let them find it on the page."
+      "listenFor": "Ben's pet rat. He says so in the second line."
     },
     {
-      "ask": "How does Ben get Sage back?",
-      "listenFor": "The bit of ham on the page. Listen for the ham as the reason Sage came back."
+      "ask": "How does Ben get Sage to come back?",
+      "listenFor": "He sets a bit of ham on a page. Send them back to that line."
     },
     {
-      "ask": "Do you think Ben did the right thing when Sage got out? Tell me why.",
-      "listenFor": "Either answer works. Look for a reason from the story, like \"yes, he was brave and kept going in front of the class.\""
+      "ask": "Do you think Ben had a good plan? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason, such as \"yes, because Sage came back for the ham.\""
     }
   ]
 }

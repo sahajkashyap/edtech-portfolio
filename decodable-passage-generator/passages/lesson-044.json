@@ -2,15 +2,14 @@
   "lesson": 44,
   "title": "The Duck on the Dock",
   "lines": [
-    "A duck sits on the dock.",
+    "Nick and Dad sit on the dock.",
     "Nick has a sack of buns.",
-    "The duck pecks at the sack.",
-    "Nick picks up the sack.",
-    "The duck pecks at his sock!",
-    "Nick sits back on the dock.",
-    "A bun falls off. The duck gets it.",
-    "Nick picks up the sack of buns.",
-    "Nick and the duck sit on the dock."
+    "A duck pecks at the sack!",
+    "Nick picks it up and backs up.",
+    "The duck pecks at his red sock.",
+    "Nick sits back and a bun falls off.",
+    "The duck gets it. \"What luck!\" said Dad.",
+    "The duck goes to Nick and naps."
   ],
   "warmup": [
     "duck",
@@ -22,16 +21,16 @@
   ],
   "questions": [
     {
-      "ask": "What does the duck do to Nick's sock?",
-      "listenFor": "It pecks at it. This is stated in the story - if they guess, have them find the line with sock in it."
+      "ask": "What does the duck peck at after the sack?",
+      "listenFor": "Nick's red sock. This is stated in the story - if they guess, have them find the line with the word sock in it."
     },
     {
-      "ask": "Why does a bun fall off the dock?",
+      "ask": "Why does a bun fall off?",
       "listenFor": "Nick sat back when the duck pecked at his sock. You are listening for the chain of events, not just \"it fell.\""
     },
     {
       "ask": "Do you think the duck planned this? Tell me why.",
-      "listenFor": "Either answer is correct. What you want is a reason from the story, like \"yes, it pecked the sack first.\""
+      "listenFor": "Either answer is correct. What you want is a reason from the story, like \"yes, it pecked the sack first\" or \"no, ducks just peck at things.\""
     }
   ]
 }

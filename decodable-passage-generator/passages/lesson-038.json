@@ -1,15 +1,15 @@
 {
   "lesson": 38,
-  "title": "The Big Box",
+  "title": "The Cat in the Box",
   "lines": [
-    "Tim gets a big box.",
+    "Dad got a big box from the van.",
     "Tim tips the box up.",
-    "A big cat pops up!",
-    "It is his cat, Tom.",
-    "Tom naps in the box.",
-    "Tim tugs at the box.",
-    "Tom digs in and sits.",
-    "Tim naps on the rug."
+    "A tan cat pops up in it!",
+    "\"What a big cat,\" said Dad.",
+    "The cat naps in the box.",
+    "Tim tugs at the box. The cat digs in.",
+    "\"You can have it,\" said Tim.",
+    "Tim naps on the rug. Dad nods."
   ],
   "warmup": [
     "box",
@@ -22,15 +22,15 @@
   "questions": [
     {
       "ask": "What pops up when Tim tips the box?",
-      "listenFor": "His cat, Tom. It is stated in the story, so if they guess, have them go back and find the line rather than telling them."
+      "listenFor": "A tan cat. It is stated in the story, so if they guess, send them back to find the line rather than telling them."
     },
     {
-      "ask": "Where does Tim nap at the end?",
-      "listenFor": "On the rug. Follow up with \"and why not the box?\" to see if they linked the two parts of the story."
+      "ask": "Why does Tim nap on the rug and not in the box?",
+      "listenFor": "The cat got there first and would not budge. You are listening for them to link the two parts of the story, not just \"he was tired.\""
     },
     {
-      "ask": "Do you think Tim is mad at Tom? Tell me why.",
-      "listenFor": "Either answer works. You want a reason tied to the story - \"yes, he wanted the box\" or \"no, Tom is his pet.\""
+      "ask": "Do you think Tim minds letting the cat have the box? Tell me why.",
+      "listenFor": "Either answer works. You want a reason tied to the story - \"no, he let the cat have it\" or \"yes, he tugged at the box first.\""
     }
   ]
 }

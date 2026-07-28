@@ -1,24 +1,17 @@
 {
   "lesson": 55,
-  "title": "The White Kite",
+  "title": "My White Kite",
   "lines": [
     "Mike has a white kite.",
     "A big gust lifts it up and up.",
     "The kite lands in a tall pine.",
-    "Mike can not get it.",
-    "Tall Jill rolls up on a bike.",
-    "Jill grabs the kite from the pine.",
-    "\"Get on,\" Jill tells Mike with a smile.",
-    "Mike and Jill ride for a mile."
+    "\"My kite!\" said Mike. \"I can not get it.\"",
+    "Jill rolls up on a bike by the pine.",
+    "She is tall, and she grabs the kite.",
+    "\"Get on,\" said Jill. \"We can ride a mile.\"",
+    "Mike and Jill ride by the pine and smile."
   ],
-  "warmup": [
-    "white",
-    "kite",
-    "pine",
-    "bike",
-    "smile",
-    "mile"
-  ],
+  "warmup": ["white", "kite", "pine", "bike", "mile", "smile"],
   "questions": [
     {
       "ask": "Where does the kite land?",

@@ -1,37 +1,36 @@
 {
   "lesson": 28,
-  "title": "Wag Gets the Wet Wig",
+  "title": "Wag and the Red Wig",
   "lines": [
-    "Meg has a big pup, Wag.",
-    "Wag can run. Wag can win!",
-    "Meg has a red wig on.",
-    "Wag wags. Wag tugs the wig!",
-    "The wig got in a wet bog.",
-    "The wig is wet. Meg is sad.",
-    "Wag runs in. Wag gets it.",
-    "Meg sets the wig in the sun.",
-    "It is not wet! Meg hugs Wag."
+    "Ned and his pup Wag run a lot.",
+    "Ned has a red wig in his bag.",
+    "He sets it on Wag. Wag wags!",
+    "\"Wag can win!\" said Ned.",
+    "But Wag ran at a wet bog.",
+    "The wig got wet and got mud on it.",
+    "Ned is not mad. He hugs his wet pup.",
+    "\"Wag did win a wet hug,\" he said."
   ],
   "warmup": [
     "wig",
     "wet",
     "wags",
     "win",
-    "runs",
+    "mud",
     "hugs"
   ],
   "questions": [
     {
+      "ask": "What did Ned have in his bag?",
+      "listenFor": "A red wig. It is said in the second line. If they guess, have them find the line with the word bag in it."
+    },
+    {
       "ask": "How did the wig get wet?",
-      "listenFor": "Wag tugged it and it went in the bog. Two steps, so it is fine if your child needs to look back at the lines to get both."
+      "listenFor": "Wag ran into the wet bog while wearing it. Two steps, so it is fine if your child needs to look back at the lines to get both."
     },
     {
-      "ask": "What did Meg do to dry the wig?",
-      "listenFor": "She set it in the sun. It is said in the story. If they guess, have them find the line with the word sun in it."
-    },
-    {
-      "ask": "Do you think Meg should be mad at Wag? Tell me why or why not.",
-      "listenFor": "There is no right answer. Listen for a reason - Wag did not mean it, or Wag went in and got the wig back. Push gently for the because."
+      "ask": "Do you think Ned should be cross with Wag? Tell me why or why not.",
+      "listenFor": "There is no right answer. Listen for a reason - Wag did not mean it, or Ned was the one who put the wig on the pup. Push gently for the because."
     }
   ]
 }
