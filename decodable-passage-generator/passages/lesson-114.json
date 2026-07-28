@@ -2,13 +2,20 @@
   "lesson": 114,
   "title": "The Great Steak",
   "lines": [
-    "Mom set a great steak on a plate.",
-    "\"Do not break this plate,\" he said.",
+    "Mom made a great steak for the meal.",
+    "She set it on a white plate.",
+    "\"Do not break this plate,\" she said.",
+    "\"It was my mom's plate,\" said Mom.",
     "Tom took the plate to the table.",
     "He did not see the cat on the mat.",
-    "Tom fell. The plate did break.",
+    "Tom tripped. The plate fell and broke.",
     "The cat ate that great steak up.",
-    "Tom did the dishes for a week."
+    "Tom felt bad. He sat on the floor.",
+    "Then he got a broom and cleaned it up.",
+    "He got the bits in a bag for Mom.",
+    "Mom said she could fix the plate.",
+    "They ate ham, and Tom did the dishes.",
+    "The cat had the best meal of all."
   ],
   "warmup": [
     "steak",
@@ -21,11 +28,11 @@
   "questions": [
     {
       "ask": "Why did Tom fall?",
-      "listenFor": "He did not see the cat on the mat. It is in the fourth line."
+      "listenFor": "He did not see the cat on the mat. It is in the sixth line."
     },
     {
-      "ask": "Who got to eat the steak?",
-      "listenFor": "The cat. Kids often love this one."
+      "ask": "What did Tom do after the plate broke?",
+      "listenFor": "He got a broom, cleaned it up, and put the bits in a bag for Mom."
     },
     {
       "ask": "Was doing the dishes fair? Why or why not?",

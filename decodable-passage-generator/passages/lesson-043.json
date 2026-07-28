@@ -2,32 +2,31 @@
   "lesson": 43,
   "title": "Pull, Bull, Pull!",
   "lines": [
-    "Tim has a bag full of figs.",
+    "Tim has a bag full of nuts.",
     "He pulls it up a tall hill.",
     "A big bull sits on the top.",
-    "\"Go on, bull!\" said Tim.",
-    "No. The bull will not go.",
-    "So Tim rolls a fig off the hill.",
+    "\"Go on, bull!\" said Tim. No. It sits.",
+    "So Tim rolls a nut off the hill.",
     "The bull runs and gets it.",
     "Tim pulls the full bag to the top.",
-    "\"You can have a fig,\" said Tim."
+    "\"You can have a nut,\" said Tim."
   ],
   "warmup": [
     "bull",
     "full",
     "pulls",
-    "figs",
+    "rolls",
     "hill",
     "tall"
   ],
   "questions": [
     {
       "ask": "What is in the bag Tim pulls up the hill?",
-      "listenFor": "Figs. It is stated in the story - if they cannot find it, have them reread the first line rather than telling them."
+      "listenFor": "Nuts. It is stated in the story - if they cannot find it, have them reread the first line rather than telling them."
     },
     {
-      "ask": "Why does Tim roll a fig off the hill?",
-      "listenFor": "The bull would not move, so Tim got it to run after the fig instead. You want cause and effect, not just \"it fell.\""
+      "ask": "Why does Tim roll a nut off the hill?",
+      "listenFor": "The bull would not move, so Tim got it to run after the nut instead. You want cause and effect, not just \"it fell.\""
     },
     {
       "ask": "Do you think that was a clever plan? Tell me why.",

@@ -2,13 +2,13 @@
   "lesson": 124,
   "title": "Kindness for Gran",
   "lines": [
-    "Gran had an illness and sat in bed.",
+    "Gran had a sickness and sat in bed.",
     "Meg felt sadness when she saw her gran.",
     "Meg made hot soup and took it up.",
     "Gran's room was dark, so Meg lit a lamp.",
     "Gran ate it all and sat up tall.",
     "\"Your kindness made me well,\" said Gran.",
-    "Meg's sadness was gone. Now came gladness."
+    "Meg's sadness had turned into happiness."
   ],
   "warmup": [
     "bed",
@@ -25,7 +25,7 @@
     },
     {
       "ask": "Why did Meg light a lamp?",
-      "listenFor": "Gran's room was dark. Line four says it. Sadness, gladness, kindness, illness - -ness turns a describing word into a thing."
+      "listenFor": "Gran's room was dark. Line four says it. Sadness, happiness, kindness, sickness - -ness turns a describing word into a thing."
     },
     {
       "ask": "What would you do for someone at home who felt sad? Why?",

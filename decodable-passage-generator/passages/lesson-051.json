@@ -2,14 +2,16 @@
   "lesson": 51,
   "title": "A Song for the King",
   "lines": [
-    "Ben is a king with a red cap.",
-    "He can not sing well at all.",
+    "Ben is a king. He has a red cap.",
+    "But Ben can not sing well at all.",
     "When he sings, his dogs run off.",
-    "A bug with a red wing sits on Ben.",
-    "The bug sang a long song.",
+    "Ben sits on a log. He is sad.",
+    "A bug with a red wing sits on him.",
+    "The bug sang a long song for Ben.",
     "\"Sing with me,\" said the bug.",
-    "Ben and the bug sang, and the dogs sat.",
-    "Ben has a song. His dogs sing as well."
+    "Ben and the bug sang a long song.",
+    "The dogs sat back. Then a dog sang as well.",
+    "Ben sings a lot. His dogs sing with him."
   ],
   "warmup": [
     "king",
@@ -26,10 +28,10 @@
     },
     {
       "ask": "Who asks Ben to sing along?",
-      "listenFor": "The bug. Listen for them to connect the bug's line of talking with the dogs sitting down at the end."
+      "listenFor": "The bug with the red wing. Line seven is the bug talking - have them find the quote marks."
     },
     {
-      "ask": "Why do you think the dogs sat down that time? Tell me why.",
+      "ask": "Why do you think the dogs sat back that time?",
       "listenFor": "Either answer is fine. You want a reason tied to the story, like \"the song was better with two of them.\""
     }
   ]

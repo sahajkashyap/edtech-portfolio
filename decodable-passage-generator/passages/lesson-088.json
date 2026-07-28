@@ -2,13 +2,18 @@
   "lesson": 88,
   "title": "The Slow Snail",
   "lines": [
-    "Tim met a snail on the wet road.",
-    "Rain fell all day and made a mess.",
-    "The snail crept up to reach a green leaf.",
+    "Rain fell all day and made a big mess.",
+    "Tim went to see the long wet road.",
+    "A small snail sat in the road.",
+    "It was slow, and a truck might come.",
+    "Tim set it by a big green leaf.",
+    "The snail slid up to reach the leaf.",
     "It went so slow that Tim fell asleep.",
-    "A gray crow came to peck at it.",
+    "A gray crow came to pick at the snail.",
     "Tim woke up and gave a big yell.",
-    "The crow left, and the snail got its leaf."
+    "The crow did not go for the yell.",
+    "Then Tim held up his big red hat.",
+    "The crow left, and the snail ate its leaf."
   ],
   "warmup": [
     "road",
@@ -20,12 +25,12 @@
   ],
   "questions": [
     {
-      "ask": "What was the snail trying to reach?",
-      "listenFor": "A green leaf. It is right in the story - have them point to the line."
+      "ask": "Why did Tim move the snail off the road?",
+      "listenFor": "It was slow and a truck might come."
     },
     {
-      "ask": "How did Tim keep the crow from the snail?",
-      "listenFor": "He woke up and yelled. Listen for both parts, not just the yell."
+      "ask": "What made the crow go away?",
+      "listenFor": "Tim held up his big red hat. The yell alone had not worked."
     },
     {
       "ask": "Do you think Tim did the right thing? Tell me why.",

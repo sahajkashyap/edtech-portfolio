@@ -2,30 +2,28 @@
   "lesson": 86,
   "title": "The Goat in the Boat",
   "lines": [
-    "Meg had a goat with a black coat.",
-    "The goat got in a small red boat.",
-    "A crow sat on the back of the boat.",
-    "The goat got up to blow at it.",
-    "The boat did tip and the goat fell in.",
-    "Meg had to throw a rope to it.",
-    "The wet goat swam slow and got back up."
+    "Cole had a goat with a black coat.",
+    "Dad and Cole got in a small red boat.",
+    "The goat got in the boat with them.",
+    "A crow came to sit on the back.",
+    "The goat got up to blow at the crow.",
+    "The boat tipped on its side.",
+    "Dad held Cole as the goat fell in!",
+    "Cole had to throw a rope to it.",
+    "The rope fell short, and the goat swam on.",
+    "Then Cole held up the bag of corn.",
+    "The wet goat swam slow back to the boat.",
+    "Dad got it in, and Cole held it close."
   ],
-  "warmup": [
-    "goat",
-    "coat",
-    "boat",
-    "slow",
-    "crow",
-    "throw"
-  ],
+  "warmup": ["goat", "coat", "boat", "slow", "crow", "throw"],
   "questions": [
     {
-      "ask": "Why did the boat tip?",
-      "listenFor": "The goat stood up to blow at the crow."
+      "ask": "Why did the boat go on its side?",
+      "listenFor": "The goat got up to blow at the crow. Two steps - let them find both."
     },
     {
-      "ask": "How did Meg get the goat back?",
-      "listenFor": "She threw a rope and the goat swam to it."
+      "ask": "What got the goat to swim back to the boat?",
+      "listenFor": "Cole held up the bag of corn. The rope had fallen short of the goat."
     },
     {
       "ask": "Will the goat get in the boat again? Tell me why.",

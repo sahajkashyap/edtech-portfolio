@@ -2,14 +2,16 @@
   "lesson": 57,
   "title": "Pete and These Hens",
   "lines": [
-    "Pete has five hens. Jade is his pal.",
-    "These hens like to hide.",
-    "He hunts for Jade by the lake.",
-    "She is not in the tall grass.",
+    "Pete has five hens. Jade is his best hen.",
+    "These hens like to hide in the grass.",
+    "Pete calls, and all but Jade run in.",
+    "He hunts by the lake and in the grass.",
+    "Pete stops and thinks. Jade hops up on rocks.",
+    "He checks the gate and the shed.",
     "Then he spots Rex the cat on a stone.",
-    "Jade sits on his back!",
-    "Rex gets up and she hops off.",
-    "\"She is brave,\" said Pete with a grin."
+    "Jade is on Rex's back! Then she hops off.",
+    "\"Jade is brave,\" said Pete with a grin.",
+    "The five hens go in. Pete shuts the gate."
   ],
   "warmup": [
     "hens",
@@ -21,12 +23,12 @@
   ],
   "questions": [
     {
-      "ask": "Which hen is Pete hunting for?",
-      "listenFor": "Jade. Her name is in the first line, so send them back to it."
+      "ask": "Which hen does not come in when Pete calls?",
+      "listenFor": "Jade. Lines one and three - send them back rather than telling them."
     },
     {
-      "ask": "Where does Pete find Jade in the end?",
-      "listenFor": "On Rex the cat's back. If they say \"the lake,\" ask them to read the line about the stone again."
+      "ask": "Pete hunts by the lake and in the grass first. Where does he find Jade?",
+      "listenFor": "On Rex the cat's back, up on a stone. Lines seven and eight. The lake and the grass are the tries that fail."
     },
     {
       "ask": "Do you think Rex minds having a hen on his back? Tell me why.",

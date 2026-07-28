@@ -2,34 +2,34 @@
   "lesson": 99,
   "title": "Six Boxes",
   "lines": [
-    "Meg and Mom packed six boxes.",
-    "The first box had dishes and cups.",
-    "The next box had peaches and buns.",
-    "The last box had a big lid on top.",
-    "Meg lifted it. Foxes ran out!",
-    "Mom had to catch them in a net.",
-    "Now Meg looks in the boxes first."
+    "Nell and Gran packed six big boxes.",
+    "One box had dishes. One had glasses.",
+    "One had ripe peaches from the tree.",
+    "The rest had brushes, rags, and cups.",
+    "All six boxes had the same red lid.",
+    "Gran said, \"Get me the peaches, Nell.\"",
+    "Nell lifted a lid. Dishes! Not peaches.",
+    "She lifted the next lid. Just brushes.",
+    "Six lids up and down. Nell got mixed up.",
+    "Then Nell had a plan. She got a pen.",
+    "She made a mark on each of the lids.",
+    "A dish, a cup, a peach, a brush.",
+    "Now Nell can find the peaches at once.",
+    "Gran said, \"That was a smart plan, Nell.\""
   ],
-  "warmup": [
-    "boxes",
-    "dishes",
-    "peaches",
-    "foxes",
-    "cups",
-    "lid"
-  ],
+  "warmup": ["boxes", "dishes", "peaches", "cups", "lids", "lid"],
   "questions": [
     {
-      "ask": "What was in the first box?",
-      "listenFor": "Dishes and cups. If they guess, have them reread that line."
+      "ask": "Why could Nell not find the peaches?",
+      "listenFor": "All six boxes had the same red lid. Have them find that line."
     },
     {
-      "ask": "What jumped out of the last box?",
-      "listenFor": "Foxes. Listen for the -es ending - that is this lesson."
+      "ask": "What was Nell's plan?",
+      "listenFor": "She got a pen and made a mark on each lid - a dish, a cup, a peach, a brush."
     },
     {
-      "ask": "Will Meg lift a lid like that again? Why?",
-      "listenFor": "Either answer. Listen for a reason from the last line."
+      "ask": "What mark would you put on a box of cups? Tell me why.",
+      "listenFor": "Any answer. Listen for a reason - it has to be quick to spot."
     }
   ]
 }

@@ -1,35 +1,42 @@
 {
   "lesson": 115,
-  "title": "Soup for the Crew",
+  "title": "Soup at Camp",
   "lines": [
     "A group of kids made soup at camp.",
+    "Meg and Sam had a big black pot.",
+    "Mom sat by them at the camp table.",
     "Sam threw in beans, corn and nuts.",
-    "But the soup was blue! Why was that?",
-    "Tom held up a jug of blue glue.",
-    "\"That was not juice,\" said Meg.",
-    "The crew had to start a new pot.",
-    "This soup was good. They ate it all."
+    "Tom went to get a jug of juice.",
+    "He came back and threw it all in.",
+    "Then the soup went blue!",
+    "\"Why is my soup blue?\" said Meg.",
+    "Sam had a good look in the jug.",
+    "It was not juice. It was blue glue.",
+    "The group had to start a new pot.",
+    "This time Meg read the jug first.",
+    "She let Tom mix it with a spoon.",
+    "That soup was good. They ate it all up."
   ],
   "warmup": [
     "group",
     "soup",
     "blue",
     "glue",
-    "crew",
+    "new",
     "juice"
   ],
   "questions": [
     {
       "ask": "What made the soup turn blue?",
-      "listenFor": "Blue glue that Tom put in by mistake. Line five gives it away."
+      "listenFor": "Blue glue that Tom threw in. Line ten says it."
     },
     {
-      "ask": "What did the crew do about the blue soup?",
-      "listenFor": "They started a new pot. The second soup was good."
+      "ask": "What did Tom think he was putting in?",
+      "listenFor": "Juice. Line five says he went to get a jug of juice."
     },
     {
-      "ask": "What should the crew do with the blue soup? Why?",
-      "listenFor": "Any sensible answer is fine - tip it out, wash the pot, start again. Listen for the reason: glue is not food."
+      "ask": "How could the kids keep this from happening again? Why?",
+      "listenFor": "Any sensible answer - read the jug, keep glue out of the camp pot. Listen for the reason."
     }
   ]
 }

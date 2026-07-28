@@ -2,35 +2,37 @@
   "lesson": 46,
   "title": "Mud, Then Baths",
   "lines": [
-    "Sal and Lin have big dogs.",
+    "Sal and Lin have big dogs, Bud and Tug.",
     "They let them run up the hill.",
-    "Both dogs dig and get mud on their legs.",
+    "Both dogs dig a pit. Mud is on them.",
     "\"Baths!\" said Sal. \"Both of them.\"",
     "Sal fills a tub and Lin gets a rag.",
-    "Then the dogs run off!",
-    "\"The dogs are in that tub!\" said Sal.",
-    "\"They did want baths,\" said Lin."
+    "Lin calls the dogs, and they run off!",
+    "\"They do not want baths,\" said Lin.",
+    "Then Sal sits and taps the wet tub.",
+    "Bud hops in the tub. Then Tug hops in.",
+    "\"They do want baths!\" said Sal. \"Look at them!\""
   ],
   "warmup": [
     "both",
     "them",
     "then",
-    "that",
     "baths",
-    "mud"
+    "mud",
+    "wet"
   ],
   "questions": [
     {
       "ask": "How do the dogs get mud on them?",
-      "listenFor": "They dig on the hill. The third line says it - have your child find the word dig."
+      "listenFor": "They dig a pit up on the hill. Line three says it - have your child find the word dig."
     },
     {
-      "ask": "Where are the dogs at the end?",
-      "listenFor": "In the tub. If they say \"they ran off,\" ask what happened after that."
+      "ask": "Calling the dogs did not work. What does Sal do next?",
+      "listenFor": "She sits down and taps the wet tub. Line eight says it. If they say \"she got them in,\" ask how."
     },
     {
-      "ask": "Do you think the dogs like baths? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason, like \"yes, they got in the tub themselves.\""
+      "ask": "Why do you think the dogs got in when Sal stopped calling? Tell me why.",
+      "listenFor": "Any sensible idea works. You want a reason of their own, like \"they did not want to be told.\""
     }
   ]
 }

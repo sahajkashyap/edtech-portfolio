@@ -2,35 +2,38 @@
   "lesson": 67,
   "title": "The Backpack",
   "lines": [
-    "Tom packs his backpack for camp.",
-    "In it he has a hotdog and a napkin.",
-    "Dan tosses in catnip for his cat.",
-    "Tom and Dan hike up to the hilltop.",
-    "At sunset Tom cannot get his hotdog.",
-    "Dan grins. The cat is sitting on it.",
-    "Tom is upset. The hotdog is a mess.",
-    "Dan gives him a muffin and Tom grins."
+    "Tom is off to camp with his pal Dan.",
+    "He packs his backpack with a hotdog and napkin.",
+    "Dan's kitten is hidden in the backpack.",
+    "Tom cannot see it, and off they go.",
+    "Tom and Dan hop up the big hill.",
+    "At the top they sit and rest.",
+    "At sunset Tom digs for his hotdog.",
+    "The kitten is sitting on it! Tom is upset.",
+    "The hotdog is a mess. The napkin is wet.",
+    "Dan hands him a muffin and Tom grins.",
+    "The kitten naps as they sit in the sun."
   ],
   "warmup": [
     "packs",
     "camp",
-    "tosses",
-    "hike",
+    "kitten",
+    "hill",
     "grins",
     "sitting"
   ],
   "questions": [
     {
       "ask": "What was in Tom's backpack?",
-      "listenFor": "A hotdog, a napkin, and catnip. Stated in the story - have them find the lines instead of listing it for them."
+      "listenFor": "A hotdog, a napkin, and Dan's kitten. Stated in the story - have them find the lines instead of listing it for them."
     },
     {
       "ask": "Why is Tom upset?",
-      "listenFor": "The cat sat on his hotdog and squashed it. If they only say \"the cat,\" ask \"and what did the cat do?\""
+      "listenFor": "The kitten sat on his hotdog and made it a mess. If they only say \"the kitten,\" ask \"and what did the kitten do?\""
     },
     {
-      "ask": "Do you think Dan should have put the catnip in Tom's backpack? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason tied to the story - the catnip is what pulled the cat in."
+      "ask": "How do you think the kitten got in the backpack? Tell me why.",
+      "listenFor": "Any answer is fine. Listen for a reason tied to the story - the hotdog was in there, and nobody was looking."
     }
   ]
 }

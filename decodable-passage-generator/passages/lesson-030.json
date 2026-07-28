@@ -1,36 +1,36 @@
 {
   "lesson": 30,
-  "title": "The Big Yam",
+  "title": "Yap, Yap, Yum!",
   "lines": [
-    "Ted and Sal dig up yams in the sun.",
-    "Ted tugs and tugs, but the yam sits.",
-    "\"I can not get it up,\" said Ted.",
-    "Sal digs a gap at the top of it.",
-    "Yes! Ted tugs, and the yam pops up!",
-    "It is as big as a pot.",
-    "Mom cuts up the yams in a big pan.",
-    "Ted and Sal had yams and buns. Yum!"
+    "Sal has a pup. It can yap a lot.",
+    "Mom naps, but the pup yaps and yaps.",
+    "\"Do not yap yet,\" said Sal. \"Mom naps.\"",
+    "The pup yaps and taps at the pan.",
+    "\"Yes! It is not fed yet,\" said Sal.",
+    "Sal gets a bit of ham in the pan.",
+    "\"Yum!\" The pup sits and has the ham.",
+    "It naps on the rug. Sal pats it."
   ],
   "warmup": [
-    "yams",
-    "tugs",
-    "digs",
-    "pops",
-    "gap",
-    "pan"
+    "yet",
+    "pup",
+    "naps",
+    "pan",
+    "ham",
+    "rug"
   ],
   "questions": [
     {
-      "ask": "What were Ted and Sal digging up?",
-      "listenFor": "Yams. The first line says it. If your child is not sure, point at that line and let them read it again."
+      "ask": "What did the pup do when Mom was napping?",
+      "listenFor": "It yapped and yapped. Line two says it. If your child is not sure, point at that line and let them read it again."
     },
     {
-      "ask": "What did Sal do that helped the big yam come up?",
-      "listenFor": "She dug a gap around the top of it. Line four says it. This is the turn of the story."
+      "ask": "How did Sal work out what the pup was yapping about?",
+      "listenFor": "The pup yapped and tapped at the pan, so Sal knew it had not been fed. Lines four and five tell it together."
     },
     {
-      "ask": "Do you think Ted could have got the yam up on his own? Tell me why you think that.",
-      "listenFor": "Either answer counts. You are listening for a reason tied to the story, such as he tugged and tugged and it did not budge."
+      "ask": "What else might a pup yap about? Tell me why you think that.",
+      "listenFor": "Any answer counts. You are listening for a reason of their own, such as it wants to go out or it hears a bug."
     }
   ]
 }

@@ -3,26 +3,26 @@
   "title": "Tim and the Big Box",
   "lines": [
     "\"Can I have the big box?\" said Tim.",
-    "\"Yes,\" said Dad. He cut a gap in it.",
-    "Tim set it on the rug. A cat hut!",
+    "\"Yes,\" said Dad. \"It can be a den.\"",
+    "Tim set it on the rug. A cat den!",
     "But the cat did not get in the box.",
-    "It sat on top and did not hop in.",
+    "The cat sat on top and had a nap.",
     "Tim set his red hat in the box.",
     "The cat hops in and naps on the hat.",
-    "\"The cat has a hut,\" said Dad. Tim nods."
+    "\"The cat has a den,\" said Dad. Tim nods."
   ],
   "warmup": [
     "box",
     "cat",
     "hat",
-    "hut",
+    "den",
     "hops",
     "rug"
   ],
   "questions": [
     {
       "ask": "What did Tim want the big box for?",
-      "listenFor": "To make a hut for his cat. Line three says it. If your child is stuck, let them reread that line."
+      "listenFor": "To make a den for his cat. Line three says it. If your child is stuck, let them reread that line."
     },
     {
       "ask": "What did Tim put in the box to get the cat to go in?",

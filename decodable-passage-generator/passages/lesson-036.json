@@ -2,19 +2,19 @@
   "lesson": 36,
   "title": "The Lid on the Tin",
   "lines": [
-    "Kim and Sid have a tin of six figs.",
+    "Kim and Sid have a tin of six nuts.",
     "The lid is on. Kim tugs at it.",
     "She tugs and tugs, but the lid sits.",
     "\"The tin is wet,\" said Sid.",
     "Kim gets a rag and rubs the tin.",
     "She tugs. Pop! The lid is up!",
-    "\"Six figs!\" said Sid, and he did a jig.",
-    "Kim and Sid sit and have six figs."
+    "\"Six nuts!\" said Sid, and he hops up.",
+    "Kim and Sid sit and have six nuts."
   ],
   "warmup": [
     "tin",
-    "figs",
     "lid",
+    "sits",
     "tugs",
     "six",
     "rag"
@@ -22,7 +22,7 @@
   "questions": [
     {
       "ask": "What was in the tin?",
-      "listenFor": "Six figs. The first line says it. If your child is stuck, point at that line and let them read it again."
+      "listenFor": "Six nuts. The first line says it. If your child is stuck, point at that line and let them read it again."
     },
     {
       "ask": "What did Kim do to get the lid off?",

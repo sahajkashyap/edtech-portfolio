@@ -3,22 +3,36 @@
   "title": "The Funniest Pup",
   "lines": [
     "Six pups sat in a big box.",
-    "The tan pup hid in a red hat.",
-    "It was the funniest pup of all.",
-    "Mina tried to lift it out.",
-    "The pup cried and did not come out.",
+    "Mina and Sam came to pick one.",
+    "But the tan pup hid in a red hat.",
+    "Only its nose and one paw stuck out.",
+    "\"That is the funniest pup,\" said Mina.",
+    "She tried to lift it out of the hat.",
+    "The pup cried and held on tight.",
+    "Mina set it back down and sat still.",
     "Then Sam held up a bit of meat.",
-    "Out it came! It was the happiest pup."
+    "The pup stuck one paw out. Then two.",
+    "Out it came, right into Mina's lap.",
+    "It was now the happiest pup of all.",
+    "Mina said, \"This is the one for us.\"",
+    "Sam carried the red hat home too."
   ],
-  "warmup": ["pups", "hid", "hat", "held", "meat", "box"],
+  "warmup": [
+    "pups",
+    "hid",
+    "hat",
+    "held",
+    "meat",
+    "box"
+  ],
   "questions": [
     {
       "ask": "Where did the tan pup hide?",
-      "listenFor": "In a red hat. Second line. Have them point at it."
+      "listenFor": "In a red hat. Third line. Have them point at it."
     },
     {
-      "ask": "What got the pup to come out?",
-      "listenFor": "A bit of meat that Sam held up. Listen for the meat, not just for Sam."
+      "ask": "What did Mina try first, and did it work?",
+      "listenFor": "She tried to lift the pup out. It did not work - the pup cried and held on tight."
     },
     {
       "ask": "Do you think that pup was really the funniest? Why?",

@@ -2,35 +2,38 @@
   "lesson": 76,
   "title": "The Badge in the Ditch",
   "lines": [
-    "Ben lost his little badge in a ditch.",
-    "It fell off his black vest.",
-    "Ben and Meg dig in the wet mud.",
-    "Meg finds a stick and a big rock.",
-    "Then Ben spots it next to the hedge.",
-    "The badge is stuck in thick mud.",
+    "Ben got a little badge for his best catch.",
+    "He pins it on his black vest.",
+    "On the path, the pin slips off.",
+    "The badge drops into a thick, wet ditch.",
+    "Ben digs in the mud but finds a rock.",
+    "He digs and digs. No badge at all.",
+    "Then Meg hands him a long stick.",
+    "Ben pokes at the edge of the ditch.",
+    "The stick taps the badge in the thick mud.",
     "He tugs it up and rubs the mud off.",
-    "Meg pins the badge back on his vest."
+    "Meg pins the little badge back on his vest."
   ],
   "warmup": [
     "badge",
     "ditch",
-    "hedge",
+    "edge",
     "stick",
     "thick",
     "little"
   ],
   "questions": [
     {
-      "ask": "Where did Ben lose his badge?",
-      "listenFor": "In a ditch. It fell off his black vest."
+      "ask": "How did Ben lose the badge?",
+      "listenFor": "The pin slipped off on the path and the badge dropped into the ditch. Two steps - let them find both."
     },
     {
-      "ask": "Who spotted the badge, Ben or Meg?",
-      "listenFor": "Ben spotted it by the hedge. Meg found a stick and a rock first - a nice trap for a fast guesser."
+      "ask": "What did Ben use to find the badge in the mud?",
+      "listenFor": "The long stick Meg handed him. If they say \"he dug for it,\" ask \"did digging work?\""
     },
     {
       "ask": "Do you think Meg was a good friend? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason, like she helped him dig."
+      "listenFor": "Either answer works. Listen for a reason, like she brought him the stick."
     }
   ]
 }

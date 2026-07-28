@@ -3,12 +3,19 @@
   "title": "Bread in the Meadow",
   "lines": [
     "Sam wanted to have lunch in the meadow.",
-    "He had a heavy bag of fresh bread.",
-    "The weather was hot and his head got wet.",
-    "He spread a red rug on the grass.",
-    "A crow left a feather by his bread.",
-    "Then it took the bread and flew off!",
-    "Sam was not ready for that at all."
+    "Dad said yes, so they packed a bag.",
+    "The bag was heavy. Sam had to tug it.",
+    "The weather was hot on top of his head.",
+    "They spread a red rug on the grass.",
+    "Dad got the fresh bread and a jug.",
+    "A crow sat up in the tree and looked.",
+    "It left a feather. Then it took the bread!",
+    "Sam ran after it, but the crow flew off.",
+    "\"We have no lunch,\" said Dad. Sam sat.",
+    "Then Sam went back to the heavy bag.",
+    "He looked in it. Dad had packed more!",
+    "There was a second bread and some plums.",
+    "They ate, and the crow got its bread."
   ],
   "warmup": [
     "bread",
@@ -20,15 +27,15 @@
   ],
   "questions": [
     {
-      "ask": "Where did Sam want to have his lunch?",
-      "listenFor": "In the meadow. Have them point to the first line."
-    },
-    {
       "ask": "What did the crow leave, and what did it take?",
       "listenFor": "It left a feather and took the bread. Listen for both."
     },
     {
-      "ask": "What do you think Sam did next? Tell me why.",
+      "ask": "Why was the bag so heavy?",
+      "listenFor": "Dad had packed a second bread and plums. Have them find that line."
+    },
+    {
+      "ask": "What would you have said to that crow? Tell me why.",
       "listenFor": "Any idea is fine if it fits the story. Listen for a reason."
     }
   ]

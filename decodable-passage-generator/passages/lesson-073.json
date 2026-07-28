@@ -1,15 +1,18 @@
 {
   "lesson": 73,
-  "title": "The Shy Fly",
+  "title": "Why It Will Not Fly",
   "lines": [
-    "A shy fly zips by Tim.",
-    "Tim will try to catch it.",
-    "The fly lands on his dry hat.",
-    "Tim grabs, and the fly is in the sky.",
-    "Tim sits in the dry grass and sobs.",
-    "Mom asks him why he is so sad.",
-    "Tim tells Mom he lost his pet fly.",
-    "The fly lands on his hand and Tim grins."
+    "Tim is shy, but he likes to fly kites.",
+    "It is dry and sunny by the pond.",
+    "Tim runs with his kite, but it drops.",
+    "He runs and runs. It will not fly.",
+    "Tim sits in the grass and asks why.",
+    "Then he thinks of the rags in his bag.",
+    "Tim pins the rags on the kite tip.",
+    "He runs on the dry path and lets go.",
+    "The kite lifts up into the sky.",
+    "Mom grins. Tim is not shy at all.",
+    "He will try that trick next time."
   ],
   "warmup": [
     "shy",
@@ -21,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "Where did the fly land at the end?",
-      "listenFor": "On Tim's hand. Stated in the last few lines - have them find it rather than telling them."
+      "ask": "What happened the first time Tim ran with his kite?",
+      "listenFor": "It dropped and would not fly. Stated in the story - point them at that line rather than saying it for them."
     },
     {
-      "ask": "Why was Tim sad?",
-      "listenFor": "He thought he had lost his pet fly. If they say \"it went in the sky,\" that is the same idea - accept it."
+      "ask": "What did Tim pin on the kite tip?",
+      "listenFor": "The rags from his bag. If they say \"a kite tail,\" that is the same idea, but ask them to find the word the story used."
     },
     {
-      "ask": "Do you think a fly can be a pet? Tell me why.",
-      "listenFor": "No right answer. You are listening for a reason of their own - and it is a fun one to argue about."
+      "ask": "Do you think Tim will fly the kite again? Tell me why.",
+      "listenFor": "There is no right answer. Listen for a reason - the rag trick worked, or he likes kites."
     }
   ]
 }

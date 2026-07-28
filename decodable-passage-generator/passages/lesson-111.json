@@ -4,11 +4,18 @@
   "lines": [
     "Omar got a dollar from his gran.",
     "He ran to the shop by the barn.",
-    "A dog ran in with a red collar.",
+    "He was going to get a big red kite.",
+    "Then a dog ran in with a red collar.",
+    "It had no one with it and no home.",
+    "Omar called out, but the dog ran off.",
+    "He sat down and held out his hand.",
+    "The dog came back and sat by him.",
     "Omar took it to the vet by the shop.",
     "The vet read the tag on the collar.",
+    "She made a call. Then they had to wait.",
     "A sailor came in. \"That is my dog!\"",
-    "He gave Omar a dollar for his help."
+    "He gave Omar a dollar for his help.",
+    "Now Omar had two. He got the kite."
   ],
   "warmup": [
     "barn",
@@ -20,15 +27,15 @@
   ],
   "questions": [
     {
+      "ask": "What was Omar going to get with his dollar?",
+      "listenFor": "A big red kite. It is in the third line, before the dog turns up."
+    },
+    {
       "ask": "What did the vet read?",
-      "listenFor": "The tag on the dog's collar. It is in the fifth line."
+      "listenFor": "The tag on the dog's collar. Note how the -ar and -or on the ends both say er."
     },
     {
-      "ask": "Who did the dog belong to?",
-      "listenFor": "The sailor. Note how the -or on the end says er."
-    },
-    {
-      "ask": "Will Omar keep the dollar or spend it? Why?",
+      "ask": "Was it fair of the sailor to give Omar a dollar? Why?",
       "listenFor": "Either answer is fine. You want a reason, not a right choice."
     }
   ]

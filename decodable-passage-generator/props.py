@@ -9,6 +9,8 @@ Each prop draws inside a 100x100 box with its feet on y=100, so the composer can
 place them along a ground line without knowing anything about their shape.
 """
 
+import re
+
 STROKE = 'fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'
 WHITE = '#fff'
 
@@ -100,6 +102,20 @@ PROPS = {
              '<line x1="24" y1="84" x2="24" y2="88"/><line x1="64" y1="84" x2="64" y2="88"/>'
              '<path d="M92 88 q10 0 8 -8"/>'),
     "hill": ('<path d="M2 96 q26 -50 50 -50 q26 0 46 50 z" fill="#fff"/>'),
+    "mat": ('<path d="M6 78 L74 78 L94 94 L26 94 z" fill="#fff"/>'
+            '<path d="M20 82 L82 82" stroke-width="1.6"/>'
+            '<path d="M14 88 L76 88" stroke-width="1.6"/>'),
+    "hut": ('<path d="M50 10 L8 94 L92 94 z" fill="#fff"/>'
+            '<path d="M50 10 L50 94" stroke-width="1.6"/>'
+            '<path d="M34 94 L50 56 L66 94" fill="#fff"/>'),
+    "pot": ('<path d="M20 48 L26 88 L74 88 L80 48 z" fill="#fff"/>'
+            '<line x1="14" y1="48" x2="86" y2="48"/>'
+            '<path d="M40 40 q10 -10 20 0" stroke-width="2"/>'),
+    "bag": ('<path d="M24 44 L76 44 L82 92 L18 92 z" fill="#fff"/>'
+            '<path d="M38 44 q12 -20 24 0" stroke-width="2"/>'),
+    "book": ('<path d="M50 46 L14 54 L14 90 L50 82 z" fill="#fff"/>'
+             '<path d="M50 46 L86 54 L86 90 L50 82 z" fill="#fff"/>'
+             '<line x1="50" y1="46" x2="50" y2="82"/>'),
     "log": ('<path d="M14 62 L80 62 q12 14 0 28 L14 90 z" fill="#fff"/>'
             '<ellipse cx="14" cy="76" rx="9" ry="14" fill="#fff"/>'
             '<ellipse cx="14" cy="76" rx="4" ry="6"/>'),
@@ -108,7 +124,7 @@ PROPS = {
 # Which story words summon which prop. Plurals and simple inflections included
 # because the writer will use them.
 TRIGGERS = {
-    "sun": ["sun"], "tree": ["tree", "trees"], "house": ["house", "home", "hut"],
+    "sun": ["sun"], "tree": ["tree", "trees"], "house": ["house", "home"],
     "dog": ["dog", "dogs", "pup", "pups", "puppy"],
     "cat": ["cat", "cats", "kitten"],
     "pig": ["pig", "pigs", "hog"],
@@ -116,17 +132,53 @@ TRIGGERS = {
     "fish": ["fish"], "frog": ["frog", "frogs", "toad"],
     "bug": ["bug", "bugs", "ant", "ants"],
     "cup": ["cup", "cups", "mug", "mugs"],
-    "box": ["box", "boxes", "bag", "bags"],
+    "box": ["box", "boxes"],
     "bed": ["bed", "beds"],
     "ball": ["ball", "balls"], "hat": ["hat", "hats", "cap", "caps"],
     "star": ["star", "stars"], "flower": ["flower", "flowers", "plant"],
     "rock": ["rock", "rocks"], "log": ["log", "logs"],
+    "mat": ["mat", "mats", "rug", "rugs"],
+    "hut": ["hut", "huts", "tent", "tents", "den"],
+    "pot": ["pot", "pots", "pan", "pans"],
+    "bag": ["bag", "bags", "sack", "sacks"],
+    "book": ["book", "books"],
     "puddle": ["mud", "pond", "puddle", "water", "lake"],
     "kid": ["kid", "kids", "girl", "boy", "child", "sam", "tim", "pam", "dan",
             "meg", "nick", "ben", "tom", "jen", "max", "kit", "pat"],
     "sled": ["sled", "sleds", "cart", "wagon"],
     "hill": ["hill", "hills", "mountain"],
 }
+
+
+SENTENCE_END = ".!?\""
+
+
+def find_names(text):
+    """Character names: capitalised words that are not sentence openers."""
+    tokens = re.findall(r"[A-Za-z']+|[.!?]", text)
+    names, opener = [], True
+    for t in tokens:
+        if t in ".!?":
+            opener = True
+            continue
+        if not opener and t[:1].isupper() and t.lower() not in COMMON_CAPS:
+            if t not in names:
+                names.append(t)
+        opener = False
+    # a name used only as a sentence opener still counts if it never appears
+    # lowercase anywhere
+    lowered = {w.lower() for w in re.findall(r"[a-z']+", text)}
+    for t in re.findall(r"\b[A-Z][a-z]+\b", text):
+        if t.lower() not in lowered and t.lower() not in COMMON_CAPS and t not in names:
+            names.append(t)
+    return names
+
+
+COMMON_CAPS = {"i", "the", "a", "an", "it", "he", "she", "we", "they", "but",
+               "then", "do", "is", "in", "on", "at", "and", "so", "no", "not",
+               "can", "did", "was", "what", "who", "you", "your", "my", "this",
+               "that", "there", "here", "look", "see", "said", "tap", "pat",
+               "sit", "stop", "go", "get", "put", "come", "mom", "dad", "gran"}
 
 
 def choose(story_words, limit=3):
@@ -143,14 +195,16 @@ def choose(story_words, limit=3):
     return chosen[:limit]
 
 
-def scene(story_words, width=660, height=250):
+def scene(story_words, width=660, height=250, text=None):
     """Compose a scene, or return None when nothing in the story can be drawn.
 
     Returning None matters: a wrong picture is worse than no picture, and the
     sheet has a "draw it yourself" fallback for exactly this case.
     """
+    text = text or " ".join(story_words)
+    people = find_names(text)[:2]
     props = choose(story_words)
-    if not props:
+    if not props and not people:
         return None
 
     ground = height - 34
@@ -158,6 +212,9 @@ def scene(story_words, width=660, height=250):
 
     # sun always sits top-right and out of the lineup
     ground_props = [p for p in props if p != "sun"]
+    # a figure for each named child, drawn first so they lead the scene
+    items = ["kid"] * len(people) + ground_props
+    ground_props = items[:4]
     if "sun" in props:
         parts.append(f'<g transform="translate({width - 116},8) scale(0.78)">{PROPS["sun"]}</g>')
 
@@ -178,7 +235,7 @@ def scene(story_words, width=660, height=250):
                  f'stroke-width="2"/>')
 
     body = "".join(parts)
-    label = ", ".join(props)
+    label = ", ".join((["a child"] * len(people)) + [p for p in props if p != "sun"])
     return (f'<svg viewBox="0 0 {width} {height}" role="img" '
             f'aria-label="A simple line drawing of: {label}.">'
             f'<g {STROKE}>{body}</g></svg>')

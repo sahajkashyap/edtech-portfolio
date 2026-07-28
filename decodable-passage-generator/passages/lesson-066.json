@@ -2,14 +2,18 @@
   "lesson": 66,
   "title": "The Little Kitten",
   "lines": [
-    "A little kitten sits on the table.",
+    "Meg has a little kitten.",
+    "The kitten hops up on the table.",
+    "\"Get off, kitten,\" said Meg. It sits still.",
+    "Meg sets it on the rug and pats it.",
+    "But the kitten hops back up on the table.",
     "It bats a red apple off the table.",
     "The apple bumps a candle and a bottle.",
     "The bottle tips and spills on the rug.",
     "The kitten hides in a red mitten.",
-    "Meg picks up the apple and the bottle.",
+    "Meg picks up the apple, candle and bottle.",
     "She rubs the chin of the little kitten.",
-    "The kitten naps in the mitten."
+    "It naps in the mitten. Meg gets a rag."
   ],
   "warmup": [
     "little",
@@ -21,16 +25,16 @@
   ],
   "questions": [
     {
-      "ask": "What knocked the candle and the bottle over?",
-      "listenFor": "The apple, after it rolled off the table. If they say \"the kitten,\" ask them to follow the apple line by line."
+      "ask": "What did Meg do the first time the kitten got on the table?",
+      "listenFor": "She set it on the rug and patted it \u2014 but the kitten hopped right back up on the table. Lines three to five."
     },
     {
-      "ask": "Where did the kitten hide?",
-      "listenFor": "In a red mitten. Stated in the story - have them find the line and read it back to you."
+      "ask": "What knocked the candle and the bottle over?",
+      "listenFor": "The apple, after the kitten batted it off the table. If they say \"the kitten,\" ask them to follow the apple line by line."
     },
     {
       "ask": "Do you think the kitten meant to make a mess? Tell me why.",
-      "listenFor": "Either answer is correct. You want a reason - \"no, it was just batting at the apple\" or \"yes, cats do that on purpose.\""
+      "listenFor": "Either answer is correct. You want a reason \u2014 \"no, it was just batting at the apple\" or \"yes, cats do that on purpose.\""
     }
   ]
 }

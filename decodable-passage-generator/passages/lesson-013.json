@@ -1,17 +1,17 @@
 {
   "lesson": 13,
-  "title": "Dad Did Nap",
+  "title": "Sam and the Tin Pot",
   "lines": [
-    "Dad did nap on a mat.",
-    "\"Sit, Dad!\" said Sam. Tap, tap, tap.",
-    "Dad did nod. Dad did nap.",
-    "Sam is sad. Sam did tip a tin pot.",
-    "Pop! The pot did tip on the mat.",
-    "Dad did sit! \"I am not mad,\" said Dad.",
-    "Dad did pat Sam. \"Sit and sip,\" said Dad.",
-    "Sam did nap. Dad did not!"
+    "I am Sam. Dad is in a nap.",
+    "\"Sit, Dad!\" I said. Tap, tap, tap.",
+    "Dad did not sit. Dad did not nod.",
+    "I am sad. I tip a tin pot.",
+    "Pop! The pot is on the mat.",
+    "Dad sat. \"I am not mad,\" said Dad.",
+    "\"Sit and sip,\" said Dad. I sat.",
+    "I nap. Dad did not nap!"
   ],
-  "warmup": ["nap", "tap", "nod", "tip", "pot", "pat"],
+  "warmup": ["nap", "tap", "nod", "tip", "pot", "sat"],
   "questions": [
     {
       "ask": "What did Sam tip over?",

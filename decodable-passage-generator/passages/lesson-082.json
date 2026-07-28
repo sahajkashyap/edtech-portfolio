@@ -2,14 +2,18 @@
   "lesson": 82,
   "title": "The Third Turn",
   "lines": [
-    "Meg and Kurt run on the dirt path.",
+    "Meg and Kurt run up the cold hill.",
+    "They have one sled, so they must take turns.",
     "Meg gets the first turn on the sled.",
     "Then Kurt gets his turn on it.",
-    "He bumps a rock and lands in dirt.",
-    "His shirt gets dirt all on it.",
-    "He curls up for a bit.",
-    "Meg helps him up with her hand.",
-    "Kurt grins and gets a third turn."
+    "He bumps a rock and lands in the dirt.",
+    "Dirt is all on his shirt and hands.",
+    "Kurt curls up for a bit and sits still.",
+    "Meg tugs at the rock, but it is stuck.",
+    "Then Kurt sets his red cap on the rock.",
+    "Meg can spot the red cap from the hill.",
+    "Kurt gets a third turn and misses the rock.",
+    "He grins and hands the sled back to Meg."
   ],
   "warmup": [
     "first",
@@ -21,16 +25,16 @@
   ],
   "questions": [
     {
-      "ask": "Who got the first turn on the sled?",
-      "listenFor": "Meg. Kurt had to stand and wait his turn."
+      "ask": "Why did Meg and Kurt have to take turns?",
+      "listenFor": "They had just one sled. It is in the second line."
     },
     {
-      "ask": "What happened on Kurt's turn?",
-      "listenFor": "He bumped a rock, landed in the dirt, and curled up for a bit. Listen for the rock."
+      "ask": "What did Kurt do so they could spot the rock?",
+      "listenFor": "He set his red cap on top of it. Meg had tugged at the rock first, but it was stuck."
     },
     {
       "ask": "Do you think Kurt was brave to go again? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason, like he grinned and took a third turn."
+      "listenFor": "Either answer works. Listen for a reason, like he took a third turn after landing in the dirt."
     }
   ]
 }

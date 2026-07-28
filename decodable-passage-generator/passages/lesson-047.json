@@ -2,31 +2,33 @@
   "lesson": 47,
   "title": "The Moth in the Bath",
   "lines": [
-    "Nan set up a bath, and Josh got in.",
-    "Then a moth fell in with him!",
-    "\"Get that moth!\" said Josh.",
-    "Nan got a thin red mug.",
-    "She let the moth sit on it.",
-    "Then she set it on the path.",
-    "Both the moth and Josh were wet.",
-    "\"That moth had a bath as well!\" said Nan."
+    "Mom runs a bath in the big tub.",
+    "Josh gets in with his red duck.",
+    "Then a moth falls in with him!",
+    "\"That moth is wet!\" said Josh.",
+    "Josh taps the tub, but the moth sits.",
+    "He sets a thin red mug in the bath.",
+    "The moth gets on the mug and sits.",
+    "Josh sets the mug up on the path.",
+    "The moth sits. Then it is up and off.",
+    "\"That moth had a bath as well!\" said Mom."
   ],
   "warmup": [
     "bath",
     "moth",
     "thin",
     "path",
-    "both",
-    "with"
+    "with",
+    "that"
   ],
   "questions": [
     {
-      "ask": "What does Nan use to get the moth out?",
-      "listenFor": "A thin red mug. It is stated in the story - have them reread that line instead of telling them."
+      "ask": "Josh taps the tub first. Does that get the moth out?",
+      "listenFor": "No - the moth just sits. Line five says it. That is his first try, and it does not work."
     },
     {
-      "ask": "Where does Nan put the moth?",
-      "listenFor": "On the path. Listen for the word path, not just \"outside.\""
+      "ask": "What does Josh use to get the moth out?",
+      "listenFor": "A thin red mug. Line six says it - have them reread that line instead of telling them."
     },
     {
       "ask": "Was the moth glad to get out? Tell me why you think so.",

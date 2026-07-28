@@ -1,36 +1,38 @@
 {
   "lesson": 58,
-  "title": "Duke and the Cube",
+  "title": "Duke and the Tube",
   "lines": [
-    "Ben has one cute mule, Duke.",
-    "Once, Duke sat in the dust.",
-    "He will not get up at all.",
+    "Ben has a cute mule. His name is Duke.",
+    "They take the long path home from the lake.",
+    "Then Duke stops and sits in the dust.",
     "\"Up, Duke!\" said Ben. The mule just sits.",
-    "Ben gets a cube of yam from a tube.",
-    "He hums a tune and lifts up the cube.",
-    "Duke gets up fast and grabs the yam.",
-    "Then they step up the path and go home."
+    "Ben tugs. Duke will not get up.",
+    "Ben holds up a bun. Duke naps.",
+    "Then Ben gets a long tube from his bag.",
+    "He hums a tune in the tube.",
+    "Duke lifts his nose. He jumps up fast!",
+    "Duke walks home, and Ben hums the whole time."
   ],
   "warmup": [
     "cute",
     "mule",
     "dust",
+    "just",
     "tube",
-    "cube",
     "tune"
   ],
   "questions": [
     {
-      "ask": "What does Duke do when Ben tells him to get up?",
-      "listenFor": "Nothing - he just sits. The line says \"The mule just sits.\""
+      "ask": "What does Ben try first to get Duke up?",
+      "listenFor": "He tugs, then he holds up a bun. Duke naps. Send them back to those two lines."
     },
     {
       "ask": "What finally gets Duke up on his feet?",
-      "listenFor": "A cube of yam out of the tube. If they say \"the tune,\" that is close - ask what Ben lifted up as he hummed."
+      "listenFor": "The tune Ben hums in the tube. If they say \"the tube,\" ask what Ben did with it."
     },
     {
       "ask": "What do you think Ben will take next time? Tell me why.",
-      "listenFor": "Any answer with a reason. Listen for something like \"yam, because that is what got Duke moving.\""
+      "listenFor": "Any answer with a reason. Listen for something like \"the tube, because that tune got Duke moving.\""
     }
   ]
 }

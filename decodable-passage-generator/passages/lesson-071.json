@@ -2,35 +2,38 @@
   "lesson": 71,
   "title": "The Big Match",
   "lines": [
-    "Ben and Meg have a pitching match.",
-    "Both of them stand on the bridge.",
-    "Ben pitches a stick in the ditch.",
-    "Meg fetches it and pitches it back.",
-    "A duck on the hedge is the judge.",
-    "Ben pitches it in the hedge. The duck quacks.",
-    "Meg wins the match and gets the badge.",
-    "Then the pals munch fudge on the bridge."
+    "Ben and Meg set up a pitching match.",
+    "They stand at the edge of the bridge.",
+    "Ben pitches a small ball to Meg.",
+    "Meg catches it and pitches it back.",
+    "Then Ben pitches it into the ditch.",
+    "Meg grabs at the ball, but it is stuck.",
+    "Ben gets a long stick from the grass.",
+    "Meg tugs the ball up with the stick.",
+    "The wet ball drips mud on the grass.",
+    "Then the big match goes on and on.",
+    "Mom hands them a badge and some fudge."
   ],
   "warmup": [
     "match",
     "bridge",
     "ditch",
-    "fetches",
-    "hedge",
-    "badge"
+    "edge",
+    "badge",
+    "fudge"
   ],
   "questions": [
     {
-      "ask": "Who is the judge in this match?",
-      "listenFor": "A duck sitting on the hedge. Stated in the story - have them find that line and read it back."
+      "ask": "Where did the ball land when Ben missed?",
+      "listenFor": "In the ditch. Stated in the story - point them at that line rather than saying it for them."
     },
     {
-      "ask": "Why did Ben lose?",
-      "listenFor": "His stick went in the hedge and woke the duck. If they say \"Meg won,\" ask \"and where did Ben's stick land?\""
+      "ask": "How did the ball get out of the ditch?",
+      "listenFor": "Ben got a long stick from the grass and Meg tugged the ball up with it. If they say \"Meg grabbed it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think a duck makes a good judge? Tell me why.",
-      "listenFor": "Silly question on purpose - any answer is right. You are listening for the reason after it, not the yes or no."
+      "ask": "Do you think Ben and Meg made a good team? Tell me why.",
+      "listenFor": "There is no right answer. Listen for a reason - he got the stick, she got the ball up."
     }
   ]
 }

@@ -1,19 +1,23 @@
 {
   "lesson": 69,
-  "title": "Fetch",
+  "title": "Catch!",
   "lines": [
-    "Dan tosses a stick for his pup.",
-    "The pup runs to fetch it.",
-    "The stick lands in a wet ditch.",
+    "Dan and his pup like a game of catch.",
+    "Dan pitches a stick up the hill.",
+    "The pup runs and catches it. Dan claps.",
+    "Then Dan pitches the stick to the top.",
+    "It lands in a wet ditch by the path.",
     "The pup will not go in the ditch.",
-    "Dan hops in and catches the stick.",
-    "His pants have a patch of mud.",
-    "He pitches the stick up the hill.",
-    "This time the pup catches it. Dan claps."
+    "Dan calls it, but the pup will not go.",
+    "So Dan hops in and catches the stick.",
+    "His pants have a big patch of mud.",
+    "He pitches the stick back up the hill.",
+    "This time the pup catches it. Dan grins.",
+    "Mom hands Dan a rag for his pants."
   ],
   "warmup": [
-    "fetch",
     "ditch",
+    "catch",
     "catches",
     "patch",
     "pitches",
@@ -21,8 +25,8 @@
   ],
   "questions": [
     {
-      "ask": "Where did the stick land the first time?",
-      "listenFor": "In a wet ditch. Stated in the story - have them reread that line rather than telling them."
+      "ask": "Where did the stick land when Dan pitched it to the top?",
+      "listenFor": "In a wet ditch by the path. Stated in the story - have them reread that line rather than telling them."
     },
     {
       "ask": "Why does Dan have a patch of mud on his pants?",

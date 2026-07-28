@@ -3,12 +3,18 @@
   "title": "The Blue Bird Sam Built",
   "lines": [
     "Sam built a big bird from sticks and glue.",
+    "It took him three days to get it right.",
     "He made it blue with a few red dots.",
-    "The wind blew, and the bird flew up high!",
+    "Sam held it up on the school steps.",
+    "Then a strong wind blew, and the bird flew!",
     "It went up on the roof of the school.",
-    "A crew of kids ran to help Sam get it.",
-    "Tim held up a long tool and got it back.",
-    "The blue bird is home, and Sam grins."
+    "Sam got a long stick, but it was short.",
+    "He could not reach the blue bird at all.",
+    "Sam ran in and got a long broom.",
+    "He glued the stick to the broom.",
+    "That tool was long and it did reach.",
+    "Sam got the blue bird back on the steps.",
+    "He will keep it in his room."
   ],
   "warmup": [
     "built",
@@ -20,16 +26,16 @@
   ],
   "questions": [
     {
-      "ask": "What did Sam make his bird from?",
-      "listenFor": "Sticks and glue. Have them point to that line."
+      "ask": "How long did it take Sam to make the bird?",
+      "listenFor": "Three days. It is in the second line."
     },
     {
-      "ask": "How did the bird get up on the roof?",
-      "listenFor": "The wind blew it up there. It did not fly by itself."
+      "ask": "How did Sam get the bird off the roof?",
+      "listenFor": "He glued his stick to a long broom so it would reach. The stick on its own was short."
     },
     {
-      "ask": "Would you have run to help Sam? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason of their own."
+      "ask": "Would you have made a bird from sticks? Tell me why.",
+      "listenFor": "Either answer is fine. Ask what they would make instead."
     }
   ]
 }

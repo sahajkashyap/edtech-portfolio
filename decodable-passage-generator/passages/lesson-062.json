@@ -3,13 +3,15 @@
   "title": "The Log Swing",
   "lines": [
     "Jane and Pete want a swing at home.",
-    "Dad slings a rope up on a big pine.",
+    "Dad hangs a long rope on a big pine.",
     "Pete gets a fine log to sit on.",
-    "But the log slips off the rope!",
-    "Jane cuts a hole in it with Dad.",
-    "The rope goes in the hole, and it holds.",
-    "Pete gets on. Jane pulls him back.",
-    "\"The best swing!\" said Pete with a smile."
+    "He sets it on the rope. It slips off.",
+    "Pete holds the log on. It still slips off.",
+    "\"Cut a hole in it,\" said Jane.",
+    "Jane and Dad cut a hole in the log.",
+    "The rope goes in the hole and holds it.",
+    "Pete gets on and Jane pulls him back.",
+    "\"The best swing!\" said Pete with a big smile."
   ],
   "warmup": [
     "rope",
@@ -25,8 +27,8 @@
       "listenFor": "A fine log. Line three says it. If your child is stuck, let them reread that line."
     },
     {
-      "ask": "Why did Jane cut a hole in the log?",
-      "listenFor": "Because the log kept slipping off the rope, and the rope could go through the hole. Lines four to six carry it."
+      "ask": "Why did Jane and Dad cut a hole in the log?",
+      "listenFor": "Because the log kept slipping off the rope, and the rope could go through the hole. Lines four to eight carry it."
     },
     {
       "ask": "What would you make a swing seat out of? Tell me why that.",

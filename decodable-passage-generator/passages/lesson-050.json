@@ -2,12 +2,14 @@
   "lesson": 50,
   "title": "Which Shell?",
   "lines": [
-    "Ted and Phil check ten shells in the sun.",
+    "Ted and Phil look at ten shells.",
     "\"Which shell do you want?\" said Phil.",
-    "A thin red shell sits in a gap.",
-    "When he digs, he can not get it.",
-    "Phil gets a rod and Ted digs at it.",
-    "The shell pops up. Ted has it!",
+    "Ted picks a thin red shell in wet mud.",
+    "Ted digs and digs. It will not pop up.",
+    "\"When we get a dish, it will,\" said Phil.",
+    "Phil ran back and got a red dish.",
+    "Ted digs with the dish, and the shell pops.",
+    "\"I got it!\" said Ted. Phil hops up.",
     "Then Ted digs and gets a shell as well.",
     "\"That shell is your shell,\" said Ted."
   ],
@@ -16,20 +18,20 @@
     "when",
     "shell",
     "thin",
-    "rod",
+    "dish",
     "digs"
   ],
   "questions": [
     {
-      "ask": "Where was the thin red shell?",
-      "listenFor": "Down in a gap. Line three says it. If they guess, send them back to that line."
+      "ask": "Where was the thin red shell that Ted picked?",
+      "listenFor": "In wet mud. Line three says it. If they guess, send them back to that line."
     },
     {
-      "ask": "How did Ted get the shell out of the gap?",
-      "listenFor": "Phil fetched a long rod and Ted dug with it. Line five says it. Two children, one job."
+      "ask": "Digging with his hands did not work. What did Phil get so it would?",
+      "listenFor": "A red dish. Lines five and six say it. Two children, one job."
     },
     {
-      "ask": "Ted dug a second shell out and gave it to Phil. Why do you think he did that? Tell me why.",
+      "ask": "Ted dug a second shell out and gave it to Phil. Why do you think he did that?",
       "listenFor": "Any sensible idea works. You are listening for a reason of their own, like Phil helped him first."
     }
   ]

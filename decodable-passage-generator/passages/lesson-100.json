@@ -2,33 +2,34 @@
   "lesson": 100,
   "title": "The Fastest Sled in Town",
   "lines": [
-    "Meg said, \"My sled is the fastest.\"",
-    "\"Mine is faster,\" said Nick.",
-    "They went up the tallest hill by a tree.",
-    "Meg went fast. Nick went faster.",
+    "Meg said, \"My sled is the fastest of all.\"",
+    "\"No, mine is faster,\" said Nick.",
+    "They went up the tallest hill by the tree.",
+    "Nick went first. He slid fast and far.",
+    "Meg went next, but her sled was slower.",
+    "She got to the end long after Nick.",
+    "Meg did not grin. She sat and looked.",
+    "Then she lifted the sled and looked under it.",
+    "Snow was packed hard under both rails.",
+    "Meg got the snow off with her mitt.",
+    "Up she went. This time Meg was faster!",
     "Then a brown dog slid past on a lid.",
+    "The dog got to the end first of all.",
     "Meg had to grin. That dog is the fastest!"
   ],
-  "warmup": [
-    "sled",
-    "hill",
-    "brown",
-    "slid",
-    "grin",
-    "tree"
-  ],
+  "warmup": ["fastest", "faster", "tallest", "slower", "sled", "hill"],
   "questions": [
     {
-      "ask": "Who slid past Meg and Nick on the hill?",
-      "listenFor": "The brown dog, on a lid. It is right there in the story - if your child guesses, have them reread that line instead of being told."
+      "ask": "Why was Meg's sled slower the first time?",
+      "listenFor": "Snow was packed hard under both rails. Have them find that line."
     },
     {
-      "ask": "What did Meg and Nick each say about their own sled?",
-      "listenFor": "Each one said his or her sled was the quickest. Listen for the compare words - fastest, faster."
+      "ask": "Who slid past Meg and Nick at the end?",
+      "listenFor": "The brown dog, on a lid. If your child guesses, have them reread the line."
     },
     {
       "ask": "Do you think Meg was cross at the end? Tell me why you think so.",
-      "listenFor": "Either answer is fine. Listen for a reason from the story - the grin, or the dog beating them both."
+      "listenFor": "Either answer is fine. The grin is a clue, and so is the dog."
     }
   ]
 }

@@ -2,14 +2,17 @@
   "lesson": 77,
   "title": "The Star Card in the Barn",
   "lines": [
-    "Dan and Mom park the car by the farm.",
-    "Dan starts to dig in the dark barn.",
-    "He finds a card in a dusty jar.",
-    "The card has a big gold star on it.",
-    "It is hard to spot in the dark barn.",
-    "Dan runs to the yard with the card.",
-    "Mom grins. Mom had that card as a kid.",
-    "Mom lets Dan hold it in the yard."
+    "Dan and Dad park the car at the farm.",
+    "Dad and Dan step into the dark barn.",
+    "Dan digs in a box of rags and jars.",
+    "Then Dan spots a jar on the top shelf.",
+    "Dan can not see what is in it.",
+    "He runs to the yard with the jar.",
+    "In the sun, he tips the jar up.",
+    "A card slips into his hand.",
+    "It has a big gold star on it.",
+    "Dad grins. That card was Dad's as a kid.",
+    "Dad lets Dan hold the star card."
   ],
   "warmup": [
     "park",
@@ -21,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "What did Dan find in the jar?",
+      "ask": "What slipped into Dan's hand when he tipped the jar up?",
       "listenFor": "A card with a big gold star on it. Point back to the line if they guess."
     },
     {
-      "ask": "Why did Dan run to the yard?",
-      "listenFor": "It was too dark in the barn to spot the star. The answer sits one line above."
+      "ask": "Why did Dan run to the yard with the jar?",
+      "listenFor": "He could not see what was in it in the barn. Out in the sun he could. The answer sits in the two lines above."
     },
     {
-      "ask": "How do you think Mom felt about the card? Tell me why.",
-      "listenFor": "Any answer with a reason. The grin, or the card being hers as a kid, both work."
+      "ask": "How do you think Dad felt about the card? Tell me why.",
+      "listenFor": "Any answer with a reason. The grin, or the card being his as a kid, both work."
     }
   ]
 }

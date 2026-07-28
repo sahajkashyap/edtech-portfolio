@@ -2,27 +2,34 @@
   "lesson": 102,
   "title": "The Helpful Pup",
   "lines": [
-    "Our pup Bud has no teeth at all.",
-    "Bud is toothless, but he is helpful.",
-    "Meg lost a sock and felt hopeless.",
-    "She looked in the box. No sock.",
-    "Bud went to sniff at the rug.",
-    "He dug up the sock and set it in her hand.",
-    "Meg was thankful for her toothless pup."
+    "Our pup Bud is small and harmless.",
+    "Jill had one sock on and one off.",
+    "The other sock was lost. Jill felt sad.",
+    "She looked in the box by her bed.",
+    "It was full of rags. That was useless.",
+    "She looked under the bed. Just dust.",
+    "Then Jill had a plan. Bud can smell!",
+    "She held the one sock up to his nose.",
+    "Bud is helpful when a sock gets lost.",
+    "He went to the rug and had a smell.",
+    "Then he dug up the lost sock for her.",
+    "It was under the rug all the time.",
+    "Jill was thankful and gave Bud a pat.",
+    "Now Jill has both socks on her feet."
   ],
-  "warmup": ["pup", "teeth", "sock", "rug", "dug", "hand"],
+  "warmup": ["pup", "sock", "rug", "dug", "lost", "felt"],
   "questions": [
     {
-      "ask": "What did Meg lose?",
-      "listenFor": "A sock. Simple to find - have them put a finger on the line that says it."
+      "ask": "Jill looked in two spots first. What did she find?",
+      "listenFor": "A box full of rags, and dust under the bed. Both were useless."
     },
     {
-      "ask": "How did Bud get the sock back to Meg?",
-      "listenFor": "He dug it up and set it in her hand. Listen for both halves of that."
+      "ask": "What was Jill's plan with the sock she still had?",
+      "listenFor": "She held it up to Bud's nose so he could smell it and find the other one."
     },
     {
-      "ask": "Do you think a toothless pup can still be a good pet? Why?",
-      "listenFor": "Any answer is fine. You are listening for a because, not for the right opinion."
+      "ask": "When has someone been helpful to you? Tell me about it.",
+      "listenFor": "Any story is fine. Listen for them to use the word helpful."
     }
   ]
 }

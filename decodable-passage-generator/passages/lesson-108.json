@@ -3,12 +3,20 @@
   "title": "The Wettest Jump",
   "lines": [
     "It was the hottest day of all.",
-    "Meg and Tim went to the pool.",
+    "Dad took Meg and Tim to the pool.",
+    "Dad got in the water with them.",
     "Tim said, \"My splash is bigger.\"",
-    "Meg said, \"Mine is the biggest.\"",
-    "They got wetter and wetter.",
-    "Then Dad ran in with a big jump.",
-    "Meg and Tim got the wettest of all."
+    "Meg said, \"No, mine is the biggest.\"",
+    "Tim made a jump. It was a small splash.",
+    "Meg made a jump. Hers was smaller still.",
+    "They got wetter and wetter. It was a tie.",
+    "Then Meg had a plan.",
+    "\"Dad,\" she said, \"you jump with us.\"",
+    "All three went in at the same time.",
+    "That was the biggest splash of the day.",
+    "Meg and Tim got the wettest of all.",
+    "Dad said that was better than winning.",
+    "They went home wet and happy."
   ],
   "warmup": [
     "pool",
@@ -20,16 +28,16 @@
   ],
   "questions": [
     {
-      "ask": "What were Meg and Tim arguing about?",
-      "listenFor": "Whose splash was bigger. Have them read the two quotes."
+      "ask": "What were Meg and Tim trying to do?",
+      "listenFor": "Make the bigger splash, then the biggest splash. Have them read the two quotes."
     },
     {
-      "ask": "Who made the biggest splash in the end?",
-      "listenFor": "Dad. The last line does not name him, so they must hold on to the line before."
+      "ask": "Whose plan was it for Dad to jump too?",
+      "listenFor": "Meg's. The line before the quote says she had a plan."
     },
     {
       "ask": "Do you think Meg and Tim minded getting wet? Why?",
-      "listenFor": "Either answer. The hot day is a good reason to point at."
+      "listenFor": "Either answer. The hot day in the first line is a good reason to point at."
     }
   ]
 }

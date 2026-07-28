@@ -2,14 +2,16 @@
   "lesson": 53,
   "title": "The Crab and the Twig",
   "lines": [
-    "Beth and Raj dig in the wet sand.",
-    "A small crab jumps up from the sand!",
+    "Beth and Raj dig a big pit in wet sand.",
+    "Then a small crab jumps up from the sand!",
     "Beth claps and steps back fast.",
-    "\"Do not grab it,\" said Raj. \"It nips.\"",
+    "Raj said, \"A crab can pinch. Do not grab.\"",
     "The crab grabs a stick and slips off.",
     "It hid in a crack next to a rock.",
-    "Raj sticks a twig in the flat sand.",
-    "The crab grabs it, and they both grin."
+    "Beth taps the crack. The crab did not shift.",
+    "Then Raj sticks a twig in the flat sand.",
+    "The crab grabs it and drags it off.",
+    "Beth and Raj grin. \"He wants that stick!\""
   ],
   "warmup": [
     "crab",
@@ -22,14 +24,14 @@
   "questions": [
     {
       "ask": "Why does Raj say not to grab the crab?",
-      "listenFor": "It nips. It is right there in his line of talking - have them find the quote marks."
+      "listenFor": "A crab can pinch. It is right there in his talking - have them find the quote marks."
     },
     {
-      "ask": "Where does the crab hide?",
-      "listenFor": "In a crack next to a rock. If they say only \"a crack,\" ask them where the crack was."
+      "ask": "Beth taps the crack with the crab in it. Does the crab come out?",
+      "listenFor": "No - it did not shift. Line seven says it. That is the try that does not work."
     },
     {
-      "ask": "Why do you think Raj put the twig in the sand? Tell me why.",
+      "ask": "Why do you think Raj put the twig in the sand?",
       "listenFor": "Any sensible idea works, like \"so the crab could have something to grab instead.\" Listen for a because."
     }
   ]

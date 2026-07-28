@@ -2,12 +2,14 @@
   "lesson": 59,
   "title": "The Note in the Tube",
   "lines": [
-    "Jane, Pete and Dad hike up to the lake.",
+    "Jane, Pete and Dad walk up to the lake.",
     "Pete finds a tube stuck in the mud.",
-    "A note is in it with a map.",
+    "A note is in it, and a small map.",
     "\"Nine steps from the pine,\" said Jane.",
-    "They dig and dig in the damp sand.",
-    "Pete lifts up a white stone.",
+    "They dig by the pine, but get just sand.",
+    "\"My steps are small,\" said Jane. \"Nine big steps!\"",
+    "Jane walks nine wide steps and digs there.",
+    "Pete lifts up a white stone. He grins.",
     "\"Hide it for the next kid,\" said Jane.",
     "So they did, and left a note in it."
   ],
@@ -22,11 +24,11 @@
   "questions": [
     {
       "ask": "What does Pete find stuck in the mud?",
-      "listenFor": "A tube, with a note and a map in it."
+      "listenFor": "A tube, with a note and a small map in it."
     },
     {
-      "ask": "How do Jane and Pete know where to dig?",
-      "listenFor": "The map says nine steps from the pine. Send them back to that line."
+      "ask": "Why did they get just sand the first time they dug?",
+      "listenFor": "Jane works it out: her steps were small, so nine of them did not go far. She walks nine big, wide steps and digs there."
     },
     {
       "ask": "Would you have hidden the stone again, or kept it? Tell me why.",

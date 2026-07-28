@@ -1,36 +1,36 @@
 {
   "lesson": 23,
-  "title": "The Hot Hut",
+  "title": "The Hen on the Hat",
   "lines": [
-    "Deb and Kip set up a hut of mats.",
-    "It is hot in the sun.",
-    "\"It is hot in the hut,\" said Kip.",
-    "Deb hops up. She gets a big tan mat.",
-    "She sets it on top of the hut.",
-    "Deb and Kip sit. It is not hot!",
-    "\"Deb did it,\" said Kip. He gets figs.",
-    "Deb and Kip sit and hum in the hut."
+    "Deb has a pet hen.",
+    "The hen hops on a tan hat.",
+    "\"Get up, hen!\" said Deb.",
+    "The hen did not get up.",
+    "Deb got a bit of ham.",
+    "The hen hops to the ham.",
+    "Deb has the tan hat.",
+    "She hugs the hen. It is a fun pet."
   ],
   "warmup": [
-    "hut",
-    "hot",
-    "mats",
+    "hen",
+    "hat",
     "hops",
-    "top",
-    "figs"
+    "ham",
+    "hugs",
+    "tan"
   ],
   "questions": [
     {
-      "ask": "What did Deb and Kip make?",
-      "listenFor": "A hut out of mats. The first line says it. If your child is stuck, point at that line and let them read it again."
+      "ask": "What did the hen sit on?",
+      "listenFor": "The tan hat. It is in the second line — point at that line rather than saying it."
     },
     {
-      "ask": "Why did Deb put a big mat on top of the hut?",
-      "listenFor": "Because it was hot inside. The mat kept the sun off. Lines two, three and five carry it. Cause and effect is the thinking here."
+      "ask": "How did Deb get the hen off the hat?",
+      "listenFor": "She got a bit of ham, and the hen hopped over to it. Two lines tell it together, so let them read both."
     },
     {
-      "ask": "Where would you build a hut? Tell me why there.",
-      "listenFor": "Any place is fine. You are listening for a reason of their own, and it is a lovely chance to go and build one."
+      "ask": "What would you call this hen? Tell me why.",
+      "listenFor": "Any name they like. You are listening for a reason — what the hen is like, or what it did."
     }
   ]
 }

@@ -1,19 +1,21 @@
 {
   "lesson": 49,
-  "title": "Off the Dock",
+  "title": "Off the Deck",
   "lines": [
-    "Josh and Nick fish off the dock with Dad.",
+    "Nick and Josh fish off the deck with Dad.",
     "Josh gets a big fish in his net.",
-    "Nick tugs and tugs. He gets a shell.",
-    "Then Nick tugs up a wet sock!",
+    "Nick has not got a fish yet.",
+    "He tugs and tugs. He gets a shell.",
+    "Then his net tugs up a wet sock!",
     "\"That is not a fish!\" said Nick.",
     "\"Sit and hush. Do not let go,\" said Dad.",
-    "Nick sits. Then his rod dips and dips!",
-    "Up it hops. \"Such a big fish!\" said Josh."
+    "Nick sits. He will not tug at all.",
+    "Then his net tugs back. Up hops a fish!",
+    "\"Such a fish!\" said Josh. Nick lets it go."
   ],
   "warmup": [
     "fish",
-    "dock",
+    "deck",
     "shell",
     "sock",
     "such",
@@ -26,11 +28,11 @@
     },
     {
       "ask": "What does Dad tell Nick to do?",
-      "listenFor": "Sit still, be quiet, and do not let go. It is the line in quote marks - have them find the talking."
+      "listenFor": "Sit, hush, and do not let go. It is the line in quote marks - have them find the talking."
     },
     {
-      "ask": "Nick pulled up a shell and a sock before the fish came. What do you think kept him going? Tell me why.",
-      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like Dad told him to hold on, or he wanted a fish like Josh."
+      "ask": "Nick let the fish go at the end. Why do you think he did that?",
+      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like \"he just wanted to get one.\""
     }
   ]
 }

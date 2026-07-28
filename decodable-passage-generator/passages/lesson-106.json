@@ -2,27 +2,42 @@
   "lesson": 106,
   "title": "The Unsafe Room",
   "lines": [
-    "Jack had a room that was a big mess.",
+    "Jack had a small room at the top.",
+    "He kept his socks and blocks in it.",
+    "But he never set them back neatly.",
+    "Soon the room was a big mess.",
     "Dad said, \"This is unsafe. Fix it.\"",
     "Jack was unhappy, but he was helpful.",
-    "He slowly set the socks in a bin.",
-    "He had to redo the shelf three times.",
-    "At last the room was spotless.",
-    "Dad said, \"That was helpful. Thanks!\""
+    "He tried to get it all in one bin.",
+    "The bin was too small. It fell over.",
+    "Blocks went rolling under the bed.",
+    "Jack sat down. Then he had a plan.",
+    "Socks in the bin, blocks on the shelf.",
+    "He slowly restacked the shelf three times.",
+    "At last the room was neat and safe.",
+    "Dad said, \"That was helpful. Thanks, Jack!\"",
+    "Now Jack can find his socks fast."
   ],
-  "warmup": ["room", "mess", "socks", "bin", "shelf", "three"],
+  "warmup": [
+    "room",
+    "socks",
+    "blocks",
+    "bin",
+    "shelf",
+    "three"
+  ],
   "questions": [
     {
       "ask": "What did Dad say about the room?",
       "listenFor": "That it was unsafe and had to be fixed. Have them find the word unsafe."
     },
     {
-      "ask": "How many times did Jack redo the shelf?",
-      "listenFor": "Three. If they say the wrong number, send them back to that line instead of correcting them."
+      "ask": "What went wrong when Jack put it all in one bin?",
+      "listenFor": "The bin was too small, it fell over, and the blocks rolled under the bed."
     },
     {
       "ask": "Do you think Jack felt better at the end? Why do you think so?",
-      "listenFor": "Either answer. Listen for a reason from the story - spotless, or what Dad said last."
+      "listenFor": "Either answer. Listen for a reason from the story - the neat room, or what Dad said last."
     }
   ]
 }

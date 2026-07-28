@@ -3,29 +3,36 @@
   "title": "The Bear and the Pear",
   "lines": [
     "A brown bear sat by a pear tree.",
+    "He had not had a meal all day.",
     "The best pears were up in the air.",
-    "He got a chair, but it had a tear.",
-    "It fell, and the bear fell with it.",
-    "The bear sat down with a sad face.",
-    "Then the wind sent one pear down.",
-    "It fell by his paw. He ate it."
+    "The bear stood up tall on his back paws.",
+    "He could not reach. Not even close.",
+    "So he got a chair from his den.",
+    "But the chair had a big tear in it.",
+    "He stood on it. The chair fell down.",
+    "The bear fell too, and sat on the grass.",
+    "He had a sad face for a while.",
+    "Then he had a plan. He hugged the tree.",
+    "He shook it hard with both paws.",
+    "Ten pears came down all at once.",
+    "The bear ate three and saved the rest."
   ],
   "warmup": [
     "bear",
     "pear",
     "tear",
     "tree",
-    "paw",
+    "paws",
     "face"
   ],
   "questions": [
     {
       "ask": "Why did the bear get a chair?",
-      "listenFor": "To get up to the pears, which were high in the air. The answer is in the second and third lines."
+      "listenFor": "To get up to the pears, which were up in the air. The answer is in the third and sixth lines."
     },
     {
-      "ask": "How did the bear get a pear in the end?",
-      "listenFor": "The wind sent one down. Point out that pear, bear, and tear all end the same way and rhyme."
+      "ask": "How did the bear get the pears down in the end?",
+      "listenFor": "He hugged the tree and shook it hard. Point out that pear, bear and tear all rhyme."
     },
     {
       "ask": "Do you think the bear will try the chair again? Why?",

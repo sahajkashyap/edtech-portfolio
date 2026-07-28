@@ -1,34 +1,35 @@
 {
   "lesson": 12,
-  "title": "The Pot on Top",
+  "title": "I Tap the Tin Pot",
   "lines": [
-    "Mom sat a pot on top.",
-    "A tot is at the pot!",
+    "I am Tim. A tin pot is on top.",
+    "I tap it. Tap, tap, tap.",
     "Pop! The pot is not on top.",
-    "Mop it, Tom. Mop it, Mom.",
-    "The pot is on top.",
-    "The tot is in a nap."
+    "The pot is on the mat.",
+    "I mop it. Mop, mop, mop.",
+    "The mat is tan. The pot is on top.",
+    "I sit and sip. I nap."
   ],
   "warmup": [
     "pot",
     "top",
-    "tot",
-    "mop",
+    "tap",
     "pop",
-    "nap"
+    "mop",
+    "mat"
   ],
   "questions": [
     {
-      "ask": "What happens to the pot?",
-      "listenFor": "The tot taps it and it falls. Lines two and three tell it together."
+      "ask": "What happened after Tim tapped the pot?",
+      "listenFor": "It went pop and it landed on the mat. Lines three and four tell it together, so let them read both."
     },
     {
-      "ask": "Who mops it up?",
-      "listenFor": "Tom and Mom, both. The fourth line names them."
+      "ask": "Who cleaned up the mat?",
+      "listenFor": "Tim did, on his own. Listen for Tim and not a grown-up - that is the whole point of the story."
     },
     {
-      "ask": "What would you have said to the tot? Tell me.",
-      "listenFor": "Any kind answer. You are listening for something gentle rather than cross."
+      "ask": "Tell me about a time you cleaned up something you knocked over.",
+      "listenFor": "Any answer is fine. You are listening for them tying the story to something of their own."
     }
   ]
 }

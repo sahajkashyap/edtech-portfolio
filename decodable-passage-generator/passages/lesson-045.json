@@ -2,21 +2,21 @@
   "lesson": 45,
   "title": "The Fish Shop",
   "lines": [
-    "Kim has a fish shop on the dock.",
+    "Kim has a fish shop on the deck.",
     "She sells fish in a red dish.",
     "A cat runs in and picks up a fish.",
     "\"Not the big fish!\" yells Kim.",
-    "It runs off to a shed.",
-    "In the shed sit six wet kits!",
+    "Kim shuts the shop and runs at the cat.",
+    "It runs to a shed. Six wet cats!",
     "\"We have lots of fish,\" said Kim.",
-    "She fills a dish. The kits dash in."
+    "She fills a dish. The cats rush in."
   ],
   "warmup": [
     "fish",
     "shop",
     "dish",
     "shed",
-    "dash",
+    "shuts",
     "picks"
   ],
   "questions": [
@@ -26,11 +26,11 @@
     },
     {
       "ask": "What does Kim find in the shed?",
-      "listenFor": "Six wet kits - baby cats. If they say only \"cats,\" ask them to find the word that tells how many."
+      "listenFor": "Six wet cats. If they say only \"cats,\" ask them to find the word that tells how many."
     },
     {
-      "ask": "Why do you think Kim fills a dish for the kits? Tell me why.",
-      "listenFor": "Any reason tied to the story works - \"the kits are hungry\" or \"the cat took a fish to feed them\" both show they connected the shed to the ending."
+      "ask": "Why do you think Kim fills a dish for the cats?",
+      "listenFor": "Any reason tied to the story works - \"the cats are hungry\" or \"the cat took a fish to feed them\" both show they connected the shed to the ending."
     }
   ]
 }

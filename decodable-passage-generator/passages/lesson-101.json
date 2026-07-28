@@ -2,30 +2,30 @@
   "lesson": 101,
   "title": "Slowly and Softly",
   "lines": [
-    "Tim went to the shed for his ball.",
-    "A big dog naps by that shed.",
-    "Tim went slowly. Tim went softly.",
+    "Tim went to look for his red ball.",
+    "It was in the shed on a shelf.",
+    "A big dog naps by that shed all day.",
+    "Tim did not want to wake him up.",
+    "He went in fast to get the ball.",
     "But his foot bumped a tin pan.",
-    "It fell loudly on the rocks.",
-    "The dog got up and looked at Tim.",
-    "Then it licked his hand kindly."
+    "It fell loudly on the rocks by the step.",
+    "The dog slept on. Tim did not run.",
+    "This time Tim went slowly and softly.",
+    "He set each foot down neatly on the mat.",
+    "He got the ball and held it tightly.",
+    "Then the dog got up and looked at Tim.",
+    "It licked his hand kindly and sat down.",
+    "Tim gave him a soft pat and went in."
   ],
-  "warmup": [
-    "slowly",
-    "softly",
-    "loudly",
-    "kindly",
-    "shed",
-    "rocks"
-  ],
+  "warmup": ["slowly", "softly", "loudly", "kindly", "neatly", "shed"],
   "questions": [
     {
-      "ask": "Why did Tim walk slowly and softly?",
-      "listenFor": "A big dog naps by the shed. Have them find that line."
+      "ask": "Why did Tim not want to make a sound?",
+      "listenFor": "A big dog naps by that shed all day. Have them find that line."
     },
     {
-      "ask": "What made the loud sound?",
-      "listenFor": "His foot bumped a tin pan and it fell on the rocks."
+      "ask": "What went wrong when Tim went in fast?",
+      "listenFor": "His foot bumped a tin pan and it fell loudly on the rocks."
     },
     {
       "ask": "Do you think Tim was scared of the dog at first? Why?",

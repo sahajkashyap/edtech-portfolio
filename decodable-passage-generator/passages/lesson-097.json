@@ -1,17 +1,24 @@
 {
   "lesson": 97,
-  "title": "The Cow and the Stew",
+  "title": "The Cow and the Beans",
   "lines": [
-    "Nick made a big pot of stew in town.",
-    "A crowd came to sit on the ground.",
-    "He had to boil it a long time.",
-    "Then a brown cow stuck its head in!",
-    "The stew spilled out on the soil.",
-    "Nick had to frown and count his coins.",
-    "But the crowd found bread, and all was good."
+    "Nick had a food stand by the road today.",
+    "He had a new pot and dry beans.",
+    "Dad lit the coals and set the pot down.",
+    "The beans had to boil a long time.",
+    "A brown cow ate grass in the next field.",
+    "Soon a crowd sat down on the brown soil.",
+    "Then the cow stuck its head in the pot!",
+    "The beans spilled on the ground.",
+    "Nick shouted, but the cow did not go.",
+    "Then Nick got a pail of oats from Dad.",
+    "The cow went after the oats to the field.",
+    "Nick had a frown. His beans were all gone.",
+    "So he cut up his loaf of fresh bread.",
+    "Nick gave bread to the crowd. All was good."
   ],
   "warmup": [
-    "stew",
+    "new",
     "crowd",
     "boil",
     "brown",
@@ -20,12 +27,12 @@
   ],
   "questions": [
     {
-      "ask": "What did Nick make for the crowd?",
-      "listenFor": "A big pot of stew. Have them point to the first line."
+      "ask": "What went wrong with the beans?",
+      "listenFor": "A cow stuck its head in the pot and they spilled on the ground."
     },
     {
-      "ask": "What went wrong with the stew?",
-      "listenFor": "A brown cow stuck its head in and it spilled on the soil."
+      "ask": "How did Nick get the cow to go back to the field?",
+      "listenFor": "He got a pail of oats and the cow went after it. Shouting did not work."
     },
     {
       "ask": "How do you think Nick felt at the end? Tell me why.",

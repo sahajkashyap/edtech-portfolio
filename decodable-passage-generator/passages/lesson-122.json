@@ -1,12 +1,12 @@
 {
   "lesson": 122,
-  "title": "A Foolish Wish",
+  "title": "A Silly Wish",
   "lines": [
     "Gus is a pup with one big wish.",
     "He wants to swim just like a fish.",
-    "That is a foolish wish for a pup.",
-    "Gus ran and jumped in the pond.",
-    "The pond was cold and greenish.",
+    "That is a silly wish for a pup.",
+    "Gus ran and jumped in the brownish pond.",
+    "The cold made his nose go pinkish.",
     "Gus did not swim well. Meg got him out.",
     "Now Gus just sits and looks at fish."
   ],
@@ -24,8 +24,8 @@
       "listenFor": "To swim like a fish. The first two lines say it."
     },
     {
-      "ask": "Who pulled Gus out of the pond?",
-      "listenFor": "Meg. Near the end, just after the line about swimming."
+      "ask": "What color was the pond, and what color was Gus's nose?",
+      "listenFor": "Brownish and pinkish. The -ish ending means sort of that color, not quite."
     },
     {
       "ask": "What could Gus do instead of swimming? Why?",

@@ -1,31 +1,29 @@
 {
   "lesson": 89,
-  "title": "The Book by the Brook",
+  "title": "The Book by the Pond",
   "lines": [
-    "Ben took a good book to the brook.",
-    "He stood on a log made of wood.",
+    "Ben took a good book to the pond.",
+    "Mom sat with him on the soft bank.",
+    "Ben stood on a log made of wood.",
     "A duck came to look at his book.",
-    "The wet log shook, and the book fell in!",
-    "Ben got a long stick with a hook.",
-    "He took the damp book home to dry.",
-    "Next time Ben will look for a dry log."
+    "Mom held Ben as the wet log shook.",
+    "His good book fell in the pond!",
+    "Ben got a long stick from the bank.",
+    "The stick was short and did not reach.",
+    "Then Ben took a hook from his bag.",
+    "He set the hook on the stick with string.",
+    "Ben stood with Mom and got the book back.",
+    "It was wet, so he took it home."
   ],
-  "warmup": [
-    "took",
-    "book",
-    "brook",
-    "stood",
-    "wood",
-    "shook"
-  ],
+  "warmup": ["took", "book", "hook", "stood", "wood", "shook"],
   "questions": [
     {
       "ask": "Where did Ben stand to read his book?",
-      "listenFor": "On a log made of wood, by the brook. Have them point to that line."
+      "listenFor": "On a log made of wood, by the pond. Have them point to that line."
     },
     {
-      "ask": "How did Ben get his book back?",
-      "listenFor": "With a long stick that had a hook on it."
+      "ask": "Why did the long stick not work at first?",
+      "listenFor": "It was short and did not reach. So Ben set a hook on it with string."
     },
     {
       "ask": "What do you think the duck wanted? Tell me why.",

@@ -154,6 +154,39 @@ patterns worth holding to:
 - **Don't end on a small injustice** — an animal taking a child's food with no
   repair reads fine once and sour six times.
 
+## Decodable is not the same as understood
+
+This is the gate that was missing, and it let `cod` into a Lesson 18 story.
+A child can sound that out perfectly and have no idea what it means: `cod` is
+learned at **age 11.5**. For scale, `dog` is 2.8, `cat` 3.7, `pig` 3.8.
+
+`word_age.py` asks the second question. A word passes only if:
+
+1. it is learned by **age 6.0**, or
+2. it is on the **Dale-Chall familiar list** (known by 80% of fourth graders)
+   **and** learned by about 7.6, or
+3. a person has approved it in `APPROVED`, with a stated reason, or
+4. it is a character's name.
+
+Two signals rather than one, because age-of-acquisition alone over-rejects: it
+is adults recalling when they learned a word, which is unreliable for the
+high-frequency abstract words a child uses daily without ever "learning" —
+`then` is rated 6.7, `just` 7.0, `as` 6.1. No teacher would call those hard.
+Dale-Chall is different evidence and catches exactly those. Meanwhile `bog`,
+`yam`, `chum` and `hedge` are absent from the familiar list entirely.
+
+Ratings take the **lowest** value across a word and its base forms. An
+inflection cannot really be learned later than its base, and where the data
+says otherwise it is a homograph catching the raters out — `taps` is rated 8.9
+because they pictured faucets; `tap` is 5.8.
+
+### When you run out of decodable nouns, add people — not rarer words
+
+This is the mistake that produced `cod` and `bog`. Faced with the same
+constraint, published decodables use **70 distinct character names by Lesson
+45**; we had 26. They never reach into the dictionary for obscure three-letter
+nouns. Add a character, repeat a word, or shorten the sentence.
+
 ## Story length scales with the language available
 
 Confirmed by the teacher, July 2026. The gate does not demand a fixed length.

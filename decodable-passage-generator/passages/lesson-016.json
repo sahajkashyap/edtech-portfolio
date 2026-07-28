@@ -4,17 +4,17 @@
   "lines": [
     "Gus got a pup and a pig.",
     "The pup can tug. The pig can dig.",
-    "\"Dig up a fig,\" said Gus.",
+    "\"Dig up a nut,\" said Gus.",
     "The pig dug and dug in the mud.",
     "The pig dug up a tin mug!",
-    "\"It is not a fig,\" said Gus.",
-    "A fig is in the mug!",
-    "Gus did pat the pig and the pup."
+    "\"It is not a nut,\" said Gus.",
+    "A nut is in the mug!",
+    "Gus and the pup pat the pig."
   ],
   "warmup": [
     "dig",
     "dug",
-    "fig",
+    "nut",
     "mug",
     "pig",
     "tug"
@@ -26,11 +26,11 @@
     },
     {
       "ask": "Was Gus happy at the end? How can you tell?",
-      "listenFor": "Yes - he patted the pig and the pup. Listen for the pat, and for the fig turning up inside the mug after all."
+      "listenFor": "Yes - he and the pup patted the pig. Listen for the pat, and for the nut turning up inside the mug after all."
     },
     {
       "ask": "What do you think the pig will dig up next? Tell me why.",
-      "listenFor": "Any answer works. You are listening for a reason - the pig likes figs, or the pig digs in mud, so it will come up muddy."
+      "listenFor": "Any answer works. You are listening for a reason - the pig likes nuts, or the pig digs in mud, so it will come up muddy."
     }
   ]
 }

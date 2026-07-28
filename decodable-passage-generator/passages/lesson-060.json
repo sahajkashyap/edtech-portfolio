@@ -2,14 +2,16 @@
   "lesson": 60,
   "title": "The Space Ship",
   "lines": [
-    "Jane and Ben make a box space ship.",
+    "Jane and Ben have a big box.",
+    "\"Let us make a space ship,\" said Jane.",
     "They tape on a nose and a face.",
-    "\"This is space,\" said Jane, and they hop in.",
+    "They hop in and race up to space.",
     "Then Grace runs up. \"Is there a place?\"",
     "The box is small. There is no space.",
+    "Grace sits on the steps with a sad face.",
     "Ben sticks a small box on with tape.",
-    "\"That is a nice place, Grace,\" said Jane.",
-    "Grace, Jane and Ben race to space."
+    "\"That is your place, Grace,\" said Jane.",
+    "Grace, Jane and Ben race off to space."
   ],
   "warmup": [
     "space",
@@ -22,11 +24,11 @@
   "questions": [
     {
       "ask": "What do Jane and Ben use to make the ship?",
-      "listenFor": "A big box and tape. Lines one and two say it."
+      "listenFor": "A big box and tape. Lines one to three say it."
     },
     {
       "ask": "What was the problem when Grace ran up?",
-      "listenFor": "The box was small, so there was no space for her. Line five says it. This is the middle of the story."
+      "listenFor": "The box was small, so there was no space for her. Line six says it. This is the middle of the story."
     },
     {
       "ask": "Where would you fly a box ship? Tell me why.",
