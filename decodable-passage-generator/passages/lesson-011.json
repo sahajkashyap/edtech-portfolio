@@ -1,29 +1,36 @@
 {
   "lesson": 11,
-  "title": "Nan and the Tin Pan",
+  "title": "Tap the Tin Pan",
   "lines": [
-    "Nan sat at a tin pan.",
-    "Tap it, Nan! Tap, tap, tap!",
-    "Sam sat at a tan pan.",
-    "Pat it, Sam! Pat, pat, pat!",
-    "A man sat as Nan and Sam tap.",
-    "I am a fan! I am a pan fan!",
-    "Sit at a pan, man!",
-    "Nan, Sam and the man tap!"
+    "Nan sat at a tin pan. Tap, tap!",
+    "Sam sat at a tan pan. Pat, pat!",
+    "Pam is in a nap at the mat.",
+    "Sit, Nan! Sit, Sam!",
+    "Nan and Sam sit. Tap the mat, Nan.",
+    "Pam sat! Pam is at the tin pan.",
+    "Tap it, Pam! Pat it, Nan! Tap, Sam!",
+    "Nan and Sam and Pam tap and tap."
   ],
-  "warmup": ["pan", "tap", "pat", "tan", "man", "fan"],
+  "warmup": [
+    "pan",
+    "tan",
+    "tin",
+    "tap",
+    "pat",
+    "nap"
+  ],
   "questions": [
     {
-      "ask": "What were Nan and Sam tapping on?",
-      "listenFor": "Pans, a tin one and a tan one. If your child says just pans, ask which pan was Nan's, and let them find the line."
+      "ask": "What was Pam doing while Nan and Sam tapped?",
+      "listenFor": "Having a nap. Line three says it. If your child is not sure, let them reread that line rather than being told."
     },
     {
-      "ask": "What did the man say he was?",
-      "listenFor": "A fan - he liked the sound so much he said so out loud. This is a fun one to talk about, because a fan can mean two things."
+      "ask": "What did Nan tap once she sat down?",
+      "listenFor": "The mat, which is much quieter than a tin pan. Line five says it."
     },
     {
-      "ask": "What would you tap on to make a good sound? Tell me why that one.",
-      "listenFor": "Anything is a fine answer. You are listening for the reason, and it is a lovely chance to go tap on something together."
+      "ask": "Why do you think Nan and Sam stopped tapping the pans? Tell me what you think.",
+      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like they did not want to wake Pam up."
     }
   ]
 }

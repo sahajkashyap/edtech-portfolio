@@ -1,29 +1,36 @@
 {
   "lesson": 7,
-  "title": "A Map at the Mat",
+  "title": "A Map and the Sap",
   "lines": [
-    "Sam sat at a mat.",
-    "Pam sat as Sam sat.",
-    "Tam sat at the mat.",
-    "Pat the mat, Tam!",
-    "A map! A map at the mat!",
-    "Tap the map, Sam.",
-    "Pat the map, Pam.",
-    "Sam and Pam and Tam sat at the map."
+    "Sam sat at a map.",
+    "Tap at the map, Sam.",
+    "The map! At the mat!",
+    "Sam and Pam sat at the mat.",
+    "Pat at the mat, Pam.",
+    "Sap! Sap at the mat!",
+    "Tam sat at the sap.",
+    "Sam and Pam and Tam tap at the sap."
   ],
-  "warmup": ["sat", "mat", "map", "pat", "tap", "at"],
+  "warmup": [
+    "map",
+    "mat",
+    "sat",
+    "tap",
+    "pat",
+    "at"
+  ],
   "questions": [
     {
-      "ask": "What did Tam find under the mat?",
-      "listenFor": "A map. It is in the fifth line. If your child is not sure, put a finger on that line and let them read it again rather than telling them."
+      "ask": "Who was sitting at the map at the start?",
+      "listenFor": "Sam. It is the first line. If your child is stuck, point at that line and let them read it again rather than telling them."
     },
     {
-      "ask": "Who patted the mat right before the map turned up?",
-      "listenFor": "Tam. Line four says it. A one word answer is a fine answer here."
+      "ask": "What did they find at the mat?",
+      "listenFor": "Sap, the sticky juice that runs out of a tree. Line six says it. If they say sticky, that counts."
     },
     {
-      "ask": "Where do you think that map goes? Tell me why you think so.",
-      "listenFor": "Any place is a good answer. You are listening for a reason of their own, and it is a lovely chance to draw the place together."
+      "ask": "If you drew a map, where would it take us? Tell me why there.",
+      "listenFor": "Any place is a good answer. You are listening for the reason, and it is a lovely chance to draw a map together after."
     }
   ]
 }

@@ -1,36 +1,36 @@
 {
   "lesson": 23,
-  "title": "The Hen on the Hat",
+  "title": "The Hot Hut",
   "lines": [
-    "Kip had a pet hen. He fed it nuts.",
-    "The hen did hop up on his hat!",
-    "\"Hop up!\" said Kip. The hen did hum.",
-    "\"It is hot in the sun,\" said Mom.",
-    "\"The hat can be a hut,\" said Dad.",
-    "\"Can a hen nap on me?\" said Kip.",
-    "\"It can,\" said Dad. \"The hen is not mad.\"",
-    "Kip sat in the sun. The hen did nap."
+    "Deb and Kip set up a hut of mats.",
+    "It is hot in the sun.",
+    "\"It is hot in the hut,\" said Kip.",
+    "Deb hops up. She gets a big tan mat.",
+    "She sets it on top of the hut.",
+    "Deb and Kip sit. It is not hot!",
+    "\"Deb did it,\" said Kip. He gets figs.",
+    "Deb and Kip sit and hum in the hut."
   ],
   "warmup": [
-    "hen",
-    "hat",
     "hut",
-    "hop",
     "hot",
-    "hum"
+    "mats",
+    "hops",
+    "top",
+    "figs"
   ],
   "questions": [
     {
-      "ask": "Where did the hen sit?",
-      "listenFor": "Up on Kip's hat. The story says it. If your child is stuck, have them find the word hat and read that line again."
+      "ask": "What did Deb and Kip make?",
+      "listenFor": "A hut out of mats. The first line says it. If your child is stuck, point at that line and let them read it again."
     },
     {
-      "ask": "Why did Dad say the hat was like a hut?",
-      "listenFor": "Because the sun was hot and the hat gave the hen shade. Listen for hot and sun - Dad is explaining, not joking."
+      "ask": "Why did Deb put a big mat on top of the hut?",
+      "listenFor": "Because it was hot inside. The mat kept the sun off. Lines two, three and five carry it. Cause and effect is the thinking here."
     },
     {
-      "ask": "Would you let a hen nap on you? Tell me why or why not.",
-      "listenFor": "Either answer works. You are listening for a reason - it would tickle, it would be warm, or you would want to move."
+      "ask": "Where would you build a hut? Tell me why there.",
+      "listenFor": "Any place is fine. You are listening for a reason of their own, and it is a lovely chance to go and build one."
     }
   ]
 }

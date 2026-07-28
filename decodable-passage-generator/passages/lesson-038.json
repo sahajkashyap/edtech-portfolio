@@ -1,36 +1,36 @@
 {
   "lesson": 38,
-  "title": "The Cat in the Box",
+  "title": "Tim and the Big Box",
   "lines": [
-    "Dad got a big box from the van.",
-    "Tim tips the box up.",
-    "A tan cat pops up in it!",
-    "\"What a big cat,\" said Dad.",
-    "The cat naps in the box.",
-    "Tim tugs at the box. The cat digs in.",
-    "\"You can have it,\" said Tim.",
-    "Tim naps on the rug. Dad nods."
+    "\"Can I have the big box?\" said Tim.",
+    "\"Yes,\" said Dad. He cut a gap in it.",
+    "Tim set it on the rug. A cat hut!",
+    "But the cat did not get in the box.",
+    "It sat on top and did not hop in.",
+    "Tim set his red hat in the box.",
+    "The cat hops in and naps on the hat.",
+    "\"The cat has a hut,\" said Dad. Tim nods."
   ],
   "warmup": [
     "box",
-    "tips",
-    "pops",
-    "naps",
-    "tugs",
+    "cat",
+    "hat",
+    "hut",
+    "hops",
     "rug"
   ],
   "questions": [
     {
-      "ask": "What pops up when Tim tips the box?",
-      "listenFor": "A tan cat. It is stated in the story, so if they guess, send them back to find the line rather than telling them."
+      "ask": "What did Tim want the big box for?",
+      "listenFor": "To make a hut for his cat. Line three says it. If your child is stuck, let them reread that line."
     },
     {
-      "ask": "Why does Tim nap on the rug and not in the box?",
-      "listenFor": "The cat got there first and would not budge. You are listening for them to link the two parts of the story, not just \"he was tired.\""
+      "ask": "What did Tim put in the box to get the cat to go in?",
+      "listenFor": "His red hat. Line six says it. One word is plenty."
     },
     {
-      "ask": "Do you think Tim minds letting the cat have the box? Tell me why.",
-      "listenFor": "Either answer works. You want a reason tied to the story - \"no, he let the cat have it\" or \"yes, he tugged at the box first.\""
+      "ask": "Why do you think the hat worked? Tell me what you think.",
+      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like it was soft, or it smelled of Tim."
     }
   ]
 }

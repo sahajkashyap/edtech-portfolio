@@ -1,29 +1,36 @@
 {
   "lesson": 10,
-  "title": "The Map and the Fan",
+  "title": "Tip It In",
   "lines": [
-    "Sam and Pam sat at a fan.",
-    "A tan map is at Sam.",
-    "The fan is at the map.",
-    "Tip! The map is in the pit!",
-    "Tim sat at the pit.",
-    "Tim! Tip the map at Sam!",
-    "Sam and Pam pat the map.",
-    "Sit at the fan, Tim. Sip, sip, sip."
+    "Tim and Sis sat at a pit.",
+    "Tim is at a tin. Tip it in, Tim!",
+    "The tin fit in the pit!",
+    "Sis is at a tin pan. Tip it, Sis!",
+    "Sis! The pan is at the pit.",
+    "Sit as Tim sat, Sis. Tip it in!",
+    "The pan is in the pit!",
+    "Tim and Sis pat and pat."
   ],
-  "warmup": ["fan", "map", "pit", "tip", "tan", "pat"],
+  "warmup": [
+    "pit",
+    "tin",
+    "tip",
+    "fit",
+    "pan",
+    "sit"
+  ],
   "questions": [
     {
-      "ask": "What made the map tip into the pit?",
-      "listenFor": "The fan, blowing on it. Lines three and four say it. Let your child read them again instead of you giving the answer."
+      "ask": "What did Tim tip into the pit?",
+      "listenFor": "A tin. Line two says it. If your child is stuck, put a finger on that line and let them read it again."
     },
     {
-      "ask": "Who got the map back out of the pit?",
-      "listenFor": "Tim. He was sitting right at the pit. If your child says Sam, ask them who the map got tipped to, and who did the tipping."
+      "ask": "What did Sis tip?",
+      "listenFor": "A tin pan. Line four says it. A short answer is a fine answer here."
     },
     {
-      "ask": "Where would you keep that map so it stays safe? Tell me why.",
-      "listenFor": "Any place is fine. You are listening for a reason that shows they understood the fan was the problem, like away from the fan."
+      "ask": "Sis missed the first time. What do you think helped her get it in? Tell me why.",
+      "listenFor": "Any thoughtful answer counts. You are listening for a reason, such as she sat where Tim sat, or she tried again."
     }
   ]
 }

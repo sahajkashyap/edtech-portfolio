@@ -2,16 +2,23 @@
   "lesson": 65,
   "title": "Camping by the Pond",
   "lines": [
-    "Sam and Pam are camping by the pond.",
+    "Sam, Pam and Mom are camping by the pond.",
     "Pam has been fishing and Sam is resting.",
     "\"A big fish!\" Pam is yelling.",
     "She is slipping in the wet mud.",
     "Sam is jumping up to grab Pam.",
-    "They are both pulling and will not let go.",
+    "Mom has Sam, and they are all pulling.",
     "The fish flips into the pot with a thump!",
     "\"That fish can jump,\" said Sam, grinning."
   ],
-  "warmup": ["camping", "fishing", "resting", "yelling", "jumping", "pulling"],
+  "warmup": [
+    "camping",
+    "fishing",
+    "resting",
+    "yelling",
+    "jumping",
+    "pulling"
+  ],
   "questions": [
     {
       "ask": "What is Sam doing while Pam is fishing?",
@@ -23,7 +30,7 @@
     },
     {
       "ask": "Would you like camping by a pond? Tell me why.",
-      "listenFor": "Either answer is right. This one is just for talking — listen for a reason."
+      "listenFor": "Either answer is right. This one is just for talking \u2014 listen for a reason."
     }
   ]
 }

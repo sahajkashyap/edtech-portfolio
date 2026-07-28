@@ -1,36 +1,36 @@
 {
   "lesson": 22,
-  "title": "The Kids and the Kit",
+  "title": "Kim and the Kit",
   "lines": [
-    "Ten kids got a big kit.",
-    "In it: a net, a pen, and a pad!",
-    "\"Can I get the net?\" said a kid.",
-    "The kids did dig a pit in the mud.",
-    "A big bug got in the pit!",
-    "A kid got the bug in the net.",
-    "\"It is not a pet,\" said Mom.",
-    "The kids did tip the bug in the mud."
+    "Ten kids get a big kit.",
+    "In it, Kim gets pegs and a net.",
+    "The kids dig and set up the pegs.",
+    "But a peg is bad and did not fit.",
+    "Kim gets a tin pin and taps it in.",
+    "The pin fits, and the net is up!",
+    "Ten kids sit in it. It is a den!",
+    "\"Kim did it,\" said a kid, and Kim nods."
   ],
   "warmup": [
     "kids",
     "kit",
-    "kid",
+    "pegs",
     "net",
-    "pit",
-    "bug"
+    "pin",
+    "fits"
   ],
   "questions": [
     {
-      "ask": "What was in the kit?",
-      "listenFor": "A net, a pen, and a pad. The story lists all three. If your child names one, have them read that line again."
+      "ask": "What did the ten kids get?",
+      "listenFor": "A big kit, with pegs and a net in it. Lines one and two say it. Let your child reread rather than telling them."
     },
     {
-      "ask": "What did the kids do with the bug at the end?",
-      "listenFor": "They tipped it back into the mud and let it go. Listen for letting it go, not keeping it."
+      "ask": "What did Kim use when the peg did not fit?",
+      "listenFor": "A tin pin. Line five says it. One word is plenty here."
     },
     {
-      "ask": "Do you think a bug makes a good pet? Tell me why you think so.",
-      "listenFor": "Either answer works. You are listening for a reason, and a reason pulled from the story is best of all."
+      "ask": "What would you make with a kit like that? Tell me why.",
+      "listenFor": "Any answer is a good answer. You are listening for the reason behind it, not the thing itself."
     }
   ]
 }

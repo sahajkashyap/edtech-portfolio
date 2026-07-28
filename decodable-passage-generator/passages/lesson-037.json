@@ -1,37 +1,36 @@
 {
   "lesson": 37,
-  "title": "The Hog in the Bog",
+  "title": "Fog on the Bog",
   "lines": [
-    "Tom has a hog and a big mop.",
-    "The hog hops in a hot bog.",
-    "\"Not the bog!\" said Tom.",
-    "The hog nods and naps in the mud.",
-    "Tom got a pot and a rag.",
-    "He mops the hog on a log.",
-    "The log tips! Tom sits in the mud.",
-    "The hog tugs him up on the log.",
-    "Tom hugs the hog. He is not mad."
+    "Fog sat on the bog. Tom and Mom jog.",
+    "\"I can not see the hut,\" said Mom.",
+    "Tom did look and look in the fog.",
+    "A red pot! It sits on a log.",
+    "\"The pot is at the hut!\" said Tom.",
+    "Mom and Tom jog to the red pot.",
+    "The hut sits at the log, in the fog.",
+    "\"You got us to the hut,\" said Mom."
   ],
   "warmup": [
-    "hog",
+    "fog",
     "bog",
-    "mop",
+    "jog",
     "log",
     "pot",
-    "hops"
+    "got"
   ],
   "questions": [
     {
-      "ask": "What did Tom get to clean the hog?",
-      "listenFor": "A pot and a rag. If they name only one, ask \"and what else?\" and let them go back and find the line."
+      "ask": "Why could Mom not see the hut?",
+      "listenFor": "The fog. Lines one and two say it. Let your child reread rather than being told."
     },
     {
-      "ask": "What happened when Tom mopped the hog on the log?",
-      "listenFor": "The log tipped and Tom landed in the mud. Have them find the line with the word log in it and read it back to you."
+      "ask": "What did Tom spot that showed him where the hut was?",
+      "listenFor": "A red pot sitting on a log. Lines four and five say it. This is the turn of the story."
     },
     {
-      "ask": "Do you think Tom likes his hog? Tell me why you think so.",
-      "listenFor": "No wrong answer here. Listen for a reason from the story - the hog tugged him up, or Tom hugged the hog and was not mad."
+      "ask": "What would you use to mark the way to your door? Tell me why that.",
+      "listenFor": "Any answer counts. You are listening for a reason that shows they understood why the red pot worked in fog."
     }
   ]
 }

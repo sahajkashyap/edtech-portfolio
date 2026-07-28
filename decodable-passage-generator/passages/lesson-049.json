@@ -3,13 +3,13 @@
   "title": "Off the Dock",
   "lines": [
     "Josh and Nick fish off the dock with Dad.",
-    "Josh gets a big fish. Nick gets a shell.",
+    "Josh gets a big fish in his net.",
+    "Nick tugs and tugs. He gets a shell.",
     "Then Nick tugs up a wet sock!",
-    "\"That is not a fish,\" said Nick.",
-    "\"Wish, and do not let go,\" said Dad.",
-    "Josh sits with him, and then his rod dips.",
-    "He tugs and tugs, and up it hops!",
-    "\"Such luck!\" said Josh. \"That fish is big.\""
+    "\"That is not a fish!\" said Nick.",
+    "\"Sit and hush. Do not let go,\" said Dad.",
+    "Nick sits. Then his rod dips and dips!",
+    "Up it hops. \"Such a big fish!\" said Josh."
   ],
   "warmup": [
     "fish",
@@ -26,11 +26,11 @@
     },
     {
       "ask": "What does Dad tell Nick to do?",
-      "listenFor": "Wish, and do not let go. It is the line in quote marks - have them find the talking."
+      "listenFor": "Sit still, be quiet, and do not let go. It is the line in quote marks - have them find the talking."
     },
     {
-      "ask": "Was Josh a good friend to Nick? Tell me why.",
-      "listenFor": "Either answer is fine. You are listening for a reason from the story, like \"yes, he sat with him and told him to keep going.\""
+      "ask": "Nick pulled up a shell and a sock before the fish came. What do you think kept him going? Tell me why.",
+      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like Dad told him to hold on, or he wanted a fish like Josh."
     }
   ]
 }

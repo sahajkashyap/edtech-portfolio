@@ -5,13 +5,20 @@
     "Ben is a king with a red cap.",
     "He can not sing well at all.",
     "When he sings, his dogs run off.",
-    "A bug with a red wing sits on it.",
-    "It sang a long song for Ben.",
+    "A bug with a red wing sits on Ben.",
+    "The bug sang a long song.",
     "\"Sing with me,\" said the bug.",
     "Ben and the bug sang, and the dogs sat.",
-    "Was it the bug or the king? Both!"
+    "Ben has a song. His dogs sing as well."
   ],
-  "warmup": ["king", "sing", "sang", "song", "long", "wing"],
+  "warmup": [
+    "king",
+    "sing",
+    "sang",
+    "song",
+    "long",
+    "wing"
+  ],
   "questions": [
     {
       "ask": "What do the dogs do when Ben sings on his own?",

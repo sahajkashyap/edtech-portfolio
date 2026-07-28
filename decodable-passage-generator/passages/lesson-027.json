@@ -5,11 +5,11 @@
     "Hal has ten hens but not a pen.",
     "\"The hens are in the mud,\" said Dad.",
     "Hal gets logs. Dad cuts the logs.",
-    "Hal digs and sets a log in the pit.",
-    "Ten logs, and the pen is up!",
-    "\"Look at it, Dad,\" said Hal.",
-    "The hens hop in. He pats his hens.",
-    "The hens are not in the mud."
+    "Hal digs a pit and sets the logs in.",
+    "But a log tips, and a hen runs!",
+    "Hal digs the pit and pats mud on it.",
+    "The log is set. Hal gets the hen.",
+    "\"Look, Dad! Ten hens in the pen,\" said Hal."
   ],
   "warmup": [
     "hens",
@@ -17,20 +17,20 @@
     "logs",
     "digs",
     "pit",
-    "pats"
+    "mud"
   ],
   "questions": [
     {
-      "ask": "What did Hal use to make the pen?",
-      "listenFor": "Logs - ten of them, cut by Dad. It is said in the story. Have your child point to the line that tells you, then read it out loud again."
+      "ask": "Why did Hal need a pen for the hens?",
+      "listenFor": "Because the hens kept getting in the mud. Line two says it. Let your child reread it rather than being told."
     },
     {
-      "ask": "How do you know the pen worked?",
-      "listenFor": "The hens are not in the mud at the end. Listen for the not-in-the-mud part, not just \"it worked.\""
+      "ask": "What went wrong while Hal was setting the logs?",
+      "listenFor": "A log tipped over and a hen got out. Line five says it. If they only say \"a hen got out,\" ask what made that happen."
     },
     {
-      "ask": "Do you think Hal could put up the pen on his own? Tell me why.",
-      "listenFor": "No wrong answer here. You want a reason pulled from the story - Dad did the cutting, or Hal did the digging and the setting up. A reason beats a yes or no."
+      "ask": "What else could Hal do to keep the hens out of the mud? Tell me why that would work.",
+      "listenFor": "There is no wrong answer. You are listening for a reason that shows they understood the problem."
     }
   ]
 }

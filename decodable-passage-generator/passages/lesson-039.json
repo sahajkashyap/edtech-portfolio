@@ -1,36 +1,36 @@
 {
   "lesson": 39,
-  "title": "Gus and the Nut",
+  "title": "Bud and the Tub",
   "lines": [
-    "Gus is a pup. He digs in the mud.",
-    "He digs up a big nut.",
-    "A bug is on the nut!",
-    "The bug hums and runs at Gus.",
-    "Gus runs to his hut.",
-    "The bug tugs the nut to a log.",
-    "Gus digs up ten nuts in the sun.",
-    "The bug can have a nut. Gus has ten!"
+    "Mom, Gus and Bud are at the tub.",
+    "\"Get in, Bud,\" said Mom.",
+    "But Bud sits on the rug and hums.",
+    "Gus got a cup and a tin jug.",
+    "He dips the cup in the tub.",
+    "Gus tips the cup in the jug. Fun!",
+    "Bud got up and ran. He got in!",
+    "Bud tips the jug on Gus. Gus is wet!"
   ],
   "warmup": [
-    "pup",
-    "mud",
-    "digs",
-    "nut",
-    "bug",
-    "hut"
+    "tub",
+    "cup",
+    "jug",
+    "rug",
+    "fun",
+    "tips"
   ],
   "questions": [
     {
-      "ask": "What does Gus dig up in the mud?",
-      "listenFor": "A big nut. It is stated in the story, so if they guess, send them back to find the line instead of telling them."
+      "ask": "Where was Bud sitting instead of getting in the tub?",
+      "listenFor": "On the rug. Line three says it. If your child is not sure, put a finger on that line and let them read it again."
     },
     {
-      "ask": "Why does Gus run to his hut?",
-      "listenFor": "The bug hummed and ran at him. You are listening for cause and effect - if they just say \"the bug,\" ask \"and what did the bug do?\""
+      "ask": "What did Gus do that made Bud want to get in?",
+      "listenFor": "He made a game with a cup and a jug, dipping and tipping. Lines four to six carry it."
     },
     {
-      "ask": "Do you think Gus minds that the bug got a nut? Tell me why.",
-      "listenFor": "Either answer is fine. What you want is a reason tied to the story - \"no, he dug up ten more\" or \"yes, he found that one first.\""
+      "ask": "Gus got splashed at the end. How do you think he felt? Tell me why.",
+      "listenFor": "Either answer works. You are listening for a reason from the story, like it was a game so he laughed."
     }
   ]
 }

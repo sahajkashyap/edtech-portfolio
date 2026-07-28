@@ -1,36 +1,36 @@
 {
   "lesson": 34,
-  "title": "Liz Zips the Bag",
+  "title": "Liz and the Zip",
   "lines": [
-    "Liz has a red bag and it zips up.",
-    "A bun, a fig and jam are in it.",
-    "A big bug zips at the bag. Zap!",
-    "Liz zips the bag up. \"Not yet, bug!\"",
-    "The bug sits on a log and is mad.",
-    "\"You can have a bit,\" said Liz.",
-    "Liz sets a bit of bun on the log.",
-    "The bug has the bit and is not mad."
+    "Liz has a red bag, and it zips up.",
+    "She sets a bun and a fig in it.",
+    "Liz tugs at the zip. It is not up.",
+    "A bit of rag is in the zip!",
+    "Liz tugs at the rag. Zip! It is up!",
+    "\"You did it,\" said Zac, and Liz nods.",
+    "Liz and Zac zig and zag to the hut.",
+    "She sits and has the bun and the fig."
   ],
   "warmup": [
     "zips",
-    "zap",
+    "zip",
     "bag",
-    "bug",
-    "bun",
-    "fig"
+    "rag",
+    "fig",
+    "bun"
   ],
   "questions": [
     {
-      "ask": "What did Liz have in the bag?",
-      "listenFor": "A bun, a fig and jam. If your child only names one, that is fine - ask \"what else?\" and let them look back."
+      "ask": "Why would the zip not go up?",
+      "listenFor": "A bit of rag was caught in it. Line four says it. Let your child reread that line rather than being told."
     },
     {
-      "ask": "Why did Liz zip the bag up?",
-      "listenFor": "To keep the bug out of her food. The story does not say it in those words, so working it out together is the point."
+      "ask": "Who got the zip working again?",
+      "listenFor": "Liz did it herself. Line five says it. If they say Zac, ask them to find the line with the rag in it."
     },
     {
-      "ask": "Do you think Liz did the right thing at the end? Tell me why.",
-      "listenFor": "There is no wrong answer. Listen for a reason - she shared, or the bug stopped being cross. A reason from the story beats a yes or no."
+      "ask": "Zips get stuck a lot. What do you do when one sticks? Tell me why.",
+      "listenFor": "Any answer counts. You are listening for a reason of their own, and it is a nice chance to try a real zip together."
     }
   ]
 }

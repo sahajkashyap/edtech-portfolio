@@ -2,28 +2,35 @@
   "lesson": 57,
   "title": "Pete and These Hens",
   "lines": [
-    "Pete has five hens and Eve is best.",
+    "Pete has five hens. Jade is his pal.",
     "These hens like to hide.",
-    "Pete hunts for Eve by the lake.",
+    "He hunts for Jade by the lake.",
     "She is not in the tall grass.",
-    "Steve the cat naps on a stone.",
-    "Eve sits on his back!",
-    "Steve gets up and Eve hops off.",
+    "Then he spots Rex the cat on a stone.",
+    "Jade sits on his back!",
+    "Rex gets up and she hops off.",
     "\"She is brave,\" said Pete with a grin."
   ],
-  "warmup": ["hens", "hide", "lake", "stone", "brave", "five"],
+  "warmup": [
+    "hens",
+    "hide",
+    "lake",
+    "stone",
+    "brave",
+    "five"
+  ],
   "questions": [
     {
       "ask": "Which hen is Pete hunting for?",
-      "listenFor": "Eve. Her name is in the first line, so send them back to it."
+      "listenFor": "Jade. Her name is in the first line, so send them back to it."
     },
     {
-      "ask": "Where does Pete find Eve in the end?",
-      "listenFor": "On Steve the cat's back. If they say \"the lake\", ask them to read the line about Steve again."
+      "ask": "Where does Pete find Jade in the end?",
+      "listenFor": "On Rex the cat's back. If they say \"the lake,\" ask them to read the line about the stone again."
     },
     {
-      "ask": "Do you think Steve minds having a hen on his back? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason, such as \"no, because he just gets up and walks off.\""
+      "ask": "Do you think Rex minds having a hen on his back? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason, such as \"no, because he just gets up and she hops off.\""
     }
   ]
 }

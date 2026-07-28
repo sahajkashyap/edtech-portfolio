@@ -2,35 +2,35 @@
   "lesson": 50,
   "title": "Which Shell?",
   "lines": [
-    "Nan has ten shells in a red sack.",
-    "\"Which shell do you want?\" she said.",
-    "Ted could not pick. He had to check them.",
-    "When he got a wet shell, a bug fell!",
-    "Ted let it fall. Nan did not yell.",
-    "\"A bug would not want that,\" said Nan.",
-    "When Ted picks a shell, he checks it well.",
-    "Which shell did he pick? The thin red shell."
+    "Ted and Phil check ten shells in the sun.",
+    "\"Which shell do you want?\" said Phil.",
+    "A thin red shell sits in a gap.",
+    "When he digs, he can not get it.",
+    "Phil gets a rod and Ted digs at it.",
+    "The shell pops up. Ted has it!",
+    "Then Ted digs and gets a shell as well.",
+    "\"That shell is your shell,\" said Ted."
   ],
   "warmup": [
     "which",
     "when",
     "shell",
-    "sack",
     "thin",
-    "yell"
+    "rod",
+    "digs"
   ],
   "questions": [
     {
-      "ask": "What falls out of the wet shell?",
-      "listenFor": "A bug. It is stated in the story - if they guess, send them back to that line."
+      "ask": "Where was the thin red shell?",
+      "listenFor": "Down in a gap. Line three says it. If they guess, send them back to that line."
     },
     {
-      "ask": "Which shell does Ted pick in the end?",
-      "listenFor": "The thin red shell. It is the very last line, so have them reread it."
+      "ask": "How did Ted get the shell out of the gap?",
+      "listenFor": "Phil fetched a long rod and Ted dug with it. Line five says it. Two children, one job."
     },
     {
-      "ask": "What do you think Nan meant about the bug? Tell me why.",
-      "listenFor": "Any sensible idea works, like \"a bug does not want to be picked up.\" You are listening for a because."
+      "ask": "Ted dug a second shell out and gave it to Phil. Why do you think he did that? Tell me why.",
+      "listenFor": "Any sensible idea works. You are listening for a reason of their own, like Phil helped him first."
     }
   ]
 }

@@ -1,36 +1,36 @@
 {
   "lesson": 62,
-  "title": "Rice by the Gate",
+  "title": "The Log Swing",
   "lines": [
-    "Ten hens live by the lake.",
-    "Jane sets rice in a dish at nine.",
-    "\"Some of the rice is gone!\" she said.",
-    "Pete finds a rat in the shed.",
-    "The rat has some rice in his hole.",
-    "\"Let him come and have a bite,\" said Jane.",
-    "The rat gets cake by the gate.",
-    "The hens have rice, and all is well."
+    "Jane and Pete want a swing at home.",
+    "Dad slings a rope up on a big pine.",
+    "Pete gets a fine log to sit on.",
+    "But the log slips off the rope!",
+    "Jane cuts a hole in it with Dad.",
+    "The rope goes in the hole, and it holds.",
+    "Pete gets on. Jane pulls him back.",
+    "\"The best swing!\" said Pete with a smile."
   ],
   "warmup": [
-    "hens",
-    "lake",
-    "nine",
+    "rope",
+    "pine",
     "hole",
-    "cake",
-    "gate"
+    "home",
+    "fine",
+    "smile"
   ],
   "questions": [
     {
-      "ask": "Where does Pete find the rat?",
-      "listenFor": "In the shed, with rice in his hole."
+      "ask": "What did Pete get to sit on?",
+      "listenFor": "A fine log. Line three says it. If your child is stuck, let them reread that line."
     },
     {
-      "ask": "What do Jane and Pete set out for the rat?",
-      "listenFor": "Cake, by the gate. Let them find the line."
+      "ask": "Why did Jane cut a hole in the log?",
+      "listenFor": "Because the log kept slipping off the rope, and the rope could go through the hole. Lines four to six carry it."
     },
     {
-      "ask": "Was it kind to give the rat his own snack? Tell me why.",
-      "listenFor": "Either answer is right. Listen for a reason, such as \"yes, because now he is not hungry.\""
+      "ask": "What would you make a swing seat out of? Tell me why that.",
+      "listenFor": "Any answer counts. You are listening for a reason that shows they understood why the log kept slipping."
     }
   ]
 }

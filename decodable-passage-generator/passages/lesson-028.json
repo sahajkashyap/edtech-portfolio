@@ -1,36 +1,36 @@
 {
   "lesson": 28,
-  "title": "Wag and the Red Wig",
+  "title": "The Web at the Hut",
   "lines": [
-    "Ned and his pup Wag run a lot.",
-    "Ned has a red wig in his bag.",
-    "He sets it on Wag. Wag wags!",
-    "\"Wag can win!\" said Ned.",
-    "But Wag ran at a wet bog.",
-    "The wig got wet and got mud on it.",
-    "Ned is not mad. He hugs his wet pup.",
-    "\"Wag did win a wet hug,\" he said."
+    "Deb, Ned and Wag run to the hut.",
+    "It is wet in the fog.",
+    "A big web is up at the top.",
+    "\"I can bat it,\" said Ned.",
+    "\"Do not! A bug is in it,\" said Deb.",
+    "Deb gets a peg and pins the web up.",
+    "\"We can get in,\" said Ned. Wag wags.",
+    "Deb, Ned and Wag nap in the hut."
   ],
   "warmup": [
-    "wig",
     "wet",
     "wags",
-    "win",
-    "mud",
-    "hugs"
+    "hut",
+    "peg",
+    "bug",
+    "fog"
   ],
   "questions": [
     {
-      "ask": "What did Ned have in his bag?",
-      "listenFor": "A red wig. It is said in the second line. If they guess, have them find the line with the word bag in it."
+      "ask": "What was up at the top of the hut?",
+      "listenFor": "A big web. Line three says it. If your child is stuck, put a finger on that line and let them read it again."
     },
     {
-      "ask": "How did the wig get wet?",
-      "listenFor": "Wag ran into the wet bog while wearing it. Two steps, so it is fine if your child needs to look back at the lines to get both."
+      "ask": "Why did Deb tell Ned not to bat the web?",
+      "listenFor": "Because a bug was living in it. Line five says it. This is the turn of the story, so it is worth a little talk."
     },
     {
-      "ask": "Do you think Ned should be cross with Wag? Tell me why or why not.",
-      "listenFor": "There is no right answer. Listen for a reason - Wag did not mean it, or Ned was the one who put the wig on the pup. Push gently for the because."
+      "ask": "What would you have done about the web? Tell me why.",
+      "listenFor": "Either answer is fine. You are listening for the reason, not the choice."
     }
   ]
 }

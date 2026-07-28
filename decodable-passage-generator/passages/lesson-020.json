@@ -1,36 +1,36 @@
 {
   "lesson": 20,
-  "title": "Ten Nuts in Ten Cups",
+  "title": "Ten Cups and a Nut",
   "lines": [
-    "Meg got ten nuts and ten cups.",
-    "\"A nut can fit in a cup,\" said Meg.",
-    "Meg set the cups on the mats.",
-    "Ten cats got up and did tip the cups!",
-    "Nuts on the mats! Nuts in the pots!",
-    "\"Do not bat the nuts,\" said Meg.",
-    "A cat did tip a nut in a cup.",
-    "\"Ten nuts! Ten cups!\" said Meg."
+    "Meg sets ten cups on a mat.",
+    "Meg tips a nut in a cup.",
+    "Meg taps the cups. \"Get it, Ben!\"",
+    "Ben taps a big cup. Not in it.",
+    "Ben taps a tan cup. Not it!",
+    "Ben taps the tin cup and gets the nut!",
+    "Meg nods. Ben gets to tip the nut in.",
+    "Meg taps the cups, and Meg gets it!"
   ],
   "warmup": [
-    "nuts",
     "cups",
-    "cats",
-    "mats",
-    "pots",
-    "bat"
+    "nut",
+    "taps",
+    "tips",
+    "mat",
+    "tin"
   ],
   "questions": [
     {
-      "ask": "Where did Meg set the cups?",
-      "listenFor": "On the mats. The story says it. If your child guesses, have them find the word mats and read that line again."
+      "ask": "How many cups did Meg set on the mat?",
+      "listenFor": "Ten. It is in the first line. If your child is not sure, put a finger on that line and let them read it again."
     },
     {
-      "ask": "What did the cats do at the very end?",
-      "listenFor": "They tipped a nut back into a cup. Listen for the nut going back in - the cats put it right by accident."
+      "ask": "Which cup had the nut in it?",
+      "listenFor": "The tin cup. Line six says it. If they say \"the last one,\" ask them to find the line that names it."
     },
     {
-      "ask": "Do you think the cats were helping Meg? Tell me why you think so.",
-      "listenFor": "Either answer works. You are listening for a reason from the story, like they made the mess first, or they put a nut back."
+      "ask": "Do you think Meg found it quickly at the end? Tell me why you think so.",
+      "listenFor": "Either answer works. You are listening for a reason of their own, such as she watched Ben hide it, or ten cups is a lot to check."
     }
   ]
 }

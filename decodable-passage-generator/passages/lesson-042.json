@@ -6,10 +6,10 @@
     "He rolls the ball off the top.",
     "It falls in a well!",
     "\"Dad! The ball fell in!\" yells Bill.",
-    "Dad dips a net in the well.",
-    "He tugs and tugs and gets the ball.",
-    "\"Your ball is a mess,\" said Dad.",
-    "\"I want to fill a tub,\" said Bill."
+    "Dad gets a net, and Bill dips it in.",
+    "Bill tugs and tugs and gets the ball!",
+    "The ball is a mess. Bill gets a tub.",
+    "\"Fill it! The ball can dip in,\" said Bill."
   ],
   "warmup": [
     "ball",
@@ -25,11 +25,11 @@
       "listenFor": "In a well. It is stated in the story - if they guess, have them find the line with the word well in it."
     },
     {
-      "ask": "How does Dad get the ball back?",
-      "listenFor": "He dips a net in the well and tugs. Follow up with \"and how did Dad know to come?\" to see if they linked the yell to the help."
+      "ask": "Who tugs the ball out of the well?",
+      "listenFor": "Bill does. Dad fetches the net and Bill dips and tugs. Lines five and six say it. Follow up with \"and how did Dad know to come?\""
     },
     {
-      "ask": "Why do you think Bill wants to fill a tub? Tell me why.",
+      "ask": "Why do you think Bill wants a tub of water at the end? Tell me why.",
       "listenFor": "Any reason tied to the story works - \"the ball is a mess\" shows they connected the ending back to the well."
     }
   ]

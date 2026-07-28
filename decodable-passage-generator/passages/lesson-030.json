@@ -1,36 +1,36 @@
 {
   "lesson": 30,
-  "title": "Not Yet, Yam!",
+  "title": "The Big Yam",
   "lines": [
-    "Ted has a pet pig. It is Yam.",
-    "Yam is big and Yam can run.",
-    "Ted had a bag of yams.",
-    "\"Yes, Yam! But not yet,\" said Ted.",
-    "But Yam ran at the bag and got it.",
-    "Yams pop up and hop on the rug.",
-    "Ted is not mad. He fed Yam ten yams.",
-    "Yam naps on the rug. Ted pats him."
+    "Ted and Sal dig up yams in the sun.",
+    "Ted tugs and tugs, but the yam sits.",
+    "\"I can not get it up,\" said Ted.",
+    "Sal digs a gap at the top of it.",
+    "Yes! Ted tugs, and the yam pops up!",
+    "It is as big as a pot.",
+    "Mom cuts up the yams in a big pan.",
+    "Ted and Sal had yams and buns. Yum!"
   ],
   "warmup": [
-    "yam",
     "yams",
-    "yet",
-    "pig",
-    "rug",
-    "naps"
+    "tugs",
+    "digs",
+    "pops",
+    "gap",
+    "pan"
   ],
   "questions": [
     {
-      "ask": "What was in the bag Ted had?",
-      "listenFor": "Yams. Have your child find the word yams on the page and touch it - proving it beats remembering it."
+      "ask": "What were Ted and Sal digging up?",
+      "listenFor": "Yams. The first line says it. If your child is not sure, point at that line and let them read it again."
     },
     {
-      "ask": "Why did Yam run at the bag?",
-      "listenFor": "Yam had not been fed yet and wanted the yams. If they say \"he was hungry,\" ask them to find the line that tells us - the word yet is the clue."
+      "ask": "What did Sal do that helped the big yam come up?",
+      "listenFor": "She dug a gap around the top of it. Line four says it. This is the turn of the story."
     },
     {
-      "ask": "Do you think Yam is a good pet? Tell me why you think so.",
-      "listenFor": "No wrong answer. You want a reason from the story - Yam grabbed the bag, or Yam naps quietly at the end. Ted does not blame Yam; he works out that the pig was hungry. Reasons matter more than the yes or no."
+      "ask": "Do you think Ted could have got the yam up on his own? Tell me why you think that.",
+      "listenFor": "Either answer counts. You are listening for a reason tied to the story, such as he tugged and tugged and it did not budge."
     }
   ]
 }

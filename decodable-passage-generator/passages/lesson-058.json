@@ -5,25 +5,32 @@
     "Ben has one cute mule, Duke.",
     "Once, Duke sat in the dust.",
     "He will not get up at all.",
-    "\"Up, Duke!\" said Ben. Duke just sits.",
-    "Ben gets a tube with a cube in it.",
+    "\"Up, Duke!\" said Ben. The mule just sits.",
+    "Ben gets a cube of yam from a tube.",
     "He hums a tune and lifts up the cube.",
-    "Duke gets up fast and grabs the cube.",
+    "Duke gets up fast and grabs the yam.",
     "Then they step up the path and go home."
   ],
-  "warmup": ["cute", "mule", "dust", "tube", "cube", "tune"],
+  "warmup": [
+    "cute",
+    "mule",
+    "dust",
+    "tube",
+    "cube",
+    "tune"
+  ],
   "questions": [
     {
       "ask": "What does Duke do when Ben tells him to get up?",
-      "listenFor": "Nothing — he just sits. The line says \"Duke just sits.\""
+      "listenFor": "Nothing - he just sits. The line says \"The mule just sits.\""
     },
     {
       "ask": "What finally gets Duke up on his feet?",
-      "listenFor": "The cube from the tube. If they say \"the tune\", that is close — ask what Ben was holding up."
+      "listenFor": "A cube of yam out of the tube. If they say \"the tune,\" that is close - ask what Ben lifted up as he hummed."
     },
     {
       "ask": "What do you think Ben will take next time? Tell me why.",
-      "listenFor": "Any answer with a reason. Listen for something like \"a cube, because that is what worked.\""
+      "listenFor": "Any answer with a reason. Listen for something like \"yam, because that is what got Duke moving.\""
     }
   ]
 }
