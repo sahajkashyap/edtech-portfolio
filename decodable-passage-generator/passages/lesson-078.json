@@ -2,14 +2,17 @@
   "lesson": 78,
   "title": "Corn at the Store",
   "lines": [
-    "Meg went to the store for corn.",
-    "The store had no more corn at all.",
-    "Mom told Meg to try the farm.",
-    "Mom and Meg ran a short path past thorns.",
-    "The corn was tall next to the barn.",
-    "Meg got a big bag and ran back.",
-    "She was home before dark.",
-    "Dad cut up the best corn of all."
+    "Meg wants to fix corn for Gran.",
+    "She runs to the store before it shuts.",
+    "The store has no more corn at all.",
+    "Meg is sad. What can she fix then?",
+    "Then Meg thinks of the corn at the farm.",
+    "Mom and Meg run a short path past thorns.",
+    "The corn stands tall next to the big barn.",
+    "Meg picks the best corn she can spot.",
+    "She fills a bag and they run back.",
+    "Meg and Mom get home before dark.",
+    "Gran grins and helps Meg cut the corn."
   ],
   "warmup": [
     "store",
@@ -21,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "Why did Meg go to the farm?",
-      "listenFor": "The store had no more corn, and Mom told her to try the farm."
+      "ask": "Why could Meg not get corn at the store?",
+      "listenFor": "The store had no more corn at all. Send them back to that line."
     },
     {
       "ask": "What did Meg and Mom run past on the short path?",
       "listenFor": "Thorns. It is one line, and it is the line most kids skim."
     },
     {
-      "ask": "Do you think Meg was glad she went? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason, like the best corn at the end."
+      "ask": "Do you think Meg was glad she thought of the farm? Tell me why.",
+      "listenFor": "Either answer works. Listen for a reason, like getting the corn to Gran in time."
     }
   ]
 }

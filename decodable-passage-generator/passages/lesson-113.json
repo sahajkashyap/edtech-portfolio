@@ -3,29 +3,36 @@
   "title": "A Sound in the Dark",
   "lines": [
     "Meg sat up in bed one night.",
-    "A sound came from near the shed.",
-    "Meg felt fear, but she went out.",
-    "Dad said, \"Stay near me, dear.\"",
-    "They got close. Then the sound was clear.",
-    "A small pup was stuck in a box.",
-    "Meg has had that pup for a year."
+    "She could hear a sound from near the shed.",
+    "It was a small sound, like a cry.",
+    "Meg felt fear. She held on to her bed.",
+    "Then she went to get her dad.",
+    "\"Dad, I hear a sound,\" she said.",
+    "Dad said, \"Stay near me in the dark, dear.\"",
+    "They went out with a lamp.",
+    "Meg went first. The sound got more clear.",
+    "It came from a box by the shed.",
+    "A small pup was stuck in that box.",
+    "Meg got it out. It licked her hand.",
+    "\"You had good ears,\" said Dad.",
+    "Meg has had that pup for a year now."
   ],
   "warmup": [
+    "hear",
     "near",
     "clear",
     "fear",
     "dear",
-    "year",
-    "shed"
+    "year"
   ],
   "questions": [
     {
-      "ask": "What was making the sound by the shed?",
-      "listenFor": "A small pup stuck in a box. It comes near the end, so let them look back."
+      "ask": "What was making the sound, and where was it?",
+      "listenFor": "A small pup, stuck in a box by the shed. It comes near the end, so let them look back."
     },
     {
-      "ask": "Who went out with Meg?",
-      "listenFor": "Dad. He is the one who says stay near me, dear."
+      "ask": "Who went out into the dark with Meg?",
+      "listenFor": "Dad, with a lamp. He is the one who says stay near me, dear."
     },
     {
       "ask": "What would you have done if you heard that sound? Why?",

@@ -2,34 +2,32 @@
   "lesson": 84,
   "title": "The Rain and the Train",
   "lines": [
-    "Today is a gray, wet day.",
-    "Ray can not play in the rain.",
-    "He has to stay in all day.",
-    "Then Dad hands him a train set.",
-    "Ray paints the train gray and red.",
-    "He runs it on the long hall rug.",
+    "Ray was set to play in the yard today.",
+    "Then gray rain fell all day long.",
+    "Ray had to stay in the whole day.",
+    "He got his train set from a box.",
+    "He ran the train on the soft rug.",
+    "The rug made the train tip on its side.",
+    "Ray had a plan and went to the hall.",
+    "The hall rug was flat and hard.",
+    "The train ran fast all the way to Dad.",
+    "Then Ray got paint and made the train gray.",
+    "Dad came to play trains with him.",
     "The rain stops, but Ray will stay in."
   ],
-  "warmup": [
-    "gray",
-    "rain",
-    "train",
-    "stay",
-    "play",
-    "day"
-  ],
+  "warmup": ["gray", "rain", "train", "stay", "play", "day"],
   "questions": [
     {
-      "ask": "Why could Ray not play outside?",
-      "listenFor": "It was a gray, wet day and it was raining."
+      "ask": "Why did Ray have to stay in?",
+      "listenFor": "Gray rain fell all day. He had planned to play in the yard."
     },
     {
-      "ask": "What did Ray do with the train set?",
-      "listenFor": "He painted it gray and red, then ran it on the hall rug."
+      "ask": "What went wrong when Ray ran the train on the soft rug?",
+      "listenFor": "The rug made the train tip on its side. That is why he went to the flat hall rug."
     },
     {
-      "ask": "Why do you think Ray stayed in?",
-      "listenFor": "Any answer with a reason. He liked the train best."
+      "ask": "What would you do on a rainy day? Tell me why.",
+      "listenFor": "Any answer with a reason. Ask what they would pick and why that one."
     }
   ]
 }

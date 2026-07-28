@@ -1,31 +1,31 @@
 {
   "lesson": 104,
-  "title": "Meg at the Preschool",
+  "title": "Kate at the Preschool",
   "lines": [
-    "Meg helps at the preschool down the street.",
-    "She had a plan to bake a cake.",
+    "Kate helps at the preschool down the street.",
+    "The kids there had a big day soon.",
+    "Kate had a plan to bake them a cake.",
+    "Dad let her mix it up in the pan.",
     "The first cake came out flat and sad.",
-    "Meg had to reread the plan two times.",
+    "It was as flat as a plate.",
+    "Kate had to reread the plan two times.",
     "The pan was too big! That was it.",
     "She had to remake the whole cake.",
-    "The next cake got tall. Meg had a grin."
+    "This time Kate got a small round pan.",
+    "Dad set it in the hot stove for her.",
+    "The next cake got tall and soft.",
+    "Kate had a grin. She got a red plate.",
+    "The kids at the preschool ate it all up."
   ],
-  "warmup": [
-    "cake",
-    "bake",
-    "flat",
-    "tall",
-    "grin",
-    "plan"
-  ],
+  "warmup": ["cake", "bake", "flat", "tall", "grin", "plan"],
   "questions": [
     {
       "ask": "What went wrong with the first cake?",
-      "listenFor": "It came out flat. The pan was too big. Have them find the word pan."
+      "listenFor": "It came out flat, as flat as a plate. Have them find that line."
     },
     {
-      "ask": "What did Meg do to work out the problem?",
-      "listenFor": "She had to reread the plan. Point out the word reread - read it again."
+      "ask": "How did Kate work out what the problem was?",
+      "listenFor": "She had to reread the plan two times, and saw the pan was too big."
     },
     {
       "ask": "When is it good to reread a thing? Tell me why.",

@@ -2,13 +2,15 @@
   "lesson": 55,
   "title": "My White Kite",
   "lines": [
-    "Mike has a white kite.",
-    "A big puff lifts it up and up.",
-    "The kite lands in a tall pine.",
+    "Mike runs in the sun with a white kite.",
+    "A big puff lifts the kite up and up.",
+    "Then it lands in a tall pine.",
     "\"My kite!\" said Mike. \"I can not get it.\"",
-    "Jill rolls up on a bike and stops.",
-    "Mike grabs a long stick from the grass.",
-    "He taps the kite and it slips off!",
+    "Mike jumps up at it, but he slips.",
+    "Jill stops next to him on a red bike.",
+    "Mike spots a long stick in the grass.",
+    "He stands on a rock and taps the kite.",
+    "The white kite drops off the pine. Mike grabs it.",
     "Mike and Jill ride off with a smile."
   ],
   "warmup": [
@@ -22,11 +24,11 @@
   "questions": [
     {
       "ask": "Where does the kite land?",
-      "listenFor": "In a tall pine tree. If they say \"a tree,\" that counts, but ask which line told them."
+      "listenFor": "In a tall pine. If they say \"a tree,\" that counts, but ask which line told them."
     },
     {
-      "ask": "How does Mike get the kite down?",
-      "listenFor": "He taps it with a long stick until it slips off. Lines six and seven say it. Let them find the word stick."
+      "ask": "Jumping up at the kite does not work. What does Mike do that does?",
+      "listenFor": "He stands on a rock and taps the kite with a long stick. Lines seven and eight."
     },
     {
       "ask": "Do you think Mike and Jill are pals? Tell me why.",

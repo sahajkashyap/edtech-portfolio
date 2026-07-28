@@ -1,35 +1,43 @@
 {
   "lesson": 107,
-  "title": "The Frog That Slid",
+  "title": "The Frog That Slipped",
   "lines": [
-    "Ravi was running to the pool.",
-    "He tripped and dropped his net.",
+    "Ravi was running down the path.",
+    "It was hot and the sun was up.",
+    "He had a net and a small jar.",
+    "Mom said, \"Look at frogs, but let them go.\"",
     "A frog was hopping in the wet mud.",
     "Ravi stopped and grabbed at it.",
     "The frog slipped from his hand.",
-    "It went swimming off in the pool.",
-    "Ravi just grinned and sat in the mud."
+    "He tripped and dropped his net.",
+    "Ravi sat still and stopped grabbing.",
+    "He held the jar down in the mud.",
+    "The frog went hopping right into it.",
+    "Ravi grinned. He had a frog!",
+    "Then he tipped the jar by the pool.",
+    "The frog went swimming off. Mom was glad.",
+    "\"That was kind of you,\" she said."
   ],
   "warmup": [
     "running",
-    "tripped",
-    "dropped",
     "hopping",
     "stopped",
-    "grabbed"
+    "grabbed",
+    "dropped",
+    "grinned"
   ],
   "questions": [
     {
-      "ask": "What did Ravi drop?",
-      "listenFor": "His net, when he tripped. It is in the second line."
+      "ask": "What did Mom say Ravi had to do with the frogs?",
+      "listenFor": "Let them go. It is in the fourth line, inside the quote marks."
     },
     {
-      "ask": "Where did the frog go?",
-      "listenFor": "Swimming off in the pool. Listen for the -ing ending, which is what this lesson is about."
+      "ask": "How did Ravi get the frog into the jar?",
+      "listenFor": "He sat still and held the jar down in the mud, and the frog hopped in."
     },
     {
-      "ask": "Why do you think Ravi grinned instead of getting cross?",
-      "listenFor": "Any reason is fine. Ask what was funny about him sitting in the mud."
+      "ask": "Why do you think sitting still worked better than grabbing?",
+      "listenFor": "Any reason is fine. You want them to link the grabbing lines to the sitting still line."
     }
   ]
 }

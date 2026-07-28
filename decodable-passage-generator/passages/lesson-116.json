@@ -3,12 +3,20 @@
   "title": "Ben Bought Paints",
   "lines": [
     "Ben went to the shop with his gran.",
-    "He thought a red kite was best.",
+    "He had six dollars in his hand.",
+    "He thought he would get a red kite.",
+    "He had wanted that kite for a long time.",
     "But then he saw a box of paints.",
+    "Ben stood there for a long while.",
+    "He could not get both.",
+    "He picked up the kite, then set it down.",
     "In the end he bought the paints.",
     "He brought them home and started painting.",
-    "The kite can wait, he thought.",
-    "Now his room is full of bright art."
+    "At first his art was just spots.",
+    "He thought he had made a bad pick.",
+    "But then he painted a big red kite.",
+    "Now his room is full of bright art.",
+    "\"The kite can wait,\" Ben thought."
   ],
   "warmup": [
     "shop",
@@ -20,12 +28,12 @@
   ],
   "questions": [
     {
-      "ask": "What did Ben nearly buy first?",
-      "listenFor": "A red kite. He changed his mind when he saw the paints."
+      "ask": "What did Ben nearly get first?",
+      "listenFor": "A red kite. He changed his mind when he saw the box of paints."
     },
     {
-      "ask": "What is in Ben's room now?",
-      "listenFor": "Bright art that he painted. The last line says it."
+      "ask": "What did Ben paint after the spots?",
+      "listenFor": "A big red kite. He got his kite in the end, just not the one from the shop."
     },
     {
       "ask": "Would you pick the kite or the paints? Why?",

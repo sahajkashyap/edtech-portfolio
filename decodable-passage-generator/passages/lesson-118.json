@@ -2,13 +2,21 @@
   "lesson": 118,
   "title": "The School Ghost",
   "lines": [
-    "Kids at school said a ghost lived there.",
+    "Meg had a class in the old school.",
+    "Kids said a ghost lived in the halls.",
     "At night it made a long, sad sound.",
     "The cook said it was just a machine.",
-    "But Meg and Mom went one dark night.",
-    "Meg saw a sign on a back door.",
-    "She gave it a tug. Green eyes shone!",
-    "It was a cat! No ghost at all."
+    "But Meg did not think that was it.",
+    "\"Can we go and look?\" she asked Mom.",
+    "That night they went back in.",
+    "Mom and Meg went down the dark hall.",
+    "It was still. No sound at all.",
+    "Meg felt let down. Then it came again.",
+    "It came from a door in the back.",
+    "Meg gave the door a hard tug.",
+    "Mom held the lamp. Green eyes shone!",
+    "It was a cat, stuck since lunch.",
+    "Meg fed it. Her school ghost sat and ate."
   ],
   "warmup": [
     "school",
@@ -20,16 +28,16 @@
   ],
   "questions": [
     {
-      "ask": "What did the kids think was in the school?",
-      "listenFor": "A ghost. It is in the very first line."
+      "ask": "What did the kids say lived in the school?",
+      "listenFor": "A ghost, in the halls. Line two says it."
     },
     {
-      "ask": "What was really making the sound?",
-      "listenFor": "A cat, in back of the door with the sign on it. The cook had guessed wrong."
+      "ask": "What was really making the sad sound?",
+      "listenFor": "A cat, stuck in back of a door since lunch. The cook had guessed a machine."
     },
     {
-      "ask": "Why did Meg take Mom along with her?",
-      "listenFor": "Listen for the thinking, not the verdict - a dark school at night is not a place to go on your own."
+      "ask": "What would you take with you to look? Why?",
+      "listenFor": "Any answer is fine. Meg took a lamp and her mom."
     }
   ]
 }

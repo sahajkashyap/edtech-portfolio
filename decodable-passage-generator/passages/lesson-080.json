@@ -2,14 +2,17 @@
   "lesson": 80,
   "title": "Her Little Plant",
   "lines": [
-    "Her sister sets a pot on the step.",
-    "A little plant sits up in her pot.",
+    "Pam and her sister have a little plant.",
+    "They set her pot on the top step.",
     "Then a big pig runs past and bumps it.",
-    "The pot lands under the step in mud.",
-    "Pam and her sister fill it back up.",
-    "Dad hands them a cup to help.",
-    "After that, they pat the mud in.",
-    "Her plant sits safe in the corner."
+    "The pot lands under the step in the mud.",
+    "Pam fills her pot back up with her hands.",
+    "The plant flops. It will not stand up.",
+    "Then Pam pats the mud in hard.",
+    "Her plant sits up at last.",
+    "But that pig will run past this step.",
+    "So Pam and her sister lift the pot up.",
+    "Her plant sits safe in the yard corner."
   ],
   "warmup": [
     "her",
@@ -25,12 +28,12 @@
       "listenFor": "A big pig that ran past. Have them point to that line."
     },
     {
-      "ask": "Who filled the pot back up?",
-      "listenFor": "Pam and her sister. Dad only handed them a cup - listen for that."
+      "ask": "What did Pam do to get the plant to stand up?",
+      "listenFor": "She patted the mud in hard. If they say \"she filled the pot,\" ask \"did the plant stand up then?\""
     },
     {
-      "ask": "Why do you think they put the plant in the corner?",
-      "listenFor": "Any answer with a reason. No pig can bump it over there."
+      "ask": "Why do you think they put the plant in the yard corner?",
+      "listenFor": "Any answer with a reason. The pig runs past the step, and the story says so."
     }
   ]
 }

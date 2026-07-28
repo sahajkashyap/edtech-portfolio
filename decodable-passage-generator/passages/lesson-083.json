@@ -1,15 +1,19 @@
 {
   "lesson": 83,
-  "title": "Birds in the Dark Barn",
+  "title": "Corn in the Dark Barn",
   "lines": [
-    "A girl and her dad park by a barn.",
-    "It is dark and hard to spot the lamp.",
-    "First Mom trips on a jar of corn.",
-    "The corn spills all on the dirt.",
-    "Then birds turn up in the dark barn.",
-    "The girl claps her hands hard.",
-    "The birds turn and go.",
-    "Mom sorts the corn back in the jar."
+    "Nell and her dad park by the dark barn.",
+    "Nell must fill the corn bin in the barn.",
+    "It is so dark that she can not see.",
+    "First she trips on a jar of corn.",
+    "Corn spills all on the barn dirt.",
+    "Then birds turn up and pick at the corn.",
+    "Nell claps her hands hard, but the birds sit.",
+    "The birds want the corn on the dirt.",
+    "Nell gets the lamp from her dad.",
+    "The girl can see all the corn.",
+    "She sorts it back in the jar.",
+    "The birds go, and Nell fills the corn bin."
   ],
   "warmup": [
     "barn",
@@ -21,16 +25,16 @@
   ],
   "questions": [
     {
-      "ask": "How did the corn end up on the dirt?",
-      "listenFor": "Mom tripped on the jar while hunting for the lamp in the dark."
+      "ask": "Why did Nell trip on the jar of corn?",
+      "listenFor": "The barn was so dark she could not see. It is the third line."
     },
     {
-      "ask": "What did the girl do to make the birds go?",
-      "listenFor": "She clapped her hands hard. One short line, easy to skim past."
+      "ask": "What did Nell do to get the birds to go?",
+      "listenFor": "She got the lamp, then sorted the spilled corn back in the jar. Clapping had not worked."
     },
     {
-      "ask": "Do you think the birds will come back? Tell me why.",
-      "listenFor": "Either answer is fine. The corn is back in the jar now."
+      "ask": "What will Nell do first the next time? Tell me why.",
+      "listenFor": "Any answer with a reason. Many children say she will get the lamp before she goes in."
     }
   ]
 }

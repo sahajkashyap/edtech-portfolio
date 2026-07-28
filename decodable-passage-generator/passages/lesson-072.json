@@ -2,14 +2,17 @@
   "lesson": 72,
   "title": "The Lost Pup",
   "lines": [
-    "A wild pup got lost in the cold.",
-    "A kind child and Mom went to find it.",
-    "The child held a rope and a lamp.",
-    "The pup was behind an old gate.",
-    "It was cold and it did not move.",
-    "The child told it to hold still.",
+    "Jill is a kind child with a wild pup.",
+    "In the cold, the pup slips past the gate.",
+    "Jill and Dad go to find it.",
+    "Dad holds a lamp up as they go.",
+    "Jill calls and calls, but no pup runs up.",
+    "Then Jill thinks. She gets the pup's dish.",
+    "She shakes it, and the pup jumps up.",
+    "It was behind an old gate all this time.",
+    "Jill told it to hold still.",
     "Most pups run off, but this one did not.",
-    "The pup is home and it is not cold."
+    "The wild pup is home and is not cold."
   ],
   "warmup": [
     "wild",
@@ -25,12 +28,12 @@
       "listenFor": "Behind an old gate. Stated in the story - have them go back and find it themselves."
     },
     {
-      "ask": "What did the child bring along?",
-      "listenFor": "A rope and a lamp. If they get one, ask \"what else?\" rather than filling it in for them."
+      "ask": "What did Jill do that made the pup come out?",
+      "listenFor": "She got the pup's dish and shook it. If they say \"she called it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think the child was brave? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason tied to the story - going out in the cold with Mom, or holding on to a wild pup."
+      "ask": "Do you think the pup will slip past the gate again? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason tied to the story - it is wild, or it liked being home and warm."
     }
   ]
 }

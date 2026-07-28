@@ -3,13 +3,16 @@
   "title": "The Funny Puppy",
   "lines": [
     "Meg has a funny little puppy.",
-    "The puppy digs by the pond.",
-    "It finds a penny in the mud.",
-    "The puppy runs to a lady on the path.",
-    "A little baby sits by the lady.",
-    "The baby is happy and claps.",
-    "The puppy drops the penny by the baby.",
-    "The lady gives it back to Meg."
+    "The puppy digs a big pit by the pond.",
+    "It digs up a penny in the mud.",
+    "The puppy will not let go of it.",
+    "Meg tugs at it, but the puppy runs off.",
+    "Then Meg holds up the puppy's red ball.",
+    "The puppy drops the penny and grabs the ball.",
+    "Then Meg spots a sad lady on the path.",
+    "The lady lost a penny in the grass.",
+    "A happy baby sits next to the lady.",
+    "Meg hands the penny back, and the baby claps."
   ],
   "warmup": [
     "funny",
@@ -21,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "What did the puppy dig up?",
-      "listenFor": "A penny, out of the mud by the pond. Stated in the story - point them back to the line."
+      "ask": "What did the puppy dig up by the pond?",
+      "listenFor": "A penny, out of the mud. Stated in the story - point them back to the line."
     },
     {
-      "ask": "Who did the puppy give the penny to?",
-      "listenFor": "The baby. Then the lady handed it back to Meg. Following the penny through three sets of hands is the real work here."
+      "ask": "How did Meg get the penny away from the puppy?",
+      "listenFor": "She held up the puppy's red ball, and the puppy dropped the penny. If they say \"she tugged it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think Meg should let the baby keep the penny? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for the reason - the puppy found it, or the baby was happy with it."
+      "ask": "Do you think the lady was glad to get the penny back? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for the reason - she was sad before, or the baby clapped."
     }
   ]
 }

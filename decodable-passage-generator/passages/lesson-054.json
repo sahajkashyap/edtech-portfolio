@@ -2,31 +2,33 @@
   "lesson": 54,
   "title": "Who Licks the Cake?",
   "lines": [
-    "Mom and Jane bake a big cake.",
-    "They set the plate on a big flat rock.",
-    "Jane runs back. The big cake has a lick!",
-    "\"Who did that?\" said Jane.",
-    "Cake is on the chin of Jake the cat!",
-    "\"We can make a small cake,\" said Jane.",
+    "Jane and Mom bake a big cake.",
+    "They set the cake on a flat rock.",
+    "Jane runs in to get a rag.",
+    "When she gets back, the cake has a lick!",
+    "\"Who did that?\" said Jane. Mom thinks a bug.",
+    "But Jane spots cake on Jake the cat's chin.",
+    "\"It was Jake!\" said Jane. \"Look at his chin.\"",
+    "\"We can make Jake a small cake,\" said Jane.",
     "They bake it, and Jake laps it up.",
-    "Then they take the big cake in."
+    "Then Jane and Mom take the big cake in."
   ],
   "warmup": [
     "bake",
     "cake",
-    "plate",
     "make",
     "take",
+    "flat",
     "rock"
   ],
   "questions": [
     {
-      "ask": "Where did Mom and Jane put the big cake?",
-      "listenFor": "On a plate on a big flat rock outside. Line two says it. Let your child reread rather than being told."
+      "ask": "Where did Jane and Mom put the big cake?",
+      "listenFor": "On a flat rock. Line two says it. Let your child reread rather than being told."
     },
     {
-      "ask": "How did Jane work out who licked the cake?",
-      "listenFor": "There was cake on Jake the cat's chin. Line five says it. This is the reveal, so it is worth a little talk."
+      "ask": "Mom thinks a bug licked the cake. How does Jane show it was not a bug?",
+      "listenFor": "She spots cake on Jake the cat's chin. Line six is the clue - it is worth a little talk."
     },
     {
       "ask": "What do you think Jake will do next? Tell me why.",

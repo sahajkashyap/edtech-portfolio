@@ -3,29 +3,27 @@
   "title": "Noon at the Zoo",
   "lines": [
     "Meg went with her school to the zoo.",
-    "At noon she got a bag of food.",
-    "A goat came up and took the bag!",
-    "Meg ran, but the goat was fast.",
+    "At noon Mom gave her a bag of food.",
+    "In the bag was a bun and a spoon.",
+    "A goat came up and took the whole bag!",
+    "Meg ran fast, but the goat was fast too.",
     "It went up on the roof of the shed.",
-    "Sam got a long tool and got it back.",
-    "The food was gone, but the spoon was not."
+    "Meg made a big yell, but the goat sat.",
+    "Then Meg got a long tool from Mom.",
+    "She hooked the bag and got it back.",
+    "The food was gone, but the spoon was not.",
+    "Mom gave Meg some of her noon food.",
+    "Meg will keep her bag shut at the zoo."
   ],
-  "warmup": [
-    "zoo",
-    "noon",
-    "food",
-    "roof",
-    "tool",
-    "spoon"
-  ],
+  "warmup": ["zoo", "noon", "food", "roof", "tool", "spoon"],
   "questions": [
     {
-      "ask": "Where did the goat go with the bag?",
-      "listenFor": "Up on the roof of the shed. Have them find that line."
+      "ask": "What was in the bag of food?",
+      "listenFor": "A bun and a spoon. It is in the third line."
     },
     {
-      "ask": "What was left in the bag at the end?",
-      "listenFor": "Only the spoon - the food was gone. Listen for both parts."
+      "ask": "How did Meg get her bag back from the roof?",
+      "listenFor": "She got a long tool and hooked the bag. Yelling had not worked."
     },
     {
       "ask": "Do you think Meg was cross at the goat? Tell me why.",

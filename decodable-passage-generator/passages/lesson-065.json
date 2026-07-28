@@ -3,13 +3,15 @@
   "title": "Camping by the Pond",
   "lines": [
     "Sam, Pam and Mom are camping by the pond.",
-    "Pam has been fishing and Sam is resting.",
-    "\"A big fish!\" Pam is yelling.",
+    "Pam is fishing. Sam is resting on a log.",
+    "For a long time no fish is jumping.",
+    "Then Pam is yelling. \"A big fish!\"",
     "She is slipping in the wet mud.",
     "Sam is jumping up to grab Pam.",
-    "Mom has Sam, and they are all pulling.",
+    "Mom is grabbing Sam, and they are all pulling.",
     "The fish flips into the pot with a splash!",
-    "\"That fish can jump,\" said Sam, grinning."
+    "Mom is grinning. \"That fish can jump!\"",
+    "Sam and Pam sit on the log and rest."
   ],
   "warmup": [
     "camping",
@@ -22,7 +24,7 @@
   "questions": [
     {
       "ask": "What is Sam doing while Pam is fishing?",
-      "listenFor": "Resting. It is in the second line."
+      "listenFor": "Resting on a log. It is in the second line."
     },
     {
       "ask": "Why does Sam jump up?",

@@ -2,33 +2,33 @@
   "lesson": 105,
   "title": "Tess Dislikes a Bath",
   "lines": [
-    "Our cat Tess dislikes a bath.",
-    "She hid under the bed all day.",
-    "Sam got the tub and the soap.",
-    "Tess hissed. Tess and Sam disagree.",
-    "But Sam held up a fish.",
+    "Our cat Tess got mud on her legs.",
+    "She had been out in the wet grass.",
+    "Raj said Tess had to have a bath.",
+    "But Tess dislikes a bath a lot.",
+    "She hid under the bed all day long.",
+    "Raj got the tub and the soap set up.",
+    "Then he went to lift Tess out.",
+    "Tess hissed. Tess and Raj disagree!",
+    "Raj sat and had a think about it.",
+    "Then he got a bit of fish from Mom.",
+    "He held it up by the tub.",
     "Tess came out to get the fish.",
-    "Tess likes fish. She still dislikes baths."
+    "Raj gave her the fish and a wash.",
+    "Tess likes fish. She still dislikes a bath."
   ],
-  "warmup": [
-    "cat",
-    "bath",
-    "tub",
-    "soap",
-    "fish",
-    "hid"
-  ],
+  "warmup": ["cat", "bath", "tub", "soap", "fish", "hid"],
   "questions": [
     {
-      "ask": "Where did Tess hide?",
-      "listenFor": "Under the bed. Quick one - it is in the second line."
+      "ask": "Why did Tess have to have a bath?",
+      "listenFor": "She got mud on her legs out in the wet grass."
     },
     {
-      "ask": "What got Tess to come out?",
-      "listenFor": "The fish Sam held up. Listen for fish, not just Sam."
+      "ask": "What happened when Raj went to lift Tess out from under the bed?",
+      "listenFor": "Tess hissed. That is when the story says they disagree."
     },
     {
-      "ask": "Do you think Tess got a bath in the end? Why?",
+      "ask": "Do you think Tess will hide again next bath day? Why?",
       "listenFor": "The story does not say, so both are right. You want the reason."
     }
   ]

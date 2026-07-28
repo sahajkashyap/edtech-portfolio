@@ -2,14 +2,16 @@
   "lesson": 63,
   "title": "Two Big Boxes",
   "lines": [
-    "Lin packs two big boxes.",
+    "Lin packs two big boxes for the trip.",
     "She tosses in dishes and socks.",
-    "A fox naps in the last box!",
-    "Lin shuts the lid and does not see him.",
-    "Lin lifts the box. It tips. The fox runs!",
-    "\"What does a fox want with dishes?\" she said.",
-    "Lin fixes the box and packs it.",
-    "Then she checks it and wishes for no foxes."
+    "A fox naps in the last box.",
+    "Lin does not see him. She shuts the lid.",
+    "Lin lifts the box up. It tips and drops!",
+    "The fox hops up and runs off fast!",
+    "\"What does a fox want with dishes?\" said Lin.",
+    "She fixes the box and packs it well.",
+    "This time she checks in the box for foxes.",
+    "\"No foxes,\" she said. Lin wishes for a nap."
   ],
   "warmup": [
     "boxes",
@@ -25,8 +27,8 @@
       "listenFor": "Dishes and socks. Both are in the same line."
     },
     {
-      "ask": "Why does Lin check the boxes at the end?",
-      "listenFor": "So no fox is hiding in one this time. Let them say it in their own words."
+      "ask": "Why does Lin check in the box at the end?",
+      "listenFor": "So no fox is hiding in it this time. Let them say it in their own words."
     },
     {
       "ask": "What do you think the fox was doing in the box? Tell me why.",

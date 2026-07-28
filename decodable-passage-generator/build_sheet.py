@@ -25,6 +25,25 @@ import heart_words as HEART
 import props
 
 HERE = pathlib.Path(__file__).parent
+
+# Story type shrinks as the reader advances, which is what real readers do and
+# what makes room for longer stories. 24px is right for a five-year-old sounding
+# out "Sam sat"; a seven-year-old at Lesson 100 reads comfortably smaller, and
+# the alternative is a story that cannot grow past sixty words.
+#   lesson ceiling -> (font px, line-height, picture width in inches)
+TYPE_BANDS = [
+    (45,  (24, 1.66, 3.8)),
+    (65,  (22, 1.62, 3.5)),
+    (90,  (20, 1.58, 3.2)),
+    (128, (18, 1.54, 2.9)),
+]
+
+
+def type_for(lesson):
+    for ceiling, band in TYPE_BANDS:
+        if lesson <= ceiling:
+            return band
+    return TYPE_BANDS[-1][1]
 TEMPLATE = HERE / "example-lesson-41.html"
 SOUND_LIST = HERE / "sound-list.json"
 PASSAGES = HERE / "passages"
@@ -126,13 +145,17 @@ def build_html(spec):
         f'<span class="aa">{esc(trim(q["listenFor"]))}</span></p>'
         for i, q in enumerate(questions, 1))
 
+    font_px, line_h, art_in = type_for(n)
+    scale_css = (f"\n  .passage p {{ font-size: {font_px}px; line-height: {line_h}; }}"
+                 f"\n  .art {{ max-width: {art_in}in; }}")
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Decodable Passage &mdash; Lesson {n}, {esc(L['skill'])}</title>
-<style>{css()}</style>
+<style>{css()}{scale_css}</style>
 </head>
 <body>
 

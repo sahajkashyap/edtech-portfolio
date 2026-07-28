@@ -2,34 +2,41 @@
   "lesson": 98,
   "title": "The Lamb and the Knot",
   "lines": [
-    "Jen has a small lamb that likes to climb.",
-    "It got up on a rock and got stuck.",
-    "A knot of rope was caught on its leg.",
+    "Jen keeps a small lamb out by the shed.",
+    "The lamb likes to climb up on things.",
+    "Jen left a rope in a heap there.",
+    "The rope had a big knot in it.",
+    "One day the lamb went up on a rock.",
+    "It came down, but the knot caught its leg.",
+    "The lamb could not walk. It made a sound.",
     "Jen went down on one knee to reach it.",
-    "She held the rope with a rag on her thumb.",
-    "At last the knot came free.",
+    "She pulled the knot with her thumb. No luck.",
+    "So Jen got a bit of soap from Dad.",
+    "She rubbed the soap on the rope and knot.",
+    "Then the knot slid free! The lamb was out.",
+    "Jen wrapped the rope up and hung it high.",
     "Now Jen knows where to keep her rope."
   ],
   "warmup": [
     "knows",
-    "rock",
-    "stuck",
     "rope",
+    "rock",
     "caught",
-    "reach"
+    "reach",
+    "shed"
   ],
   "questions": [
     {
-      "ask": "Where did the lamb get stuck?",
-      "listenFor": "Up on a rock. Have them find that line."
+      "ask": "What was caught on the lamb's leg?",
+      "listenFor": "A knot in the rope. Have them find that line."
     },
     {
-      "ask": "What was caught on the lamb's leg?",
-      "listenFor": "A knot of rope. Ask how Jen got it off, and why she put a rag on her thumb before she pulled."
+      "ask": "Jen pulled the knot first. What did she do when that did not work?",
+      "listenFor": "She got soap from Dad and rubbed it on the rope and knot."
     },
     {
       "ask": "What do you think Jen will do with the rope now? Tell me why.",
-      "listenFor": "Any answer is fine. The last line gives a clue."
+      "listenFor": "Any answer is fine. The last two lines give a clue."
     }
   ]
 }

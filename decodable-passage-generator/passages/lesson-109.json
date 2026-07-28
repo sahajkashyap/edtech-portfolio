@@ -2,13 +2,20 @@
   "lesson": 109,
   "title": "Riding to the Lake",
   "lines": [
-    "Kate was riding her bike to a lake.",
-    "The sun was shining on the road.",
-    "A cat came sliding out from a shed.",
-    "Kate was taking a big turn.",
-    "She was smiling. Then she was not.",
-    "The bike slid, but Kate saved it.",
-    "Kate was smiling all the way home."
+    "Kate was taking her bike to the lake.",
+    "Mom was riding just behind her.",
+    "The sun was shining on the long road.",
+    "Kate was smiling. She liked this ride.",
+    "Then a cat came sliding out from a shed.",
+    "Kate was making a big turn.",
+    "The bike slid. Kate was not smiling.",
+    "She got a foot down and saved it.",
+    "But now the bike made a bad sound.",
+    "Kate got off and looked at the chain.",
+    "It had come off while she was sliding.",
+    "Mom held the bike. Kate set it back.",
+    "Her hands were black, but the bike was fine.",
+    "Kate was smiling all the way to the lake."
   ],
   "warmup": [
     "riding",
@@ -20,16 +27,16 @@
   ],
   "questions": [
     {
-      "ask": "Where was Kate riding to?",
-      "listenFor": "The lake. First line - a quick win to start with."
-    },
-    {
       "ask": "What came out from the shed?",
       "listenFor": "A cat, sliding. If they say dog, have them go back and look."
     },
     {
-      "ask": "Why do you think Kate stopped smiling for a bit?",
-      "listenFor": "Any sensible reason - the cat, the turn, nearly falling. You want them to link two lines together."
+      "ask": "What was wrong with the bike after it slid?",
+      "listenFor": "The chain had come off. It is in the tenth and eleventh lines."
+    },
+    {
+      "ask": "What do you think Kate will do next time she sees a cat?",
+      "listenFor": "Any sensible answer. You want them to use what the story showed, not just guess."
     }
   ]
 }

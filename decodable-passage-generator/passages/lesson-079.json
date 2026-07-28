@@ -2,14 +2,17 @@
   "lesson": 79,
   "title": "The Fort in the Yard",
   "lines": [
-    "Ben and Pam make a fort in the yard.",
-    "It starts with a big box and a card.",
-    "The fort is dark in the back part.",
-    "Pam gets a jar and a short lamp.",
+    "Ben and Pam start a fort in the yard.",
+    "The fort is a big box and a card.",
+    "The card will not stand up by itself.",
+    "Pam props it up with a short stick.",
+    "Dad hands Ben a lamp for the dark part.",
     "Then a big dog jumps on the fort.",
     "It drops flat and Pam is sad.",
-    "Ben starts the fort back up.",
-    "The dog naps in the dark part."
+    "Ben starts to prop the card back up.",
+    "The card falls flat, so Pam stops to think.",
+    "She sets a rock on the short stick.",
+    "The fort stands, and the dog naps in it."
   ],
   "warmup": [
     "fort",
@@ -21,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "What did Ben and Pam make the fort from?",
-      "listenFor": "A big box and a card. The jar and lamp came after, for the dark part."
-    },
-    {
       "ask": "What made the fort drop flat?",
       "listenFor": "The big dog jumped on it. Send them back to that line if they guess."
     },
     {
+      "ask": "How did Pam get the card to stand up the second time?",
+      "listenFor": "She set a rock on the short stick. If they say \"Ben propped it,\" ask \"did it stay up?\""
+    },
+    {
       "ask": "Do you think the dog helped or made a mess? Tell me why.",
-      "listenFor": "Either answer is fine. He broke it, but he ended up napping in it."
+      "listenFor": "Either answer is fine. It knocked the fort flat, but it ended up napping in it."
     }
   ]
 }

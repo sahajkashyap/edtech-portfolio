@@ -25,7 +25,28 @@ BANK = HERE / "word-bank.json"
 SOUND_LIST = HERE / "sound-list.json"
 PASSAGES = HERE / "passages"
 
-MAX_LINES, MAX_WORDS = 12, 90
+MAX_LINES, MAX_WORDS = 18, 200
+
+# Stories must GROW. Ours sat flat at about 60 words from Lesson 6 to Lesson
+# 128; real decodable readers go from roughly 50 words to 172 over the same
+# span. The flat ceiling is why the later stories feel rushed -- they were
+# cramming a whole plot into seven sentences, so events landed with no set-up.
+# Smaller type at the later lessons (see build_sheet.TYPE_BANDS) is what makes
+# the room.
+#   lesson ceiling -> (min lines, min words)
+GROWTH_BANDS = [
+    (45,  (0, 0)),        # early lessons stay governed by vocabulary alone
+    (65,  (7, 65)),
+    (90,  (9, 85)),
+    (128, (11, 105)),
+]
+
+
+def growth_for(lesson):
+    for ceiling, band in GROWTH_BANDS:
+        if lesson <= ceiling:
+            return band
+    return GROWTH_BANDS[-1][1]
 
 # How long a story may be depends on how much language exists yet. At Lesson 6
 # a child can sound out eight words; demanding six lines and twenty-five words
@@ -84,6 +105,9 @@ def validate(spec):
     # 1. shape, scaled to how much language the lesson actually has
     soundable = [w for w in bank if w not in hearts]
     min_lines, min_words, warmup_count = limits_for(len(soundable))
+    # a story also has to be long enough for the lesson it sits at
+    grow_lines, grow_words = growth_for(n)
+    min_lines, min_words = max(min_lines, grow_lines), max(min_words, grow_words)
     if not min_lines <= len(lines) <= MAX_LINES:
         problems.append(f"{len(lines)} lines; needs {min_lines}-{MAX_LINES} "
                         f"({len(soundable)} words can be sounded out at this lesson)")

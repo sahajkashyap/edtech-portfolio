@@ -2,24 +2,33 @@
   "lesson": 52,
   "title": "Where Did the Pink Sock Go?",
   "lines": [
-    "Meg dips a pink sock in the sink.",
-    "The pink sock sank!",
-    "\"Where did it go?\" said Meg.",
-    "Mom thinks, then gets a thin net.",
-    "Tug, tug! Up it pops with junk on it.",
-    "The pink sock is back, and it is wet.",
+    "Meg has a pink sock with mud on it.",
+    "She dips it in the sink. It sank!",
+    "\"That sock sank!\" said Meg.",
+    "Meg dips a cup in, then a mug.",
+    "She gets junk, but no pink sock.",
+    "Mom said, \"Think. What is long and thin?\"",
+    "Meg gets the thin net from the fish tank.",
+    "Tug, tug! Up pops the pink sock!",
     "\"Thank you, Mom,\" said Meg with a hug.",
     "\"Hang it up,\" said Mom. \"Not in the sink!\""
   ],
-  "warmup": ["pink", "sink", "sank", "thinks", "thank", "junk"],
+  "warmup": [
+    "pink",
+    "sink",
+    "sank",
+    "think",
+    "thank",
+    "junk"
+  ],
   "questions": [
     {
-      "ask": "What happens to the sock in the sink?",
-      "listenFor": "It sinks. If they say \"it got wet,\" ask \"and then what did it do?\" to get them back to the word sank."
+      "ask": "What happens to the pink sock in the sink?",
+      "listenFor": "It sank. If they say \"it got wet,\" ask \"and then what did it do?\" to get them back to the word sank."
     },
     {
-      "ask": "What does Mom use to get the sock back?",
-      "listenFor": "A thin net. This is stated in the story, so have them reread that line instead of telling them."
+      "ask": "Meg tries a cup and a mug first. What gets the sock back in the end?",
+      "listenFor": "The thin net from the fish tank. Line seven says it. Mom gives a hint, but Meg fetches the net."
     },
     {
       "ask": "What do you think Meg should do next time? Tell me why.",

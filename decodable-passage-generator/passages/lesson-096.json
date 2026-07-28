@@ -2,13 +2,20 @@
   "lesson": 96,
   "title": "The Mouse in Our House",
   "lines": [
-    "A brown mouse got in our house.",
-    "It went down and hid in a bag.",
-    "Nita found it and gave a loud shout.",
-    "The mouse ran out to the ground.",
-    "An owl in the tall tree gave a howl.",
-    "The mouse hid in a hole by the flower bed.",
-    "Now it is safe, and our house is too."
+    "Nita and her mom live in a small house.",
+    "One day Nita found seeds on the floor.",
+    "Who had spilled them? Nita looked all over.",
+    "Then she saw a brown mouse by the bin.",
+    "It was round and small, with a long tail.",
+    "Nita bent down to catch it in her hands.",
+    "But the mouse was too quick. It ran off.",
+    "Nita did not shout. She got a box.",
+    "She set it down with a bit of bread.",
+    "The mouse went in. Nita had found a way!",
+    "She and Mom took the box out.",
+    "They let the mouse go by the flower bed.",
+    "It sat on the ground and looked up.",
+    "Now the mouse is safe, and our house too."
   ],
   "warmup": [
     "mouse",
@@ -16,16 +23,16 @@
     "brown",
     "found",
     "ground",
-    "owl"
+    "down"
   ],
   "questions": [
     {
-      "ask": "Where did the mouse hide when it was in the house?",
-      "listenFor": "In a bag. Have them find that line and read it again."
+      "ask": "What did Nita find on the floor that made her look?",
+      "listenFor": "Seeds. That is the clue that sent her looking."
     },
     {
-      "ask": "What made a howl in the tree?",
-      "listenFor": "An owl. Ask if that was a safe sound for a small mouse."
+      "ask": "What did Nita try first, and did it work?",
+      "listenFor": "She bent down to catch it in her hands. No - it was too quick."
     },
     {
       "ask": "Do you think the mouse will come back in? Tell me why.",

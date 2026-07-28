@@ -4,32 +4,30 @@
   "lines": [
     "Ana and her mom went to the beach.",
     "They had a meal of peach and tea.",
-    "A bee sat on the last bit of peach.",
-    "Ana let the bee have it.",
-    "Then she went to sleep in the sun.",
+    "A bee came and sat on the peach.",
+    "Ana did not want to eat with a bee.",
+    "She sent it off, but it came back.",
+    "Ana set the peach bit on a flat rock.",
+    "The bee went to the rock and sat.",
+    "Ana ate the rest and went to sleep.",
     "She had a dream of a green sea.",
-    "Ana got up and ran to the deep sea."
+    "Then Mom woke her up with a soft pat.",
+    "Ana swam in the green sea with her mom.",
+    "It was the best beach day yet."
   ],
-  "warmup": [
-    "beach",
-    "peach",
-    "bee",
-    "sleep",
-    "dream",
-    "green"
-  ],
+  "warmup": ["beach", "peach", "bee", "sleep", "dream", "green"],
   "questions": [
     {
-      "ask": "What did Ana and her mom eat?",
+      "ask": "What did Ana and her mom have at the beach?",
       "listenFor": "A meal of peach and tea."
     },
     {
-      "ask": "What did Ana dream about?",
-      "listenFor": "A green sea. Ask what she did next."
+      "ask": "How did Ana get the bee off her peach?",
+      "listenFor": "She set the peach bit on a flat rock. Sending the bee off had not worked, as it came back."
     },
     {
-      "ask": "Was Ana right to give the bee her peach? Tell me why.",
-      "listenFor": "Either answer works. Listen for the reason."
+      "ask": "Was Ana right to let the bee have the peach? Tell me why.",
+      "listenFor": "Either answer works. Listen for the reason more than the answer."
     }
   ]
 }

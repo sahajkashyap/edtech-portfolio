@@ -2,14 +2,16 @@
   "lesson": 48,
   "title": "Chad Chops the Ham",
   "lines": [
-    "Dad and Chad walk to a shop with Meg.",
-    "They get a ham and a bag of chips.",
-    "At the shed, Chad chops the ham up.",
+    "Chad and his pal Meg go to the shop.",
+    "They pick a ham and a bag of chips.",
+    "In the shed, Chad chops the ham with Dad.",
     "Dad gets a pan hot and tips it in.",
-    "\"Such a rich dish!\" said Meg, his pal.",
-    "Meg has much of it, and Chad has less.",
-    "A chip is on his chin.",
-    "Meg has a chip. She lets Chad have it."
+    "\"Such a rich dish!\" said Meg.",
+    "Meg has much of it. Chad has less.",
+    "A bit of ham sits on Chad's chin.",
+    "Meg checks the chip bag. It is not full.",
+    "A chip is in it.",
+    "Meg sets it on Chad's dish. \"You had less.\""
   ],
   "warmup": [
     "chops",
@@ -21,16 +23,16 @@
   ],
   "questions": [
     {
-      "ask": "Who gets the pan hot?",
-      "listenFor": "Dad does. Chad chops, Dad cooks - two jobs, two people. Have them find the line with pan in it."
+      "ask": "Who chops the ham, and who gets the pan hot?",
+      "listenFor": "Chad chops it with Dad; Dad gets the pan hot. Lines three and four. Two jobs, two people."
     },
     {
-      "ask": "Why does Meg let Chad have her chip?",
-      "listenFor": "Meg ate much of the dish and Chad had less, so she made it fair. You want cause and effect, not just \"she was nice.\""
+      "ask": "How much is left in the chip bag when Meg checks it?",
+      "listenFor": "One chip. Lines eight and nine say the bag is not full and one chip is in it."
     },
     {
       "ask": "Was that a fair thing for Meg to do? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, because Chad had hardly any chips left.\""
+      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, because Chad had less of the dish.\""
     }
   ]
 }
