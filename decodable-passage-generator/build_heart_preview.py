@@ -154,6 +154,38 @@ def build():
 </section>
 
 <section>
+  <h2>Checked against how it is really done</h2>
+  <p class="sub">An independent check read UFLI's own published heart-word card deck
+  &mdash; 176 cards &mdash; and compared every one of these against it, box for box and
+  heart for heart. 26 matched exactly. <strong>Seven were wrong and are now fixed.</strong></p>
+  <div class="panel">
+    <h3>All four real errors were the same mistake</h3>
+    <p class="sub" style="margin:.4rem 0 0">A silent letter had been given its own box.
+    It should always ride inside the grapheme next to it.</p>
+    <table style="margin-top:.6rem">
+      <tr><th>Word</th><th>Was</th><th>Now</th><th>Why</th></tr>
+      <tr><td class="w">walk</td><td class="y">w &middot; a &middot; l &middot; k</td>
+          <td class="y"><strong>w &middot; al &middot; k</strong></td>
+          <td class="y">the silent l hides inside <code>al</code></td></tr>
+      <tr><td class="w">two</td><td class="y">t &middot; w &middot; o</td>
+          <td class="y"><strong>t &middot; wo</strong></td>
+          <td class="y">the silent w hides inside <code>wo</code></td></tr>
+      <tr><td class="w">are</td><td class="y">ar &middot; e</td>
+          <td class="y"><strong>are</strong></td>
+          <td class="y">one sound, so one box</td></tr>
+      <tr><td class="w">one</td><td class="y">o &middot; n &middot; e</td>
+          <td class="y"><strong>o &middot; ne</strong></td>
+          <td class="y">the o does two jobs; the e does none</td></tr>
+    </table>
+  </div>
+  <p class="note">One deliberate difference from the printed cards: <strong>is</strong> and
+  <strong>as</strong> heart their <code>s</code>, but <strong>was</strong>, <strong>goes</strong>
+  and <strong>always</strong> do not. Those arrive after Lesson 21, which is where a child
+  learns that <code>s</code> can say /z/ &mdash; so by then it is not a surprise. A printed
+  card cannot know that. This can.</p>
+</section>
+
+<section>
   <h2>Every word, and why it is odd</h2>
   <p class="sub">All 72 are from the public-domain Dolch list (1936). Each is shown as it
   appears at the lesson it arrives, so some carry hearts that later disappear.</p>

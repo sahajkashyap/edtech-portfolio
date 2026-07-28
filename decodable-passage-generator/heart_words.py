@@ -53,6 +53,13 @@ class HeartWord:
         return f"<{self.word} L{self.lesson}>"
 
 
+# One consequence of the state-dependent model, worth stating because it looks
+# like an omission next to a printed card deck: `is` and `as` heart their `s`
+# (it says /z/), but `was`, `goes` and `always` do not. Those arrive after
+# Lesson 21, which is where a child is taught that s can say /z/ -- so by then
+# it is no longer a surprise. A static card cannot make that distinction; this
+# can, and the whole point of a heart is to mark what the child does not yet
+# know.
 WORDS = []
 
 
@@ -83,10 +90,11 @@ add("be",   [("b", 17), ("e", 66)], 23, "open syllable")
 add("me",   [("m", 2), ("e", 66)], 23, "open syllable")
 add("from", [("f", 7), ("r", 24), ("o", None), ("m", 2)], 25, "o says /u/")
 add("look", [("l", 26), ("oo", 89), ("k", 22)], 26, "regular once oo is taught")
-add("are",  [("ar", 77), ("e", None)], 27, "the e does not lengthen anything")
+add("are",  [("are", None)], 27, "the whole thing says /ar/; the e on the end does nothing")
 add("was",  [("w", 28), ("a", None), ("s", 21)], 29, "a says /u/ and s says /z/")
 add("you",  [("y", 30), ("ou", 115)], 31, "ou says /oo/")
-add("what", [("wh", 50), ("a", 94), ("t", 4)], 33, "a says /o/")
+add("what", [("wh", 50), ("a", 94), ("t", 4)], 33,
+    "a says /o/, and wh has not been taught yet")
 add("have", [("h", 23), ("a", 1), ("ve", 62)], 33, "no English word ends in v")
 add("your", [("y", 30), ("our", None)], 42, "our says /or/")
 add("want", [("w", 28), ("a", 94), ("n", 9), ("t", 4)], 42, "a says /o/ after w")
@@ -99,7 +107,8 @@ add("we",   [("w", 28), ("e", 66)], 45, "open syllable")
 add("they", [("th", 46), ("ey", 114)], 46, "ey says /a/")
 add("their",[("th", 46), ("eir", None)], 46, "eir says /air/")
 add("were", [("w", 28), ("ere", None)], 47, "ere says /er/")
-add("walk", [("w", 28), ("a", None), ("l", None), ("k", 22)], 48, "a says /aw/, l is silent")
+add("walk", [("w", 28), ("al", None), ("k", 22)], 48,
+    "al together says /aw/ — the l is silent and hides inside it. Careful: the l in \"always\" IS said.")
 add("could",[("c", 14), ("oul", None), ("d", 13)], 50, "oul says /oo/")
 add("would",[("w", 28), ("oul", None), ("d", 13)], 50, "oul says /oo/")
 add("or",   [("or", 78)], 51, "regular once or is taught")
@@ -109,16 +118,19 @@ add("where",[("wh", 50), ("ere", None)], 52, "ere says /air/")
 add("who",  [("wh", None), ("o", None)], 54, "wh says /h/, o says /oo/")
 add("my",   [("m", 2), ("y", 73)], 55, "y says its name")
 add("by",   [("b", 17), ("y", 73)], 55, "y says its name")
-add("one",  [("o", None), ("n", 9), ("e", None)], 58, "starts with a /w/ sound from nowhere")
-add("once", [("o", None), ("n", 9), ("ce", 60)], 58, "same as one")
-add("two",  [("t", 4), ("w", None), ("o", None)], 63, "w is silent, o says /oo/")
-add("does", [("d", 13), ("o", None), ("es", None)], 63, "o says /u/, es says /z/")
+add("one",  [("o", None), ("ne", 9)], 58,
+    "the o does two jobs at once — it makes the /w/ AND the /u/. Nothing else in English does this")
+add("once", [("o", None), ("n", 9), ("ce", 60)], 58,
+    "like one — the o does two jobs, making the /w/ and the /u/")
+add("two",  [("t", 4), ("wo", None)], 63, "wo together says /oo/ — the w is silent")
+add("does", [("d", 13), ("oe", None), ("s", 21)], 63, "oe says /u/, s says /z/")
 add("any",  [("a", None), ("n", 9), ("y", 74)], 64, "a says /e/")
 add("many", [("m", 2), ("a", None), ("n", 9), ("y", 74)], 64, "a says /e/")
-add("been", [("b", 17), ("ee", None), ("n", 9)], 65, "ee says /i/ here")
+add("been", [("b", 17), ("ee", None), ("n", 9)], 65,
+    "ee says /i/ here, not /ee/ (in British English it does say /ee/)")
 add("into", [("i", 8), ("n", 9), ("t", 4), ("o", None)], 65, "o says /oo/")
 add("because", [("b", 17), ("e", 66), ("c", 14), ("au", None), ("se", None)], 67,
-    "au says /u/, se says /z/")
+    "au says /aw/, se says /z/")
 add("come", [("c", 14), ("o", None), ("me", None)], 62, "o says /u/; the e does not lengthen")
 add("some", [("s", 3), ("o", None), ("me", None)], 62, "o says /u/; the e does not lengthen")
 add("woman", [("w", 28), ("o", None), ("m", 2), ("a", None), ("n", 9)], 69,
@@ -131,8 +143,10 @@ add("mother", [("m", 2), ("o", None), ("th", 46), ("er", 80)], 81, "o says /u/")
 add("brother", [("b", 17), ("r", 24), ("o", None), ("th", 46), ("er", 80)], 81, "o says /u/")
 add("father", [("f", 7), ("a", None), ("th", 46), ("er", 80)], 83, "a says /o/")
 add("water", [("w", 28), ("a", None), ("t", 4), ("er", 80)], 83, "a says /o/")
-add("today", [("t", 4), ("o", None), ("d", 13), ("ay", 84)], 84, "o says /oo/")
-add("very", [("v", 33), ("er", None), ("y", 74)], 84, "er says /air/")
+add("today", [("t", 4), ("o", None), ("d", 13), ("ay", 84)], 84,
+    "the o is a lazy little /u/ sound")
+add("very", [("v", 33), ("er", None), ("y", 74)], 84,
+    "here er sounds like air, not like the /er/ in her")
 add("again", [("a", None), ("g", 16), ("ai", None), ("n", 9)], 86, "a is a schwa, ai says /e/")
 add("always", [("a", None), ("l", 26), ("w", 28), ("ay", 84), ("s", 21)], 87, "a says /aw/")
 add("door", [("d", 13), ("oor", None)], 89, "oor says /or/")
