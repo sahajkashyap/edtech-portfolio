@@ -3,111 +3,8 @@
  "heartWordContract": "allowedHeartWords are EXEMPT from forbiddenLetterPatterns. 'the' contains th and is legal from lesson 1 because it is learned by sight, not sounded out. Any checker must test heart-word membership BEFORE testing letter patterns.",
  "source": "phonics-assessment-tool/index.html curriculum object",
  "totalLessons": 128,
- "correctedAgainstUFLI": [
-  {
-   "lesson": 10,
-   "toolSays": "CVC Practice (g, i)",
-   "ufliTeaches": "CVC Practice (a, i)",
-   "note": "tool says '(g, i)'; UFLI has (a, i). The letter g is Lesson 16."
-  },
-  {
-   "lesson": 11,
-   "toolSays": "Nasalized A (am, on)",
-   "ufliTeaches": "Nasalized A (am, an)",
-   "note": "tool says '(am, on)'; UFLI has am/an."
-  },
-  {
-   "lesson": 27,
-   "toolSays": "l /l/ Part 2, ai",
-   "ufliTeaches": "l /l/ Part 2",
-   "note": "tool says 'l /l/ Part 2, ai'. UFLI lists no second item; the stray letters are the -al ending misread as 'ai'. The vowel team ai is Lesson 84, and is NOT taught here."
-  },
-  {
-   "lesson": 51,
-   "toolSays": "ng /n/",
-   "ufliTeaches": "ng /ng/",
-   "note": "notation only; tool wrote /n/."
-  },
-  {
-   "lesson": 52,
-   "toolSays": "nk /nk/",
-   "ufliTeaches": "nk /ngk/",
-   "note": "notation only; tool wrote /nk/."
-  },
-  {
-   "lesson": 58,
-   "toolSays": "u /\u016b/, /\u016b/",
-   "ufliTeaches": "u_e /u/, /yu/",
-   "note": "tool says 'u /u/, /u/'. It is the VCe pattern u_e, and it carries a second sound /yu/ (cube) the tool lost."
-  },
-  {
-   "lesson": 67,
-   "toolSays": "Closed/Closed",
-   "ufliTeaches": "Compound Words, Closed/Closed",
-   "note": "tool says 'Closed/Closed'. UFLI splits this into 67a Compound Words and 67b Closed/Closed; compound words were missing."
-  },
-  {
-   "lesson": 90,
-   "toolSays": "oo /\u016d/",
-   "ufliTeaches": "oo /oo/ (moon)",
-   "note": "tool wrote a breve, which is the book sound. UFLI Lesson 90 is the long oo. Lesson 89 is the other one."
-  },
-  {
-   "lesson": 93,
-   "toolSays": "au, aw, ugh /aw/",
-   "ufliTeaches": "au, aw, augh /aw/",
-   "note": "tool says 'ugh'; UFLI has augh (caught, taught)."
-  },
-  {
-   "lesson": 94,
-   "toolSays": "\u0259 /\u0259/, \u0259 /\u0259/",
-   "ufliTeaches": "ea /e/ (head), a /o/ (want)",
-   "note": "tool says 'schwa'. UFLI has no schwa lesson. Lesson 94 teaches short e spelled ea, and short o spelled a. This was the single largest error: it omitted two real sound-spellings and admitted one UFLI does not teach."
-  },
-  {
-   "lesson": 98,
-   "toolSays": "Silent Letters (kn, wr, mb, m)",
-   "ufliTeaches": "Silent Letters (kn, wr, mb)",
-   "note": "tool says '(kn, wr, mb, m)'. UFLI teaches THREE patterns here. The stray 'm' is the /m/ of 'mb /m/' split off in typing. It is not 'mn' -- mn is not taught anywhere in the 128."
-  },
-  {
-   "lesson": 111,
-   "toolSays": "-ar, -or, -er/",
-   "ufliTeaches": "ar /er/, or /er/",
-   "note": "tool says '-ar, -or, -er/'; the third item is spurious."
-  },
-  {
-   "lesson": 113,
-   "toolSays": "ear /\u025br/",
-   "ufliTeaches": "ear /ear/ (hear)",
-   "note": "tool wrote the /er/ sound. UFLI Lesson 113 is the 'hear' sound, not the 'her' sound."
-  },
-  {
-   "lesson": 114,
-   "toolSays": "Alternate /\u0101/ (ei, ey, eigh, high, ea)",
-   "ufliTeaches": "Alternate /a/ (ei, eigh, ey, ea, aigh)",
-   "note": "tool says 'high'; UFLI has 'aigh'. Previously dropped, so aigh was never taught at all."
-  },
-  {
-   "lesson": 116,
-   "toolSays": "ough /aw/, /\u0259/",
-   "ufliTeaches": "ough /aw/, /o/",
-   "note": "tool wrote schwa for the second sound; UFLI has long o."
-  },
-  {
-   "lesson": 117,
-   "toolSays": "Signal Vowels (c /s/, s /z/, g /j/)",
-   "ufliTeaches": "Signal Vowels (c /s/, g /j/)",
-   "note": "tool adds 's /z/'; UFLI's signal-vowel lesson is c and g only."
-  },
-  {
-   "lesson": 127,
-   "toolSays": "uni-, bi-, tri",
-   "ufliTeaches": "bi-, tri-, uni-",
-   "note": "tool drops the hyphen on 'tri'."
-  }
- ],
- "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool/index.html carries these same typos and will re-import them unless fixed there too.",
+ "correctedAgainstUFLI": [],
+ "correctionsStillNeededInTheAssessmentTool": "None. The assessment tool was corrected at source, 2026-07-28.",
  "letterPatternTaughtAt": {
   "ff": 42,
   "ll": 42,
@@ -165,7 +62,7 @@
   {
    "lesson": 1,
    "name": "Lesson 1",
-   "skill": "a /\u0251/",
+   "skill": "a /\u0103/",
    "toolSays": null,
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
@@ -740,7 +637,7 @@
   {
    "lesson": 8,
    "name": "Lesson 8",
-   "skill": "i /\u026a/",
+   "skill": "i /\u012d/",
    "toolSays": null,
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
@@ -916,7 +813,7 @@
    "lesson": 10,
    "name": "Lesson 10",
    "skill": "CVC Practice (a, i)",
-   "toolSays": "CVC Practice (g, i)",
+   "toolSays": "CVC Practice (a, i)",
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
    "introduces": {
@@ -1002,7 +899,7 @@
    "lesson": 11,
    "name": "Lesson 11",
    "skill": "Nasalized A (am, an)",
-   "toolSays": "Nasalized A (am, on)",
+   "toolSays": "Nasalized A (am, an)",
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
    "introduces": {
@@ -1091,7 +988,7 @@
   {
    "lesson": 12,
    "name": "Lesson 12",
-   "skill": "o /\u0254/",
+   "skill": "o /\u014f/",
    "toolSays": null,
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
@@ -1364,7 +1261,7 @@
   {
    "lesson": 15,
    "name": "Lesson 15",
-   "skill": "u /\u028a/",
+   "skill": "u /\u016d/",
    "toolSays": null,
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
@@ -1646,7 +1543,7 @@
   {
    "lesson": 18,
    "name": "Lesson 18",
-   "skill": "e /e/",
+   "skill": "e /\u0115/",
    "toolSays": null,
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
@@ -2532,7 +2429,7 @@
    "lesson": 27,
    "name": "Lesson 27",
    "skill": "l /l/ Part 2",
-   "toolSays": "l /l/ Part 2, ai",
+   "toolSays": "l /l/ Part 2",
    "unit": "Unit 1: Alphabet",
    "toolUnit": "Unit 1: Alphabet & Sounds",
    "introduces": {
@@ -5177,8 +5074,8 @@
   {
    "lesson": 51,
    "name": "Lesson 51",
-   "skill": "ng /ng/",
-   "toolSays": "ng /n/",
+   "skill": "ng /\u014b/",
+   "toolSays": "ng /\u014b/",
    "unit": "Unit 3: Digraphs",
    "toolUnit": "Unit 3: Digraphs",
    "introduces": {
@@ -5294,8 +5191,8 @@
   {
    "lesson": 52,
    "name": "Lesson 52",
-   "skill": "nk /ngk/",
-   "toolSays": "nk /nk/",
+   "skill": "nk /\u014bk/",
+   "toolSays": "nk /\u014bk/",
    "unit": "Unit 3: Digraphs",
    "toolUnit": "Unit 3: Digraphs",
    "introduces": {
@@ -6024,8 +5921,8 @@
   {
    "lesson": 58,
    "name": "Lesson 58",
-   "skill": "u_e /u/, /yu/",
-   "toolSays": "u /\u016b/, /\u016b/",
+   "skill": "u_e /\u016b/, /y\u016b/",
+   "toolSays": "u_e /\u016b/, /y\u016b/",
    "unit": "Unit 4: VCe",
    "toolUnit": "Unit 4: VCe & Special Patterns",
    "introduces": {
@@ -7211,7 +7108,7 @@
    "lesson": 67,
    "name": "Lesson 67",
    "skill": "Compound Words, Closed/Closed",
-   "toolSays": "Closed/Closed",
+   "toolSays": "Compound Words, Closed/Closed",
    "unit": "Unit 5: Reading Longer Words",
    "toolUnit": "Unit 7: Reading Longer Words & Endings",
    "introduces": {
@@ -10732,8 +10629,8 @@
   {
    "lesson": 90,
    "name": "Lesson 90",
-   "skill": "oo /oo/ (moon)",
-   "toolSays": "oo /\u016d/",
+   "skill": "oo /\u016b/ (moon)",
+   "toolSays": "oo /\u016b/ (moon)",
    "unit": "Unit 9: Other Vowel Teams",
    "toolUnit": "Unit 6: R-Controlled & Other Vowels",
    "introduces": {
@@ -11245,7 +11142,7 @@
    "lesson": 93,
    "name": "Lesson 93",
    "skill": "au, aw, augh /aw/",
-   "toolSays": "au, aw, ugh /aw/",
+   "toolSays": "au, aw, augh /aw/",
    "unit": "Unit 9: Other Vowel Teams",
    "toolUnit": "Unit 6: R-Controlled & Other Vowels",
    "introduces": {
@@ -11418,8 +11315,8 @@
   {
    "lesson": 94,
    "name": "Lesson 94",
-   "skill": "ea /e/ (head), a /o/ (want)",
-   "toolSays": "\u0259 /\u0259/, \u0259 /\u0259/",
+   "skill": "ea /\u0115/ (head), a /\u014f/ (want)",
+   "toolSays": "ea /\u0115/ (head), a /\u014f/ (want)",
    "unit": "Unit 9: Other Vowel Teams",
    "toolUnit": "Unit 6: R-Controlled & Other Vowels",
    "introduces": {
@@ -12095,7 +11992,7 @@
    "lesson": 98,
    "name": "Lesson 98",
    "skill": "Silent Letters (kn, wr, mb)",
-   "toolSays": "Silent Letters (kn, wr, mb, m)",
+   "toolSays": "Silent Letters (kn, wr, mb)",
    "unit": "Unit 10: Diphthongs and Silent Letters",
    "toolUnit": "Unit 4: VCe & Special Patterns",
    "introduces": {
@@ -14455,8 +14352,8 @@
   {
    "lesson": 111,
    "name": "Lesson 111",
-   "skill": "ar /er/, or /er/",
-   "toolSays": "-ar, -or, -er/",
+   "skill": "ar /\u0259r/, or /\u0259r/",
+   "toolSays": "ar /\u0259r/, or /\u0259r/",
    "unit": "Unit 13: Low Frequency Spelling",
    "toolUnit": "Unit 8: Affixes & Advanced Patterns",
    "introduces": {
@@ -14844,8 +14741,8 @@
   {
    "lesson": 113,
    "name": "Lesson 113",
-   "skill": "ear /ear/ (hear)",
-   "toolSays": "ear /\u025br/",
+   "skill": "ear /ir/ (hear)",
+   "toolSays": "ear /ir/ (hear)",
    "unit": "Unit 13: Low Frequency Spelling",
    "toolUnit": "Unit 8: Affixes & Advanced Patterns",
    "introduces": {
@@ -15035,8 +14932,8 @@
   {
    "lesson": 114,
    "name": "Lesson 114",
-   "skill": "Alternate /a/ (ei, eigh, ey, ea, aigh)",
-   "toolSays": "Alternate /\u0101/ (ei, ey, eigh, high, ea)",
+   "skill": "Alternate /\u0101/ (ei, eigh, ey, ea, aigh)",
+   "toolSays": "Alternate /\u0101/ (ei, eigh, ey, ea, aigh)",
    "unit": "Unit 13: Low Frequency Spelling",
    "toolUnit": "Unit 8: Affixes & Advanced Patterns",
    "introduces": {
@@ -15410,8 +15307,8 @@
   {
    "lesson": 116,
    "name": "Lesson 116",
-   "skill": "ough /aw/, /o/",
-   "toolSays": "ough /aw/, /\u0259/",
+   "skill": "ough /aw/, /\u014d/",
+   "toolSays": "ough /aw/, /\u014d/",
    "unit": "Unit 13: Low Frequency Spelling",
    "toolUnit": "Unit 8: Affixes & Advanced Patterns",
    "introduces": {
@@ -15593,7 +15490,7 @@
    "lesson": 117,
    "name": "Lesson 117",
    "skill": "Signal Vowels (c /s/, g /j/)",
-   "toolSays": "Signal Vowels (c /s/, s /z/, g /j/)",
+   "toolSays": "Signal Vowels (c /s/, g /j/)",
    "unit": "Unit 13: Low Frequency Spelling",
    "toolUnit": "Unit 8: Affixes & Advanced Patterns",
    "introduces": {
@@ -17506,7 +17403,7 @@
    "lesson": 127,
    "name": "Lesson 127",
    "skill": "bi-, tri-, uni-",
-   "toolSays": "uni-, bi-, tri",
+   "toolSays": "bi-, tri-, uni-",
    "unit": "Unit 14: Additional Affixes",
    "toolUnit": "Unit 8: Affixes & Advanced Patterns",
    "introduces": {
