@@ -1,36 +1,36 @@
 {
   "lesson": 9,
-  "title": "A Fin in the Pan",
+  "title": "A Pin in the Mat",
   "lines": [
-    "Tim sat at a tin pan.",
-    "A fin is in the pan!",
-    "It is a tan fin.",
-    "Sam! Sis! A fin is in it!",
-    "Nip, nip! The fin is at Sis.",
-    "Tip the pan, Tim!",
-    "Fan it, Sam. Fan the fin.",
-    "Nap, fin! Nap in the tin."
+    "Tim sat at a mat. Nan sat at it.",
+    "A pin is in the mat!",
+    "A tin pin! It is at Tim.",
+    "Tip the mat, Nan. Tip it!",
+    "The pin is in a pan.",
+    "Nan sat the pin in a tin.",
+    "The tin is at Nan. The pin is in.",
+    "Tim and Nan sit at the mat."
   ],
   "warmup": [
-    "fin",
-    "pan",
+    "pin",
     "tin",
-    "tan",
-    "nip",
-    "fan"
+    "pan",
+    "mat",
+    "tip",
+    "sat"
   ],
   "questions": [
     {
-      "ask": "What was in the tin pan?",
-      "listenFor": "A fin, which means a fish. It is said in the second line. If your child is stuck, point at that line rather than telling them."
+      "ask": "What was in the mat?",
+      "listenFor": "A pin. Line two says it. If your child is not sure, point at that line and let them read it again rather than telling them."
     },
     {
-      "ask": "Who did the fin nip?",
-      "listenFor": "Sis. You are listening for the name. If they say the girl, ask which one, and let them find the line that names her."
+      "ask": "Where did Nan put the pin so it was out of the way?",
+      "listenFor": "In a tin. Line six says it. One word is plenty."
     },
     {
-      "ask": "Do you think the fin liked the tin better than the pan? Tell me why.",
-      "listenFor": "There is no wrong answer. Listen for a reason from the story, like the fin napped in the tin or it nipped when it was in the pan."
+      "ask": "Why do you think Nan moved the pin? Tell me what you think.",
+      "listenFor": "There is no wrong answer. Listen for a reason of their own, such as it could poke someone, or so it does not get lost."
     }
   ]
 }

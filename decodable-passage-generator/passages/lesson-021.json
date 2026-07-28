@@ -1,36 +1,36 @@
 {
   "lesson": 21,
-  "title": "The Dogs Got the Buns",
+  "title": "The Bugs in the Bins",
   "lines": [
-    "Mom set ten buns on a pan.",
-    "Dogs! Ten dogs did get up.",
-    "The dogs got the buns. Mom is mad.",
-    "The dogs did dig in the mud.",
-    "Buns in the mud! Bugs on the buns!",
-    "Mom can not get the buns.",
-    "But the pigs did get the buns.",
-    "Mom is not mad. The pigs get buns."
+    "Ben and Meg got ten tin bins.",
+    "\"Bugs can nap in the bins,\" said Ben.",
+    "Meg dug and got bugs and buds.",
+    "The bugs did not nap. The bugs did dig!",
+    "Ten bugs got up and got in the beds!",
+    "Mom and Dad did not nap.",
+    "\"Get the bugs!\" said Mom.",
+    "Ben and Meg set the bugs in the mud."
   ],
   "warmup": [
-    "buns",
-    "dogs",
-    "pigs",
+    "bins",
     "bugs",
-    "pan",
+    "buds",
+    "beds",
+    "dug",
     "mud"
   ],
   "questions": [
     {
-      "ask": "Where did the dogs take the buns?",
-      "listenFor": "Into the mud. It is stated in the story. If your child is unsure, point to the word mud and read that line again."
+      "ask": "What did Ben and Meg put the bugs in?",
+      "listenFor": "Ten tin bins. The story says it. If your child is unsure, point to the word bins and read that line again."
     },
     {
-      "ask": "Who ate the buns in the end?",
-      "listenFor": "The pigs. Listen for pigs, not dogs - the dogs took them, the pigs finished them."
+      "ask": "Why did Mom and Dad not get a nap?",
+      "listenFor": "Because the bugs got out and got in the beds. Listen for the bugs in the beds - that is the problem in the story."
     },
     {
-      "ask": "Do you think Mom should bake more buns? Tell me why you think so.",
-      "listenFor": "Either answer is fine. You are listening for a reason - the dogs would take them again, or everybody was hungry."
+      "ask": "Do you think the mud was a good spot for the bugs? Tell me why.",
+      "listenFor": "Any answer is fine. You are listening for a reason - bugs dig in mud, or the bins were never going to hold them."
     }
   ]
 }

@@ -1,36 +1,36 @@
 {
   "lesson": 18,
-  "title": "Ben Met a Bug",
+  "title": "Ben and Meg Get a Cod",
   "lines": [
-    "Ben got a bug in a net.",
-    "The bug is a pet.",
-    "Ben set the bug in a tin.",
-    "The bug did not beg. It did not sit.",
-    "It got up. It got on the bed!",
-    "Dad met the bug on the bed.",
-    "The bug is not a pet. It is a bug.",
-    "Ben is sad. But Ben can get a pup."
+    "Dad and Ben and Meg got a big net.",
+    "\"A big cod is in the bog,\" said Ben.",
+    "Dad set the net in the bog.",
+    "Ben and Meg did tug and tug.",
+    "The net got a cod and a bug!",
+    "\"Do not get the bug,\" said Meg.",
+    "Ben did tip the bug in the mud.",
+    "Mom got a pot and fed Ben and Meg."
   ],
   "warmup": [
     "net",
-    "get",
-    "bed",
-    "met",
     "set",
-    "pet"
+    "get",
+    "fed",
+    "cod",
+    "bog"
   ],
   "questions": [
     {
-      "ask": "Where did Ben put the bug at first?",
-      "listenFor": "In a tin. The story says it. If your child is stuck, help them find the word tin and read that line again."
+      "ask": "What came up in the net?",
+      "listenFor": "A cod and a bug. The story says both. If your child names only one, have them read that line again."
     },
     {
-      "ask": "Why did the bug end up going free?",
-      "listenFor": "It would not stay put - it climbed out and got on the bed. Listen for the bug not acting like a pet."
+      "ask": "Who set the net in the bog?",
+      "listenFor": "Dad. Listen for Dad - Ben and Meg did the tugging, but Dad was the one at the water."
     },
     {
-      "ask": "Do you think a bug makes a good pet? Tell me why you think so.",
-      "listenFor": "Either answer works. You are listening for a reason, and a reason pulled from the story is best of all."
+      "ask": "Why do you think Meg said not to get the bug? Tell me what you think.",
+      "listenFor": "Any answer is fine - a bug is not for the pot, or the bug was better off in the mud. You want a reason, not a right answer."
     }
   ]
 }

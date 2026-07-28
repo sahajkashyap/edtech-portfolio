@@ -42,7 +42,7 @@
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
   .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
@@ -53,7 +53,7 @@
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 9px 13px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
   .tip p { margin: 3px 0; line-height: 1.38; }
 
@@ -63,19 +63,24 @@
   .answers .qa .aa { color: #555; }
 
   /* ---- the picture ---- */
-  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
   .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
+.hwrow { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 1px 12px; align-items: flex-start; }
+  .hwcard { text-align: center; }
+  .hwcard svg { display: block; }
+  .hwword { font-size: 12px; color: #666; margin-top: 1px; letter-spacing: 0.04em; }
+
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
   .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
   .passage .ln { display: block; }
@@ -96,11 +101,11 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 4px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -117,7 +122,7 @@
   <div class="band">
     <div>
       <div class="tag">Decodable Passage &middot; Reading Foundations</div>
-      <h1>Bad Luck, Nick!</h1>
+      <h1>Off the Dock</h1>
     </div>
     <div class="flagged">Lesson 49<br>Digraphs Review 1</div>
   </div>
@@ -148,19 +153,21 @@
   <h2>Checking they understood</h2>
   <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
   <div class="answers">
-    <p class="qa"><span class="qq">1. What does Nick pull up before he gets a fish?</span><br><span class="aa">A shell and a thick sock. Two things - if they name only one, ask "and what else?"</span></p>
-    <p class="qa"><span class="qq">2. How does Nick know a fish is on his rod?</span><br><span class="aa">The rod dips. It is stated in the story - have them find that line rather than telling them.</span></p>
-    <p class="qa"><span class="qq">3. Do you think Nick still has bad luck at the end? Tell me why.</span><br><span class="aa">Either answer is correct. You are listening for a reason tied to the last line of the story.</span></p>
+    <p class="qa"><span class="qq">1. What does Nick pull up before he gets a fish?</span><br><span class="aa">A shell and a wet sock. Two things - if they name only one, ask "and what else?"</span></p>
+    <p class="qa"><span class="qq">2. What does Dad tell Nick to do?</span><br><span class="aa">Sit still, be quiet, and do not let go. It is the line in quote marks - have them find the talking.</span></p>
+    <p class="qa"><span class="qq">3. Nick pulled up a shell and a sock before the fish came. What do you think kept him going? Tell me why.</span><br><span class="aa">There is no wrong answer. You are listening for a reason from the story, like Dad told him to hold on, or he wanted a fish like Josh.</span></p>
   </div>
 
   <div class="audit">
     <div class="h">Why you can trust this page &middot; checked, word by word</div>
-    <p style="margin:0 0 5px;"><strong>Every one of the 48 words in this story can be
+    <p style="margin:0 0 5px;"><strong>Every one of the 65 words in this story can be
     sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
     If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
     spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
-    <code>a</code> <code>and</code> <code>for</code> <code>in</code> <code>is</code> <code>of</code> <code>the</code> <code>to</code> <code>you</code>.</p>
+    <p style="margin:0;">The only words not sounded out are the 33 heart words
+    taught so far &mdash; and even those are mostly regular. Only the marked part of each
+    is learned by heart. The newest are
+    <code>was</code> <code>we</code> <code>were</code> <code>what</code> <code>you</code> <code>your</code>.</p>
   </div>
 
   <div class="foot">
@@ -177,7 +184,7 @@
     <div>
       <span class="owner child" style="margin-bottom:3px">For the reader</span>
       <div class="tag">My reading page</div>
-      <h1>Bad Luck, Nick!</h1>
+      <h1>Off the Dock</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
@@ -186,22 +193,22 @@
   <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
 
   <h2>Say these first</h2>
-  <div class="warm"><div>fish</div><div>dock</div><div>shell</div><div>thick</div><div>sock</div><div>such</div></div>
-  <p class="rowlab">Heart words &mdash; read each one, then check the box.</p>
-  <div class="hearts"><span class="hw"><span class="ubox"></span>a</span><span class="hw"><span class="ubox"></span>and</span><span class="hw"><span class="ubox"></span>for</span><span class="hw"><span class="ubox"></span>in</span><span class="hw"><span class="ubox"></span>is</span><span class="hw"><span class="ubox"></span>of</span><span class="hw"><span class="ubox"></span>the</span><span class="hw"><span class="ubox"></span>to</span><span class="hw"><span class="ubox"></span>you</span></div>
+  <div class="warm"><div>fish</div><div>dock</div><div>shell</div><div>sock</div><div>such</div><div>tugs</div></div>
+
+  <h2>Heart words</h2><p class="rowlab">Say it. Say each sound. The <span style="color:#b23f28">&hearts;</span> box is the part to learn by heart.</p><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 53 41" width="53" height="41" role="img" aria-label="were, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">w</text><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">ere</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg></div><div class="hwcard"><svg viewBox="0 0 81 41" width="81" height="41" role="img" aria-label="walk, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">w</text><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">al</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/><rect x="56" y="0" width="25" height="25" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="68" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">k</text></svg></div></div>
 
   <h2>Read the story</h2>
   <div class="passage">
-    <div class="ptitle">Bad Luck, Nick!</div>
+    <div class="ptitle">Off the Dock</div>
     <p>
-      <span class="ln">Josh and Nick fish off the dock.</span>
-      <span class="ln">Josh gets a big fish.</span>
-      <span class="ln">Nick gets a shell, not a fish.</span>
-      <span class="ln">Then Nick gets a thick sock!</span>
-      <span class="ln">Nick has such bad luck.</span>
-      <span class="ln">Then his rod dips!</span>
-      <span class="ln">Nick tugs and tugs on it.</span>
-      <span class="ln">Nick gets a fish, and it is big!</span>
+      <span class="ln">Josh and Nick fish off the dock with Dad.</span>
+      <span class="ln">Josh gets a big fish in his net.</span>
+      <span class="ln">Nick tugs and tugs. He gets a shell.</span>
+      <span class="ln">Then Nick tugs up a wet sock!</span>
+      <span class="ln">"That is not a fish!" said Nick.</span>
+      <span class="ln">"Sit and hush. Do not let go," said Dad.</span>
+      <span class="ln">Nick sits. Then his rod dips and dips!</span>
+      <span class="ln">Up it hops. "Such a big fish!" said Josh.</span>
     </p>
   </div>
 
@@ -219,7 +226,7 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">Bad Luck, Nick! &mdash; my work page</h1>
+      <h1 style="font-size:18px;">Off the Dock &mdash; my work page</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
@@ -227,8 +234,8 @@
   <h2 style="margin-top:12px;">Think about it</h2>
 
   <div class="q"><span class="qtext">1. What does Nick pull up before he gets a fish?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">2. How does Nick know a fish is on his rod?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">3. Do you think Nick still has bad luck at the end? Tell me why.</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">2. What does Dad tell Nick to do?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">3. Nick pulled up a shell and a sock before the fish came. What do you think kept him going? Tell me why.</span><span class="qline"></span><span class="qline"></span></div>
 
 </div>
 
@@ -238,7 +245,7 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">Bad Luck, Nick! &mdash; my drawing page</h1>
+      <h1 style="font-size:18px;">Off the Dock &mdash; my drawing page</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>

@@ -1,36 +1,36 @@
 {
   "lesson": 6,
-  "title": "The Sap Map",
+  "title": "Pat and Tap",
   "lines": [
     "Sam sat at the mat.",
+    "Pat the mat, Sam! Pat, pat, pat!",
     "Pam sat as Sam sat.",
-    "A map is at the mat.",
-    "Sam, pat the map!",
-    "Pam, tap the map!",
-    "Sap! The map is sap.",
-    "Sam is sap. Pam is sap.",
-    "The map is at Sam. Pat the sap!"
+    "Tap the mat, Pam! Tap, tap!",
+    "Pat and tap! Pat and tap!",
+    "Tam sat at the mat. I am Tam!",
+    "Pat, Tam! Tap, Tam! Pat and tap!",
+    "Sam and Pam and Tam tap and tap."
   ],
   "warmup": [
     "sat",
+    "at",
     "mat",
-    "map",
-    "tap",
     "pat",
-    "at"
+    "tap",
+    "as"
   ],
   "questions": [
     {
-      "ask": "What is on the mat with Sam and Pam?",
-      "listenFor": "A map. It is said in the third line. If your child is not sure, point at that line and let them read it again rather than telling them."
+      "ask": "Who sat at the mat first?",
+      "listenFor": "Sam. It is the very first line. If your child is not sure, put a finger on that line and let them read it again rather than telling them."
     },
     {
-      "ask": "What got on the map?",
-      "listenFor": "Sap, the sticky juice that comes out of a tree. You are listening for the word sap, not a long answer. If they say sticky, that counts."
+      "ask": "Who came to the mat last?",
+      "listenFor": "Tam. Line six says it. A one word answer is a fine answer here."
     },
     {
-      "ask": "Do you think the map will come off Sam? Tell me why you think that.",
-      "listenFor": "There is no wrong answer. You are listening for a reason, like sap is sticky or they kept patting it. The reason matters more than the answer."
+      "ask": "What would you tap to make a good sound? Tell me why that one.",
+      "listenFor": "Any answer is a good answer. You are listening for a reason of their own, and it is a lovely excuse to go and tap on something together."
     }
   ]
 }

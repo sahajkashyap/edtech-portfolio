@@ -2,23 +2,35 @@
   "lesson": 57,
   "title": "Pete and These Hens",
   "lines": [
-    "Pete has five hens.",
+    "Pete has five hens. Jade is his pal.",
     "These hens like to hide.",
-    "The best hen is Eve.",
-    "Pete hunts for Eve at the lake.",
-    "Eve is not in the tall grass.",
-    "Steve the cat naps on a stone.",
-    "Eve sits on his back!",
-    "Steve gets up and Eve hops off.",
-    "Pete grins. That hen is brave."
+    "He hunts for Jade by the lake.",
+    "She is not in the tall grass.",
+    "Then he spots Rex the cat on a stone.",
+    "Jade sits on his back!",
+    "Rex gets up and she hops off.",
+    "\"She is brave,\" said Pete with a grin."
   ],
-  "warmup": ["hens", "hide", "lake", "stone", "brave", "five"],
+  "warmup": [
+    "hens",
+    "hide",
+    "lake",
+    "stone",
+    "brave",
+    "five"
+  ],
   "questions": [
-    {"ask": "Which hen does Pete hunt for?",
-     "listenFor": "Eve. If they can not recall the name, have them find the capital E on the page."},
-    {"ask": "Where is Eve hiding?",
-     "listenFor": "On Steve the cat's back. Listen for them putting the cat and the hen together, not just \"by the lake.\""},
-    {"ask": "Do you think Steve likes having a hen on him? Tell me why.",
-     "listenFor": "Either answer is fine. Look for a reason from the story, such as \"no, because he got up.\""}
+    {
+      "ask": "Which hen is Pete hunting for?",
+      "listenFor": "Jade. Her name is in the first line, so send them back to it."
+    },
+    {
+      "ask": "Where does Pete find Jade in the end?",
+      "listenFor": "On Rex the cat's back. If they say \"the lake,\" ask them to read the line about the stone again."
+    },
+    {
+      "ask": "Do you think Rex minds having a hen on his back? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason, such as \"no, because he just gets up and she hops off.\""
+    }
   ]
 }

@@ -1,36 +1,36 @@
 {
   "lesson": 51,
-  "title": "Ben the King",
+  "title": "A Song for the King",
   "lines": [
     "Ben is a king with a red cap.",
-    "Ben can not sing well.",
-    "When the king sings, the dogs run off.",
-    "A bug sits on his cap.",
-    "The bug sings a long song.",
-    "Ben hums with the bug.",
-    "The bug and the king sing well!",
-    "The dogs run back to Ben."
+    "He can not sing well at all.",
+    "When he sings, his dogs run off.",
+    "A bug with a red wing sits on Ben.",
+    "The bug sang a long song.",
+    "\"Sing with me,\" said the bug.",
+    "Ben and the bug sang, and the dogs sat.",
+    "Ben has a song. His dogs sing as well."
   ],
   "warmup": [
     "king",
     "sing",
+    "sang",
     "song",
     "long",
-    "bug",
-    "hums"
+    "wing"
   ],
   "questions": [
     {
-      "ask": "What do the dogs do when Ben sings?",
-      "listenFor": "They run off. It is right there in the story. If your child is not sure, have them go back and find the line with the word dogs in it."
+      "ask": "What do the dogs do when Ben sings on his own?",
+      "listenFor": "They run off. It is in the third line - have your child find the word dogs."
     },
     {
-      "ask": "Who helps Ben sing a better song?",
-      "listenFor": "The bug. Listen for them to connect the bug singing with the dogs coming back at the end."
+      "ask": "Who asks Ben to sing along?",
+      "listenFor": "The bug. Listen for them to connect the bug's line of talking with the dogs sitting down at the end."
     },
     {
-      "ask": "Do you think Ben is a good king? Tell me why.",
-      "listenFor": "Either answer works. You are listening for a reason tied to the story, like \"yes, because he kept trying\" or \"no, because his dogs ran away.\""
+      "ask": "Why do you think the dogs sat down that time? Tell me why.",
+      "listenFor": "Either answer is fine. You want a reason tied to the story, like \"the song was better with two of them.\""
     }
   ]
 }

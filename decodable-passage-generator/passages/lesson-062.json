@@ -1,24 +1,36 @@
 {
   "lesson": 62,
-  "title": "The Hens and the Rat",
+  "title": "The Log Swing",
   "lines": [
-    "Ten hens live at the lake.",
-    "Jane and Pete give them rice.",
-    "At nine, the rice is gone!",
-    "The hens have not had a bite.",
-    "Pete finds a huge rat in the shed.",
-    "The rat has the rice in his hole.",
-    "Jane and Pete give the rat cake.",
-    "The rat naps in his hole.",
-    "At last the hens have rice."
+    "Jane and Pete want a swing at home.",
+    "Dad slings a rope up on a big pine.",
+    "Pete gets a fine log to sit on.",
+    "But the log slips off the rope!",
+    "Jane cuts a hole in it with Dad.",
+    "The rope goes in the hole, and it holds.",
+    "Pete gets on. Jane pulls him back.",
+    "\"The best swing!\" said Pete with a smile."
   ],
-  "warmup": ["hens", "lake", "nine", "cake", "huge", "hole"],
+  "warmup": [
+    "rope",
+    "pine",
+    "hole",
+    "home",
+    "fine",
+    "smile"
+  ],
   "questions": [
-    {"ask": "Who took the rice?",
-     "listenFor": "The huge rat in the shed. If they are not sure, have them reread the line about the shed."},
-    {"ask": "What do Jane and Pete give the rat?",
-     "listenFor": "A bit of cake. Listen for them seeing that the cake is a trade, so the rat leaves the rice alone."},
-    {"ask": "Do you think it was fair to give the rat cake? Tell me why.",
-     "listenFor": "Either answer is fine. You want a reason, like \"yes, he was hungry too\" or \"no, he took the rice first.\""}
+    {
+      "ask": "What did Pete get to sit on?",
+      "listenFor": "A fine log. Line three says it. If your child is stuck, let them reread that line."
+    },
+    {
+      "ask": "Why did Jane cut a hole in the log?",
+      "listenFor": "Because the log kept slipping off the rope, and the rope could go through the hole. Lines four to six carry it."
+    },
+    {
+      "ask": "What would you make a swing seat out of? Tell me why that.",
+      "listenFor": "Any answer counts. You are listening for a reason that shows they understood why the log kept slipping."
+    }
   ]
 }

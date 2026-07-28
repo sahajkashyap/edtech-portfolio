@@ -1,36 +1,36 @@
 {
   "lesson": 22,
-  "title": "Kids in the Tub",
+  "title": "Kim and the Kit",
   "lines": [
-    "The pup did dig in the mud.",
-    "Ten kids got a big tub.",
-    "The kids did tug the pup in the tub.",
-    "It got up. It did tip the tub!",
-    "Mud is on the kids!",
-    "The pup did nap on the cot.",
-    "The kids sob. The pup is not sad.",
-    "Get in the tub, kids!"
+    "Ten kids get a big kit.",
+    "In it, Kim gets pegs and a net.",
+    "The kids dig and set up the pegs.",
+    "But a peg is bad and did not fit.",
+    "Kim gets a tin pin and taps it in.",
+    "The pin fits, and the net is up!",
+    "Ten kids sit in it. It is a den!",
+    "\"Kim did it,\" said a kid, and Kim nods."
   ],
   "warmup": [
     "kids",
-    "tub",
-    "pup",
-    "mud",
-    "tug",
-    "tip"
+    "kit",
+    "pegs",
+    "net",
+    "pin",
+    "fits"
   ],
   "questions": [
     {
-      "ask": "Why did the kids get a tub?",
-      "listenFor": "To wash the muddy pup. Listen for the mud - the tub only makes sense because the pup was dirty."
+      "ask": "What did the ten kids get?",
+      "listenFor": "A big kit, with pegs and a net in it. Lines one and two say it. Let your child reread rather than telling them."
     },
     {
-      "ask": "How did the kids end up muddy?",
-      "listenFor": "The pup tipped the tub over. If your child says \"it just happened,\" have them read that line again."
+      "ask": "What did Kim use when the peg did not fit?",
+      "listenFor": "A tin pin. Line five says it. One word is plenty here."
     },
     {
-      "ask": "Do you think the pup will get in the tub next time? Tell me why you think so.",
-      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like the pup got away with it, or the kids will hold on tighter."
+      "ask": "What would you make with a kit like that? Tell me why.",
+      "listenFor": "Any answer is a good answer. You are listening for the reason behind it, not the thing itself."
     }
   ]
 }

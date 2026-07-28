@@ -1,36 +1,36 @@
 {
   "lesson": 63,
-  "title": "Six Boxes",
+  "title": "Two Big Boxes",
   "lines": [
-    "Lin packs six boxes.",
-    "The boxes have dishes and socks.",
-    "A fox hides in the last box.",
-    "Lin misses it and shuts the lid.",
-    "The box tips and the fox dashes off.",
-    "Lin gasps and grins.",
+    "Lin packs two big boxes.",
+    "She tosses in dishes and socks.",
+    "A fox naps in the last box!",
+    "Lin shuts the lid and does not see him.",
+    "Lin lifts the box. It tips. The fox dashes!",
+    "\"What does a fox want with dishes?\" she said.",
     "Lin fixes the box and packs it.",
-    "Then Lin checks all six boxes."
+    "Then she checks the two boxes."
   ],
   "warmup": [
     "boxes",
     "dishes",
-    "fox",
-    "misses",
+    "tosses",
     "dashes",
-    "fixes"
+    "fixes",
+    "fox"
   ],
   "questions": [
     {
-      "ask": "Where did the fox hide?",
-      "listenFor": "In the last box. It is stated right in the story - if your child cannot find it, have them go back and reread that line instead of telling them."
+      "ask": "What does Lin put in the boxes?",
+      "listenFor": "Dishes and socks. Both are in the same line."
     },
     {
-      "ask": "Why does Lin check all six boxes at the end?",
-      "listenFor": "Cause and effect: she does not want another surprise. Any answer that connects the checking back to the fox is doing the thinking you want."
+      "ask": "Why does Lin check the boxes at the end?",
+      "listenFor": "So no fox is hiding in one this time. Let them say it in their own words."
     },
     {
-      "ask": "Do you think Lin was cross with the fox? Tell me why.",
-      "listenFor": "Either answer is fine. You are listening for a reason tied to the story - \"no, she grins\" or \"yes, it made a mess of her packing.\""
+      "ask": "What do you think the fox was doing in the box? Tell me why.",
+      "listenFor": "Any answer with a reason. The story says he was napping, so \"it was a soft bed\" fits well."
     }
   ]
 }

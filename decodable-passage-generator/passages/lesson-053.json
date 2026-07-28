@@ -1,15 +1,15 @@
 {
   "lesson": 53,
-  "title": "Crab in the Sand",
+  "title": "The Crab and the Twig",
   "lines": [
-    "Beth digs in the wet sand.",
-    "A small crab is in the sand!",
-    "The crab grabs a stick.",
-    "Beth claps and jumps back.",
-    "The crab drops the stick.",
-    "It runs fast and slips in a crack.",
-    "Beth sticks a twig in the flat sand.",
-    "The crab grabs it and is glad."
+    "Beth and Raj dig in the wet sand.",
+    "A small crab jumps up from the sand!",
+    "Beth claps and steps back fast.",
+    "\"Do not grab it,\" said Raj. \"It nips.\"",
+    "The crab grabs a stick and slips off.",
+    "It hid in a crack next to a rock.",
+    "Raj sticks a twig in the flat sand.",
+    "The crab grabs it, and they both grin."
   ],
   "warmup": [
     "crab",
@@ -21,16 +21,16 @@
   ],
   "questions": [
     {
-      "ask": "What does the crab grab first?",
-      "listenFor": "A stick. If they say the twig, point out the twig comes at the end and ask what came before it."
+      "ask": "Why does Raj say not to grab the crab?",
+      "listenFor": "It nips. It is right there in his line of talking - have them find the quote marks."
     },
     {
-      "ask": "Why does Beth jump back?",
-      "listenFor": "The crab grabbed the stick and surprised her. Cause and effect: the crab moved, so Beth jumped."
+      "ask": "Where does the crab hide?",
+      "listenFor": "In a crack next to a rock. If they say only \"a crack,\" ask them where the crack was."
     },
     {
-      "ask": "Do you think Beth is scared of the crab? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for evidence from the story, like \"she jumped back\" or \"no, she gave it a twig.\""
+      "ask": "Why do you think Raj put the twig in the sand? Tell me why.",
+      "listenFor": "Any sensible idea works, like \"so the crab could have something to grab instead.\" Listen for a because."
     }
   ]
 }

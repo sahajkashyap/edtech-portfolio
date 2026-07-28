@@ -1,36 +1,36 @@
 {
   "lesson": 38,
-  "title": "The Big Box",
+  "title": "Tim and the Big Box",
   "lines": [
-    "Tim gets a big box.",
-    "Tim tips the box up.",
-    "A big cat pops up!",
-    "It is his cat, Tom.",
-    "Tom naps in the box.",
-    "Tim tugs at the box.",
-    "Tom digs in and sits.",
-    "Tim naps on the rug."
+    "\"Can I have the big box?\" said Tim.",
+    "\"Yes,\" said Dad. He cut a gap in it.",
+    "Tim set it on the rug. A cat hut!",
+    "But the cat did not get in the box.",
+    "It sat on top and did not hop in.",
+    "Tim set his red hat in the box.",
+    "The cat hops in and naps on the hat.",
+    "\"The cat has a hut,\" said Dad. Tim nods."
   ],
   "warmup": [
     "box",
-    "tips",
-    "pops",
-    "naps",
-    "tugs",
+    "cat",
+    "hat",
+    "hut",
+    "hops",
     "rug"
   ],
   "questions": [
     {
-      "ask": "What pops up when Tim tips the box?",
-      "listenFor": "His cat, Tom. It is stated in the story, so if they guess, have them go back and find the line rather than telling them."
+      "ask": "What did Tim want the big box for?",
+      "listenFor": "To make a hut for his cat. Line three says it. If your child is stuck, let them reread that line."
     },
     {
-      "ask": "Where does Tim nap at the end?",
-      "listenFor": "On the rug. Follow up with \"and why not the box?\" to see if they linked the two parts of the story."
+      "ask": "What did Tim put in the box to get the cat to go in?",
+      "listenFor": "His red hat. Line six says it. One word is plenty."
     },
     {
-      "ask": "Do you think Tim is mad at Tom? Tell me why.",
-      "listenFor": "Either answer works. You want a reason tied to the story - \"yes, he wanted the box\" or \"no, Tom is his pet.\""
+      "ask": "Why do you think the hat worked? Tell me what you think.",
+      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like it was soft, or it smelled of Tim."
     }
   ]
 }

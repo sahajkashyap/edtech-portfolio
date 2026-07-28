@@ -42,7 +42,7 @@
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
   .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
@@ -53,7 +53,7 @@
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 9px 13px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
   .tip p { margin: 3px 0; line-height: 1.38; }
 
@@ -63,19 +63,24 @@
   .answers .qa .aa { color: #555; }
 
   /* ---- the picture ---- */
-  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
   .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
+.hwrow { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 1px 12px; align-items: flex-start; }
+  .hwcard { text-align: center; }
+  .hwcard svg { display: block; }
+  .hwword { font-size: 12px; color: #666; margin-top: 1px; letter-spacing: 0.04em; }
+
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
   .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
   .passage .ln { display: block; }
@@ -96,11 +101,11 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 4px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -117,7 +122,7 @@
   <div class="band">
     <div>
       <div class="tag">Decodable Passage &middot; Reading Foundations</div>
-      <h1>The Pup in the Pit</h1>
+      <h1>Tim Can Not See the Cat</h1>
     </div>
     <div class="flagged">Lesson 19<br>VC &amp; CVC Practice (all)</div>
   </div>
@@ -148,19 +153,21 @@
   <h2>Checking they understood</h2>
   <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
   <div class="answers">
-    <p class="qa"><span class="qq">1. Where did the pup sit?</span><br><span class="aa">In the pit Sam dug. This one is said right in the story, so if your child is stuck, point at that line and have them read it again instead of telling them the answer.</span></p>
-    <p class="qa"><span class="qq">2. Why is Sam not mad at the end?</span><br><span class="aa">Because the pup dug up a big bug. You are listening for the pup doing something good, not just "because." If they say "the bug," ask "and who found it?"</span></p>
-    <p class="qa"><span class="qq">3. Do you think Sam and the pup are friends? Tell me why you think so.</span><br><span class="aa">There is no wrong answer here. You are listening for a reason pulled from the story - the pat at the end, or digging together. A reason matters more than the answer.</span></p>
+    <p class="qa"><span class="qq">1. Where was the cat hiding?</span><br><span class="aa">In the big bag. The story says it. If your child says the tub, read the line about the bag again together.</span></p>
+    <p class="qa"><span class="qq">2. How did Tim find the cat?</span><br><span class="aa">The bag tipped and the cat got up. Listen for the bag tipping - that is what gave the cat away.</span></p>
+    <p class="qa"><span class="qq">3. Where do you think the cat will hide next? Tell me why.</span><br><span class="aa">There is no wrong answer. You are listening for a reason from the story - cats like small dark spots, or it will pick a new one now.</span></p>
   </div>
 
   <div class="audit">
     <div class="h">Why you can trust this page &middot; checked, word by word</div>
-    <p style="margin:0 0 5px;"><strong>Every one of the 62 words in this story can be
+    <p style="margin:0 0 5px;"><strong>Every one of the 59 words in this story can be
     sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
     If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
     spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
-    <code>a</code> <code>is</code> <code>the</code>.</p>
+    <p style="margin:0;">The only words not sounded out are the 11 heart words
+    taught so far &mdash; and even those are mostly regular. Only the marked part of each
+    is learned by heart. The newest are
+    <code>is</code> <code>of</code> <code>said</code> <code>see</code> <code>the</code> <code>to</code>.</p>
   </div>
 
   <div class="foot">
@@ -177,32 +184,31 @@
     <div>
       <span class="owner child" style="margin-bottom:3px">For the reader</span>
       <div class="tag">My reading page</div>
-      <h1>The Pup in the Pit</h1>
+      <h1>Tim Can Not See the Cat</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <div class="art"><svg viewBox="0 0 660 250" role="img" aria-label="A simple line drawing of: kid, dog, puddle."><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="216" x2="642" y2="216"/><g transform="translate(103,112) scale(1.04)"><circle cx="50" cy="26" r="16" fill="#fff"/><circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/><path d="M43 32 q7 6 14 0"/><path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/><path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/><path d="M50 50 L32 62"/><path d="M50 50 L68 62"/></g><g transform="translate(273,112) scale(1.04)"><ellipse cx="44" cy="66" rx="28" ry="17" fill="#fff"/><circle cx="76" cy="54" r="14" fill="#fff"/><path d="M68 42 L64 26 L78 34 z" fill="#fff"/><circle cx="80" cy="52" r="2" fill="#1a1a1a"/><circle cx="88" cy="56" r="3" fill="#1a1a1a"/><line x1="28" y1="82" x2="28" y2="96"/><line x1="44" y1="83" x2="44" y2="96"/><line x1="60" y1="83" x2="60" y2="96"/><path d="M16 60 q-8 -10 2 -14"/></g><g transform="translate(443,112) scale(1.04)"><path d="M6 92 q6 -22 30 -24 q22 -12 46 -2 q16 2 12 26 z" fill="#e6e0d6"/><path d="M26 80 q12 -6 22 -2" stroke-width="2"/><path d="M56 74 q12 -5 22 -1" stroke-width="2"/></g><path d="M50 216 l-4 -12 M56 216 l2 -14 M62 216 l6 -11" stroke-width="2"/><path d="M590 216 l-4 -12 M598 216 l2 -13" stroke-width="2"/></g></svg></div>
+  <div class="art"><svg viewBox="0 0 660 250" role="img" aria-label="A simple line drawing of: kid, cat, box."><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="216" x2="642" y2="216"/><g transform="translate(103,112) scale(1.04)"><circle cx="50" cy="26" r="16" fill="#fff"/><circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/><path d="M43 32 q7 6 14 0"/><path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/><path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/><path d="M50 50 L32 62"/><path d="M50 50 L68 62"/></g><g transform="translate(273,112) scale(1.04)"><ellipse cx="46" cy="68" rx="26" ry="15" fill="#fff"/><circle cx="74" cy="54" r="13" fill="#fff"/><path d="M64 44 L62 30 L74 40 z" fill="#fff"/><path d="M84 44 L88 30 L90 44 z" fill="#fff"/><circle cx="70" cy="53" r="2" fill="#1a1a1a"/><circle cx="80" cy="53" r="2" fill="#1a1a1a"/><line x1="30" y1="82" x2="30" y2="96"/><line x1="46" y1="83" x2="46" y2="96"/><line x1="62" y1="83" x2="62" y2="96"/><path d="M20 62 q-12 -14 -2 -22"/></g><g transform="translate(443,112) scale(1.04)"><path d="M24 50 L76 50 L76 92 L24 92 z" fill="#fff"/><path d="M24 50 L36 38 L88 38 L76 50"/><path d="M88 38 L88 80 L76 92"/></g><path d="M50 216 l-4 -12 M56 216 l2 -14 M62 216 l6 -11" stroke-width="2"/><path d="M590 216 l-4 -12 M598 216 l2 -13" stroke-width="2"/></g></svg></div>
   <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
 
   <h2>Say these first</h2>
-  <div class="warm"><div>dig</div><div>dug</div><div>pit</div><div>mud</div><div>bug</div><div>pat</div></div>
-  <p class="rowlab">Heart words &mdash; read each one, then check the box.</p>
-  <div class="hearts"><span class="hw"><span class="ubox"></span>a</span><span class="hw"><span class="ubox"></span>is</span><span class="hw"><span class="ubox"></span>the</span></div>
+  <div class="warm"><div>cat</div><div>tub</div><div>bin</div><div>mop</div><div>bag</div><div>tip</div></div>
+
+  <h2>Heart words</h2><p class="rowlab">Say it. Say each sound. The <span style="color:#b23f28">&hearts;</span> box is the part to learn by heart.</p><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 53 41" width="53" height="41" role="img" aria-label="of, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">o</text><path transform="translate(12,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">f</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg></div><div class="hwcard"><svg viewBox="0 0 53 41" width="53" height="41" role="img" aria-label="see, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">s</text><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">ee</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg></div></div>
 
   <h2>Read the story</h2>
   <div class="passage">
-    <div class="ptitle">The Pup in the Pit</div>
+    <div class="ptitle">Tim Can Not See the Cat</div>
     <p>
-      <span class="ln">Sam got a pup.</span>
-      <span class="ln">The pup is big. The pup can dig.</span>
-      <span class="ln">Sam dug a pit in the mud.</span>
-      <span class="ln">The pup sat in the pit.</span>
-      <span class="ln">Sam is mad. Up, pup, up!</span>
-      <span class="ln">But the pup dug. The pup dug up a bug.</span>
-      <span class="ln">It is a big bug!</span>
-      <span class="ln">Sam is not mad at the pup.</span>
-      <span class="ln">Sam can pat the pup. The pup can nap.</span>
+      <span class="ln">Tim can not see the cat.</span>
+      <span class="ln">"Is it in the tub?" said Mom.</span>
+      <span class="ln">Tim did not see it in the tub.</span>
+      <span class="ln">"Is it in the bin?" said Mom.</span>
+      <span class="ln">Tim did see a mop and a big bag.</span>
+      <span class="ln">The bag did tip and a cat got up!</span>
+      <span class="ln">"I see it!" said Tim.</span>
+      <span class="ln">The cat sat on Tim and did nap.</span>
     </p>
   </div>
 
@@ -220,16 +226,16 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">The Pup in the Pit &mdash; my work page</h1>
+      <h1 style="font-size:18px;">Tim Can Not See the Cat &mdash; my work page</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
   <h2 style="margin-top:12px;">Think about it</h2>
 
-  <div class="q"><span class="qtext">1. Where did the pup sit?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">2. Why is Sam not mad at the end?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">3. Do you think Sam and the pup are friends? Tell me why you think so.</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">1. Where was the cat hiding?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">2. How did Tim find the cat?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">3. Where do you think the cat will hide next? Tell me why.</span><span class="qline"></span><span class="qline"></span></div>
 
 </div>
 
@@ -239,7 +245,7 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">The Pup in the Pit &mdash; my drawing page</h1>
+      <h1 style="font-size:18px;">Tim Can Not See the Cat &mdash; my drawing page</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>

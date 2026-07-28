@@ -1,36 +1,36 @@
 {
   "lesson": 49,
-  "title": "Bad Luck, Nick!",
+  "title": "Off the Dock",
   "lines": [
-    "Josh and Nick fish off the dock.",
-    "Josh gets a big fish.",
-    "Nick gets a shell, not a fish.",
-    "Then Nick gets a thick sock!",
-    "Nick has such bad luck.",
-    "Then his rod dips!",
-    "Nick tugs and tugs on it.",
-    "Nick gets a fish, and it is big!"
+    "Josh and Nick fish off the dock with Dad.",
+    "Josh gets a big fish in his net.",
+    "Nick tugs and tugs. He gets a shell.",
+    "Then Nick tugs up a wet sock!",
+    "\"That is not a fish!\" said Nick.",
+    "\"Sit and hush. Do not let go,\" said Dad.",
+    "Nick sits. Then his rod dips and dips!",
+    "Up it hops. \"Such a big fish!\" said Josh."
   ],
   "warmup": [
     "fish",
     "dock",
     "shell",
-    "thick",
     "sock",
-    "such"
+    "such",
+    "tugs"
   ],
   "questions": [
     {
       "ask": "What does Nick pull up before he gets a fish?",
-      "listenFor": "A shell and a thick sock. Two things - if they name only one, ask \"and what else?\""
+      "listenFor": "A shell and a wet sock. Two things - if they name only one, ask \"and what else?\""
     },
     {
-      "ask": "How does Nick know a fish is on his rod?",
-      "listenFor": "The rod dips. It is stated in the story - have them find that line rather than telling them."
+      "ask": "What does Dad tell Nick to do?",
+      "listenFor": "Sit still, be quiet, and do not let go. It is the line in quote marks - have them find the talking."
     },
     {
-      "ask": "Do you think Nick still has bad luck at the end? Tell me why.",
-      "listenFor": "Either answer is correct. You are listening for a reason tied to the last line of the story."
+      "ask": "Nick pulled up a shell and a sock before the fish came. What do you think kept him going? Tell me why.",
+      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like Dad told him to hold on, or he wanted a fish like Josh."
     }
   ]
 }

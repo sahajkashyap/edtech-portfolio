@@ -1,36 +1,36 @@
 {
   "lesson": 11,
-  "title": "Tap the Tan Pan",
+  "title": "Tap the Tin Pan",
   "lines": [
-    "A man sat at a mat.",
-    "Nan sat at a tin pan.",
-    "Tap the pan, Nan!",
-    "Sam sat at a tan pan.",
-    "Pat the tan pan, Sam!",
-    "Nan! Sam! The man is a fan.",
-    "Sit at the pan, man.",
-    "Tap it, man! Tap the tin pan!"
+    "Nan sat at a tin pan. Tap, tap!",
+    "Sam sat at a tan pan. Pat, pat!",
+    "Pam is in a nap at the mat.",
+    "Sit, Nan! Sit, Sam!",
+    "Nan and Sam sit. Tap the mat, Nan.",
+    "Pam sat! Pam is at the tin pan.",
+    "Tap it, Pam! Pat it, Nan! Tap, Sam!",
+    "Nan and Sam and Pam tap and tap."
   ],
   "warmup": [
-    "tap",
     "pan",
     "tan",
-    "man",
-    "fan",
-    "pat"
+    "tin",
+    "tap",
+    "pat",
+    "nap"
   ],
   "questions": [
     {
-      "ask": "What were Nan and Sam tapping on?",
-      "listenFor": "Pans, a tin one and a tan one. If your child says just pans, ask which pan was Nan's, and let them find the line."
+      "ask": "What was Pam doing while Nan and Sam tapped?",
+      "listenFor": "Having a nap. Line three says it. If your child is not sure, let them reread that line rather than being told."
     },
     {
-      "ask": "Who was sitting at the mat the whole time?",
-      "listenFor": "A man - he is there in the very first line, before the tapping starts. He liked the sound so much he is called a fan. Point at that line if your child needs it."
+      "ask": "What did Nan tap once she sat down?",
+      "listenFor": "The mat, which is much quieter than a tin pan. Line five says it."
     },
     {
-      "ask": "What would you tap on to make a good sound? Tell me why that one.",
-      "listenFor": "Anything is a fine answer. You are listening for the reason, and it is a lovely chance to go tap on something together."
+      "ask": "Why do you think Nan and Sam stopped tapping the pans? Tell me what you think.",
+      "listenFor": "There is no wrong answer. You are listening for a reason of their own, like they did not want to wake Pam up."
     }
   ]
 }

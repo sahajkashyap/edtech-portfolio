@@ -1,37 +1,36 @@
 {
   "lesson": 36,
-  "title": "Six Figs and a Pig",
+  "title": "The Lid on the Tin",
   "lines": [
-    "Sal has six figs in a tin.",
-    "Sal hid the tin in a bin.",
-    "A pig got in the bin!",
-    "The pig did not fit. It is big.",
-    "The pig tips the bin and sits.",
-    "The figs sit in the mud.",
-    "Sal is sad. But the pig digs.",
-    "The pig digs up a big fig.",
-    "Sal bit it. Yum!"
+    "Kim and Sid have a tin of six figs.",
+    "The lid is on. Kim tugs at it.",
+    "She tugs and tugs, but the lid sits.",
+    "\"The tin is wet,\" said Sid.",
+    "Kim gets a rag and rubs the tin.",
+    "She tugs. Pop! The lid is up!",
+    "\"Six figs!\" said Sid, and he did a jig.",
+    "Kim and Sid sit and have six figs."
   ],
   "warmup": [
-    "figs",
     "tin",
-    "bin",
-    "pig",
+    "figs",
+    "lid",
+    "tugs",
     "six",
-    "digs"
+    "rag"
   ],
   "questions": [
     {
-      "ask": "Where did Sal hide the tin?",
-      "listenFor": "In a bin. It is said in the story. If they guess, have them find the word bin and read that line again."
+      "ask": "What was in the tin?",
+      "listenFor": "Six figs. The first line says it. If your child is stuck, point at that line and let them read it again."
     },
     {
-      "ask": "How did the figs end up in the mud?",
-      "listenFor": "The pig got in the bin and tipped it over. Two steps, so it is fine to look back for both parts."
+      "ask": "What did Kim do to get the lid off?",
+      "listenFor": "She rubbed the wet tin dry with a rag, then tugged. Lines four and five carry it. This is the cause and effect to talk about."
     },
     {
-      "ask": "Do you think Sal is still cross with the pig at the end? Tell me why.",
-      "listenFor": "There is no right answer. You want a reason from the story - the pig dug a fig back up, or the pig wrecked the tin in the first place."
+      "ask": "Sid noticed the tin was wet. Was that a help? Tell me why you think so.",
+      "listenFor": "There is no wrong answer. You are listening for a reason, such as a wet tin is slippy so it was hard to grip."
     }
   ]
 }

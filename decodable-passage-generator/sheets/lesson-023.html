@@ -42,7 +42,7 @@
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
   .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
@@ -53,7 +53,7 @@
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 9px 13px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
   .tip p { margin: 3px 0; line-height: 1.38; }
 
@@ -63,19 +63,24 @@
   .answers .qa .aa { color: #555; }
 
   /* ---- the picture ---- */
-  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
   .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
+.hwrow { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 1px 12px; align-items: flex-start; }
+  .hwcard { text-align: center; }
+  .hwcard svg { display: block; }
+  .hwword { font-size: 12px; color: #666; margin-top: 1px; letter-spacing: 0.04em; }
+
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
   .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
   .passage .ln { display: block; }
@@ -96,11 +101,11 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 4px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -117,7 +122,7 @@
   <div class="band">
     <div>
       <div class="tag">Decodable Passage &middot; Reading Foundations</div>
-      <h1>The Hen in the Hut</h1>
+      <h1>The Hot Hut</h1>
     </div>
     <div class="flagged">Lesson 23<br>h /h/</div>
   </div>
@@ -148,19 +153,21 @@
   <h2>Checking they understood</h2>
   <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
   <div class="answers">
-    <p class="qa"><span class="qq">1. Where was the hen hiding?</span><br><span class="aa">In Tom's hat, right on his head. The story says it. If your child says the hut, read the line about the hat again together.</span></p>
-    <p class="qa"><span class="qq">2. Who found the hen?</span><br><span class="aa">Dad. Listen for Dad, not Tom - Tom looked everywhere but could not see his own hat.</span></p>
-    <p class="qa"><span class="qq">3. Why do you think the hen picked the hat? Tell me what you think.</span><br><span class="aa">Any answer is fine - it was warm, it was soft, it was a good hiding spot. You are listening for a reason, not a right answer.</span></p>
+    <p class="qa"><span class="qq">1. What did Deb and Kip make?</span><br><span class="aa">A hut out of mats. The first line says it. If your child is stuck, point at that line and let them read it again.</span></p>
+    <p class="qa"><span class="qq">2. Why did Deb put a big mat on top of the hut?</span><br><span class="aa">Because it was hot inside. The mat kept the sun off. Lines two, three and five carry it. Cause and effect is the thinking here.</span></p>
+    <p class="qa"><span class="qq">3. Where would you build a hut? Tell me why there.</span><br><span class="aa">Any place is fine. You are listening for a reason of their own, and it is a lovely chance to go and build one.</span></p>
   </div>
 
   <div class="audit">
     <div class="h">Why you can trust this page &middot; checked, word by word</div>
-    <p style="margin:0 0 5px;"><strong>Every one of the 53 words in this story can be
+    <p style="margin:0 0 5px;"><strong>Every one of the 65 words in this story can be
     sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
     If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
     spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
-    <code>a</code> <code>is</code> <code>the</code>.</p>
+    <p style="margin:0;">The only words not sounded out are the 15 heart words
+    taught so far &mdash; and even those are mostly regular. Only the marked part of each
+    is learned by heart. The newest are
+    <code>of</code> <code>said</code> <code>see</code> <code>she</code> <code>the</code> <code>to</code>.</p>
   </div>
 
   <div class="foot">
@@ -177,31 +184,31 @@
     <div>
       <span class="owner child" style="margin-bottom:3px">For the reader</span>
       <div class="tag">My reading page</div>
-      <h1>The Hen in the Hut</h1>
+      <h1>The Hot Hut</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <div class="art"><svg viewBox="0 0 660 250" role="img" aria-label="A simple line drawing of: kid, bird, house."><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="216" x2="642" y2="216"/><g transform="translate(103,112) scale(1.04)"><circle cx="50" cy="26" r="16" fill="#fff"/><circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/><path d="M43 32 q7 6 14 0"/><path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/><path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/><path d="M50 50 L32 62"/><path d="M50 50 L68 62"/></g><g transform="translate(273,112) scale(1.04)"><ellipse cx="48" cy="62" rx="22" ry="16" fill="#fff"/><circle cx="72" cy="46" r="11" fill="#fff"/><path d="M82 44 L94 48 L82 52 z" fill="#fff"/><circle cx="74" cy="43" r="2" fill="#1a1a1a"/><path d="M40 58 q12 -10 24 -2 q-12 12 -24 2 z" fill="#fff"/><line x1="42" y1="78" x2="42" y2="96"/><line x1="56" y1="78" x2="56" y2="96"/></g><g transform="translate(443,112) scale(1.04)"><path d="M18 96 L18 52 L50 26 L82 52 L82 96 z" fill="#fff"/><path d="M40 96 L40 68 L60 68 L60 96"/><rect x="26" y="58" width="12" height="12" fill="#fff"/></g><path d="M50 216 l-4 -12 M56 216 l2 -14 M62 216 l6 -11" stroke-width="2"/><path d="M590 216 l-4 -12 M598 216 l2 -13" stroke-width="2"/></g></svg></div>
+  <div class="art"><svg viewBox="0 0 660 250" role="img" aria-label="A simple line drawing of: house, sun."><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="216" x2="642" y2="216"/><g transform="translate(544,8) scale(0.78)"><circle cx="50" cy="34" r="20"/><line x1="50" y1="4" x2="50" y2="-4"/><line x1="50" y1="72" x2="50" y2="64"/><line x1="20" y1="34" x2="12" y2="34"/><line x1="88" y1="34" x2="80" y2="34"/><line x1="28" y1="12" x2="23" y2="7"/><line x1="72" y1="56" x2="77" y2="61"/><line x1="72" y1="12" x2="77" y2="7"/><line x1="28" y1="56" x2="23" y2="61"/></g><g transform="translate(266,98) scale(1.18)"><path d="M18 96 L18 52 L50 26 L82 52 L82 96 z" fill="#fff"/><path d="M40 96 L40 68 L60 68 L60 96"/><rect x="26" y="58" width="12" height="12" fill="#fff"/></g><path d="M50 216 l-4 -12 M56 216 l2 -14 M62 216 l6 -11" stroke-width="2"/><path d="M590 216 l-4 -12 M598 216 l2 -13" stroke-width="2"/></g></svg></div>
   <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
 
   <h2>Say these first</h2>
-  <div class="warm"><div>hen</div><div>hut</div><div>hid</div><div>hat</div><div>has</div><div>hug</div></div>
-  <p class="rowlab">Heart words &mdash; read each one, then check the box.</p>
-  <div class="hearts"><span class="hw"><span class="ubox"></span>a</span><span class="hw"><span class="ubox"></span>is</span><span class="hw"><span class="ubox"></span>the</span></div>
+  <div class="warm"><div>hut</div><div>hot</div><div>mats</div><div>hops</div><div>top</div><div>figs</div></div>
+
+  <h2>Heart words</h2><p class="rowlab">Say it. Say each sound. The <span style="color:#b23f28">&hearts;</span> box is the part to learn by heart.</p><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 53 41" width="53" height="41" role="img" aria-label="me, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">m</text><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">e</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg></div><div class="hwcard"><svg viewBox="0 0 53 41" width="53" height="41" role="img" aria-label="she, with a heart under each tricky part"><rect x="0" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="12" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">sh</text><path transform="translate(12,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/><rect x="28" y="0" width="25" height="25" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="40" y="17" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="14" fill="#1a1a1a">e</text><path transform="translate(40,34) scale(0.48)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg></div></div>
 
   <h2>Read the story</h2>
   <div class="passage">
-    <div class="ptitle">The Hen in the Hut</div>
+    <div class="ptitle">The Hot Hut</div>
     <p>
-      <span class="ln">Tom has a hen. It is his pet.</span>
-      <span class="ln">The hen hid in a hut.</span>
-      <span class="ln">Tom got in the hut. Tom did dig.</span>
-      <span class="ln">The hen hid in his hat!</span>
-      <span class="ln">The hat is on Tom.</span>
-      <span class="ln">Tom did not get it. Dad did.</span>
-      <span class="ln">Dad got the hat. The hen got up.</span>
-      <span class="ln">Tom did hug the hen.</span>
+      <span class="ln">Deb and Kip set up a hut of mats.</span>
+      <span class="ln">It is hot in the sun.</span>
+      <span class="ln">"It is hot in the hut," said Kip.</span>
+      <span class="ln">Deb hops up. She gets a big tan mat.</span>
+      <span class="ln">She sets it on top of the hut.</span>
+      <span class="ln">Deb and Kip sit. It is not hot!</span>
+      <span class="ln">"Deb did it," said Kip. He gets figs.</span>
+      <span class="ln">Deb and Kip sit and hum in the hut.</span>
     </p>
   </div>
 
@@ -219,16 +226,16 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">The Hen in the Hut &mdash; my work page</h1>
+      <h1 style="font-size:18px;">The Hot Hut &mdash; my work page</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
   <h2 style="margin-top:12px;">Think about it</h2>
 
-  <div class="q"><span class="qtext">1. Where was the hen hiding?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">2. Who found the hen?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">3. Why do you think the hen picked the hat? Tell me what you think.</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">1. What did Deb and Kip make?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">2. Why did Deb put a big mat on top of the hut?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">3. Where would you build a hut? Tell me why there.</span><span class="qline"></span><span class="qline"></span></div>
 
 </div>
 
@@ -238,7 +245,7 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">The Hen in the Hut &mdash; my drawing page</h1>
+      <h1 style="font-size:18px;">The Hot Hut &mdash; my drawing page</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>

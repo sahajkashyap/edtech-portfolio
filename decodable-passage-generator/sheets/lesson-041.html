@@ -42,7 +42,7 @@
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
   .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 5px 12px; }
+  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
@@ -53,7 +53,7 @@
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 10px 14px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 9px 13px; margin: 4px 0 5px; font-size: 13.8px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
   .tip p { margin: 3px 0; line-height: 1.38; }
 
@@ -63,19 +63,24 @@
   .answers .qa .aa { color: #555; }
 
   /* ---- the picture ---- */
-  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 4.6in; }
+  .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
   .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
+.hwrow { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 1px 12px; align-items: flex-start; }
+  .hwcard { text-align: center; }
+  .hwcard svg { display: block; }
+  .hwword { font-size: 12px; color: #666; margin-top: 1px; letter-spacing: 0.04em; }
+
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 12px 22px 14px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
   .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
   .passage .ln { display: block; }
@@ -96,11 +101,11 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.8px; color: #33502c; line-height: 1.42; }
+  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 4px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -148,19 +153,21 @@
   <h2>Checking they understood</h2>
   <p class="sub">The child writes their answers on their own sheet. Here is what you are listening for.</p>
   <div class="answers">
-    <p class="qa"><span class="qq">1. Why is Sam wet?</span><br><span class="aa">Looking for cause and effect: Sam washed the pig, so Sam got wet too. If they just say "the tub," ask "and what happened in the tub?"</span></p>
-    <p class="qa"><span class="qq">2. What did Sam use to get the pig clean?</span><br><span class="aa">A rag and a tub. This one is stated right in the story - if they can't find it, have them reread that line rather than telling them.</span></p>
-    <p class="qa"><span class="qq">3. Do you think the pig liked the tub? Tell me why.</span><br><span class="aa">Either answer is correct. You are listening for a reason tied to the story - "no, because it ran to the mud" or "yes, because it naps at the end."</span></p>
+    <p class="qa"><span class="qq">1. What does Sam use to get the pig clean?</span><br><span class="aa">A tub and a big rag. This one is stated right in the story - if they cannot find it, have them reread that line rather than telling them.</span></p>
+    <p class="qa"><span class="qq">2. Why is Sam wet at the end?</span><br><span class="aa">Looking for cause and effect: Sam washed the pig in the tub, so Sam got wet too. If they just say "the tub," ask "and what happened in the tub?"</span></p>
+    <p class="qa"><span class="qq">3. Do you think the pig liked the tub? Tell me why.</span><br><span class="aa">Either answer is correct. You are listening for a reason tied to the story - "no, it ran to the mud" or "yes, it sat in the tub and got a nap after."</span></p>
   </div>
 
   <div class="audit">
     <div class="h">Why you can trust this page &middot; checked, word by word</div>
-    <p style="margin:0 0 5px;"><strong>Every one of the 55 words in this story can be
+    <p style="margin:0 0 5px;"><strong>Every one of the 61 words in this story can be
     sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
     If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
     spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
-    <code>a</code> <code>and</code> <code>in</code> <code>is</code> <code>the</code> <code>to</code>.</p>
+    <p style="margin:0;">The only words not sounded out are the 23 heart words
+    taught so far &mdash; and even those are mostly regular. Only the marked part of each
+    is learned by heart. The newest are
+    <code>the</code> <code>to</code> <code>was</code> <code>we</code> <code>what</code> <code>you</code>.</p>
   </div>
 
   <div class="foot">
@@ -187,22 +194,21 @@
 
   <h2>Say these first</h2>
   <div class="warm"><div>pig</div><div>mud</div><div>sun</div><div>tub</div><div>rag</div><div>wet</div></div>
-  <p class="rowlab">Heart words &mdash; read each one, then check the box.</p>
-  <div class="hearts"><span class="hw"><span class="ubox"></span>a</span><span class="hw"><span class="ubox"></span>and</span><span class="hw"><span class="ubox"></span>in</span><span class="hw"><span class="ubox"></span>is</span><span class="hw"><span class="ubox"></span>the</span><span class="hw"><span class="ubox"></span>to</span></div>
+
+  <p class="rowlab" style="margin-top:6px">Heart words &mdash; read each one, then check the box.</p><div class="hearts"><span class="hw"><span class="ubox"></span>the</span><span class="hw"><span class="ubox"></span>to</span><span class="hw"><span class="ubox"></span>was</span><span class="hw"><span class="ubox"></span>we</span><span class="hw"><span class="ubox"></span>what</span><span class="hw"><span class="ubox"></span>you</span></div>
 
   <h2>Read the story</h2>
   <div class="passage">
     <div class="ptitle">Mud Pig</div>
     <p>
-      <span class="ln">Sam has a pig.</span>
-      <span class="ln">The pig is big.</span>
-      <span class="ln">Sam and the pig sit in the sun.</span>
-      <span class="ln">The pig runs to the mud.</span>
-      <span class="ln">The pig sits in the mud.</span>
-      <span class="ln">Sam gets a rag and a tub.</span>
-      <span class="ln">Sam rubs the pig in the tub.</span>
+      <span class="ln">Sam has a big pig and a red tub.</span>
+      <span class="ln">The pig naps in the hot sun.</span>
+      <span class="ln">It gets up and runs to the mud.</span>
+      <span class="ln">"Not the mud!" said Sam.</span>
+      <span class="ln">Sam gets the tub and a big rag.</span>
+      <span class="ln">He rubs and rubs. The pig sits in it.</span>
       <span class="ln">The pig is wet. Sam is wet!</span>
-      <span class="ln">The pig naps in the sun.</span>
+      <span class="ln">"You can nap in the sun," said Sam.</span>
     </p>
   </div>
 
@@ -227,8 +233,8 @@
 
   <h2 style="margin-top:12px;">Think about it</h2>
 
-  <div class="q"><span class="qtext">1. Why is Sam wet?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">2. What did Sam use to get the pig clean?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">1. What does Sam use to get the pig clean?</span><span class="qline"></span><span class="qline"></span></div>
+  <div class="q"><span class="qtext">2. Why is Sam wet at the end?</span><span class="qline"></span><span class="qline"></span></div>
   <div class="q"><span class="qtext">3. Do you think the pig liked the tub? Tell me why.</span><span class="qline"></span><span class="qline"></span></div>
 
 </div>

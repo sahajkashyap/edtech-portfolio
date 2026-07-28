@@ -1,37 +1,36 @@
 {
   "lesson": 30,
-  "title": "Yam the Pig",
+  "title": "The Big Yam",
   "lines": [
-    "Tom has a pet pig, Yam.",
-    "Yam is big. Yam can run.",
-    "Tom lets Yam sit on a rug.",
-    "But Yam is not fed yet.",
-    "Yam runs at a big pot.",
-    "The pot tips. Nuts pop up.",
-    "Yes! Yam gets the nuts.",
-    "Tom is not mad. Tom fed Yam.",
-    "Yam naps. Tom pats him."
+    "Ted and Sal dig up yams in the sun.",
+    "Ted tugs and tugs, but the yam sits.",
+    "\"I can not get it up,\" said Ted.",
+    "Sal digs a gap at the top of it.",
+    "Yes! Ted tugs, and the yam pops up!",
+    "It is as big as a pot.",
+    "Mom cuts up the yams in a big pan.",
+    "Ted and Sal had yams and buns. Yum!"
   ],
   "warmup": [
-    "yam",
-    "yet",
-    "pig",
-    "nuts",
-    "rug",
-    "pot"
+    "yams",
+    "tugs",
+    "digs",
+    "pops",
+    "gap",
+    "pan"
   ],
   "questions": [
     {
-      "ask": "Why did Yam run at the pot?",
-      "listenFor": "Because Yam had not been fed yet. If they say \"he was hungry,\" ask them to find the line that tells us - the word yet is the clue."
+      "ask": "What were Ted and Sal digging up?",
+      "listenFor": "Yams. The first line says it. If your child is not sure, point at that line and let them read it again."
     },
     {
-      "ask": "What was in the pot?",
-      "listenFor": "Nuts. Have your child find the word nuts on the page and touch it - proving it beats remembering it."
+      "ask": "What did Sal do that helped the big yam come up?",
+      "listenFor": "She dug a gap around the top of it. Line four says it. This is the turn of the story."
     },
     {
-      "ask": "Do you think Yam is a good pet? Tell me why you think so.",
-      "listenFor": "No wrong answer. You want a reason from the story - Yam knocked the pot over, or Yam naps quietly at the end. Tom does not blame Yam; he works out that the pig was hungry. Reasons matter more than the yes or no."
+      "ask": "Do you think Ted could have got the yam up on his own? Tell me why you think that.",
+      "listenFor": "Either answer counts. You are listening for a reason tied to the story, such as he tugged and tugged and it did not budge."
     }
   ]
 }

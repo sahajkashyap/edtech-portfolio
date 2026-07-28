@@ -2,35 +2,28 @@
   "lesson": 12,
   "title": "The Pot on Top",
   "lines": [
-    "Tom sat at a tin pot.",
+    "Mom sat a tin pot on top.",
     "A tot is at the pot.",
-    "Not the pot, tot!",
     "Tip! Pop! The pot is not on top.",
-    "Sam, the mop!",
-    "Mop it, Sam. Mop it, Tom.",
-    "The tin pot is on top.",
-    "Tom sat. The tot sat on a mat."
+    "Mom, a mop! Tom, a mop!",
+    "Mop it, Tom. Mop, mop, mop.",
+    "Mom sat the tin pot on top.",
+    "Sit on the mat, tot! Sit and pat it.",
+    "Mom and Tom pat the tot."
   ],
-  "warmup": [
-    "pot",
-    "top",
-    "mop",
-    "pop",
-    "not",
-    "tot"
-  ],
+  "warmup": ["pot", "top", "mop", "pop", "not", "tot"],
   "questions": [
     {
-      "ask": "Who knocked the pot down?",
-      "listenFor": "The tot, the little one. Lines two, three and four tell the story of it. Let your child read them again if they are unsure."
+      "ask": "Who tipped the pot off the top?",
+      "listenFor": "The tot, the little one. Lines two and three tell the story of it. Let your child read them again if they are unsure."
     },
     {
-      "ask": "What did Sam and Tom use to clean up?",
-      "listenFor": "A mop. One word is plenty. If your child is stuck, ask what Tom called for right after the pot popped."
+      "ask": "What did Mom and Tom use to clean it up?",
+      "listenFor": "A mop. One word is plenty. If your child is stuck, ask what Mom called for right after the pot went pop."
     },
     {
       "ask": "Do you think the tot will go for the pot again? Tell me why you think so.",
-      "listenFor": "Either answer is good. You are listening for a reason from the story, like nobody is holding the pot now, or tots always try again."
+      "listenFor": "Either answer is good. You are listening for a reason from the story, like the pot is back up on top, or tots always try again."
     }
   ]
 }

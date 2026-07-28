@@ -1,36 +1,36 @@
 {
   "lesson": 23,
-  "title": "The Hen in the Hut",
+  "title": "The Hot Hut",
   "lines": [
-    "Tom has a hen. It is his pet.",
-    "The hen hid in a hut.",
-    "Tom got in the hut. Tom did dig.",
-    "The hen hid in his hat!",
-    "The hat is on Tom.",
-    "Tom did not get it. Dad did.",
-    "Dad got the hat. The hen got up.",
-    "Tom did hug the hen."
+    "Deb and Kip set up a hut of mats.",
+    "It is hot in the sun.",
+    "\"It is hot in the hut,\" said Kip.",
+    "Deb hops up. She gets a big tan mat.",
+    "She sets it on top of the hut.",
+    "Deb and Kip sit. It is not hot!",
+    "\"Deb did it,\" said Kip. He gets figs.",
+    "Deb and Kip sit and hum in the hut."
   ],
   "warmup": [
-    "hen",
     "hut",
-    "hid",
-    "hat",
-    "has",
-    "hug"
+    "hot",
+    "mats",
+    "hops",
+    "top",
+    "figs"
   ],
   "questions": [
     {
-      "ask": "Where was the hen hiding?",
-      "listenFor": "In Tom's hat, right on his head. The story says it. If your child says the hut, read the line about the hat again together."
+      "ask": "What did Deb and Kip make?",
+      "listenFor": "A hut out of mats. The first line says it. If your child is stuck, point at that line and let them read it again."
     },
     {
-      "ask": "Who found the hen?",
-      "listenFor": "Dad. Listen for Dad, not Tom - Tom looked everywhere but could not see his own hat."
+      "ask": "Why did Deb put a big mat on top of the hut?",
+      "listenFor": "Because it was hot inside. The mat kept the sun off. Lines two, three and five carry it. Cause and effect is the thinking here."
     },
     {
-      "ask": "Why do you think the hen picked the hat? Tell me what you think.",
-      "listenFor": "Any answer is fine - it was warm, it was soft, it was a good hiding spot. You are listening for a reason, not a right answer."
+      "ask": "Where would you build a hut? Tell me why there.",
+      "listenFor": "Any place is fine. You are listening for a reason of their own, and it is a lovely chance to go and build one."
     }
   ]
 }

@@ -18,6 +18,8 @@ import pathlib
 import re
 import sys
 
+import heart_words as HEART
+
 TOOL = pathlib.Path("../phonics-assessment-tool/index.html")
 OUT = pathlib.Path("sound-list.json")
 
@@ -243,17 +245,17 @@ CURRICULUM_CORRECTIONS = {
     27:  ("l /l/ Part 2",              "tool says 'l /l/ Part 2, ai'. UFLI lists no second item; the "
                                        "stray letters are the -al ending misread as 'ai'. The vowel "
                                        "team ai is Lesson 84, and is NOT taught here."),
-    51:  ("ng /ng/",                   "notation only; tool wrote /n/."),
-    52:  ("nk /ngk/",                  "notation only; tool wrote /nk/."),
-    58:  ("u_e /u/, /yu/",             "tool says 'u /u/, /u/'. It is the VCe pattern u_e, and it "
+    51:  ("ng /ŋ/",                   "notation only; tool wrote /n/."),
+    52:  ("nk /ŋk/",                  "notation only; tool wrote /nk/."),
+    58:  ("u_e /ū/, /yū/",             "tool says 'u /u/, /u/'. It is the VCe pattern u_e, and it "
                                        "carries a second sound /yu/ (cube) the tool lost."),
     67:  ("Compound Words, Closed/Closed",
                                        "tool says 'Closed/Closed'. UFLI splits this into 67a Compound "
                                        "Words and 67b Closed/Closed; compound words were missing."),
-    90:  ("oo /oo/ (moon)",            "tool wrote a breve, which is the book sound. UFLI Lesson 90 is "
+    90:  ("oo /ū/ (moon)",            "tool wrote a breve, which is the book sound. UFLI Lesson 90 is "
                                        "the long oo. Lesson 89 is the other one."),
     93:  ("au, aw, augh /aw/",         "tool says 'ugh'; UFLI has augh (caught, taught)."),
-    94:  ("ea /e/ (head), a /o/ (want)",
+    94:  ("ea /ĕ/ (head), a /ŏ/ (want)",
                                        "tool says 'schwa'. UFLI has no schwa lesson. Lesson 94 teaches "
                                        "short e spelled ea, and short o spelled a. This was the single "
                                        "largest error: it omitted two real sound-spellings and admitted "
@@ -262,13 +264,13 @@ CURRICULUM_CORRECTIONS = {
                                        "tool says '(kn, wr, mb, m)'. UFLI teaches THREE patterns here. "
                                        "The stray 'm' is the /m/ of 'mb /m/' split off in typing. It is "
                                        "not 'mn' -- mn is not taught anywhere in the 128."),
-    111: ("ar /er/, or /er/",          "tool says '-ar, -or, -er/'; the third item is spurious."),
-    113: ("ear /ear/ (hear)",          "tool wrote the /er/ sound. UFLI Lesson 113 is the 'hear' sound, "
+    111: ("ar /ər/, or /ər/",          "tool says '-ar, -or, -er/'; the third item is spurious."),
+    113: ("ear /ir/ (hear)",          "tool wrote the /er/ sound. UFLI Lesson 113 is the 'hear' sound, "
                                        "not the 'her' sound."),
-    114: ("Alternate /a/ (ei, eigh, ey, ea, aigh)",
+    114: ("Alternate /ā/ (ei, eigh, ey, ea, aigh)",
                                        "tool says 'high'; UFLI has 'aigh'. Previously dropped, so aigh "
                                        "was never taught at all."),
-    116: ("ough /aw/, /o/",            "tool wrote schwa for the second sound; UFLI has long o."),
+    116: ("ough /aw/, /ō/",            "tool wrote schwa for the second sound; UFLI has long o."),
     117: ("Signal Vowels (c /s/, g /j/)",
                                        "tool adds 's /z/'; UFLI's signal-vowel lesson is c and g only."),
     127: ("bi-, tri-, uni-",           "tool drops the hyphen on 'tri'."),
@@ -331,10 +333,23 @@ def build():
     if sorted(lessons) != list(range(1, 129)):
         sys.exit(f"Expected lessons 1-128, got {len(lessons)}")
 
-    # Heart words unlock at the lowest-numbered lesson of the unit that owns them.
-    heart_unlock = {}
-    for info in heart_by_unit.values():
-        heart_unlock.setdefault(info["firstLesson"], []).extend(info["words"])
+    # Heart words come from heart_words.py, which knows which lesson each word
+    # arrives at AND which part of it is irregular. If that list is empty we
+    # fall back to the tool's coarse per-unit grouping (3 words per unit, 24 in
+    # total), which is a simplification of what a real programme teaches.
+    heart_unlock, heart_detail = {}, {}
+    if HEART.WORDS:
+        for hw in HEART.WORDS:
+            heart_unlock.setdefault(hw.lesson, []).append(hw.word)
+            heart_detail[hw.word] = {
+                "boxes": hw.boxes(),
+                "regularFrom": [r for _, r in hw.graphemes],
+                "lesson": hw.lesson,
+                "why": hw.note,
+            }
+    else:
+        for info in heart_by_unit.values():
+            heart_unlock.setdefault(info["firstLesson"], []).extend(info["words"])
 
     out, graphemes, suffixes, prefixes, patterns, hearts, flags = [], [], [], [], [], [], []
     for n in range(1, 129):
@@ -349,7 +364,9 @@ def build():
                 hearts.append(w)
 
         corrected, why = CURRICULUM_CORRECTIONS.get(n, (None, None))
-        if corrected:
+        # Only report a correction the tool still needs. Once the typo is fixed
+        # at source the entry stays here as a record, but stops being a warning.
+        if corrected and lessons[n]["skill"] != corrected:
             flags.append({"lesson": n, "toolSays": lessons[n]["skill"],
                           "ufliTeaches": corrected, "note": why})
         out.append({
@@ -365,6 +382,10 @@ def build():
             "allowedPrefixes": sorted(prefixes),
             "allowedPatterns": sorted(patterns),
             "allowedHeartWords": sorted(hearts),
+            "newHeartWords": sorted(heart_unlock.get(n, [])),
+            "heartsAtThisLesson": {
+                hw.word: hw.hearts_at(n) for hw in HEART.available(n)
+            } if HEART.WORDS else {},
             "requiresWordBank": [
                 {"spelling": sp, "secondSoundAt": at, "why": why}
                 for L2, items in SECOND_SOUND_LATER.items() if L2 <= n
@@ -376,6 +397,10 @@ def build():
 
     doc = {
         "model": "cumulative by lesson number: a child at lesson N has had 1..N",
+        "heartWordDetail": heart_detail,
+        "heartWordSource": ("heart_words.py — per lesson, with the irregular "
+                            "part of each word marked" if HEART.WORDS else
+                            "the assessment tool's per-unit grouping (coarse)"),
         "heartWordContract": "allowedHeartWords are EXEMPT from "
                              "forbiddenLetterPatterns. 'the' contains th and is "
                              "legal from lesson 1 because it is learned by sight, "
@@ -384,7 +409,10 @@ def build():
         "source": "phonics-assessment-tool/index.html curriculum object",
         "totalLessons": len(out),
         "correctedAgainstUFLI": flags,
-        "correctionsStillNeededInTheAssessmentTool": "phonics-assessment-tool/index.html carries these same typos and will re-import them unless fixed there too.",
+        "correctionsStillNeededInTheAssessmentTool":
+            ("phonics-assessment-tool/index.html still carries these typos."
+             if flags else
+             "None. The assessment tool was corrected at source, 2026-07-28."),
         "letterPatternTaughtAt": LETTER_PATTERN_TAUGHT_AT,
         "lessons": out,
     }

@@ -1,37 +1,36 @@
 {
   "lesson": 19,
-  "title": "The Pup in the Pit",
+  "title": "Tim Can Not See the Cat",
   "lines": [
-    "Sam got a pup.",
-    "The pup is big. The pup can dig.",
-    "Sam dug a pit in the mud.",
-    "The pup sat in the pit.",
-    "Sam is mad. Up, pup, up!",
-    "But the pup dug. The pup dug up a bug.",
-    "It is a big bug!",
-    "Sam is not mad at the pup.",
-    "Sam can pat the pup. The pup can nap."
+    "Tim can not see the cat.",
+    "\"Is it in the tub?\" said Mom.",
+    "Tim did not see it in the tub.",
+    "\"Is it in the bin?\" said Mom.",
+    "Tim did see a mop and a big bag.",
+    "The bag did tip and a cat got up!",
+    "\"I see it!\" said Tim.",
+    "The cat sat on Tim and did nap."
   ],
   "warmup": [
-    "dig",
-    "dug",
-    "pit",
-    "mud",
-    "bug",
-    "pat"
+    "cat",
+    "tub",
+    "bin",
+    "mop",
+    "bag",
+    "tip"
   ],
   "questions": [
     {
-      "ask": "Where did the pup sit?",
-      "listenFor": "In the pit Sam dug. This one is said right in the story, so if your child is stuck, point at that line and have them read it again instead of telling them the answer."
+      "ask": "Where was the cat hiding?",
+      "listenFor": "In the big bag. The story says it. If your child says the tub, read the line about the bag again together."
     },
     {
-      "ask": "Why is Sam not mad at the end?",
-      "listenFor": "Because the pup dug up a big bug. You are listening for the pup doing something good, not just \"because.\" If they say \"the bug,\" ask \"and who found it?\""
+      "ask": "How did Tim find the cat?",
+      "listenFor": "The bag tipped and the cat got up. Listen for the bag tipping - that is what gave the cat away."
     },
     {
-      "ask": "Do you think Sam and the pup are friends? Tell me why you think so.",
-      "listenFor": "There is no wrong answer here. You are listening for a reason pulled from the story - the pat at the end, or digging together. A reason matters more than the answer."
+      "ask": "Where do you think the cat will hide next? Tell me why.",
+      "listenFor": "There is no wrong answer. You are listening for a reason from the story - cats like small dark spots, or it will pick a new one now."
     }
   ]
 }

@@ -2,35 +2,35 @@
   "lesson": 50,
   "title": "Which Shell?",
   "lines": [
-    "Nick has ten shells in a sack.",
-    "Nick picks a thick red shell.",
-    "Which shell will Josh pick?",
-    "When Josh picks it up, it is wet.",
-    "A bug is in his shell!",
-    "Josh yells and lets it fall.",
-    "The bug runs back to the mud.",
-    "When Josh picks a shell, Josh checks it."
+    "Ted and Phil check ten shells in the sun.",
+    "\"Which shell do you want?\" said Phil.",
+    "A thin red shell sits in a gap.",
+    "When he digs, he can not get it.",
+    "Phil gets a rod and Ted digs at it.",
+    "The shell pops up. Ted has it!",
+    "Then Ted digs and gets a shell as well.",
+    "\"That shell is your shell,\" said Ted."
   ],
   "warmup": [
-    "when",
     "which",
+    "when",
     "shell",
-    "thick",
-    "picks",
-    "yells"
+    "thin",
+    "rod",
+    "digs"
   ],
   "questions": [
     {
-      "ask": "What is in the shell Josh picks?",
-      "listenFor": "A bug. It is stated in the story - if they guess, send them back to that line."
+      "ask": "Where was the thin red shell?",
+      "listenFor": "Down in a gap. Line three says it. If they guess, send them back to that line."
     },
     {
-      "ask": "Why does Josh let the shell fall?",
-      "listenFor": "A bug was in it and it was wet. You want cause and effect, not just \"he dropped it.\""
+      "ask": "How did Ted get the shell out of the gap?",
+      "listenFor": "Phil fetched a long rod and Ted dug with it. Line five says it. Two children, one job."
     },
     {
-      "ask": "Do you think Josh will pick up more shells? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, but he checks them first now.\""
+      "ask": "Ted dug a second shell out and gave it to Phil. Why do you think he did that? Tell me why.",
+      "listenFor": "Any sensible idea works. You are listening for a reason of their own, like Phil helped him first."
     }
   ]
 }

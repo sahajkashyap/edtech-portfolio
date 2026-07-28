@@ -1,37 +1,36 @@
 {
   "lesson": 29,
-  "title": "The Jam Jug",
+  "title": "Raj and the Jam Jug",
   "lines": [
-    "Raj has a job. Raj gets jam.",
-    "The jam is in a big jug.",
-    "Raj can jog. Raj jogs a lot.",
-    "The jug tips! Jam is on Raj.",
-    "Jam is on his cap. Raj is sad.",
-    "But Dad is not mad.",
-    "Dad gets a rag. Dad rubs it.",
-    "Raj gets a bun. Dad gets jam.",
-    "Raj did a jig. Dad did a jig."
+    "Raj had a job. He got the jam.",
+    "Mom had buns. The jam was in a jug.",
+    "Raj jogs to Mom. He has the big jug.",
+    "The jug tips! Jam is on his cap.",
+    "\"Look at the jam,\" said Raj. He was sad.",
+    "But Raj gets a rag and rubs the cap.",
+    "\"Raj did a big job,\" said Mom.",
+    "Raj had a jam bun and did a jig!"
   ],
   "warmup": [
     "jam",
     "jug",
+    "jogs",
     "job",
-    "jog",
     "jig",
-    "bun"
+    "rag"
   ],
   "questions": [
     {
-      "ask": "What happened while Raj was jogging?",
-      "listenFor": "The jug tipped and the jam went all over him. It is right there in the story. If they only say \"jam,\" ask \"and where did it go?\""
+      "ask": "What was Raj carrying to Mom?",
+      "listenFor": "The big jug of jam. Lines two and three say it. Let your child reread rather than being told."
     },
     {
-      "ask": "What did Dad use to clean up?",
-      "listenFor": "A rag. One word is a fine answer. Have them find the line and read it back so they can prove it."
+      "ask": "Who got the jam off the cap?",
+      "listenFor": "Raj did, with a rag. Line six says it. If they say Mom, ask them to find the line with the rag in it."
     },
     {
-      "ask": "Do you think Raj had a good day or a bad day? Tell me why.",
-      "listenFor": "Either answer works. You are listening for a reason from the story - the spilled jam, or the bun and the jig at the end. The reason is the whole point."
+      "ask": "Raj was sad, and then he was not. What do you think changed? Tell me why.",
+      "listenFor": "There is no wrong answer. You are listening for a reason from the story, like he fixed the cap himself."
     }
   ]
 }

@@ -1,36 +1,36 @@
 {
   "lesson": 47,
-  "title": "The Moth on the Path",
+  "title": "The Moth in the Bath",
   "lines": [
-    "Beth has a thin red hat.",
-    "Beth sits on the path with it.",
-    "A big moth sits on the hat.",
-    "The moth is thick and tan.",
-    "Beth picks up the hat.",
-    "Then the moth hops off with it!",
-    "Beth runs up the path.",
-    "Beth gets the hat back."
+    "Nan set up a bath, and Josh got in.",
+    "Then a moth fell in with him!",
+    "\"Get that moth!\" said Josh.",
+    "Nan got a thin red mug.",
+    "She let the moth sit on it.",
+    "Then she set it on the path.",
+    "Both the moth and Josh were wet.",
+    "\"That moth had a bath as well!\" said Nan."
   ],
   "warmup": [
+    "bath",
+    "moth",
     "thin",
     "path",
-    "with",
-    "moth",
-    "thick",
-    "picks"
+    "both",
+    "with"
   ],
   "questions": [
     {
-      "ask": "Where is Beth sitting?",
-      "listenFor": "On the path. It is stated in the second line - have them find it rather than telling them."
+      "ask": "What does Nan use to get the moth out?",
+      "listenFor": "A thin red mug. It is stated in the story - have them reread that line instead of telling them."
     },
     {
-      "ask": "Why does Beth run up the path?",
-      "listenFor": "The moth went off with her hat. You want cause and effect, not just \"she ran.\""
+      "ask": "Where does Nan put the moth?",
+      "listenFor": "On the path. Listen for the word path, not just \"outside.\""
     },
     {
-      "ask": "Do you think the moth took the hat on purpose? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason tied to the story, like \"no, it just hopped off.\""
+      "ask": "Was the moth glad to get out? Tell me why you think so.",
+      "listenFor": "Either answer is fine. You want a reason tied to the story, like \"yes, it was wet and moths do not swim.\""
     }
   ]
 }

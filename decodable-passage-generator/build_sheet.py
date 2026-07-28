@@ -21,6 +21,7 @@ import pathlib
 import re
 import sys
 
+import heart_words as HEART
 import props
 
 HERE = pathlib.Path(__file__).parent
@@ -81,17 +82,33 @@ def build_html(spec):
                    f'so only the sound taught by Lesson {n} appears.</p>')
 
     warm_html = "".join(f"<div>{esc(w)}</div>" for w in warm)
-    # By the late lessons there are 24 heart words, which cost the child's page
-    # about an inch and a half. A reader who has known "a" and "the" for ninety
-    # lessons does not need to check them off; show the most recent ones.
-    HEART_SHOWN = 9
-    shown = hearts[-HEART_SHOWN:] if len(hearts) > HEART_SHOWN else hearts
-    heart_label = ("Heart words &mdash; read each one, then check the box."
-                   if len(shown) == len(hearts) else
-                   f"Heart words &mdash; the newest {len(shown)}. "
-                   f"Read each one, then check the box.")
-    heart_html = "".join(
-        f'<span class="hw"><span class="ubox"></span>{esc(w)}</span>' for w in shown)
+    # Heart words get mapped, not memorised. Show the newest few as sound boxes
+    # with a heart under whatever is odd AT THIS LESSON -- "the" carries two
+    # hearts until th is taught, then one. Older words are listed plainly for a
+    # quick read; a child who has known "the" for ninety lessons does not need
+    # to map it again.
+    new_here = [w for w in HEART.available(n) if w.lesson > n - 6]
+    new_here = new_here[-2:] if len(new_here) > 2 else new_here
+    mapped_words = {w.word for w in new_here}
+    older = [w for w in hearts if w not in mapped_words]
+
+    if new_here:
+        cards = "".join(
+            f'<div class="hwcard">{HEART.svg(hw, n)}</div>' for hw in new_here)
+        heart_block = (
+            f'<h2>Heart words</h2>'
+            f'<p class="rowlab">Say it. Say each sound. The '
+            f'<span style="color:#b23f28">&hearts;</span> box is the part to learn by heart.</p>'
+            f'<div class="hwrow">{cards}</div>')
+    elif older:
+        heart_block = (
+            f'<p class="rowlab" style="margin-top:6px">Heart words &mdash; read each one, '
+            f'then check the box.</p>'
+            f'<div class="hearts">' + "".join(
+                f'<span class="hw"><span class="ubox"></span>{esc(w)}</span>'
+                for w in older[-6:]) + '</div>')
+    else:
+        heart_block = ""
     line_html = "\n      ".join(f'<span class="ln">{esc(l)}</span>' for l in lines)
     q_child = "\n  ".join(
         f'<div class="q"><span class="qtext">{i}. {esc(q["ask"])}</span>'
@@ -164,8 +181,10 @@ def build_html(spec):
     sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
     If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
     spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words to know by sight, not sound out, are the heart words:
-    {" ".join(f"<code>{esc(w)}</code>" for w in hearts)}.{wb_note}</p>
+    <p style="margin:0;">The only words not sounded out are the {len(hearts)} heart words
+    taught so far &mdash; and even those are mostly regular. Only the marked part of each
+    is learned by heart. The newest are
+    {" ".join(f"<code>{esc(w)}</code>" for w in hearts[-6:])}.{wb_note}</p>
   </div>
 
   <div class="foot">
@@ -191,8 +210,8 @@ def build_html(spec):
 
   <h2>Say these first</h2>
   <div class="warm">{warm_html}</div>
-  <p class="rowlab">{heart_label}</p>
-  <div class="hearts">{heart_html}</div>
+
+  {heart_block}
 
   <h2>Read the story</h2>
   <div class="passage">

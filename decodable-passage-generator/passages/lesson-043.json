@@ -2,15 +2,15 @@
   "lesson": 43,
   "title": "Pull, Bull, Pull!",
   "lines": [
-    "Tim has a big bull.",
-    "The bull is on the hill.",
     "Tim has a bag full of figs.",
-    "The bull tugs at the bag.",
-    "Tim pulls and pulls.",
-    "The bull will not let up.",
-    "Tim lets the bag fall.",
-    "The bull gets all the figs.",
-    "Tim will get figs up on the hill."
+    "He pulls it up a tall hill.",
+    "A big bull sits on the top.",
+    "\"Go on, bull!\" said Tim.",
+    "No. The bull will not go.",
+    "So Tim rolls a fig off the hill.",
+    "The bull runs and gets it.",
+    "Tim pulls the full bag to the top.",
+    "\"You can have a fig,\" said Tim."
   ],
   "warmup": [
     "bull",
@@ -18,20 +18,20 @@
     "pulls",
     "figs",
     "hill",
-    "fall"
+    "tall"
   ],
   "questions": [
     {
-      "ask": "What is in the bag?",
-      "listenFor": "Figs. It is stated in the story - if they cannot find it, have them reread the third line rather than telling them."
+      "ask": "What is in the bag Tim pulls up the hill?",
+      "listenFor": "Figs. It is stated in the story - if they cannot find it, have them reread the first line rather than telling them."
     },
     {
-      "ask": "Why does Tim let the bag fall?",
-      "listenFor": "The bull would not let up, so Tim let go instead of pulling. You want cause and effect, not just \"it fell.\""
+      "ask": "Why does Tim roll a fig off the hill?",
+      "listenFor": "The bull would not move, so Tim got it to run after the fig instead. You want cause and effect, not just \"it fell.\""
     },
     {
-      "ask": "Do you think Tim will bring figs up the hill again? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason that comes from the story, like \"yes, there are more figs up on the hill.\""
+      "ask": "Do you think that was a clever plan? Tell me why.",
+      "listenFor": "Either answer is fine. Listen for a reason that comes from the story, like \"yes, the bull ran off and Tim got to the top.\""
     }
   ]
 }

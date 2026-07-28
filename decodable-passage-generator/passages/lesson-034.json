@@ -1,37 +1,36 @@
 {
   "lesson": 34,
-  "title": "Liz Zips the Bag",
+  "title": "Liz and the Zip",
   "lines": [
-    "Liz has a red bag. It zips.",
-    "Liz gets a bun. Liz gets a fig.",
-    "Liz runs up a big log.",
-    "A bug zips at Liz!",
-    "The bug zigs. The bug zags.",
-    "Liz zips the bag up. Zip!",
-    "The bug sits. It is mad.",
-    "Liz sets a bit on the log.",
-    "The bug gets it. It is not mad."
+    "Liz has a red bag, and it zips up.",
+    "She sets a bun and a fig in it.",
+    "Liz tugs at the zip. It is not up.",
+    "A bit of rag is in the zip!",
+    "Liz tugs at the rag. Zip! It is up!",
+    "\"You did it,\" said Zac, and Liz nods.",
+    "Liz and Zac zig and zag to the hut.",
+    "She sits and has the bun and the fig."
   ],
   "warmup": [
-    "zip",
     "zips",
+    "zip",
     "bag",
-    "bug",
-    "bun",
-    "fig"
+    "rag",
+    "fig",
+    "bun"
   ],
   "questions": [
     {
-      "ask": "What two things did Liz get?",
-      "listenFor": "A bun and a fig. If your child only names one, that is fine - ask \"what else?\" and let them look back."
+      "ask": "Why would the zip not go up?",
+      "listenFor": "A bit of rag was caught in it. Line four says it. Let your child reread that line rather than being told."
     },
     {
-      "ask": "Why did Liz zip the bag up?",
-      "listenFor": "To keep the bug out of her food. The story does not say it in those words, so working it out together is the point."
+      "ask": "Who got the zip working again?",
+      "listenFor": "Liz did it herself. Line five says it. If they say Zac, ask them to find the line with the rag in it."
     },
     {
-      "ask": "Do you think Liz did the right thing at the end? Tell me why.",
-      "listenFor": "There is no wrong answer. Listen for a reason - she shared, or the bug stopped being mad. A reason from the story beats a yes or no."
+      "ask": "Zips get stuck a lot. What do you do when one sticks? Tell me why.",
+      "listenFor": "Any answer counts. You are listening for a reason of their own, and it is a nice chance to try a real zip together."
     }
   ]
 }

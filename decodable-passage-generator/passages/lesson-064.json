@@ -3,34 +3,27 @@
   "title": "The Milk Spilled",
   "lines": [
     "Ben filled a big pot with milk.",
-    "Ben tipped it and the milk spilled.",
-    "It dripped on the red rug.",
-    "Ben yelled for Mom.",
-    "Mom picked up a rag and mopped.",
-    "Mom dumped the wet rag in the tub.",
-    "Ben was sad, but Mom hugged him.",
-    "Then Ben helped and did not spill."
+    "He tipped it and the milk spilled.",
+    "It dripped on the rug in many drops.",
+    "\"Mom!\" he yelled. \"I spilled the milk!\"",
+    "Mom picked up a rag and mopped it up.",
+    "She dumped the wet rag in the tub.",
+    "\"Is any milk left?\" said Ben.",
+    "\"Lots,\" said Mom. Ben helped fill the pot."
   ],
-  "warmup": [
-    "filled",
-    "spilled",
-    "yelled",
-    "picked",
-    "dumped",
-    "helped"
-  ],
+  "warmup": ["filled", "spilled", "yelled", "picked", "dumped", "helped"],
   "questions": [
     {
       "ask": "What did the milk drip on?",
-      "listenFor": "The red rug. This is stated in the story - point them back to that line rather than giving the answer."
+      "listenFor": "The rug. It says so in the third line."
     },
     {
-      "ask": "How did Mom help Ben?",
-      "listenFor": "He picked up the pot, gave Ben a rag, and dumped the wet rag in the tub. Any two of those three is plenty."
+      "ask": "What did Mom do with the wet rag?",
+      "listenFor": "She dumped it in the tub. Send them back to that line."
     },
     {
-      "ask": "Do you think Ben will spill the milk again? Tell me why.",
-      "listenFor": "Either answer works. You want a reason from the story - \"no, he used both hands\" or \"yes, the pot is big for him.\""
+      "ask": "How do you think Ben felt when Mom said there was lots left? Tell me why.",
+      "listenFor": "Any answer with a reason. Listen for something like \"better, because she was not cross.\""
     }
   ]
 }

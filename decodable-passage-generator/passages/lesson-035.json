@@ -1,37 +1,36 @@
 {
   "lesson": 35,
-  "title": "Sam and the Ham",
+  "title": "Sal Is It",
   "lines": [
-    "Dad had a ham in a pan.",
-    "Sam is a cat. Sam is bad.",
-    "Sam sat on a mat and had a nap.",
-    "The ham is hot. Sam ran to it.",
-    "Sam had a bit and ran!",
-    "Dad is mad at Sam. Bad cat!",
-    "Sam hid in a bag and sat.",
-    "Dad had jam and a bun.",
-    "Sam ran to Dad. Dad pats him."
+    "Pam, Dan and Sal ran in the sun.",
+    "\"I am it!\" said Pam. She ran at Dan.",
+    "Dan ran and ran. Pam can not tag him.",
+    "Sal is a tot. She sat and was sad.",
+    "Pam ran to Sal. \"Can we tag Dan?\"",
+    "Sal and Pam ran at Dan and got him!",
+    "\"Sal got me!\" said Dan. Sal ran and ran.",
+    "\"Sal is it!\" said Pam. Sal ran at Dan."
   ],
   "warmup": [
-    "ham",
-    "pan",
-    "mat",
-    "bad",
     "ran",
-    "jam"
+    "tag",
+    "sad",
+    "sat",
+    "can",
+    "tot"
   ],
   "questions": [
     {
-      "ask": "What did Sam take from the pan?",
-      "listenFor": "A bit of the ham. It is said in the story. If they are stuck, read that line again and stop right before the answer."
+      "ask": "Who was it at the start of the game?",
+      "listenFor": "Pam. Line two says it. If your child is not sure, put a finger on that line and let them read it again."
     },
     {
-      "ask": "Where did Sam hide?",
-      "listenFor": "In a bag. Have them find the word bag on the page and touch it - proving it beats remembering it."
+      "ask": "Why was Sal sitting down and feeling sad?",
+      "listenFor": "She is a tot, so she was not in the game. Line four says it. Let them reread it rather than being told."
     },
     {
-      "ask": "Do you think Dad stayed mad at Sam? Tell me why you think so.",
-      "listenFor": "No wrong answer. Listen for a reason from the story - Dad patted Sam at the end, or Sam ran back to him. The because is what you are after."
+      "ask": "Pam asked Sal to help her tag Dan. Was that a good idea? Tell me why.",
+      "listenFor": "Either answer works. You are listening for a reason from the story, like two runners are faster than one, or Sal was left out before."
     }
   ]
 }

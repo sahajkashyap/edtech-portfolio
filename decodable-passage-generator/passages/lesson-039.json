@@ -1,36 +1,36 @@
 {
   "lesson": 39,
-  "title": "The Pup and the Nut",
+  "title": "Bud and the Tub",
   "lines": [
-    "Gus is a pup.",
-    "Gus digs in the mud.",
-    "Gus digs up a nut.",
-    "A bug is on the nut!",
-    "The bug runs at Gus.",
-    "Gus runs to his hut.",
-    "The bug gets the nut.",
-    "Gus digs up ten nuts."
+    "Mom, Gus and Bud are at the tub.",
+    "\"Get in, Bud,\" said Mom.",
+    "But Bud sits on the rug and hums.",
+    "Gus got a cup and a tin jug.",
+    "He dips the cup in the tub.",
+    "Gus tips the cup in the jug. Fun!",
+    "Bud got up and ran. He got in!",
+    "Bud tips the jug on Gus. Gus is wet!"
   ],
   "warmup": [
-    "pup",
-    "mud",
-    "digs",
-    "nut",
-    "bug",
-    "hut"
+    "tub",
+    "cup",
+    "jug",
+    "rug",
+    "fun",
+    "tips"
   ],
   "questions": [
     {
-      "ask": "What does Gus dig up in the mud?",
-      "listenFor": "A nut. It is stated in the story, so if they guess, send them back to find the line instead of telling them."
+      "ask": "Where was Bud sitting instead of getting in the tub?",
+      "listenFor": "On the rug. Line three says it. If your child is not sure, put a finger on that line and let them read it again."
     },
     {
-      "ask": "Why does Gus run to his hut?",
-      "listenFor": "The bug ran at him. You are listening for cause and effect - if they just say \"the bug,\" ask \"and what did the bug do?\""
+      "ask": "What did Gus do that made Bud want to get in?",
+      "listenFor": "He made a game with a cup and a jug, dipping and tipping. Lines four to six carry it."
     },
     {
-      "ask": "Do you think Gus was brave? Tell me why.",
-      "listenFor": "Either answer is fine. What you want is a reason tied to the story - \"no, he ran\" or \"yes, he dug up ten more.\""
+      "ask": "Gus got splashed at the end. How do you think he felt? Tell me why.",
+      "listenFor": "Either answer works. You are listening for a reason from the story, like it was a game so he laughed."
     }
   ]
 }

@@ -1,23 +1,36 @@
 {
   "lesson": 7,
-  "title": "A Map at the Mat",
+  "title": "A Map and the Sap",
   "lines": [
-    "Sam sat at a mat.",
-    "A map is at the mat!",
-    "Pat the map, Sam.",
-    "Pam sat at the mat.",
-    "Tap the map, Pam.",
-    "Tam sat at the mat.",
-    "Tap, tap! Tam is at the map.",
-    "Sam, Pam, Tam sat at the map."
+    "Sam sat at a map.",
+    "Tap at the map, Sam.",
+    "The map! At the mat!",
+    "Sam and Pam sat at the mat.",
+    "Pat at the mat, Pam.",
+    "Sap! Sap at the mat!",
+    "Tam sat at the sap.",
+    "Sam and Pam and Tam tap at the sap."
   ],
-  "warmup": ["sat", "mat", "map", "pat", "tap", "at"],
+  "warmup": [
+    "map",
+    "mat",
+    "sat",
+    "tap",
+    "pat",
+    "at"
+  ],
   "questions": [
-    {"ask": "Who sat at the mat first?",
-     "listenFor": "Sam. This one is in the first line - if they are not sure, have them put a finger on line one and read it again rather than telling them."},
-    {"ask": "What is at the mat?",
-     "listenFor": "A map. Listen for them finding it in line two. Reading the line out loud again is the answer, so let them do that."},
-    {"ask": "Would you like to sit at the map with them? Tell me why.",
-     "listenFor": "Either answer is fine. You are listening for a reason of their own - what they think is on the map, or who they would want with them."}
+    {
+      "ask": "Who was sitting at the map at the start?",
+      "listenFor": "Sam. It is the first line. If your child is stuck, point at that line and let them read it again rather than telling them."
+    },
+    {
+      "ask": "What did they find at the mat?",
+      "listenFor": "Sap, the sticky juice that runs out of a tree. Line six says it. If they say sticky, that counts."
+    },
+    {
+      "ask": "If you drew a map, where would it take us? Tell me why there.",
+      "listenFor": "Any place is a good answer. You are listening for the reason, and it is a lovely chance to draw a map together after."
+    }
   ]
 }
