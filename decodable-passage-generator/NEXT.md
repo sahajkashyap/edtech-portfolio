@@ -50,23 +50,23 @@ lessons too.
 
 ## Still outstanding
 
-A workflow was **running when this was written** — lengthening lessons 46–128
-and repairing 15 early stories. Check `validate_passage.py --all` before
-assuming anything below is still true.
+Everything below is accurate as of the end of 28 July. All 123 stories pass
+both gates and all 123 sheets fit.
 
-1. **Stories must grow.** Ours sat flat at ~57 words from Lesson 6 to 128; real
-   decodable readers go 50 → 172. `GROWTH_BANDS` in `validate_passage.py` now
-   demands 7 lines by L50, 9 by L75, 11 by L110. `TYPE_BANDS` in
-   `build_sheet.py` shrinks the story type from 24px to 18px across the same
-   span to make the room — which is what real readers do anyway.
-2. **~23 stories were flagged as not making sense.** Worst: L68 (nothing causes
-   anything), L28 (you cannot pin a spider web), L114 (Mom is called "he"), L90
-   (the spoon was never in the bag), L83 (Dad introduced, Mom does everything).
-3. **9 questions have no answer in the story** — L9, 42, 48, 71, 84, 90, 98,
-   115, 118.
-4. **The third question is the same question 81 times of 123.** 67 end "Tell me
+1. **The late stories are still short.** L91–128 averages 113 words against a
+   real reader's ~172. Getting there needs another step down in story type
+   size, and 18px is already the floor I would want for a seven-year-old.
+   **This is a teacher's call, not mine.**
+2. **9 questions have no answer in the story** — L9, 42, 48, 71, 84, 90, 98,
+   115, 118. The parent's answer key gives it away: it supplies an inference the
+   story never states.
+3. **The third question is the same question 81 times of 123.** 67 end "Tell me
    why", 48 open "Do you think". Less urgent now that page is optional, but it
-   is a tell.
+   is a template rather than a question.
+4. **Nobody has read the grown stories end to end.** 83 were lengthened today
+   and the readers checked them, but the teacher has not. That is the highest
+   value thing to do next — every serious problem in this project was found that
+   way, not by a checker.
 
 ## What was settled today, so nobody re-litigates it
 
