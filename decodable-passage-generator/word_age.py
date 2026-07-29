@@ -74,6 +74,13 @@ APPROVED = {
     "tin": "kept at one lesson only, where the story makes it a container",
     "shed": "shown in the picture",
     "sheds": "as shed",
+    # Lesson 72 teaches -ild -old -ind -olt -ost. Every -olt word fails the age
+    # gate (colt 9.0, bolt 7.3, jolt 9.4), so without this the lesson cannot
+    # demonstrate one of the five patterns it is named for. Approved by the
+    # teacher: it is concrete and it appears in the picture, which is the same
+    # reason hen, log and pond are here.
+    "colt": "the only -olt word available to Lesson 72; concrete and in the picture",
+    "colts": "as colt",
 }
 
 

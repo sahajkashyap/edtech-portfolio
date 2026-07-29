@@ -1,26 +1,26 @@
 {
   "lesson": 72,
-  "title": "The Lost Pup",
+  "title": "The Lost Colt",
   "lines": [
-    "Jill is a kind child with a wild pup.",
-    "In the cold, the pup slips past the gate.",
+    "Jill is a kind child with a wild colt.",
+    "In the cold, the colt slips past the gate.",
     "Jill and Dad go to find it.",
     "Dad holds a lamp up as they go.",
-    "Jill calls and calls, but no pup runs up.",
-    "Then Jill thinks. She gets the pup's dish.",
-    "She shakes it, and the pup jumps up.",
+    "Jill calls and calls, but no colt runs up.",
+    "Then Jill thinks. She gets the colt's dish.",
+    "She shakes it, and the colt jumps up.",
     "It was behind an old gate all this time.",
     "Jill told it to hold still.",
-    "Most pups run off, but this one did not.",
-    "The wild pup is home and is not cold."
+    "Most colts run off, but this colt did not.",
+    "The wild colt is home and is not cold."
   ],
   "warmup": [
+    "colt",
     "wild",
     "cold",
     "kind",
     "child",
-    "behind",
-    "told"
+    "behind"
   ],
   "questions": [
     {
