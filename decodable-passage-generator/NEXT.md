@@ -30,23 +30,25 @@ forms, because `taps` is rated 8.9 (the raters pictured faucets) while `tap` is
 (2012). Only our subset is stored; the 51,715-word source has no clean
 redistribution licence.
 
-## TWO DECISIONS WAITING ON THE TEACHER
+## The two decisions the teacher made (29 July) — settled, do not re-ask
 
-**1. Lesson 72 has lost one of its five patterns.** It teaches `-ild -old -ind
--olt -ost`. Every `-olt` word fails the age gate: colt 9.0, bolt 7.3, jolt 9.4.
-The story works but no longer demonstrates `-olt`.
-*Recommendation: approve `colt` in `word_age.APPROVED`.* It is concrete and it
-appears in the picture, which is exactly the stated reason `hen`, `log` and
-`pond` are already approved.
+**1. Lesson 72 keeps its `-olt` pattern.** It teaches `-ild -old -ind -olt
+-ost`, and every `-olt` word failed the age gate (colt 9.0, bolt 7.3, jolt
+9.4), so the lesson had quietly lost one of its five patterns. The teacher
+approved **`colt` by name** — it is concrete and it appears in the picture, the
+same stated reason `hen`, `log` and `pond` are approved. `bolt` and `jolt` are
+still rejected, and the gate proved it by catching both when I tried to write
+them into the story. The passage is a colt again, not a pup.
 
-**2. Lesson 80 teaches `er` and the only `er` word in the bank is `her`.**
-After the gate rejects `fern` (8.7) and `herd` (7.7) there is nothing left.
-Words a six-year-old certainly knows — *sister, under, after, never, letter,
-winter, corner* — pass **both** gates but are absent from `core_vocabulary.py`
-at any lesson, so they cannot be warm-up words.
-*Recommendation: add common multi-syllable words to CORE.* This is a gap in my
-word list, not a real constraint, and it is probably starving other later
-lessons too.
+**2. Lesson 80 has real `er` words.** It teaches `er` and only `her` survived
+the gate. The gap was in `core_vocabulary.py`, not in the curriculum — *sister,
+under, after, never, letter, winter, corner* pass both gates and were simply
+absent from the list. 33 two-syllable `er` words added; the ones that are never
+pluralised are marked as function words so the bank stops offering `afters` and
+`clevers`. The warm-up strip is six `er` words now instead of one.
+
+Also changed: `build_word_bank.py` filters by the age gate, so a word like
+`fern` never reaches a writer at all rather than being suggested and refused.
 
 ## Still outstanding
 
