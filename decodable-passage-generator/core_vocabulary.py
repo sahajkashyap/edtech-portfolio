@@ -141,6 +141,8 @@ mud sand water milk air fun help
 # Function words take no ending at all. Without this the bank offers "alls",
 # "abouts" and "ams".
 FUNCTION_WORDS = set("""
+after ever never over under clever silver better
+
 a an as at is in on of it up us am be he she we me my by if do to no so go or
 the and but not can that this these those then them there they both just next
 than when which more most very too out our all about off am was were has had
@@ -269,6 +271,18 @@ colt bolt jolt
 my by cry dry fly shy sky spy try why fry
 baby happy funny sunny puppy penny lady city
 apple little table candle handle bottle simple
+# --- two-syllable er words (80+) ---
+# Lesson 80 teaches er, and after the age gate rejected fern and herd the only
+# er word left in the whole bank was the heart word "her" -- so the lesson that
+# teaches the sound had nothing to drill it with. These are all everyday words
+# a six-year-old knows, and they clear both gates. The gap was in this list,
+# not in the curriculum.
+after better butter clever corner cover dancer dinner
+ever farmer finger hammer helper jumper ladder letter
+never number otter over painter river rubber runner
+silver singer sister sitter summer supper teacher under
+winter
+
 # --- r-controlled (77-83) ---
 car far jar star scar hard yard card farm arm barn
 part start smart dark park shark sharp

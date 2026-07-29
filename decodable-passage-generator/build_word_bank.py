@@ -15,6 +15,7 @@ import json
 import pathlib
 
 import audit_passage as A
+import word_age
 from core_vocabulary import (AMBIGUOUS, ADJECTIVES, BLOCKED, FUNCTION_WORDS,
                              NOUNS_NO_PLURAL, VERBS, word_list)
 
@@ -91,7 +92,11 @@ def earliest_lesson(word: str):
 
 
 def build():
-    words = word_list()
+    # The bank is what a writer picks from, so it should not offer words the
+    # gate will reject. Filtering here means "fern" and "herd" never reach a
+    # writer at all, rather than being suggested and then refused.
+    words = [w for w in word_list() if word_age.check(w)[0]]
+    dropped = [w for w in word_list() if not word_age.check(w)[0]]
     bank, never, overrides = {}, [], 0
     generated = 0
 
@@ -154,6 +159,7 @@ def build():
     print(f"wrote {OUT}")
     print(f"  {len(words)} base words + {generated} inflected forms; "
           f"{doc['placed']} placed; {len(never)} never decodable")
+    print(f"  {len(dropped)} words held back as too old for a six-year-old")
     print(f"  {overrides} placed by human sound-tag rather than by rule\n")
     for n in (5, 10, 19, 41, 53, 62, 76, 88, 97, 128):
         avail = cumulative[n]
