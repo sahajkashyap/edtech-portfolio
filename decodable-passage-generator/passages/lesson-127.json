@@ -34,7 +34,7 @@
   "questions": [
     {
       "ask": "How many wheels does a tricycle have? A bicycle?",
-      "listenFor": "Three and two. Tri is three, bi is two, uni is one - the same one hiding inside unicorn."
+      "listenFor": "Three and two. Tri is three, bi is two, uni is one — the same one hiding inside unicorn."
     },
     {
       "ask": "Why did June stop riding the tricycle?",

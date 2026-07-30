@@ -23,7 +23,7 @@
   "questions": [
     {
       "ask": "What does the cat take from the shop?",
-      "listenFor": "A big fish. Line two says it - send them back to that line if they are not sure."
+      "listenFor": "A big fish. Line two says it — send them back to that line if they are not sure."
     },
     {
       "ask": "What does Kim find at the shed?",

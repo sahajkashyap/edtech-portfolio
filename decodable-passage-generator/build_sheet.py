@@ -64,10 +64,29 @@ def type_for(lesson):
 # These caps are the largest line counts measured as fitting at each type size,
 # with the warm-up strip and heart-word cards above them.
 #   lesson ceiling -> lines that fit on the first reading page
-FIRST_PAGE_LINES = [(45, 10), (65, 11), (90, 12), (128, 13)]
+FIRST_PAGE_LINES = [(45, 7), (65, 8), (90, 9), (128, 10)]
+
+
+# Measured capacity beats a guessed constant. page-capacity.json records, per
+# lesson, how many story lines that reading page actually holds -- taken from
+# the rendered height, not estimated. The band constants below are the fallback
+# for when it has not been generated yet.
+_CAPACITY = None
+
+
+def _measured():
+    global _CAPACITY
+    if _CAPACITY is None:
+        f = HERE / "page-capacity.json"
+        _CAPACITY = (json.loads(f.read_text())["linesByLesson"]
+                     if f.exists() else {})
+    return _CAPACITY
 
 
 def first_page_lines(lesson):
+    measured = _measured().get(str(lesson))
+    if measured:
+        return measured
     for ceiling, cap in FIRST_PAGE_LINES:
         if lesson <= ceiling:
             return cap
@@ -119,6 +138,35 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
+def pick_dictation(lines):
+    """The one sentence the parent reads aloud for the child to write.
+
+    Chosen in code, deterministically, so the same lesson always gives the same
+    sentence and the parent never has to decide. Preference order: no dialogue
+    punctuation (a child writing by hand does not need quotation marks), five
+    to seven words (widened only if nothing qualifies), a single calm sentence
+    over an exclamation or a double sentence, and a line from the middle of the
+    story over the first or last.
+    """
+    n = len(lines)
+    center = (n - 1) / 2
+    plain = [i for i, l in enumerate(lines)
+             if '"' not in l and "“" not in l and "”" not in l]
+    pool = plain or list(range(n))
+
+    def key(i):
+        l = lines[i].strip()
+        words = len(l.split())
+        return (
+            0 if 5 <= words <= 7 else abs(words - 6),   # 5-7 words first
+            l.count(".") + l.count("!") + l.count("?"), # one sentence, calm
+            1 if l.endswith("!") else 0,
+            0 if 0 < i < n - 1 else 1,                  # not first or last
+            abs(i - center), i)                         # middle of the story
+
+    return lines[min(pool, key=key)].strip()
+
+
 def build_html(spec):
     n = spec["lesson"]
     L, doc = lesson_info(n)
@@ -163,8 +211,8 @@ def build_html(spec):
             # Naming each card cost height, so the instruction line folds into
             # the heading rather than the child losing anything. Adult text is
             # what gets cut when a page runs short -- never the reader's space.
-            f'<h2>Heart words <span style="font-weight:400;font-size:.7em;'
-            f'color:#555;letter-spacing:0">&mdash; say each sound; the '
+            f'<h2>Heart words <span style="font-weight:400;font-size:.75em;'
+            f'color:#444;letter-spacing:0">&mdash; say each sound; the '
             f'<span style="color:#b23f28">&hearts;</span> part is learned by '
             f'heart</span></h2>'
             f'<div class="hwrow">{cards}</div>')
@@ -198,6 +246,22 @@ def build_html(spec):
         '    <span class="note">Color one circle each time.</span>\n'
         '  </div>')
 
+    # One dictated sentence, written right under the story while the words are
+    # still warm. The sentence itself is printed only on the grown-up sheet --
+    # the child writes it from hearing it. Three-line handwriting rules (top
+    # line, dotted midline, baseline) because the midline is what tells a child
+    # how tall an "a" is against an "h"; a bare underline tells them nothing.
+    dictation = pick_dictation(lines)
+    dictation_block = (
+        '<h2>Write the sentence you hear</h2>\n'
+        '  <p class="sub">Your grown-up will say one sentence from the story. '
+        'Say it back, then write it.</p>\n'
+        '  <div class="ruled"><span class="mid"></span></div>\n'
+        '  <div class="ruled"><span class="mid"></span></div>')
+
+    # Everything that follows the story's final line, wherever that line falls.
+    end_matter = f"{fluency_block}\n\n  {dictation_block}"
+
     turn_over = ('\n  <p class="artcap" style="text-align:right;margin-top:2px">'
                  'Keep going on the next page &rarr;</p>')
 
@@ -215,7 +279,7 @@ def build_html(spec):
   </div>
 
   {story_block(chunk, i)}
-  {fluency_block if i == of_n - 1 else turn_over.strip()}
+  {end_matter if i == of_n - 1 else turn_over.strip()}
 
 </div>
 """ for i, chunk in enumerate(story_pages) if i > 0)
@@ -224,10 +288,10 @@ def build_html(spec):
     page_note = (f"Prints as {page_count} pages: 1 grown-up sheet, then "
                  f"{page_count - 1} child sheets.")
 
-    # "Five minutes" was honest at sixty words. A Lesson 120 story is three
-    # times that and gets read three times, so promising five minutes sets a
-    # parent up to feel behind. Say what it actually takes.
-    minutes = 5 if word_count < 90 else 8 if word_count < 140 else 10
+    # Say what it actually takes. The sequence is now three readings PLUS a
+    # written sentence PLUS a drawing — promising five minutes would set a
+    # parent up to feel behind before they start.
+    minutes = 15 if word_count < 140 else 20
     q_child = "\n  ".join(
         f'<div class="q"><span class="qtext">{i}. {esc(q["ask"])}</span>'
         f'<span class="qline"></span><span class="qline"></span></div>'
@@ -275,10 +339,8 @@ def build_html(spec):
   </div>
 
   <div class="prereq">
-    <div class="h">Before you start &middot; is this the right sheet?</div>
-    <p><strong>This is Lesson {n}. {prereq}</strong> If your child has not done those lessons yet,
-    this story will feel too hard &mdash; that is the sheet, not the child. Ask their teacher
-    where to start.</p>
+    <p style="margin:0"><strong>Before you start: this is Lesson {n}. {prereq}</strong> If they
+    have not done those yet it will feel too hard &mdash; ask their teacher where to start.</p>
   </div>
 
   <h2>About {minutes} minutes, in this order</h2>
@@ -287,28 +349,38 @@ def build_html(spec):
     words. A heart word has one part that cannot be sounded out &mdash; the little heart marks
     the bit to just remember.</p>
     <p><strong>2. Read the story. If they get stuck, don&rsquo;t say the word.</strong> Point
-    under the letters one at a time and say: &ldquo;Say each sound, then say them fast.&rdquo;
-    It sounds like this: &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
+    under the letters and say: &ldquo;Say each sound, then say them fast&rdquo; &mdash;
+    &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
     <p><strong>3. Read it three times</strong> &mdash; they color a circle each time.</p>
-    <p><strong>4. They draw what happened.</strong> There is no picture to copy &mdash; the
-    picture they make from the words shows you what they understood. No writing needed.</p>
+    <p><strong>4. They write one sentence</strong> on the lines under the story &mdash; the
+    words to say are in the box below.</p>
+    <p><strong>5. They draw what happened.</strong> No picture to copy &mdash; their picture of
+    the story shows you what they understood.</p>
+  </div>
+
+  <h2>The writing sentence &middot; read this aloud to them</h2>
+  <div class="tip">
+    <p class="say">&ldquo;{esc(dictation)}&rdquo;</p>
+    <p>Once at normal speed, once slowly, and have them <strong>say it back</strong> before
+    they write. If they get stuck on a word, say its sounds together &mdash; don&rsquo;t spell
+    it letter by letter.</p>
+    <p><strong>Practice, not a test &mdash; don&rsquo;t mark it wrong.</strong> If a word is
+    misspelled, read it back exactly as they wrote it and let them hear the difference.</p>
   </div>
 
   <h2>When it does not go smoothly</h2>
   <div class="tip">
-    <p><strong>They read a word wrong.</strong> Don&rsquo;t say &ldquo;no.&rdquo; Point at the word:
-    &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves is the win.</p>
-    <p><strong>They guess from the first letter.</strong> Say &ldquo;Check with your
-    finger &mdash; say every sound before you say the word.&rdquo;</p>
-    <p><strong>They sound it out twice and still can&rsquo;t get it.</strong> Just tell them the
-    word and carry on. A few told words do no harm.</p>
-    <p><strong>They are stuck on nearly every line, or fed up.</strong> Stop &mdash; that is fine.
-    Try an easier lesson, or the same one tomorrow. Five happy minutes beat twenty cross ones.</p>
+    <p><strong>A wrong word, or a guess?</strong> Don&rsquo;t say &ldquo;no&rdquo; &mdash; point
+    at the word: &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves
+    is the win.</p>
+    <p><strong>Sounded it out twice, still stuck?</strong> Tell them the word and carry on.
+    A few told words do no harm.</p>
+    <p><strong>Stuck on nearly every line, or fed up?</strong> Stop &mdash; that is fine. Try an
+    easier lesson, or this one tomorrow. Five happy minutes beat twenty cross ones.</p>
   </div>
 
-  <h2>If they want the questions</h2>
-  <p class="sub">The questions page is extra &mdash; reading and drawing is the whole job. These
-  work just as well asked out loud.</p>
+  <h2>If they want the questions <span class="h2note">&mdash; the questions page is extra;
+  these work just as well out loud</span></h2>
   <div class="answers">
     {q_adult}
   </div>
@@ -345,7 +417,7 @@ def build_html(spec):
 
   <h2>Read the story</h2>
   {story_block(story_pages[0], 0)}
-  {fluency_block if of_n == 1 else turn_over.strip()}
+  {end_matter if of_n == 1 else turn_over.strip()}
 
 </div>
 {continuation_pages}

@@ -24,11 +24,11 @@
   "questions": [
     {
       "ask": "What does Nick pull up before he gets a fish?",
-      "listenFor": "A shell and a wet sock. Two things - if they name only one, ask \"and what else?\""
+      "listenFor": "A shell and a wet sock. Two things — if they name only one, ask \"and what else?\""
     },
     {
       "ask": "What does Dad tell Nick to do?",
-      "listenFor": "Sit, hush, and do not let go. It is the line in quote marks - have them find the talking."
+      "listenFor": "Sit, hush, and do not let go. It is the line in quote marks — have them find the talking."
     },
     {
       "ask": "What do you think Nick will do the next time he catches a fish?",

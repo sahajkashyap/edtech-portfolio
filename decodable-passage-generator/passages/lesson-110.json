@@ -38,11 +38,11 @@
     },
     {
       "ask": "What did Mina try first, and did it work?",
-      "listenFor": "She tried to lift the pup out. It did not work - the pup cried and held on tight."
+      "listenFor": "She tried to lift the pup out. It did not work — the pup cried and held on tight."
     },
     {
       "ask": "Do you think that pup was really the funniest? Why?",
-      "listenFor": "Either answer. What you want is a reason - hiding in a hat is the one in the story."
+      "listenFor": "Either answer. What you want is a reason — hiding in a hat is the one in the story."
     }
   ]
 }

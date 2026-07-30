@@ -166,7 +166,7 @@ def available(n):
     return [w for w in WORDS if w.lesson <= n]
 
 
-def svg(hw: HeartWord, lesson: int, box=36, pad=4):
+def svg(hw: HeartWord, lesson: int, box=42, pad=5):
     """One word as sound boxes, hearts under whatever is odd AT THIS LESSON.
 
     Everything scales off `box` so the card can be sized in one place. The

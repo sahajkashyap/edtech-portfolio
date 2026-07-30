@@ -24,11 +24,11 @@
   "questions": [
     {
       "ask": "Josh taps the tub first. Does that get the moth out?",
-      "listenFor": "No - the moth just sits. Line five says it. That is his first try, and it does not work."
+      "listenFor": "No — the moth just sits. Line five says it. That is his first try, and it does not work."
     },
     {
       "ask": "What does Josh use to get the moth out?",
-      "listenFor": "A thin red mug. Line six says it - have them reread that line instead of telling them."
+      "listenFor": "A thin red mug. Line six says it — have them reread that line instead of telling them."
     },
     {
       "ask": "What did Josh try first to get the moth out? What did he do after that?",

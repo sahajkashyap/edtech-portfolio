@@ -25,7 +25,7 @@
   "questions": [
     {
       "ask": "What did the robot pick up?",
-      "listenFor": "A red tulip, which it gave to Mom. Stated in the story - send them back to the line."
+      "listenFor": "A red tulip, which it gave to Mom. Stated in the story — send them back to the line."
     },
     {
       "ask": "Why did the robot go silent?",

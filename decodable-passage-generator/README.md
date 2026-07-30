@@ -5,7 +5,7 @@ point is to agree on what a finished sheet looks like before we build the
 machine that makes 128 of them.
 
 - `example-lesson-41.html` — open in a browser, click **Print / Save as PDF**
-- `Mud Pig - Lesson 41 - EXAMPLE.pdf` — the printed result, 4 pages
+- `Mud Pig - Lesson 41 - EXAMPLE.pdf` — the printed result. Kept as the original example; the live sheets have since dropped the picture and gained a dictation line
 - `check-pages.py` — measures each sheet against the page budget before printing,
   so we find what to trim instead of guessing (`python3 check-pages.py`)
 
@@ -19,29 +19,25 @@ That means **no** silent *e*, **no** digraphs (`sh ch th ck`), **no** blends,
 **no** vowel teams, **no** r-controlled vowels. "Mud Pig" obeys all of it:
 55 words, 0 untaught sounds.
 
-## About the picture — three separate things
+## About the picture — removed, and why
 
-A picture on a decodable is not one decision, it's three. This example uses all
-three on purpose.
+The reading page used to carry a small scene drawn in code. **It is gone as of
+30 July 2026**, on the teacher's decision, and the reasoning is worth keeping:
 
-| # | What it is | Where it is | Why |
-|---|---|---|---|
-| 1 | **A scene illustration** | Top of page 1 | Gives the child the story in their head before their eyes do the work |
-| 2 | **A "cover it up" rule** | Grown-up notes, page 2 | The picture must not become a guessing crutch — that is the habit decodables exist to prevent |
-| 3 | **A "draw it" box** | Page 2 | Comprehension check that needs no writing. This is the one most K–2 teachers actually use |
+> The child is meant to build the picture in their own mind from the words, and
+> then **draw that understanding**. A picture at the top tells them what
+> happens, so they read toward an answer they already hold, and the drawing page
+> stops being a comprehension check and becomes copying.
 
-**The illustration is drawn in code (SVG), not generated as an image.** That
-matters for four reasons:
+The design was already admitting this. The grown-up sheet used to instruct the
+parent to **"cover the picture while they read."** An instruction that exists
+only to undo the harm of an element is an argument for removing the element.
+Both are gone, and the space went to larger story type, larger heart-word cards
+and the dictation line.
 
-1. It costs nothing and needs no image service.
-2. Style stays identical across all 128 sheets. AI image tools drift.
-3. It prints clean on a cheap home printer — pure black line art, no grey wash.
-4. There is no copyright question at all. We drew it.
-
-The trade-off: a code-drawn picture can't show anything we haven't drawn before.
-The plan for the real generator is a small reusable **prop box** — a library of
-simple shapes (pig, dog, cat, sun, tub, pond, bag, hat, bed…) that the writer
-agent composes into a scene. Roughly 40 props covers most CVC-level stories.
+`props.py` still draws scenes and is left in place — it is used by nothing on
+the reading page now. The **draw-it box keeps its own full page**; that was
+never in question, and it is the comprehension check at this age.
 
 ## Deliberate layout choices, in case we want to change them
 
@@ -51,10 +47,14 @@ child's page, which is just more words for a young reader to get confused by.
 
 | Sheet | Owner | What's on it |
 |---|---|---|
-| 1 | Grown-up — keep this one | How to use it in five steps, the story to follow along with, what a good answer sounds like, the sound-check reassurance |
-| 2 | The reader | Picture, warm-up words, heart words, the story, three fluency circles |
-| 3 | The reader | Three questions with tall writing lines |
-| 4 | The reader | A full-page drawing box |
+| 1 | Grown-up — keep this one | How to use it, what to say when it goes wrong, the dictation sentence to read aloud, what a good answer sounds like |
+| 2 (–3) | The reader | Warm-up words, heart-word cards, the story, three fluency circles, and the dictation writing lines. A long story takes a second page rather than smaller type |
+| next | The reader | A full-page drawing box |
+| last | The reader | Three questions, explicitly optional |
+
+Most lessons print **five pages**; short ones print four and the longest print
+six. That is the page count giving way rather than the child's space, which is
+the rule working as intended.
 
 The drawing got its own sheet the moment taller writing lines stopped fitting
 beside it. That is the rule working as intended: the page count gives, the
@@ -66,7 +66,10 @@ reading problem. When a sheet doesn't fit, cut adult text or add a page — neve
 the child's space.
 
 - Writing lines **80px** tall, drawing box **7.8in** tall, ~34px between questions
-- Story type **24px**, word cards and heart words **22px**, question text **19px**
+- Story type **25 / 24 / 21 / 21px** by lesson band, heart-word boxes **42px**,
+  handwriting rules **0.62in** per three-line group with a dotted midline
+- Story lines must never wrap. The line is the unit a child points along, so
+  type size is capped by the **widest line in the set**, not by page height
 - Adult text may be 11–13px. A child's may not.
 - Name lines are ~3in of ruled line, long enough for a whole name, tucked into
   the header row so they cost no vertical space

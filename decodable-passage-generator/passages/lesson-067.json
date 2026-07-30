@@ -25,7 +25,7 @@
   "questions": [
     {
       "ask": "What was in Tom's backpack?",
-      "listenFor": "A hotdog, a napkin, and Dan's kitten. Stated in the story - have them find the lines instead of listing it for them."
+      "listenFor": "A hotdog, a napkin, and Dan's kitten. Stated in the story — have them find the lines instead of listing it for them."
     },
     {
       "ask": "Why is Tom upset?",

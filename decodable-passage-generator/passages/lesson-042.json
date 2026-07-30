@@ -22,7 +22,7 @@
   "questions": [
     {
       "ask": "Where does the ball land?",
-      "listenFor": "In a well. It is stated in the story - if they guess, have them find the line with the word well in it."
+      "listenFor": "In a well. It is stated in the story — if they guess, have them find the line with the word well in it."
     },
     {
       "ask": "Who tugs the ball out of the well?",

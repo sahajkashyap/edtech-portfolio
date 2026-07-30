@@ -31,8 +31,40 @@ picture and that instruction are now gone.
 calling it. The **drawing page keeps its full-size box** — that was never in
 question.
 
-The freed space (roughly 1.5–2 inches) goes to the child: larger story type,
-larger heart-word cards with larger hearts, and the dictation line below.
+The freed space goes to the child, and here is what it bought:
+
+| | before | after |
+|---|---|---|
+| story type, by lesson band | 24 / 22 / 20 / 18px | **25 / 24 / 21 / 21px** |
+| heart-word boxes | 25px | **42px** |
+| pages in a typical packet | 4 | **5** |
+
+**The type ceiling was not page height — it was line width.** A story line must
+never wrap, because the line is the unit a child points along, so the largest
+usable type is set by the single widest line in all 123 stories. The column was
+widened three ways (print margins 0.6in → 0.5in, passage padding 22px → 12px,
+proportional word-spacing) and every candidate size measured in a real browser.
+
+**The cost, stated plainly:** 105 of 123 lessons now print five pages, 13 print
+four, and 5 print six. That is the page count giving way instead of the child's
+space — the rule working as intended — but it is more paper, and the lever if
+it is ever too much is type size, not the child's room.
+
+### A mistake worth not repeating
+
+Setting the lines-per-page limits by measuring how much room was free does not
+work, and the failure is not obvious. Measuring a page that just fits suggests
+room to grow; filling it overflows; the next measurement shrinks it again. The
+caps ping-pong and never settle, and one pass locked in a value where Lesson 45
+had 318px free and a cap of five lines.
+
+`measure_capacity.py` approaches from above instead: start with a cap no page
+can meet, render, and shrink only what overflowed, by exactly how much it
+overflowed. Monotone, so it terminates, and it stops at the true maximum rather
+than somewhere timidly below it. One further trap: shrink from the lines
+*actually on the page*, not from the cap — a cap of 14 on an eight-line story
+does nothing until it falls below eight, and subtracting from the cap burns
+rounds changing a number that has no effect.
 
 ## 30 July 2026 — One dictation sentence, chosen automatically
 

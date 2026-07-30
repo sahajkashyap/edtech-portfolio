@@ -46,24 +46,25 @@
               margin: 8px 0 10px; font-size: 12.5px; color: #4a545e; line-height: 1.45; }
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+  h2 .h2note { font-weight: normal; font-size: 12px; color: #555; letter-spacing: 0; }
   .sub { font-size: 12.5px; color: #555; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
+  .rowlab { font-size: 12px; color: #555; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
-            padding: 9px 13px; margin: 8px 0 3px; font-size: 13px; color: #4a3f2c; }
+            padding: 7px 13px; margin: 8px 0 3px; font-size: 13px; color: #4a3f2c; }
   .prereq .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
                color: #8a5a12; font-weight: bold; margin-bottom: 5px; }
   .prereq strong { color: #7a4e0c; }
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 8px 12px; margin: 3px 0 4px; font-size: 13.4px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 6px 12px; margin: 3px 0 4px; font-size: 13px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
-  .tip p { margin: 3px 0; line-height: 1.38; }
+  .tip p { margin: 2px 0; line-height: 1.36; }
 
-  .answers { margin: 4px 0 0 0; font-size: 13px; }
-  .answers .qa { margin: 0 0 3px 12px; line-height: 1.35; }
+  .answers { margin: 3px 0 0 0; font-size: 13px; }
+  .answers .qa { margin: 0 0 2px 12px; line-height: 1.33; }
   .answers .qa .qq { font-weight: bold; }
   .answers .qa .aa { color: #555; }
 
@@ -73,8 +74,10 @@
   .artcap { font-size: 11px; color: #555; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
-  .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
+  /* boxes size to their word — late-lesson words like "adventure" must never
+     collide with the box edge, and a second row is fine */
+  .warm { display: flex; flex-wrap: wrap; gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
+  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 18px; letter-spacing: 0.04em; flex: 1 0 auto; min-width: 1.05in; max-width: 1.8in; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
@@ -96,6 +99,16 @@
   .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
   .fluency .note { font-size: 11.5px; color: #555; }
 
+  /* ---- dictation: real three-line handwriting rules, sized for small hands.
+     The dotted midline is what tells a child how tall an "a" is against an
+     "h"; the gap below each group is where the tail of a "g" goes. ---- */
+  .ruled { height: 0.62in; border-top: 1.6px solid #1a1a1a; border-bottom: 1.6px solid #1a1a1a;
+           position: relative; margin: 10px 12px 26px; }
+  .ruled .mid { position: absolute; left: 0; right: 0; top: 50%;
+                border-top: 1.6px dashed #8a8a8a; }
+  /* the sentence the grown-up reads aloud, big enough to read at arm's length */
+  .tip .say { font-size: 16px; font-weight: bold; letter-spacing: 0.03em; margin: 2px 0 5px; }
+
   /* ---- comprehension: wide lines for young hands ---- */
   .q { font-size: 19px; margin: 0 0 34px 12px; }
   .q .qtext { display: block; margin-bottom: 10px; }
@@ -106,7 +119,7 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
+  .audit { margin-top: 10px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 6px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 

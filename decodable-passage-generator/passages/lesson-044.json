@@ -22,7 +22,7 @@
   "questions": [
     {
       "ask": "What does the duck tap at after the sack?",
-      "listenFor": "Nick's red sock. This is stated in the story - if they guess, have them find the line with the word sock in it."
+      "listenFor": "Nick's red sock. This is stated in the story — if they guess, have them find the line with the word sock in it."
     },
     {
       "ask": "Why does a bun fall off?",

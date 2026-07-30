@@ -24,7 +24,7 @@
   "questions": [
     {
       "ask": "Which hen does not come in when Pete calls?",
-      "listenFor": "Jade. Lines one and three - send them back rather than telling them."
+      "listenFor": "Jade. Lines one and three — send them back rather than telling them."
     },
     {
       "ask": "Pete hunts by the lake, the gate and the shed first. Where does he find Jade?",

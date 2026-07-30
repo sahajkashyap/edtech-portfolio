@@ -21,7 +21,14 @@
     "Gran said, \"That was a smart plan, Nell.\"",
     "They sat down and ate a ripe peach."
   ],
-  "warmup": ["boxes", "dishes", "peaches", "cups", "lids", "lid"],
+  "warmup": [
+    "boxes",
+    "dishes",
+    "peaches",
+    "cups",
+    "lids",
+    "lid"
+  ],
   "questions": [
     {
       "ask": "Why could Nell not find the peaches?",
@@ -29,11 +36,11 @@
     },
     {
       "ask": "What was Nell's plan?",
-      "listenFor": "She got a pen and made a mark on each lid - a dish, a cup, a peach, a brush."
+      "listenFor": "She got a pen and made a mark on each lid — a dish, a cup, a peach, a brush."
     },
     {
       "ask": "What mark would you put on a box of cups? Tell me why.",
-      "listenFor": "Any answer. Listen for a reason - it has to be quick to spot."
+      "listenFor": "Any answer. Listen for a reason — it has to be quick to spot."
     }
   ]
 }

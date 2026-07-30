@@ -46,24 +46,25 @@
               margin: 8px 0 10px; font-size: 12.5px; color: #4a545e; line-height: 1.45; }
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
+  h2 .h2note { font-weight: normal; font-size: 12px; color: #555; letter-spacing: 0; }
   .sub { font-size: 12.5px; color: #555; margin: 0 0 3px 12px; }
-  .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
+  .rowlab { font-size: 12px; color: #555; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
   .prereq { border: 1.5px solid #8a5a12; background: #fdf4e3; border-radius: 8px;
-            padding: 9px 13px; margin: 8px 0 3px; font-size: 13px; color: #4a3f2c; }
+            padding: 7px 13px; margin: 8px 0 3px; font-size: 13px; color: #4a3f2c; }
   .prereq .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
                color: #8a5a12; font-weight: bold; margin-bottom: 5px; }
   .prereq strong { color: #7a4e0c; }
   .prereq p { margin: 4px 0 0; line-height: 1.45; }
 
   /* ---- grown-up boxes ---- */
-  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 8px 12px; margin: 3px 0 4px; font-size: 13.4px; color: #4a3f2c; }
+  .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 6px 12px; margin: 3px 0 4px; font-size: 13px; color: #4a3f2c; }
   .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 4px; }
-  .tip p { margin: 3px 0; line-height: 1.38; }
+  .tip p { margin: 2px 0; line-height: 1.36; }
 
-  .answers { margin: 4px 0 0 0; font-size: 13px; }
-  .answers .qa { margin: 0 0 3px 12px; line-height: 1.35; }
+  .answers { margin: 3px 0 0 0; font-size: 13px; }
+  .answers .qa { margin: 0 0 2px 12px; line-height: 1.33; }
   .answers .qa .qq { font-weight: bold; }
   .answers .qa .aa { color: #555; }
 
@@ -73,8 +74,10 @@
   .artcap { font-size: 11px; color: #555; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
-  .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
+  /* boxes size to their word — late-lesson words like "adventure" must never
+     collide with the box edge, and a second row is fine */
+  .warm { display: flex; flex-wrap: wrap; gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
+  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 18px; letter-spacing: 0.04em; flex: 1 0 auto; min-width: 1.05in; max-width: 1.8in; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
@@ -96,6 +99,16 @@
   .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
   .fluency .note { font-size: 11.5px; color: #555; }
 
+  /* ---- dictation: real three-line handwriting rules, sized for small hands.
+     The dotted midline is what tells a child how tall an "a" is against an
+     "h"; the gap below each group is where the tail of a "g" goes. ---- */
+  .ruled { height: 0.62in; border-top: 1.6px solid #1a1a1a; border-bottom: 1.6px solid #1a1a1a;
+           position: relative; margin: 10px 12px 26px; }
+  .ruled .mid { position: absolute; left: 0; right: 0; top: 50%;
+                border-top: 1.6px dashed #8a8a8a; }
+  /* the sentence the grown-up reads aloud, big enough to read at arm's length */
+  .tip .say { font-size: 16px; font-weight: bold; letter-spacing: 0.03em; margin: 2px 0 5px; }
+
   /* ---- comprehension: wide lines for young hands ---- */
   .q { font-size: 19px; margin: 0 0 34px 12px; }
   .q .qtext { display: block; margin-bottom: 10px; }
@@ -106,7 +119,7 @@
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
-  .audit { margin-top: 14px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 8px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
+  .audit { margin-top: 10px; border: 1px solid #c7d9c2; background: #f4f9f2; border-radius: 8px; padding: 6px 13px; font-size: 12.4px; color: #33502c; line-height: 1.38; }
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
@@ -118,7 +131,7 @@
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>Prints as 5 pages: 1 grown-up sheet, then 4 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -134,40 +147,48 @@
   </div>
 
   <div class="prereq">
-    <div class="h">Before you start &middot; is this the right sheet?</div>
-    <p><strong>This is Lesson 52. It uses only sounds already taught in Lessons 1&ndash;51.</strong> If your child has not done those lessons yet,
-    this story will feel too hard &mdash; that is the sheet, not the child. Ask their teacher
-    where to start.</p>
+    <p style="margin:0"><strong>Before you start: this is Lesson 52. It uses only sounds already taught in Lessons 1&ndash;51.</strong> If they
+    have not done those yet it will feel too hard &mdash; ask their teacher where to start.</p>
   </div>
 
-  <h2>About 5 minutes, in this order</h2>
+  <h2>About 15 minutes, in this order</h2>
   <div class="tip">
     <p><strong>1. Say the practice words at the top of the story page,</strong> then the heart
     words. A heart word has one part that cannot be sounded out &mdash; the little heart marks
     the bit to just remember.</p>
     <p><strong>2. Read the story. If they get stuck, don&rsquo;t say the word.</strong> Point
-    under the letters one at a time and say: &ldquo;Say each sound, then say them fast.&rdquo;
-    It sounds like this: &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
+    under the letters and say: &ldquo;Say each sound, then say them fast&rdquo; &mdash;
+    &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
     <p><strong>3. Read it three times</strong> &mdash; they color a circle each time.</p>
-    <p><strong>4. They draw what happened.</strong> There is no picture to copy &mdash; the
-    picture they make from the words shows you what they understood. No writing needed.</p>
+    <p><strong>4. They write one sentence</strong> on the lines under the story &mdash; the
+    words to say are in the box below.</p>
+    <p><strong>5. They draw what happened.</strong> No picture to copy &mdash; their picture of
+    the story shows you what they understood.</p>
+  </div>
+
+  <h2>The writing sentence &middot; read this aloud to them</h2>
+  <div class="tip">
+    <p class="say">&ldquo;She gets junk, but no pink sock.&rdquo;</p>
+    <p>Once at normal speed, once slowly, and have them <strong>say it back</strong> before
+    they write. If they get stuck on a word, say its sounds together &mdash; don&rsquo;t spell
+    it letter by letter.</p>
+    <p><strong>Practice, not a test &mdash; don&rsquo;t mark it wrong.</strong> If a word is
+    misspelled, read it back exactly as they wrote it and let them hear the difference.</p>
   </div>
 
   <h2>When it does not go smoothly</h2>
   <div class="tip">
-    <p><strong>They read a word wrong.</strong> Don&rsquo;t say &ldquo;no.&rdquo; Point at the word:
-    &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves is the win.</p>
-    <p><strong>They guess from the first letter.</strong> Say &ldquo;Check with your
-    finger &mdash; say every sound before you say the word.&rdquo;</p>
-    <p><strong>They sound it out twice and still can&rsquo;t get it.</strong> Just tell them the
-    word and carry on. A few told words do no harm.</p>
-    <p><strong>They are stuck on nearly every line, or fed up.</strong> Stop &mdash; that is fine.
-    Try an easier lesson, or the same one tomorrow. Five happy minutes beat twenty cross ones.</p>
+    <p><strong>A wrong word, or a guess?</strong> Don&rsquo;t say &ldquo;no&rdquo; &mdash; point
+    at the word: &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves
+    is the win.</p>
+    <p><strong>Sounded it out twice, still stuck?</strong> Tell them the word and carry on.
+    A few told words do no harm.</p>
+    <p><strong>Stuck on nearly every line, or fed up?</strong> Stop &mdash; that is fine. Try an
+    easier lesson, or this one tomorrow. Five happy minutes beat twenty cross ones.</p>
   </div>
 
-  <h2>If they want the questions</h2>
-  <p class="sub">The questions page is extra &mdash; reading and drawing is the whole job. These
-  work just as well asked out loud.</p>
+  <h2>If they want the questions <span class="h2note">&mdash; the questions page is extra;
+  these work just as well out loud</span></h2>
   <div class="answers">
     <p class="qa"><span class="qq">1. What happens to the pink sock in the sink?</span><br><span class="aa">It sank. If they say "it got wet," ask "and then what did it do?" to get them back to the word sank.</span></p>
     <p class="qa"><span class="qq">2. Meg tries a cup and a mug first. What gets the sock back in the end?</span><br><span class="aa">The thin net from the fish tank. Line seven says it. Mom gives a hint, but Meg fetches the net.</span></p>
@@ -202,7 +223,7 @@
   <h2>Say these first</h2>
   <div class="warm"><div>pink</div><div>sink</div><div>sank</div><div>think</div><div>thank</div><div>junk</div></div>
 
-  <h2>Heart words <span style="font-weight:400;font-size:.7em;color:#555;letter-spacing:0">&mdash; say each sound; the <span style="color:#b23f28">&hearts;</span> part is learned by heart</span></h2><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 76 59" width="76" height="59" role="img" aria-label="there, with a heart under each tricky part"><rect x="0" y="0" width="36" height="36" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="20" fill="#1a1a1a">th</text><rect x="40" y="0" width="36" height="36" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="58" y="24" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="20" fill="#1a1a1a">ere</text><path transform="translate(58,49) scale(0.69)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg><div class="hwword">there</div></div><div class="hwcard"><svg viewBox="0 0 76 59" width="76" height="59" role="img" aria-label="where, with a heart under each tricky part"><rect x="0" y="0" width="36" height="36" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="20" fill="#1a1a1a">wh</text><rect x="40" y="0" width="36" height="36" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="58" y="24" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="20" fill="#1a1a1a">ere</text><path transform="translate(58,49) scale(0.69)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg><div class="hwword">where</div></div></div>
+  <h2>Heart words <span style="font-weight:400;font-size:.75em;color:#444;letter-spacing:0">&mdash; say each sound; the <span style="color:#b23f28">&hearts;</span> part is learned by heart</span></h2><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 89 69" width="89" height="69" role="img" aria-label="there, with a heart under each tricky part"><rect x="0" y="0" width="42" height="42" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="21" y="29" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="24" fill="#1a1a1a">th</text><rect x="47" y="0" width="42" height="42" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="68" y="29" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="24" fill="#1a1a1a">ere</text><path transform="translate(68,57) scale(0.81)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg><div class="hwword">there</div></div><div class="hwcard"><svg viewBox="0 0 89 69" width="89" height="69" role="img" aria-label="where, with a heart under each tricky part"><rect x="0" y="0" width="42" height="42" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="21" y="29" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="24" fill="#1a1a1a">wh</text><rect x="47" y="0" width="42" height="42" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="68" y="29" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="24" fill="#1a1a1a">ere</text><path transform="translate(68,57) scale(0.81)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg><div class="hwword">where</div></div></div>
 
   <h2>Read the story</h2>
   <div class="passage">
@@ -213,6 +234,27 @@
       <span class="ln">"That sock sank!" said Meg.</span>
       <span class="ln">Meg dips a cup in, then a mug.</span>
       <span class="ln">She gets junk, but no pink sock.</span>
+    </p>
+  </div>
+  <p class="artcap" style="text-align:right;margin-top:2px">Keep going on the next page &rarr;</p>
+
+</div>
+
+<!-- ================= PAGE 3 &mdash; STORY CONTINUED ================= -->
+<div class="page">
+
+  <div class="band" style="margin-bottom:4px;">
+    <div>
+      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
+      <div class="tag">Keep reading</div>
+      <h1 style="font-size:18px;">The Pink Sock Sank</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <div class="passage">
+    <div class="ptitle">The Pink Sock Sank <span style="font-weight:400;font-size:.8em">&mdash; page 2</span></div>
+    <p>
       <span class="ln">Mom said, "Think. What is long and thin?"</span>
       <span class="ln">Meg gets the thin net from the fish tank.</span>
       <span class="ln">Tug, tug! Up pops the pink sock!</span>
@@ -225,6 +267,11 @@
     <span class="star"></span><span class="star"></span><span class="star"></span>
     <span class="note">Color one circle each time.</span>
   </div>
+
+  <h2>Write the sentence you hear</h2>
+  <p class="sub">Your grown-up will say one sentence from the story. Say it back, then write it.</p>
+  <div class="ruled"><span class="mid"></span></div>
+  <div class="ruled"><span class="mid"></span></div>
 
 </div>
 
