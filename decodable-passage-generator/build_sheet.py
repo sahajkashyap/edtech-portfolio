@@ -159,12 +159,21 @@ def build_html(spec):
     older = [w for w in hearts if w not in mapped_words]
 
     if new_here:
+        # Name the word under its boxes. The stylesheet always had .hwword and
+        # nothing ever filled it, so a parent saw a strip of letter boxes with
+        # no idea which word they spelled -- and two cards side by side read as
+        # one long nonsense word.
         cards = "".join(
-            f'<div class="hwcard">{HEART.svg(hw, n)}</div>' for hw in new_here)
+            f'<div class="hwcard">{HEART.svg(hw, n)}'
+            f'<div class="hwword">{esc(hw.word)}</div></div>' for hw in new_here)
         heart_block = (
-            f'<h2>Heart words</h2>'
-            f'<p class="rowlab">Say it. Say each sound. The '
-            f'<span style="color:#b23f28">&hearts;</span> box is the part to learn by heart.</p>'
+            # Naming each card cost height, so the instruction line folds into
+            # the heading rather than the child losing anything. Adult text is
+            # what gets cut when a page runs short -- never the reader's space.
+            f'<h2>Heart words <span style="font-weight:400;font-size:.7em;'
+            f'color:#555;letter-spacing:0">&mdash; say each sound; the '
+            f'<span style="color:#b23f28">&hearts;</span> part is learned by '
+            f'heart</span></h2>'
             f'<div class="hwrow">{cards}</div>')
     elif older:
         heart_block = (
@@ -206,7 +215,8 @@ def build_html(spec):
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">{esc(title)} &mdash; keep reading</h1>
+      <div class="tag">Keep reading</div>
+      <h1 style="font-size:18px;">{esc(title)}</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
@@ -354,7 +364,8 @@ def build_html(spec):
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">{esc(title)} &mdash; my drawing page</h1>
+      <div class="tag">My drawing page</div>
+      <h1 style="font-size:18px;">{esc(title)}</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
@@ -371,7 +382,8 @@ def build_html(spec):
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner extra" style="margin-bottom:4px;">If you want more</span>
-      <h1 style="font-size:18px;">{esc(title)} &mdash; talk about it</h1>
+      <div class="tag">Talk about it</div>
+      <h1 style="font-size:18px;">{esc(title)}</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>

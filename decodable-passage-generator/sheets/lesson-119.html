@@ -26,7 +26,7 @@
     .page:last-child { page-break-after: auto; }
   }
 
-  .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; margin-bottom: 5px; }
+  .band { display: flex; justify-content: space-between; align-items: flex-end; gap: 22px; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; margin-bottom: 5px; }
   .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
   h1 { font-size: 22px; margin: 4px 0 0; }
   .nameline { display: flex; align-items: flex-end; gap: 10px; margin: 0; flex: none; }
@@ -77,10 +77,10 @@
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
-.hwrow { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 1px 12px; align-items: flex-start; }
+.hwrow { display: flex; flex-wrap: wrap; gap: 10px 38px; margin: 0 0 1px 12px; align-items: flex-start; }
   .hwcard { text-align: center; }
   .hwcard svg { display: block; }
-  .hwword { font-size: 12px; color: #666; margin-top: 1px; letter-spacing: 0.04em; }
+  .hwword { font-size: 11px; color: #666; margin-top: 0; letter-spacing: 0.04em; }
 
   /* ---- the passage ---- */
   .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
@@ -231,7 +231,8 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">The Big Question &mdash; keep reading</h1>
+      <div class="tag">Keep reading</div>
+      <h1 style="font-size:18px;">The Big Question</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
@@ -265,7 +266,8 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <h1 style="font-size:18px;">The Big Question &mdash; my drawing page</h1>
+      <div class="tag">My drawing page</div>
+      <h1 style="font-size:18px;">The Big Question</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
@@ -282,7 +284,8 @@
   <div class="band" style="margin-bottom:4px;">
     <div>
       <span class="owner extra" style="margin-bottom:4px;">If you want more</span>
-      <h1 style="font-size:18px;">The Big Question &mdash; talk about it</h1>
+      <div class="tag">Talk about it</div>
+      <h1 style="font-size:18px;">The Big Question</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
