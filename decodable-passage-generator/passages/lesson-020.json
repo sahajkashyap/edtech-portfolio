@@ -29,8 +29,8 @@
       "listenFor": "The tin cup. Line six says it. If they say \"the last one,\" ask them to find the line that names it."
     },
     {
-      "ask": "Do you think Meg found it quickly at the end? Tell me why you think so.",
-      "listenFor": "Either answer works. You are listening for a reason of their own, such as she watched Ben hide it, or ten cups is a lot to check."
+      "ask": "What did Ben tap first? What did he tap after that?",
+      "listenFor": "The big cup, then the tan cup, then the tin cup. Lines four to six hold the order."
     }
   ]
 }

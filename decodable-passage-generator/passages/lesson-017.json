@@ -29,8 +29,8 @@
       "listenFor": "He got a cup so Bob could move the bug. Listen for the cup - that is the turn in the story, and notice that Bob does the moving himself."
     },
     {
-      "ask": "Do you think Bob should have shared the bun? Tell me why.",
-      "listenFor": "Either answer is fine. You are listening for a reason, like the bug was hungry too, or the bun was Bob's to begin with."
+      "ask": "What was the problem on the bus? How did Bob sort it out?",
+      "listenFor": "A bug was eating the bun. Bob moved it with the man's cup. Lines three, six and seven."
     }
   ]
 }

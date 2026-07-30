@@ -26,15 +26,15 @@
   "questions": [
     {
       "ask": "What did Meg do the first time the kitten got on the table?",
-      "listenFor": "She set it on the rug and patted it \u2014 but the kitten hopped right back up on the table. Lines three to five."
+      "listenFor": "She set it on the rug and patted it — but the kitten hopped right back up on the table. Lines three to five."
     },
     {
       "ask": "What knocked the candle and the bottle over?",
       "listenFor": "The apple, after the kitten batted it off the table. If they say \"the kitten,\" ask them to follow the apple line by line."
     },
     {
-      "ask": "Do you think the kitten meant to make a mess? Tell me why.",
-      "listenFor": "Either answer is correct. You want a reason \u2014 \"no, it was just batting at the apple\" or \"yes, cats do that on purpose.\""
+      "ask": "What do you think Meg will do the next time the kitten hops on the table?",
+      "listenFor": "Any guess with a reason. Setting it on the rug did not keep it off — lines four and five."
     }
   ]
 }

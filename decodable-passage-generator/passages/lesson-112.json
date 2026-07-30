@@ -2,20 +2,27 @@
   "lesson": 112,
   "title": "The Bear and the Pear",
   "lines": [
-    "A brown bear sat by a pear tree.",
-    "He had not had a meal all day.",
-    "The best pears were up in the air.",
-    "The bear stood up tall on his back paws.",
+    "A brown bear sat under a pear tree.",
+    "It was the best pear tree in the woods.",
+    "The bear could see the pears up in the air.",
+    "But all the best ones were at the top.",
+    "He stood up tall on his back paws.",
     "He could not reach. Not even close.",
-    "So he got a chair from his den.",
-    "But the chair had a big tear in it.",
-    "He stood on it. The chair fell down.",
+    "So he went to his den to get a chair.",
+    "The chair was old and had a tear in it.",
+    "He set it under the tree and stood on it.",
+    "The chair fell down with a bang.",
     "The bear fell too, and sat on the grass.",
-    "He had a sad face for a while.",
-    "Then he had a plan. He hugged the tree.",
-    "He shook it hard with both paws.",
+    "Now the chair had three legs, not four.",
+    "He made a face at that old chair.",
+    "Then he had a plan. He got up.",
+    "He got both paws on the tree and hugged it.",
+    "He shook that tree as hard as he could.",
     "Ten pears came down all at once.",
-    "The bear ate three and saved the rest."
+    "One of them landed on his head.",
+    "The bear ate three and saved the rest.",
+    "A small hare came by to share them.",
+    "They sat and ate pears in the sun."
   ],
   "warmup": [
     "bear",
@@ -28,7 +35,7 @@
   "questions": [
     {
       "ask": "Why did the bear get a chair?",
-      "listenFor": "To get up to the pears, which were up in the air. The answer is in the third and sixth lines."
+      "listenFor": "To get up to the pears, which were up in the air at the top of the tree."
     },
     {
       "ask": "How did the bear get the pears down in the end?",

@@ -30,8 +30,8 @@
       "listenFor": "The cat hid when Mom got the van. That is evidence, not a guess - have them find the line and read it back."
     },
     {
-      "ask": "The cat hid at the start and napped on the way home. What do you think changed for it? Tell me.",
-      "listenFor": "Their own thinking. The story shows both moments but never explains the change, so this one is theirs to work out."
+      "ask": "Which part will you draw — the cat hiding, or the cat asleep on Gus?",
+      "listenFor": "Either. Line five is the hiding; the last line is the nap. The reason matters more than the pick."
     }
   ]
 }

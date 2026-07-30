@@ -29,8 +29,8 @@
       "listenFor": "A log tipped over and a hen got out. Line five says it. If they only say \"a hen got out,\" ask what made that happen."
     },
     {
-      "ask": "What else could Hal do to keep the hens out of the mud? Tell me why that would work.",
-      "listenFor": "There is no wrong answer. You are listening for a reason that shows they understood the problem."
+      "ask": "What else could Hal have used to build the pen?",
+      "listenFor": "Any idea. He used logs, a pit and mud, in lines three and six. Ask what would hold a log up."
     }
   ]
 }

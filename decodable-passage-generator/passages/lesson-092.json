@@ -2,18 +2,23 @@
   "lesson": 92,
   "title": "The Boot and the Big Fish",
   "lines": [
-    "Pam, Ben and Dad got in a blue boat.",
+    "Pam and Ben went to the sea with Dad.",
+    "They got in a blue boat by the shore.",
     "The moon was bright on the cool sea.",
     "Dad let them sit up on the seat.",
+    "Pam had a net, and Ben had his boots on.",
     "They ate sweet fruit and had cool tea.",
-    "A big gray fish came up to look.",
+    "A big gray fish came up to look at them.",
     "Ben shook so much at the sight of it.",
-    "Dad held Ben as his boot fell in.",
-    "The fish took the boot and swam off!",
-    "Pam had a net, but the fish was fast.",
-    "Then Pam let a bit of fruit drop in.",
+    "Dad held Ben as one boot fell in the sea!",
+    "The fish took the boot and swam off fast.",
+    "Ben yelled, and Pam held up the big net.",
+    "She did try, but the fish was too fast.",
+    "Then Pam had a plan. She held up the fruit.",
+    "She let a bit of it drop in the sea.",
     "The fish came back up for the sweet fruit.",
-    "It let go, and Ben got the boot back.",
+    "It let go of the boot at last.",
+    "Ben got the boot back with the net.",
     "One boot was wet, but he had both."
   ],
   "warmup": [
@@ -27,7 +32,7 @@
   "questions": [
     {
       "ask": "What did they have to eat in the boat?",
-      "listenFor": "Sweet fruit and cool tea. It is in the fourth line."
+      "listenFor": "Sweet fruit and cool tea. Find the line with the word \"ate\" in it."
     },
     {
       "ask": "How did Pam get the fish to let go of the boot?",

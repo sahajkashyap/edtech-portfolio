@@ -15,7 +15,14 @@
     "Ana swam in the green sea with her mom.",
     "It was the best beach day yet."
   ],
-  "warmup": ["beach", "peach", "bee", "sleep", "dream", "green"],
+  "warmup": [
+    "beach",
+    "peach",
+    "bee",
+    "sleep",
+    "dream",
+    "green"
+  ],
   "questions": [
     {
       "ask": "What did Ana and her mom have at the beach?",
@@ -26,8 +33,8 @@
       "listenFor": "She set the peach bit on a flat rock. Sending the bee off had not worked, as it came back."
     },
     {
-      "ask": "Was Ana right to let the bee have the peach? Tell me why.",
-      "listenFor": "Either answer works. Listen for the reason more than the answer."
+      "ask": "Have you ever eaten outside? Did anything come to have a look?",
+      "listenFor": "Any answer, kept to what they saw. A bee came to Ana's peach in line three."
     }
   ]
 }

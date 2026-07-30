@@ -2,37 +2,43 @@
   "lesson": 124,
   "title": "Kindness for Gran",
   "lines": [
-    "Gran had a sickness and stayed in bed.",
-    "Meg saw her and felt a big sadness.",
-    "Gran did not want to sit up at all.",
-    "Meg took her a doll to hold.",
-    "Gran said thank you, but still felt bad.",
-    "\"What can I do?\" Meg asked her dad.",
-    "\"Gran likes soup,\" said Dad. \"I will help.\"",
-    "Dad and Meg made hot soup in a pot.",
-    "Meg took it up the steps to Gran.",
-    "The room was dark, so Dad lit a lamp.",
-    "Gran ate it all and sat up tall.",
-    "\"Your kindness made me well,\" said Gran.",
+    "Gran was to stay with Meg for a week.",
+    "Her room was up the steps at the back.",
+    "Meg ran up to look at it first.",
+    "The room was dark and it felt cold.",
+    "\"I want to fix it up for Gran,\" she told Dad.",
+    "Meg picked red flowers from the yard.",
+    "She set them on the shelf by the bed.",
+    "But by lunch the flowers had gone limp.",
+    "Meg felt a big sadness about that.",
+    "Then Dad handed her a small lamp.",
+    "Meg set it on the shelf and lit it.",
+    "The darkness went away and the room felt warm.",
+    "She got a thick quilt and made the bed.",
+    "Dad helped her sweep the floor as well.",
+    "Gran came at six with a big red bag.",
+    "She went up the steps and looked in.",
+    "\"What kindness!\" said Gran. \"This room is bright.\"",
     "Meg's sadness had turned into happiness.",
-    "Now Meg and Dad make soup each week."
+    "Gran sat on the bed and held her hand.",
+    "Now Meg fills that room with flowers each week."
   ],
   "warmup": [
+    "kindness",
+    "darkness",
+    "happiness",
+    "sadness",
     "bed",
-    "soup",
-    "lamp",
-    "dark",
-    "room",
-    "tall"
+    "lamp"
   ],
   "questions": [
     {
-      "ask": "What did Meg try first, and did it help?",
-      "listenFor": "She took Gran a doll to hold. Gran said thank you but still felt bad."
+      "ask": "What did Meg try first to fix up the room?",
+      "listenFor": "She picked red flowers and set them on the shelf. By lunch they had gone limp."
     },
     {
-      "ask": "Who made the soup with Meg?",
-      "listenFor": "Her dad. He said Gran likes soup and that he would help. Sadness, happiness, kindness, sickness - -ness turns a describing word into a thing."
+      "ask": "What did Dad hand Meg, and what did it do?",
+      "listenFor": "A small lamp. It took the darkness away and made the room feel warm. Sadness, happiness, kindness - -ness turns a describing word into a thing."
     },
     {
       "ask": "What would you do for someone at home who felt sad? Why?",

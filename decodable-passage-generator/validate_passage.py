@@ -16,6 +16,7 @@ import re
 import sys
 
 import audit_passage as A
+import line_pointers
 import props
 import word_age
 from core_vocabulary import BLOCKED
@@ -25,20 +26,24 @@ BANK = HERE / "word-bank.json"
 SOUND_LIST = HERE / "sound-list.json"
 PASSAGES = HERE / "passages"
 
-MAX_LINES, MAX_WORDS = 18, 200
+MAX_LINES, MAX_WORDS = 26, 230
 
 # Stories must GROW. Ours sat flat at about 60 words from Lesson 6 to Lesson
 # 128; real decodable readers go from roughly 50 words to 172 over the same
 # span. The flat ceiling is why the later stories feel rushed -- they were
 # cramming a whole plot into seven sentences, so events landed with no set-up.
-# Smaller type at the later lessons (see build_sheet.TYPE_BANDS) is what makes
-# the room.
+# Smaller type at the later lessons (see build_sheet.TYPE_BANDS) made the first
+# part of that room, and 18px is the floor -- past Lesson 90 the story simply
+# takes a second page (see build_sheet.split_story) rather than shrinking any
+# further. That is what lets the top of the sequence reach a real reader's
+# length instead of stopping at 113 words.
 #   lesson ceiling -> (min lines, min words)
 GROWTH_BANDS = [
     (45,  (0, 0)),        # early lessons stay governed by vocabulary alone
     (65,  (7, 65)),
     (90,  (9, 85)),
-    (128, (11, 105)),
+    (110, (13, 120)),
+    (128, (17, 155)),
 ]
 
 
@@ -178,6 +183,11 @@ def validate(spec):
         if lw in hearts:
             problems.append(f"warm-up word {w!r} is a heart word; warm-ups are for "
                             f"words that get sounded out")
+
+    # 4b. an answer note saying "line four" must name the line that holds the
+    # answer. Rewriting a story silently invalidates these; two survived the
+    # Lesson 91 and 92 rewrites until they were caught by hand.
+    problems.extend(line_pointers.check(spec))
 
     # 5. the title has to be readable too
     for w in words_in(spec["title"]):

@@ -11,7 +11,14 @@
     "\"Sit on the cot,\" said Pam. \"Nap on it.\"",
     "Pam can pat it. The cat is not mad."
   ],
-  "warmup": ["cat", "cap", "cot", "can", "nap", "fit"],
+  "warmup": [
+    "cat",
+    "cap",
+    "cot",
+    "can",
+    "nap",
+    "fit"
+  ],
   "questions": [
     {
       "ask": "Where did the cat try to sit?",
@@ -22,8 +29,8 @@
       "listenFor": "Sit on the cot and nap on it. Line seven says it. A short answer is fine, as long as the cot is in it."
     },
     {
-      "ask": "What do you think Pam should do with her cap now? Tell me why.",
-      "listenFor": "Any answer is fine - wash it, share it, give it to the cat. You are listening for a reason, and a reason that comes from the story is even better."
+      "ask": "Pam says the cat can not fit in the cap. What does fit mean?",
+      "listenFor": "Being just the right size for a space. Line four says it. A hand in a mitten shows it well."
     }
   ]
 }

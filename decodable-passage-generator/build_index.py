@@ -143,7 +143,7 @@ def build():
   <h1>A story for every lesson a story is possible</h1>
   <p class="lede">Each one uses only the sounds taught by that point. Every word was
   checked against the lesson's rulebook before the sheet was made &mdash; none of these
-  were eyeballed. Click any lesson to open its four-page packet, then use the
+  were eyeballed. Click any lesson to open its packet, then use the
   <strong>Print / Save as PDF</strong> button. Click any lesson below to read its story.</p>
   <div class="stats">
     <div class="stat"><div class="v">{len(passages)}</div><div class="k">Passages</div></div>
@@ -161,7 +161,7 @@ def build():
 <section>
   <h2>Every lesson</h2>
   <p class="sub">Grouped by UFLI's real units. Click a lesson to read its story. A
-  dashed card means no passage exists for that lesson. The printable four-page packets
+  dashed card means no passage exists for that lesson. The printable packets
   live beside this file in <code>sheets/</code>.</p>
   {body}
 </section>

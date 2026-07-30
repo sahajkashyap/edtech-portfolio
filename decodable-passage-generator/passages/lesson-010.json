@@ -27,8 +27,8 @@
       "listenFor": "A tin man. Line six says it. Let them read that line back rather than being told."
     },
     {
-      "ask": "If you dug up a tin, what would you want to find in it? Tell me.",
-      "listenFor": "Anything at all. You are listening for an idea of their own, not a right answer."
+      "ask": "Pam and Tim still have the map. What do you think they will dig up next?",
+      "listenFor": "Any guess of their own. The map led them to a pit last time, so a reason from that is a bonus."
     }
   ]
 }

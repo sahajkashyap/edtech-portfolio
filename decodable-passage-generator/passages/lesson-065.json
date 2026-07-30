@@ -31,8 +31,8 @@
       "listenFor": "Pam is slipping in the wet mud, so he grabs her."
     },
     {
-      "ask": "Would you like camping by a pond? Tell me why.",
-      "listenFor": "Either answer is right. This one is just for talking \u2014 listen for a reason."
+      "ask": "Have you been to a pond or a lake? What did you see there?",
+      "listenFor": "Any answer, kept to what they saw. The story has fishing, wet mud and one big jumping fish."
     }
   ]
 }

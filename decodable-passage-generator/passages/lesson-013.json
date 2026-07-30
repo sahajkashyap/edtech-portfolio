@@ -11,7 +11,14 @@
     "\"Sit and sip,\" said Dad. I sat.",
     "I nap. Dad did not nap!"
   ],
-  "warmup": ["nap", "tap", "nod", "tip", "pot", "sat"],
+  "warmup": [
+    "nap",
+    "tap",
+    "nod",
+    "tip",
+    "pot",
+    "sat"
+  ],
   "questions": [
     {
       "ask": "What did Sam tip over?",
@@ -22,8 +29,8 @@
       "listenFor": "I am not mad. You want the idea that Dad was not cross, even after the pot went pop. Let them find the line with said in it."
     },
     {
-      "ask": "Do you think Dad should have gotten up sooner? Tell me why you think so.",
-      "listenFor": "There is no wrong answer. You are listening for a reason tied to the story - Sam was sad, or Dad was tired. The reason matters more than the answer."
+      "ask": "Have you ever waited for someone to wake up? What did you do while you waited?",
+      "listenFor": "Any answer. Sam taps and tips a pot in the story — you are just linking it to their own day."
     }
   ]
 }

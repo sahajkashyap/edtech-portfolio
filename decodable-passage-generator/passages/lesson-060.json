@@ -31,8 +31,8 @@
       "listenFor": "The box was small, so there was no space for her. Line six says it. This is the middle of the story."
     },
     {
-      "ask": "Where would you fly a box ship? Tell me why.",
-      "listenFor": "Any answer with a reason is right. This one is just for talking."
+      "ask": "Grace has a sad face in this story. Which line tells you why?",
+      "listenFor": "Line six and line seven — the box was small, so there was no space for her."
     }
   ]
 }

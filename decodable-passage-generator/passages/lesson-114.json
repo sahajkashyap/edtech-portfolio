@@ -3,19 +3,27 @@
   "title": "The Great Steak",
   "lines": [
     "Mom made a great steak for the meal.",
-    "She set it on a white plate.",
-    "\"Do not break this plate,\" she said.",
-    "\"It was my mom's plate,\" said Mom.",
-    "Tom took the plate to the table.",
-    "He did not see the cat on the mat.",
-    "Tom tripped. The plate fell and broke.",
-    "The cat ate that great steak up.",
-    "Tom felt bad. He sat on the floor.",
-    "Then he got a broom and cleaned it up.",
-    "He got the bits in a bag for Mom.",
-    "Mom said she could fix the plate.",
-    "They ate ham, and Tom did the dishes.",
-    "The cat had the best meal of all."
+    "The smell of it went all over the house.",
+    "She set it on a big white plate.",
+    "\"That plate was my mom's plate,\" she said.",
+    "\"Hold it well, Tom. Do not break it.\"",
+    "Tom took the plate up with both hands.",
+    "It did weigh a lot with the steak on it.",
+    "He went slow, one step at a time.",
+    "But he did not see the cat on the mat.",
+    "Tom tripped, and the plate fell and broke.",
+    "It went into eight white bits on the floor.",
+    "The cat got the steak and ran off with it.",
+    "Tom sat down on the floor for a bit.",
+    "Then he got the broom and cleaned it up.",
+    "He set all eight bits up on the table.",
+    "He tried to make them stand. They fell down.",
+    "So Tom got Dad to hand him the glue.",
+    "He set the bits back on, one at a time.",
+    "It took a long time, but the plate held.",
+    "Mom said, \"That is a great fix, Tom.\"",
+    "After the meal, Tom did the dishes to help.",
+    "The cat had the greatest meal of all."
   ],
   "warmup": [
     "steak",
@@ -28,15 +36,15 @@
   "questions": [
     {
       "ask": "Why did Tom fall?",
-      "listenFor": "He did not see the cat on the mat. It is in the sixth line."
+      "listenFor": "He did not see the cat on the mat. Have them find the line."
     },
     {
-      "ask": "What did Tom do after the plate broke?",
-      "listenFor": "He got a broom, cleaned it up, and put the bits in a bag for Mom."
+      "ask": "What did Tom try first with the eight bits, and did it work?",
+      "listenFor": "He stood them up on the table and they fell. Then he got the glue and set them back on."
     },
     {
-      "ask": "Was doing the dishes fair? Why or why not?",
-      "listenFor": "Either side is fine. You want the reason they give."
+      "ask": "Why was that plate a big deal to Mom?",
+      "listenFor": "It was her mom's plate. It is in the fourth line."
     }
   ]
 }

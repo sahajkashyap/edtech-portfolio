@@ -24,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "Where did the ball land when Ben missed?",
-      "listenFor": "In the ditch. Stated in the story - point them at that line rather than saying it for them."
+      "ask": "Where did the ball land when Ben pitched it to Meg the second time?",
+      "listenFor": "In the ditch. Line five says it — point them at that line rather than saying it for them."
     },
     {
       "ask": "How did the ball get out of the ditch?",
       "listenFor": "Ben got a long stick from the grass and Meg tugged the ball up with it. If they say \"Meg grabbed it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think Ben and Meg made a good team? Tell me why.",
-      "listenFor": "There is no right answer. Listen for a reason - he got the stick, she got the ball up."
+      "ask": "Which part of the match did you like best? Read me that line.",
+      "listenFor": "Any line. Reading it back keeps the pick tied to the page rather than to a guess."
     }
   ]
 }

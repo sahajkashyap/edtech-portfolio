@@ -32,8 +32,8 @@
       "listenFor": "She held up the puppy's red ball, and the puppy dropped the penny. If they say \"she tugged it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think the lady was glad to get the penny back? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for the reason - she was sad before, or the baby clapped."
+      "ask": "Find the line that tells you the lady had lost a penny. Read it to me.",
+      "listenFor": "The line about the lady on the path. Let them hunt for the word lost rather than being told."
     }
   ]
 }

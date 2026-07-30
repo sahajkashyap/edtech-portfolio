@@ -29,8 +29,8 @@
       "listenFor": "A red pot sitting on a log. Lines four and five say it. This is the turn of the story."
     },
     {
-      "ask": "What would you use to mark a path so you could find it in fog? Tell me why that.",
-      "listenFor": "Any answer counts. You are listening for a reason that shows they understood why a red pot works in fog."
+      "ask": "Find the line that shows the dog was glad to see Tom. Read it to me.",
+      "listenFor": "Line seven — the dog got up and ran to Tom. Let them find it rather than hearing it from you."
     }
   ]
 }

@@ -5,19 +5,31 @@
     "Gran sent Ben a box in the mail.",
     "It was wrapped up in a lot of tape.",
     "Ben was unhappy. He had no way in.",
-    "He sat and gave the box a big tug.",
+    "He shook the box. It made no sound.",
+    "First he sat and gave the box a big tug.",
     "The tape held fast. It did not rip.",
+    "Next he tried to bend the lid back.",
+    "The lid did not lift. The tape was thick.",
+    "Ben sat on the step and had a think.",
     "Then Ben set the box up on its top.",
     "The back had just one bit of tape!",
     "Ben got that bit up with his thumb.",
     "He unwrapped the tape and the lid slid off.",
     "Inside he found a red kite and a note.",
     "The note said, \"Go and fly this, Ben.\"",
-    "Ben ran to the hill with his kite.",
+    "Ben ran up the hill with his kite.",
     "Mom held it up and Ben ran fast.",
-    "The kite went up. Ben was unhappy no more."
+    "The kite went up over the trees.",
+    "Ben was unhappy no more."
   ],
-  "warmup": ["lid", "tug", "kite", "note", "back", "box"],
+  "warmup": [
+    "unhappy",
+    "unwrapped",
+    "lid",
+    "tug",
+    "kite",
+    "note"
+  ],
   "questions": [
     {
       "ask": "Why was Ben unhappy at the start?",

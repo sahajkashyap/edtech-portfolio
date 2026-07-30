@@ -29,8 +29,8 @@
       "listenFor": "Nick sat back when the duck tapped at his sock. You are listening for the chain of events, not just \"it fell.\""
     },
     {
-      "ask": "Do you think the duck planned this? Tell me why.",
-      "listenFor": "Either answer is correct. What you want is a reason from the story, like \"yes, it tugged at the sack first\" or \"no, ducks just poke at things.\""
+      "ask": "What did the duck want in this story? How did it get it?",
+      "listenFor": "A bun. It tugged the sack, then tapped his sock until one fell off. Lines three to seven."
     }
   ]
 }

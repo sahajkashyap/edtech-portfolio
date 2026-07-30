@@ -15,7 +15,14 @@
     "But the bright light lets Ben find it.",
     "At home Meg and Dad had hot pie."
   ],
-  "warmup": ["night", "light", "bright", "high", "sigh", "pie"],
+  "warmup": [
+    "night",
+    "light",
+    "bright",
+    "high",
+    "sigh",
+    "pie"
+  ],
   "questions": [
     {
       "ask": "Why did Meg swap the small light for a big red one?",
@@ -26,8 +33,8 @@
       "listenFor": "The bright light let him see it. That is why the big light mattered."
     },
     {
-      "ask": "Do you think Meg will fly her kite at night again? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason from the story."
+      "ask": "How did Meg feel when the string snapped? Find the words that show you.",
+      "listenFor": "Sad — the story says she gave a sad sigh. Then the bright light lets Ben find the kite."
     }
   ]
 }

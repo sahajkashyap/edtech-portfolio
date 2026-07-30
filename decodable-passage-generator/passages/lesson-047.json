@@ -31,8 +31,8 @@
       "listenFor": "A thin red mug. Line six says it - have them reread that line instead of telling them."
     },
     {
-      "ask": "Was the moth glad to get out? Tell me why you think so.",
-      "listenFor": "Either answer is fine. You want a reason tied to the story, like \"yes, it was wet and moths do not swim.\""
+      "ask": "What did Josh try first to get the moth out? What did he do after that?",
+      "listenFor": "He tapped the tub, then set a thin red mug in the bath. Lines five and six, in that order."
     }
   ]
 }

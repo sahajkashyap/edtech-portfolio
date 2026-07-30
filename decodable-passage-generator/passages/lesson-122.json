@@ -2,19 +2,24 @@
   "lesson": 122,
   "title": "A Silly Wish",
   "lines": [
-    "Meg has a pup. His name is Gus.",
-    "Gus sits and looks at the fish tank.",
-    "He wants to swim just like a fish.",
-    "That is a silly wish for a pup.",
-    "Gus jumped up at the tank and slid.",
+    "Meg has a little pup. His name is Gus.",
+    "It was a hot day in the summer sun.",
+    "Gus sat by the fish tank and did not move.",
+    "He looked at the fish for a long time.",
+    "Gus wants to swim just like the fish.",
+    "That is a silly wish for a small pup.",
+    "Gus jumped up at the tank and slid down.",
     "Meg held the tank so it did not tip.",
-    "\"You can not swim in there,\" she said.",
-    "Meg felt sad. Then she had a plan.",
-    "She got a big tub from the shed.",
-    "Mom and Meg fill it in the sun.",
+    "\"You can not swim in there,\" she told him.",
+    "Then Meg filled a dish with cold water.",
+    "Gus dipped his nose in and got it wet.",
+    "But the dish was much too small for him.",
+    "Meg ran to the shed and had a better plan.",
+    "She pulled out the big tub from the back.",
+    "Mom helped her fill the tub in the sun.",
     "Gus jumped in with a big splash.",
-    "The cold made his black nose go pinkish.",
-    "Soon the water was brownish with mud.",
+    "The cold made his black nose look pinkish.",
+    "Soon the tub was brownish with mud from his paws.",
     "Gus moves his legs and swims a bit.",
     "Now Gus is as happy as a fish."
   ],
@@ -29,11 +34,11 @@
   "questions": [
     {
       "ask": "What did Gus wish for?",
-      "listenFor": "To swim like a fish. Lines two and three say it."
+      "listenFor": "To swim like a fish. Lines three to five say it."
     },
     {
-      "ask": "What did Meg get from the shed, and why?",
-      "listenFor": "A big tub, so Gus had water of his own. The fish tank was not safe."
+      "ask": "What did Meg try before the tub, and why did it not work?",
+      "listenFor": "She filled a dish with cold water. The dish was much too small for Gus."
     },
     {
       "ask": "What else could Meg have done for Gus? Why?",

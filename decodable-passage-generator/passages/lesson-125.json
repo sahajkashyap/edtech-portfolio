@@ -4,27 +4,32 @@
   "lines": [
     "Ben was in bed when he heard a sound.",
     "It came from down in the basement.",
-    "For a moment he just sat still.",
-    "Then he heard a small movement.",
-    "Ben got Mom and told her about it.",
-    "Mom came down the dark steps with him.",
-    "She held the lamp. Ben went in front.",
+    "For a moment he sat still in the dark.",
+    "Then he heard a small movement down there.",
+    "Ben got up and went to get Mom.",
+    "\"Can we look?\" he asked. \"I will go first.\"",
+    "Mom came down the steps with a lamp.",
+    "Ben held the rail and went in front.",
     "At first they saw just cans and rags.",
+    "He looked under the steps but saw no cat.",
     "Then a box in the back tipped over.",
-    "Ben got down and had a look.",
+    "Ben got down on his hands to look.",
     "A small gray cat sat in the box.",
+    "It had three kittens tucked next to it.",
     "Ben's fear turned into excitement.",
-    "\"Can it stay?\" he asked. \"If you feed it.\"",
+    "\"Can they stay?\" he asked. \"If you feed them.\"",
     "That was the agreement Ben and Mom made.",
-    "Now the cat naps on the warm pavement."
+    "He ran up and got them milk in a bowl.",
+    "Now the cat naps on the warm pavement.",
+    "The three kittens play in the grass all day."
   ],
   "warmup": [
+    "basement",
+    "excitement",
+    "movement",
+    "agreement",
     "box",
-    "cat",
-    "lamp",
-    "sound",
-    "gray",
-    "stay"
+    "cat"
   ],
   "questions": [
     {
@@ -32,12 +37,12 @@
       "listenFor": "A sound from the basement, then a small movement. Lines one to four."
     },
     {
-      "ask": "What was the agreement Ben and Mom made?",
-      "listenFor": "The cat can stay if Ben feeds it. Two people agree - that is what an agreement is."
+      "ask": "What did Ben find in the box?",
+      "listenFor": "A small gray cat with three kittens tucked next to it. Line thirteen and line fourteen."
     },
     {
-      "ask": "Would you have gone down the steps? Why?",
-      "listenFor": "Either answer is fine. Ask what they would have taken with them."
+      "ask": "What was the agreement Ben and Mom made?",
+      "listenFor": "The cats can stay if Ben feeds them. Two people agree - that is what an agreement is."
     }
   ]
 }

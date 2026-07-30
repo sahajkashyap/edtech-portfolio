@@ -32,8 +32,8 @@
       "listenFor": "A bit of gum was stuck in it. Ben found it when he tipped the robot up."
     },
     {
-      "ask": "What do you think Ben should tell the robot to do next? Tell me why.",
-      "listenFor": "Anything goes here. You are listening for an idea plus a reason - that reason is the part worth praising."
+      "ask": "Gum stopped the robot. What else could Ben check if it goes quiet again?",
+      "listenFor": "Any idea of their own. Ben tipped it up and found the gum in line eight — that is the model."
     }
   ]
 }

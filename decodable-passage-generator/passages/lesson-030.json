@@ -22,15 +22,15 @@
   "questions": [
     {
       "ask": "What did the pup do when Mom was napping?",
-      "listenFor": "It yapped and yapped. Line two says it. If your child is not sure, point at that line and let them read it again."
+      "listenFor": "It yaps and yaps. Line two says it. If your child is not sure, point at that line and let them read it again."
     },
     {
       "ask": "How did Sal work out what the pup was yapping about?",
       "listenFor": "The pup yapped and tapped at the pan, so Sal knew it had not been fed. Lines four and five tell it together."
     },
     {
-      "ask": "What else might a pup yap about? Tell me why you think that.",
-      "listenFor": "Any answer counts. You are listening for a reason of their own, such as it wants to go out or it hears a bug."
+      "ask": "The story says the pup yaps. What does a yap sound like? Show me.",
+      "listenFor": "A short, sharp bark. Line two. Letting them make the sound is the check that they have the word."
     }
   ]
 }

@@ -3,32 +3,38 @@
   "title": "The Big Question",
   "lines": [
     "Gran had been away on a long vacation.",
+    "She sent Ben and Pam a card each week.",
     "Today she comes back on a train.",
     "Ben and Pam had one big question.",
     "Which train was Gran on?",
     "Mom drove them to the station to find out.",
     "The station was full of moms and kids.",
+    "Trains came in fast, one after the next.",
     "A train came in. They ran to look.",
     "Gran was not on it. Pam felt sad.",
-    "\"Gran has a red hat,\" said Ben.",
-    "So Pam sat and did not stop looking.",
+    "The next train had no gran on it at all.",
+    "\"We will miss her in this crowd,\" said Pam.",
+    "\"But Gran has a big red hat,\" said Ben.",
+    "So Pam sat up and did not stop looking.",
+    "She looked past the shops and past the bins.",
     "Then she saw a red hat by a car.",
     "It was Gran, back from her vacation!",
     "\"We found her!\" said Ben with a grin.",
-    "Gran had a small gift for each of them."
+    "Gran had a small gift for each of them.",
+    "Pam got a shell and Ben got a rock."
   ],
   "warmup": [
+    "question",
+    "station",
+    "vacation",
     "train",
     "hat",
-    "grin",
-    "car",
-    "red",
-    "kids"
+    "grin"
   ],
   "questions": [
     {
       "ask": "What was Ben and Pam's big question?",
-      "listenFor": "Which train Gran was on. Lines three and four set it up."
+      "listenFor": "Which train Gran was on. Lines four and five set it up."
     },
     {
       "ask": "What happened when the first train came in?",

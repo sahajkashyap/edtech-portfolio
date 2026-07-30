@@ -31,8 +31,8 @@
       "listenFor": "She sits down and taps the wet tub. Line eight says it. If they say \"she got them in,\" ask how."
     },
     {
-      "ask": "Why do you think the dogs got in when Sal stopped calling? Tell me why.",
-      "listenFor": "Any sensible idea works. You want a reason of their own, like \"they did not want to be told.\""
+      "ask": "Calling did not work, but tapping the tub did. What else could Sal have tried?",
+      "listenFor": "Any idea. Line seven is the calling that failed; line eight is the tapping that worked."
     }
   ]
 }

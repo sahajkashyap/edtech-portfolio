@@ -3,19 +3,27 @@
   "title": "The Lost Dog",
   "lines": [
     "Omar got a dollar from his gran.",
-    "He ran to the shop by the barn.",
-    "He was going to get a big red kite.",
-    "Then a dog ran in with a red collar.",
+    "He ran all the way to the shop by the barn.",
+    "The shop had a big red kite in the window.",
+    "Omar had wanted that kite for a long time.",
+    "Then a dog ran up with a red collar on.",
     "It had no one with it and no home.",
+    "The dog was thin and its feet were black.",
     "Omar called out, but the dog ran off.",
-    "He sat down and held out his hand.",
+    "He ran after it. That made it run more.",
+    "So he sat down and held out his hand.",
+    "He was still. He did not call at all.",
     "The dog came back and sat by him.",
-    "Omar took it to the vet by the shop.",
+    "Omar took it to the vet next to the shop.",
     "The vet read the tag on the collar.",
     "She made a call. Then they had to wait.",
-    "A sailor came in. \"That is my dog!\"",
+    "Omar sat with the dog and rubbed its back.",
+    "A tall sailor came in with wet boots.",
+    "\"That is my dog!\" he called out.",
+    "The dog jumped up and licked his hand.",
+    "The sailor said he had looked all day.",
     "He gave Omar a dollar for his help.",
-    "Now Omar had two. He got the kite."
+    "Now Omar had two. He got the red kite."
   ],
   "warmup": [
     "barn",
@@ -28,11 +36,11 @@
   "questions": [
     {
       "ask": "What was Omar going to get with his dollar?",
-      "listenFor": "A big red kite. It is in the third line, before the dog turns up."
+      "listenFor": "A big red kite in the shop window. It is near the top, before the dog turns up."
     },
     {
-      "ask": "What did the vet read?",
-      "listenFor": "The tag on the dog's collar. Note how the -ar and -or on the ends both say er."
+      "ask": "What did Omar try first to get the dog to come?",
+      "listenFor": "He called, then he ran after it, and both made the dog run off. Sitting still worked."
     },
     {
       "ask": "Was it fair of the sailor to give Omar a dollar? Why?",

@@ -6,24 +6,30 @@
     "Her dad is a farmer with a big barn.",
     "The paint on the barn was cracked and gray.",
     "Nell said it made the farm look sad.",
+    "First she got a brush and some soap.",
+    "She stood on a box and did her best.",
+    "But the gray did not come off at all.",
     "So they got a painter to fix it up.",
-    "The painter had just red paint in her van.",
+    "The painter came out from the city in a van.",
+    "She had just red paint in the back.",
     "Red on red on red, just like the rest.",
+    "\"That is the same barn,\" said Nell.",
     "Then Nell had a much better plan.",
     "\"Can you paint a big picture on it?\"",
-    "The painter was an artist from the city.",
-    "She made a farm and a sun on it.",
+    "The painter was an artist as well.",
+    "She made a farm and a big sun on it.",
+    "Nell held the paint pots for her all day.",
     "Dad was cross at first, but now he grins.",
     "A visitor comes out each day to look.",
     "Nell tells them her dad has the best barn."
   ],
   "warmup": [
+    "painter",
+    "farmer",
+    "artist",
+    "visitor",
     "barn",
-    "paint",
-    "city",
-    "red",
-    "farm",
-    "gray"
+    "paint"
   ],
   "questions": [
     {
@@ -32,7 +38,7 @@
     },
     {
       "ask": "Whose plan was the big picture?",
-      "listenFor": "Nell's. She asked the painter for it in line nine."
+      "listenFor": "Nell's. She is the one who asks the painter to paint a big picture on it, in line fourteen."
     },
     {
       "ask": "Would you paint your house a picture or one plain color? Why?",

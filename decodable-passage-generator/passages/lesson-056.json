@@ -31,8 +31,8 @@
       "listenFor": "A rope and a long pole. Line five. If they name one, ask \"and what else?\""
     },
     {
-      "ask": "Rose put the stone back and dug by the shed. What do you think of that?",
-      "listenFor": "Any answer with a reason is right. Listen for something like \"the frog gets his home back.\""
+      "ask": "Read me the line where the frog says the stone was his home.",
+      "listenFor": "Line eight. The frog says it himself, and that is why Rose sets the stone back."
     }
   ]
 }

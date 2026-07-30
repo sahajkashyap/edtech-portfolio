@@ -32,8 +32,8 @@
       "listenFor": "She tipped the box by its handle while Mom held it still. If they say \"she poked it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think Meg will keep the candle on the table? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason from the story."
+      "ask": "Walk me through how the candle got from the table to behind the box.",
+      "listenFor": "The handle slipped, the bottle bumped the candle, it fell and rolled. Lines three to five."
     }
   ]
 }

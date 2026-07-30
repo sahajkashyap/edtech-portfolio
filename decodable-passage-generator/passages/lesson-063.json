@@ -31,8 +31,8 @@
       "listenFor": "So no fox is hiding in it this time. Let them say it in their own words."
     },
     {
-      "ask": "What do you think the fox was doing in the box? Tell me why.",
-      "listenFor": "Any answer with a reason. The story says he was napping, so \"it was a soft bed\" fits well."
+      "ask": "Pick your best line in this story and read it to me.",
+      "listenFor": "Any line. The fox hopping up and running off is a common pick. Reading it back is the point."
     }
   ]
 }

@@ -15,7 +15,14 @@
     "The wet goat swam slow back to the boat.",
     "Dad got it in, and Cole held it close."
   ],
-  "warmup": ["goat", "coat", "boat", "slow", "crow", "throw"],
+  "warmup": [
+    "goat",
+    "coat",
+    "boat",
+    "slow",
+    "crow",
+    "throw"
+  ],
   "questions": [
     {
       "ask": "Why did the boat go on its side?",
@@ -26,8 +33,8 @@
       "listenFor": "Cole held up the bag of corn. The rope had fallen short of the goat."
     },
     {
-      "ask": "Will the goat get in the boat again? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for the reason."
+      "ask": "What do you think Cole will take the next time they go out in the boat?",
+      "listenFor": "Any guess with a reason. The bag of corn is what got the goat back, in lines ten and eleven."
     }
   ]
 }

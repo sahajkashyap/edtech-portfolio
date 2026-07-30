@@ -25,8 +25,8 @@
       "listenFor": "The map. It is in nearly every line — let them find one and read it back to you."
     },
     {
-      "ask": "A rolled-up map will not lie flat. What would you do to it? Show me.",
-      "listenFor": "Any idea of their own. Patting it flat is what the children do, but smoothing it, holding the corners or kneeling on the edge are all good thinking."
+      "ask": "The children pat the map flat. What else could hold a rolled-up map down?",
+      "listenFor": "Any idea of their own — books, hands, knees. Line two is where they pat it flat."
     }
   ]
 }

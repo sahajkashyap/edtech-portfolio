@@ -29,8 +29,8 @@
       "listenFor": "He sat down and stopped running. Listen for the sitting - running after the pup did not work, waiting did."
     },
     {
-      "ask": "Why do you think the pup came back when Reg sat down? Tell me what you think.",
-      "listenFor": "Any answer is fine - the pup wanted to play, or running off is only fun if someone runs after you. You want a reason."
+      "ask": "What do you think the pup will do the next time Reg sits down?",
+      "listenFor": "Any guess with a reason. In line seven the pup came to him when he stopped running."
     }
   ]
 }

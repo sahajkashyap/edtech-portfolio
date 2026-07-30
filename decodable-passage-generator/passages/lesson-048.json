@@ -31,8 +31,8 @@
       "listenFor": "One chip. Lines eight and nine say the bag is not full and one chip is in it."
     },
     {
-      "ask": "Was that a fair thing for Meg to do? Tell me why.",
-      "listenFor": "Either answer works. Listen for a reason from the story, like \"yes, because Chad had less of the dish.\""
+      "ask": "Find the line that tells you Chad got less of the dish. Read it to me.",
+      "listenFor": "Line six — Meg has much of it, Chad has less. That line is why she hands him the last chip."
     }
   ]
 }

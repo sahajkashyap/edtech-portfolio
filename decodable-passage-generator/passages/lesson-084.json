@@ -15,19 +15,26 @@
     "Dad came to play trains with him.",
     "The rain stops, but Ray will stay in."
   ],
-  "warmup": ["gray", "rain", "train", "stay", "play", "day"],
+  "warmup": [
+    "gray",
+    "rain",
+    "train",
+    "stay",
+    "play",
+    "day"
+  ],
   "questions": [
     {
       "ask": "Why did Ray have to stay in?",
-      "listenFor": "Gray rain fell all day. He had planned to play in the yard."
+      "listenFor": "Gray rain fell all day — line two. Line one says he had been set to play in the yard."
     },
     {
       "ask": "What went wrong when Ray ran the train on the soft rug?",
-      "listenFor": "The rug made the train tip on its side. That is why he went to the flat hall rug."
+      "listenFor": "The train tipped on its side — line six. That is why he tries the flat hall rug next."
     },
     {
-      "ask": "What would you do on a rainy day? Tell me why.",
-      "listenFor": "Any answer with a reason. Ask what they would pick and why that one."
+      "ask": "You have a drawing box. Which part of this story goes in it?",
+      "listenFor": "Any moment — the train down the hall, or Ray painting it gray. Ask what made them pick it."
     }
   ]
 }

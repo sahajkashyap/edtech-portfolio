@@ -3,32 +3,38 @@
   "title": "A Picture of an Adventure",
   "lines": [
     "Hana likes to draw best of all.",
-    "She made a picture of a big adventure.",
-    "In it she rode a green dragon.",
+    "She has a box of pens under her bed.",
+    "One wet day she made a big picture.",
+    "It was a picture of a big adventure.",
+    "In it she rode a green dragon over the hills.",
     "It took her all day to get it right.",
     "She hung the picture next to her bed.",
     "In the night the picture fell down.",
-    "The cat had made a mess of it.",
+    "The cat had jumped up and made a mess of it.",
     "There was a long rip in the sky.",
-    "Hana felt sad. She got some tape.",
+    "Hana felt sad when she saw it.",
+    "She got some tape from the desk.",
     "But the tape did not stick at all.",
+    "It just left a bump in the sky.",
     "Then Hana had a much better plan.",
-    "She cut a patch and drew a rock.",
+    "She cut a patch and drew a big rock.",
+    "She stuck the patch on top of the rip.",
     "Now the green dragon stands on that rock.",
-    "Hana likes the picture better than at first."
+    "Hana likes the picture better than at first.",
+    "The cat sleeps under it on her bed."
   ],
   "warmup": [
+    "picture",
+    "adventure",
     "green",
     "night",
     "cat",
-    "bed",
-    "rock",
-    "rip"
+    "bed"
   ],
   "questions": [
     {
       "ask": "What was in Hana's picture?",
-      "listenFor": "A big adventure - she rode a green dragon. Lines two and three go together."
+      "listenFor": "A big adventure - she rode a green dragon. Lines four and five go together."
     },
     {
       "ask": "What did Hana try first, and did it work?",

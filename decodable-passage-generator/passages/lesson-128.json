@@ -3,20 +3,27 @@
   "title": "A Bit of Kindness",
   "lines": [
     "Rosa was in the yard when the rain came.",
-    "She heard a small sound by the fence.",
-    "A pup sat there, wet and shaking with cold.",
-    "It had no tag and it was thin.",
+    "She ran for the shed to get out of it.",
+    "Then she heard a small sound by the fence.",
+    "A pup sat there, wet and cold in the grass.",
+    "It had no tag on and it was thin.",
     "Rosa took it in and got it dry.",
-    "She fed it and it went to sleep.",
+    "She fed it and it went to sleep on the rug.",
     "\"That was kindness,\" said her mom.",
     "Rosa was hopeful the pup had a home.",
-    "She went to each house on her street.",
-    "But no one had lost a pup at all.",
-    "So Rosa made a sign. It was helpful.",
-    "A thankful girl came the next day.",
-    "\"That is my pup, Sam!\" she said.",
+    "First she went to each house on her street.",
+    "She knocked and asked, but no one had lost a pup.",
+    "That was a big sadness for Rosa.",
+    "Then she had a helpful plan of her own.",
+    "Rosa made a sign with a big red pup on it.",
+    "Dad helped her tape it to the pole by the shop.",
+    "The next day a girl came up the path.",
+    "She was thankful and her eyes went wide.",
+    "\"That is my pup, Sam!\" she yelled.",
+    "Sam ran to her and jumped up.",
     "She held out a reward, but Rosa said no.",
-    "\"Just come back to play,\" said Rosa."
+    "\"Just come back to play,\" said Rosa.",
+    "Now Rosa and Sam play in the yard each week."
   ],
   "warmup": [
     "pup",
@@ -29,11 +36,11 @@
   "questions": [
     {
       "ask": "Where did Rosa find the pup?",
-      "listenFor": "In the yard by the fence, wet and shaking in the cold rain. The first three lines help."
+      "listenFor": "In the yard by the fence, wet and cold in the rain. The first four lines help."
     },
     {
       "ask": "What did Rosa try before she made the sign?",
-      "listenFor": "She went to each house on her street, but no one had lost a pup."
+      "listenFor": "She knocked at each house on her street, but no one had lost a pup."
     },
     {
       "ask": "Would you have taken the reward? Why?",

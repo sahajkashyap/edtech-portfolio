@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Turn an approved passage into the printable 4-sheet packet.
+"""Turn an approved passage into the printable packet.
+
+Four sheets normally: the grown-up sheet, the story, the drawing page and the
+optional questions. A story too long for one page takes a second story page
+rather than smaller type, so the late lessons print five.
 
 The CSS is lifted straight out of example-lesson-41.html — the sheet the teacher
 reviewed and signed off — so 128 packets cannot drift away from the one design
@@ -44,6 +48,49 @@ def type_for(lesson):
         if lesson <= ceiling:
             return band
     return TYPE_BANDS[-1][1]
+
+
+# When a story outgrows its page the story gets a second page. It does not get
+# smaller type. That is the teacher's standing rule for this project -- a
+# child's space is never shrunk to fit the paper; cut adult text or add a page
+# -- and type size is the child's space just as much as a drawing box is.
+# 18px is the floor for a seven-year-old, so beyond about 120 words the only
+# honest way to reach a real reader's length is to turn the page.
+#
+# These caps are the largest line counts already measured as fitting at each
+# type size, with the picture, warm-up strip and heart words above them.
+#   lesson ceiling -> lines that fit on the first reading page
+FIRST_PAGE_LINES = [(45, 9), (65, 10), (90, 12), (128, 15)]
+
+
+def first_page_lines(lesson):
+    for ceiling, cap in FIRST_PAGE_LINES:
+        if lesson <= ceiling:
+            return cap
+    return FIRST_PAGE_LINES[-1][1]
+
+
+def split_story(lesson, lines):
+    """Break a story into per-page chunks, first page smallest.
+
+    A continuation page carries no picture, warm-up or heart words, so it holds
+    more lines than the first one. Splitting evenly across the pages we need
+    beats filling page one to the brim and leaving two lines stranded alone.
+    """
+    cap = first_page_lines(lesson)
+    if len(lines) <= cap:
+        return [lines]
+    # A page with nothing above the story holds roughly half again as much.
+    later_cap = cap + cap // 2
+    pages = 1 + -(-(len(lines) - cap) // later_cap)
+    per = -(-len(lines) // pages)
+    per = min(per, cap)
+    out = [lines[:per]]
+    rest = lines[per:]
+    while rest:
+        out.append(rest[:later_cap])
+        rest = rest[later_cap:]
+    return out
 TEMPLATE = HERE / "example-lesson-41.html"
 SOUND_LIST = HERE / "sound-list.json"
 PASSAGES = HERE / "passages"
@@ -128,7 +175,56 @@ def build_html(spec):
                 for w in older[-6:]) + '</div>')
     else:
         heart_block = ""
-    line_html = "\n      ".join(f'<span class="ln">{esc(l)}</span>' for l in lines)
+    story_pages = split_story(n, lines)
+    of_n = len(story_pages)
+
+    def story_block(chunk, idx):
+        """The story itself. Titled on page one, marked 'keep going' after."""
+        head = (f'<div class="ptitle">{esc(title)}</div>' if idx == 0 else
+                f'<div class="ptitle">{esc(title)} '
+                f'<span style="font-weight:400;font-size:.8em">&mdash; page {idx + 1}'
+                f'</span></div>')
+        body = "\n      ".join(f'<span class="ln">{esc(l)}</span>' for l in chunk)
+        return f'<div class="passage">\n    {head}\n    <p>\n      {body}\n    </p>\n  </div>'
+
+    # Three stars for three readings belong on the last page of the story --
+    # a child has not read it until they have read all of it.
+    fluency_block = (
+        '<div class="fluency">\n'
+        '    <span class="lbl">Read it 3 times</span>\n'
+        '    <span class="star"></span><span class="star"></span><span class="star"></span>\n'
+        '    <span class="note">Color one circle each time.</span>\n'
+        '  </div>')
+
+    turn_over = ('\n  <p class="artcap" style="text-align:right;margin-top:2px">'
+                 'Keep going on the next page &rarr;</p>')
+
+    continuation_pages = "".join(f"""
+<!-- ================= PAGE {i + 2} &mdash; STORY CONTINUED ================= -->
+<div class="page">
+
+  <div class="band" style="margin-bottom:4px;">
+    <div>
+      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
+      <h1 style="font-size:18px;">{esc(title)} &mdash; keep reading</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  {story_block(chunk, i)}
+  {fluency_block if i == of_n - 1 else turn_over.strip()}
+
+</div>
+""" for i, chunk in enumerate(story_pages) if i > 0)
+
+    page_count = 3 + of_n
+    page_note = (f"Prints as {page_count} pages: 1 grown-up sheet, then "
+                 f"{page_count - 1} child sheets.")
+
+    # "Five minutes" was honest at sixty words. A Lesson 120 story is three
+    # times that and gets read three times, so promising five minutes sets a
+    # parent up to feel behind. Say what it actually takes.
+    minutes = 5 if word_count < 90 else 8 if word_count < 140 else 10
     q_child = "\n  ".join(
         f'<div class="q"><span class="qtext">{i}. {esc(q["ask"])}</span>'
         f'<span class="qline"></span><span class="qline"></span></div>'
@@ -161,7 +257,7 @@ def build_html(spec):
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>{page_note} Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -184,7 +280,7 @@ def build_html(spec):
     teacher which sheet to start with.</p>
   </div>
 
-  <h2>Five minutes, in this order</h2>
+  <h2>About {minutes} minutes, in this order</h2>
   <div class="tip">
     <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you
     think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
@@ -247,21 +343,11 @@ def build_html(spec):
   {heart_block}
 
   <h2>Read the story</h2>
-  <div class="passage">
-    <div class="ptitle">{esc(title)}</div>
-    <p>
-      {line_html}
-    </p>
-  </div>
-
-  <div class="fluency">
-    <span class="lbl">Read it 3 times</span>
-    <span class="star"></span><span class="star"></span><span class="star"></span>
-    <span class="note">Color one circle each time.</span>
-  </div>
+  {story_block(story_pages[0], 0)}
+  {fluency_block if of_n == 1 else turn_over.strip()}
 
 </div>
-
+{continuation_pages}
 <!-- ================= PAGE 3 — DRAW WHAT HAPPENED ================= -->
 <div class="page">
 

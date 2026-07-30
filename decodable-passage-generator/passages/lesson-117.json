@@ -2,19 +2,24 @@
   "lesson": 117,
   "title": "The Stone in the City",
   "lines": [
-    "Ten mice live in a den in the city.",
-    "They race past the shops at night.",
+    "Ten mice live in a den under a city shop.",
+    "At night they race past the bins for crusts.",
     "The den is dim, so they bump into things.",
-    "One night a mouse found a huge stone.",
-    "It sat on the edge of a step.",
-    "The stone was as bright as ice.",
+    "\"We need a light,\" said the smallest mouse.",
+    "That night she found a huge stone on a step.",
+    "It sat on the edge of the top step.",
+    "The stone was as bright as ice in the sun.",
     "She tried to roll it with her nose.",
     "But the stone did not move at all.",
+    "Then she got a stick and tried to lift it.",
+    "The stick just bent and the stone sat still.",
     "So she ran back and got the rest.",
     "Ten mice can do what one mouse can not.",
     "They got it down the steps to the den.",
-    "They set the stone in a small cage.",
+    "It was hard, and they had to stop for a rest.",
+    "At last they set the stone in a small cage.",
     "Now it lights up the whole mouse den.",
+    "No mouse bumps into things in the dark.",
     "It is the best lamp in the city."
   ],
   "warmup": [
@@ -28,7 +33,7 @@
   "questions": [
     {
       "ask": "Where did the mouse find the stone?",
-      "listenFor": "On the edge of a step. Line five."
+      "listenFor": "On the edge of the top step. Lines five and six."
     },
     {
       "ask": "Why did the mouse go back and get the rest of the mice?",

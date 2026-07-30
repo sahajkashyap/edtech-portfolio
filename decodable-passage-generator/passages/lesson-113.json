@@ -1,20 +1,27 @@
 {
   "lesson": 113,
-  "title": "A Sound in the Dark",
+  "title": "A Sound by the Shed",
   "lines": [
-    "Meg sat up in bed one night.",
-    "She could hear a sound from near the shed.",
-    "It was a small sound, like a cry.",
-    "Meg felt fear. She held on to her bed.",
-    "Then she went to get her dad.",
-    "\"Dad, I hear a sound,\" she said.",
-    "Dad said, \"Stay near me in the dark, dear.\"",
-    "They went out with a lamp.",
-    "Meg went first. The sound got more clear.",
-    "It came from a box by the shed.",
-    "A small pup was stuck in that box.",
-    "Meg got it out. It licked her hand.",
-    "\"You had good ears,\" said Dad.",
+    "It was a wet day at the start of the year.",
+    "Meg went out to the yard after the rain.",
+    "She could hear a small sound near the shed.",
+    "It was not clear at all. It was very small.",
+    "Meg felt a bit of fear and stood still.",
+    "Then the sound came back, like a cry.",
+    "\"Dad, I hear a sound,\" she called.",
+    "Dad came out and said, \"I am near, dear.\"",
+    "They went to the shed and looked all round.",
+    "Meg got down and held her ear near the grass.",
+    "The sound got more clear on that side.",
+    "It came from a big box of old pots.",
+    "Meg took the pots out one at a time.",
+    "At the bottom was a small wet pup.",
+    "It was stuck under a flat lid.",
+    "Meg tried to lift the lid, but it stuck fast.",
+    "So she tipped the box on its side.",
+    "Out came the pup, right on to her lap.",
+    "It licked her hand and her ear.",
+    "\"You have good ears, dear,\" said Dad.",
     "Meg has had that pup for a year now."
   ],
   "warmup": [
@@ -28,11 +35,11 @@
   "questions": [
     {
       "ask": "What was making the sound, and where was it?",
-      "listenFor": "A small pup, stuck in a box by the shed. It comes near the end, so let them look back."
+      "listenFor": "A small pup, stuck under a lid in a box of old pots by the shed."
     },
     {
-      "ask": "Who went out into the dark with Meg?",
-      "listenFor": "Dad, with a lamp. He is the one who says stay near me, dear."
+      "ask": "What did Meg try first to get the pup out, and did it work?",
+      "listenFor": "She tried to lift the lid. It stuck fast, so she tipped the box on its side."
     },
     {
       "ask": "What would you have done if you heard that sound? Why?",

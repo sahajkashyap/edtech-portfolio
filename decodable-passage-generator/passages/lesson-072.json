@@ -24,16 +24,16 @@
   ],
   "questions": [
     {
-      "ask": "Where was the pup hiding?",
-      "listenFor": "Behind an old gate. Stated in the story - have them go back and find it themselves."
+      "ask": "Where was the colt hiding?",
+      "listenFor": "Behind an old gate. Line eight says it — have them go back and find it themselves."
     },
     {
-      "ask": "What did Jill do that made the pup come out?",
-      "listenFor": "She got the pup's dish and shook it. If they say \"she called it,\" ask \"did that work?\""
+      "ask": "What did Jill do that made the colt come out?",
+      "listenFor": "She got the colt's dish and shook it. If they say \"she called it,\" ask \"did that work?\""
     },
     {
-      "ask": "Do you think the pup will slip past the gate again? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason tied to the story - it is wild, or it liked being home and warm."
+      "ask": "The story calls the colt wild. What does wild mean here?",
+      "listenFor": "Not tame — it slips past the gate and will not come when called. Lines two, five and ten."
     }
   ]
 }

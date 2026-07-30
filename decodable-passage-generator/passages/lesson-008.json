@@ -25,8 +25,8 @@
       "listenFor": "They sit down, and then they sip. The last two lines say it."
     },
     {
-      "ask": "Where would you spread a mat to sit? Tell me why you picked that spot.",
-      "listenFor": "Any spot they can give a reason for. You are listening for the because, not the place."
+      "ask": "What did Tim and Sam do first with the mat? What did they do after that?",
+      "listenFor": "They fit it at the pit, then they sat and sipped. Lines two and four hold the order."
     }
   ]
 }

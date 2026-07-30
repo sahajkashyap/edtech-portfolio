@@ -29,8 +29,8 @@
       "listenFor": "Yes - he and the pup patted the pig. Listen for the pat, and for the nut turning up inside the mug after all."
     },
     {
-      "ask": "What do you think the pig will dig up next? Tell me why.",
-      "listenFor": "Any answer works. You are listening for a reason - the pig likes nuts, or the pig digs in mud, so it will come up muddy."
+      "ask": "Tell me what the pig did, from the first dig to the last.",
+      "listenFor": "Dug in the mud, dug up a tin mug, and a nut was inside it. Lines four to seven, in order."
     }
   ]
 }

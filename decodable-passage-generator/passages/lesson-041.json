@@ -29,8 +29,8 @@
       "listenFor": "Looking for cause and effect: Sam washed the pig in the tub, so Sam got wet too. If they just say \"the tub,\" ask \"and what happened in the tub?\""
     },
     {
-      "ask": "Do you think the pig liked the tub? Tell me why.",
-      "listenFor": "Either answer is correct. You are listening for a reason tied to the story - \"no, it ran to the mud\" or \"yes, it sat in the tub and got a nap after.\""
+      "ask": "Which part will you draw — the pig in the mud, or the pig in the tub?",
+      "listenFor": "Either, as long as they say what made them pick it. Line three is the mud; line six is the tub."
     }
   ]
 }

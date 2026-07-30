@@ -5,16 +5,23 @@
     "Kate was taking her bike to the lake.",
     "Mom was riding just behind her.",
     "The sun was shining on the long road.",
-    "Kate was smiling. She liked this ride.",
+    "Kate was smiling. This was the best ride.",
+    "She waved at a man raking his yard.",
     "Then a cat came sliding out from a shed.",
-    "Kate was making a big turn.",
+    "Kate was making a big turn at the time.",
     "The bike slid. Kate was not smiling.",
     "She got a foot down and saved it.",
     "But now the bike made a bad sound.",
     "Kate got off and looked at the chain.",
     "It had come off while she was sliding.",
-    "Mom held the bike. Kate set it back.",
-    "Her hands were black, but the bike was fine.",
+    "She held the chain and gave it a pull.",
+    "It slipped, and her hands went black with dirt.",
+    "\"Hold the bike up for me,\" Kate said.",
+    "Mom held it up while Kate sat down.",
+    "This time she set the chain on with both hands.",
+    "Then she made it go round and round.",
+    "The chain went on and the bike was fine.",
+    "Mom said, \"You saved that ride, Kate.\"",
     "Kate was smiling all the way to the lake."
   ],
   "warmup": [
@@ -31,8 +38,8 @@
       "listenFor": "A cat, sliding. If they say dog, have them go back and look."
     },
     {
-      "ask": "What was wrong with the bike after it slid?",
-      "listenFor": "The chain had come off. It is in the tenth and eleventh lines."
+      "ask": "What did Kate try first with the chain, and did it work?",
+      "listenFor": "She held it and gave it a pull. It slipped and made her hands black."
     },
     {
       "ask": "What do you think Kate will do next time she sees a cat?",

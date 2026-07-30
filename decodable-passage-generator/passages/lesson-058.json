@@ -31,8 +31,8 @@
       "listenFor": "The tune Ben hums in the tube. If they say \"the tube,\" ask what Ben did with it."
     },
     {
-      "ask": "What do you think Ben will take next time? Tell me why.",
-      "listenFor": "Any answer with a reason. Listen for something like \"the tube, because that tune got Duke moving.\""
+      "ask": "Ben hums a tune in the tube. What is a tune? Hum me one.",
+      "listenFor": "A little bit of a song. Line eight. Humming one back is the check that they have the word."
     }
   ]
 }

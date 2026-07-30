@@ -2,20 +2,26 @@
   "lesson": 110,
   "title": "The Funniest Pup",
   "lines": [
-    "Six pups sat in a big box.",
-    "Mina and Sam came to pick one.",
+    "Mina and Sam went to see six pups.",
+    "The pups sat in a big box by the door.",
+    "Five pups ran up to the side of the box.",
+    "They licked and jumped and made a fuss.",
     "But the tan pup hid in a red hat.",
     "Only its nose and one paw stuck out.",
     "\"That is the funniest pup,\" said Mina.",
-    "She tried to lift it out of the hat.",
+    "\"That one is hiding from us,\" said Sam.",
+    "Mina tried to lift it out of the hat.",
     "The pup cried and held on tight.",
     "Mina set it back down and sat still.",
+    "She did not want to make it cry again.",
     "Then Sam held up a bit of meat.",
     "The pup stuck one paw out. Then two.",
     "Out it came, right into Mina's lap.",
+    "It licked her chin and did not cry.",
     "It was now the happiest pup of all.",
     "Mina said, \"This is the one for us.\"",
-    "Sam carried the red hat home too."
+    "Sam carried the red hat home too.",
+    "The pup went to sleep in it that night."
   ],
   "warmup": [
     "pups",
@@ -28,7 +34,7 @@
   "questions": [
     {
       "ask": "Where did the tan pup hide?",
-      "listenFor": "In a red hat. Third line. Have them point at it."
+      "listenFor": "In a red hat. Have them find the line and point at it."
     },
     {
       "ask": "What did Mina try first, and did it work?",

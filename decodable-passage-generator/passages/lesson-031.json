@@ -29,8 +29,8 @@
       "listenFor": "The box tipped over with the fox inside. If they are stuck, read that line again and ask what happened to the box."
     },
     {
-      "ask": "Do you think Ben was right to ask Dad for help? Tell me why.",
-      "listenFor": "There is no right answer. Listen for a reason - the box was heavy, or a fox is a wild animal and not a pet. Both are good thinking."
+      "ask": "What do you think the fox will do the next time it spots a box?",
+      "listenFor": "Any guess with a reason. Line two is the fox getting in; line six is the fox running off."
     }
   ]
 }

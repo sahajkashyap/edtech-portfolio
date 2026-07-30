@@ -33,8 +33,8 @@
       "listenFor": "Tim held up his big red hat. The yell alone had not worked."
     },
     {
-      "ask": "Do you think Tim did the right thing? Tell me why.",
-      "listenFor": "Either answer is fine. Some children feel bad for the crow."
+      "ask": "A yell did not move the crow, but a red hat did. What else might have worked?",
+      "listenFor": "Any idea. Lines nine to eleven hold both tries. Ask what makes a bird go off."
     }
   ]
 }

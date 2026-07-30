@@ -3,32 +3,38 @@
   "title": "A Comfortable Seat",
   "lines": [
     "Tom rides his bike to school each day.",
-    "But the seat on his bike was hard.",
+    "The way to school is long and bumpy.",
+    "But the seat on his bike was hard as a rock.",
     "\"It is not comfortable,\" he told Mom.",
-    "Tom taped a soft rag on it.",
-    "The rag slid off on the first hill.",
+    "By the third hill he had to stand up.",
+    "First Tom taped a soft rag on the seat.",
+    "It felt much better in the yard.",
+    "But the rag slid off on the first hill.",
+    "Then he tried a folded towel and some string.",
+    "That slid off as well and fell in the mud.",
     "So they went to the bike shop to look.",
     "One seat was soft but very breakable.",
-    "\"That one will crack,\" said the man.",
+    "\"That one will crack,\" said the man in the shop.",
     "Tom picked a thick one that was unbreakable.",
     "It cost a bit more, but it will last.",
-    "Tom held the bike. Mom fixed the seat on.",
+    "Mom handed him the tools to fix it on.",
+    "Tom took the old seat off and set the new one on.",
     "He sat on it and gave a big grin.",
     "Now his long rides are enjoyable.",
     "Tom rides all the way to school and back."
   ],
   "warmup": [
+    "comfortable",
+    "breakable",
+    "enjoyable",
     "seat",
     "bike",
-    "shop",
-    "soft",
-    "hard",
-    "held"
+    "shop"
   ],
   "questions": [
     {
-      "ask": "What did Tom try first to fix the seat?",
-      "listenFor": "He taped a soft rag on it. The rag slid off on the first hill."
+      "ask": "What two things did Tom try before the bike shop?",
+      "listenFor": "A soft rag taped on, then a folded towel and string. Both slid off."
     },
     {
       "ask": "Why did Tom pick the thick seat?",

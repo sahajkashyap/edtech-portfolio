@@ -15,7 +15,14 @@
     "Ben stood with Mom and got the book back.",
     "It was wet, so he took it home."
   ],
-  "warmup": ["took", "book", "hook", "stood", "wood", "shook"],
+  "warmup": [
+    "took",
+    "book",
+    "hook",
+    "stood",
+    "wood",
+    "shook"
+  ],
   "questions": [
     {
       "ask": "Where did Ben stand to read his book?",
@@ -26,8 +33,8 @@
       "listenFor": "It was short and did not reach. So Ben set a hook on it with string."
     },
     {
-      "ask": "What do you think the duck wanted? Tell me why.",
-      "listenFor": "Any idea is fine if it comes from the story - listen for a reason."
+      "ask": "The story says the wet log shook. What does shook mean? Show me with your hands.",
+      "listenFor": "Moved and wobbled. Line five. Acting it out is the check that they really have the word."
     }
   ]
 }

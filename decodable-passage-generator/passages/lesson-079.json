@@ -32,8 +32,8 @@
       "listenFor": "She set a rock on the short stick. If they say \"Ben propped it,\" ask \"did it stay up?\""
     },
     {
-      "ask": "Do you think the dog helped or made a mess? Tell me why.",
-      "listenFor": "Either answer is fine. It knocked the fort flat, but it ended up napping in it."
+      "ask": "Pam set a rock on the stick. What else could have held the card up?",
+      "listenFor": "Any idea. Line four is her first prop; line ten is the rock. Ask why the card kept falling."
     }
   ]
 }

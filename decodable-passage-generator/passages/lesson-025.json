@@ -29,8 +29,8 @@
       "listenFor": "The hen and the pup, together. Listen for both animals - the pup did not run the hen off."
     },
     {
-      "ask": "Do you think the pup was kind to the hen? Tell me why you think so.",
-      "listenFor": "Either answer is fine. You are listening for a reason from the story, like the pup let the hen stay, or the rug was big enough for two."
+      "ask": "Pick the part you liked best and read me that line.",
+      "listenFor": "Any line at all. Reading it back is the point — it keeps the pick tied to the page."
     }
   ]
 }

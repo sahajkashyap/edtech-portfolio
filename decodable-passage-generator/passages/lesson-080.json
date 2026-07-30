@@ -32,8 +32,8 @@
       "listenFor": "She patted the mud in hard. If they say \"she filled the pot,\" ask \"did the plant stand up then?\""
     },
     {
-      "ask": "Why do you think they put the plant in the yard corner?",
-      "listenFor": "Any answer with a reason. The pig runs past the step, and the story says so."
+      "ask": "The pig runs past that step a lot. What do you think will happen to the plant now?",
+      "listenFor": "Any guess with a reason. The last line puts the plant in the yard corner, away from the step."
     }
   ]
 }

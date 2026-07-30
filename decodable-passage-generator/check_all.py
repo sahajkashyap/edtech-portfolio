@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Measure every built sheet in one pass. Writes page-check.json.
 
-One browser launch per sheet, not one per page: the probe walks all four .page
+One browser launch per sheet, not one per page: the probe walks every .page
 elements and reports every height at once. Runs several sheets concurrently.
 
 Run:  python3 check_all.py

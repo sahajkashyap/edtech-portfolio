@@ -2,19 +2,24 @@
   "lesson": 91,
   "title": "The Blue Bird Sam Built",
   "lines": [
-    "Sam built a big bird from sticks and glue.",
+    "Sam had a big pile of thin sticks in his room.",
+    "He built a bird from the sticks and glue.",
     "It took him three days to get it right.",
-    "He made it blue with a few red dots.",
-    "Sam held it up on the school steps.",
+    "He made the bird blue with a few red dots.",
+    "The wings were thin, and the beak was sharp.",
+    "Sam held his blue bird up on the school steps.",
     "Then a strong wind blew, and the bird flew!",
     "It went up on the roof of the school.",
-    "Sam got a long stick, but it was short.",
-    "He could not reach the blue bird at all.",
-    "Sam ran in and got a long broom.",
+    "Sam ran and got a long stick from the yard.",
+    "He held it up high, but the stick was short.",
+    "Next he stood up on a big wood box.",
+    "The stick still did not reach the blue bird.",
+    "Sam sat on the steps to think.",
+    "Then he ran in and got the tall broom.",
     "He glued the stick to the broom.",
-    "That tool was long and it did reach.",
-    "Sam got the blue bird back on the steps.",
-    "He will keep it in his room."
+    "That new tool was long, and it did reach.",
+    "Sam got his blue bird back on the steps.",
+    "He will keep it up high in his room."
   ],
   "warmup": [
     "built",
@@ -27,7 +32,7 @@
   "questions": [
     {
       "ask": "How long did it take Sam to make the bird?",
-      "listenFor": "Three days. It is in the second line."
+      "listenFor": "Three days. Find the line that starts \"It took him\" and let them read it to you."
     },
     {
       "ask": "How did Sam get the bird off the roof?",

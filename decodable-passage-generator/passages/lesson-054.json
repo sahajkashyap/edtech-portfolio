@@ -31,8 +31,8 @@
       "listenFor": "She spots cake on Jake the cat's chin. Line six is the clue - it is worth a little talk."
     },
     {
-      "ask": "What do you think Jake will do next? Tell me why.",
-      "listenFor": "Any guess is fine if it has a reason from the story, like \"go back to the rock, because that is where the cake was.\""
+      "ask": "Tell me the bit you liked best — the cake on Jake's chin, or Jake's own small cake.",
+      "listenFor": "Either. Line six is the chin; line nine is the small cake. Ask them to read their line back."
     }
   ]
 }

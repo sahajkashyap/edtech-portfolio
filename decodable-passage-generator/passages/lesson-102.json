@@ -3,21 +3,32 @@
   "title": "The Helpful Pup",
   "lines": [
     "Our pup Bud is small and harmless.",
-    "Jill had one sock on and one off.",
+    "He naps in a bed of rags by the door.",
+    "Jill got up and had to get to school.",
+    "She had one sock on and one off.",
     "The other sock was lost. Jill felt sad.",
-    "She looked in the box by her bed.",
+    "First she looked in the box by her bed.",
     "It was full of rags. That was useless.",
-    "She looked under the bed. Just dust.",
+    "Then she looked under the bed. Just dust.",
+    "She looked in the sock bag as well.",
+    "Jill sat down on the rug and felt sad again.",
     "Then Jill had a plan. Bud can smell!",
     "She held the one sock up to his nose.",
     "Bud is helpful when a sock gets lost.",
-    "He went to the rug and had a smell.",
+    "He went to the big rug by the door.",
     "Then he dug up the lost sock for her.",
-    "It was under the rug all the time.",
+    "It was under that rug all the time.",
     "Jill was thankful and gave Bud a pat.",
     "Now Jill has both socks on her feet."
   ],
-  "warmup": ["pup", "sock", "rug", "dug", "lost", "felt"],
+  "warmup": [
+    "helpful",
+    "thankful",
+    "useless",
+    "harmless",
+    "pup",
+    "sock"
+  ],
   "questions": [
     {
       "ask": "Jill looked in two spots first. What did she find?",

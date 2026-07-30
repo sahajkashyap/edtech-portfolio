@@ -31,8 +31,8 @@
       "listenFor": "A bit of ham that Ben sets on a page. If they say \"the ham,\" ask where Ben put it."
     },
     {
-      "ask": "Do you think Ben had a good plan? Tell me why.",
-      "listenFor": "Either answer is fine. Listen for a reason, such as \"yes, because Sage came back for the ham.\""
+      "ask": "Which moment will you draw — Sage running off, or Sage back in his cage?",
+      "listenFor": "Either. Line four is the run; line nine is the cage. Ask what made them pick that one."
     }
   ]
 }

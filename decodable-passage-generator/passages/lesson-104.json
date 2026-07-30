@@ -3,21 +3,33 @@
   "title": "Kate at the Preschool",
   "lines": [
     "Kate helps at the preschool down the street.",
+    "She reads to the kids and hands out cups.",
     "The kids there had a big day soon.",
     "Kate had a plan to bake them a cake.",
     "Dad let her mix it up in the pan.",
+    "She set the pan in the hot stove to bake.",
     "The first cake came out flat and sad.",
     "It was as flat as a plate.",
     "Kate had to reread the plan two times.",
+    "She tried it again in the same big pan.",
+    "That cake came out flat as well.",
     "The pan was too big! That was it.",
     "She had to remake the whole cake.",
     "This time Kate got a small round pan.",
     "Dad set it in the hot stove for her.",
     "The next cake got tall and soft.",
     "Kate had a grin. She got a red plate.",
+    "She set the cake on it and ran to school.",
     "The kids at the preschool ate it all up."
   ],
-  "warmup": ["cake", "bake", "flat", "tall", "grin", "plan"],
+  "warmup": [
+    "preschool",
+    "reread",
+    "remake",
+    "cake",
+    "bake",
+    "flat"
+  ],
   "questions": [
     {
       "ask": "What went wrong with the first cake?",
