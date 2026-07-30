@@ -11,8 +11,8 @@
     "She fed it and it went to sleep on the rug.",
     "\"That was kindness,\" said her mom.",
     "Rosa was hopeful the pup had a home.",
-    "First she went to each house on her street.",
-    "She knocked and asked, but no one had lost a pup.",
+    "First she went to each house on her road.",
+    "She knocked at each door, but no one had lost a pup.",
     "That was a big sadness for Rosa.",
     "Then she had a helpful plan of her own.",
     "Rosa made a sign with a big red pup on it.",
@@ -40,7 +40,7 @@
     },
     {
       "ask": "What did Rosa try before she made the sign?",
-      "listenFor": "She knocked at each house on her street, but no one had lost a pup."
+      "listenFor": "She knocked at each house on her road, but no one had lost a pup."
     },
     {
       "ask": "Would you have taken the reward? Why?",

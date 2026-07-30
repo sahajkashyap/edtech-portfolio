@@ -16,6 +16,7 @@ import re
 import sys
 
 import audit_passage as A
+import homographs
 import line_pointers
 import props
 import word_age
@@ -188,6 +189,11 @@ def validate(spec):
     # answer. Rewriting a story silently invalidates these; two survived the
     # Lesson 91 and 92 rewrites until they were caught by hand.
     problems.extend(line_pointers.check(spec))
+
+    # 4c. words where sounding out correctly gives the WRONG word. A child
+    # taught ea = /ee/ reads the past tense of 'read' as /reed/, does exactly
+    # what they were taught, and is corrected for it.
+    problems.extend(homographs.check(spec))
 
     # 5. the title has to be readable too
     for w in words_in(spec["title"]):

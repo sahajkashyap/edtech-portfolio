@@ -10,13 +10,13 @@
     "First Tom taped a soft rag on the seat.",
     "It felt much better in the yard.",
     "But the rag slid off on the first hill.",
-    "Then he tried a folded towel and some string.",
+    "Then he tried a folded towel and some cord.",
     "That slid off as well and fell in the mud.",
     "So they went to the bike shop to look.",
     "One seat was soft but very breakable.",
     "\"That one will crack,\" said the man in the shop.",
     "Tom picked a thick one that was unbreakable.",
-    "It cost a bit more, but it will last.",
+    "It cost a bit more, but it will not break.",
     "Mom handed him the tools to fix it on.",
     "Tom took the old seat off and set the new one on.",
     "He sat on it and gave a big grin.",
@@ -34,7 +34,7 @@
   "questions": [
     {
       "ask": "What two things did Tom try before the bike shop?",
-      "listenFor": "A soft rag taped on, then a folded towel and string. Both slid off."
+      "listenFor": "A soft rag taped on, then a folded towel and cord. Both slid off."
     },
     {
       "ask": "Why did Tom pick the thick seat?",

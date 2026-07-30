@@ -26,20 +26,25 @@ import re
 import sys
 
 import heart_words as HEART
-import props
 
 HERE = pathlib.Path(__file__).parent
 
 # Story type shrinks as the reader advances, which is what real readers do and
-# what makes room for longer stories. 24px is right for a five-year-old sounding
-# out "Sam sat"; a seven-year-old at Lesson 100 reads comfortably smaller, and
-# the alternative is a story that cannot grow past sixty words.
-#   lesson ceiling -> (font px, line-height, picture width in inches)
+# what makes room for longer stories. With no picture on the reading page (the
+# child builds the picture in their head and draws it after — a printed one
+# turns the drawing page into copying) the whole page belongs to the words, so
+# every band runs as large as the page and the line lengths allow.
+# The ceiling on each size is not page height but line WIDTH: every passage was
+# written up to the width of the old, narrower column, and a story line must
+# never wrap — the line is the unit a beginner points along. These are the
+# largest sizes at which the widest line in each band still fits the 694px
+# column (measured across all 123 sheets, with a few px of safety).
+#   lesson ceiling -> (font px, line-height)
 TYPE_BANDS = [
-    (45,  (24, 1.66, 3.8)),
-    (65,  (22, 1.62, 3.5)),
-    (90,  (20, 1.58, 3.2)),
-    (128, (18, 1.54, 2.9)),
+    (45,  (25, 1.66)),
+    (65,  (24, 1.62)),
+    (90,  (21, 1.58)),
+    (128, (21, 1.54)),
 ]
 
 
@@ -54,13 +59,12 @@ def type_for(lesson):
 # smaller type. That is the teacher's standing rule for this project -- a
 # child's space is never shrunk to fit the paper; cut adult text or add a page
 # -- and type size is the child's space just as much as a drawing box is.
-# 18px is the floor for a seven-year-old, so beyond about 120 words the only
-# honest way to reach a real reader's length is to turn the page.
+# A second story page is always preferred over smaller type.
 #
-# These caps are the largest line counts already measured as fitting at each
-# type size, with the picture, warm-up strip and heart words above them.
+# These caps are the largest line counts measured as fitting at each type size,
+# with the warm-up strip and heart-word cards above them.
 #   lesson ceiling -> lines that fit on the first reading page
-FIRST_PAGE_LINES = [(45, 9), (65, 10), (90, 12), (128, 15)]
+FIRST_PAGE_LINES = [(45, 10), (65, 11), (90, 12), (128, 13)]
 
 
 def first_page_lines(lesson):
@@ -126,26 +130,15 @@ def build_html(spec):
     story_words = " ".join(lines).split()
     word_count = len(story_words)
 
-    art = props.scene(story_words)
-    picture_block = (
-        f'<div class="art">{art}</div>\n'
-        f'  <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>'
-        if art else
-        '<div class="art" style="border-style:dashed;min-height:1.5in;position:relative">'
-        '<span style="position:absolute;top:10px;left:14px;font-size:11px;color:#999;'
-        'text-transform:uppercase;letter-spacing:.1em">Draw the story here first</span></div>\n'
-        '  <p class="artcap">Nothing is drawn for you &mdash; read the story, then draw it.</p>')
-
-    prereq = (f"It assumes your child has already worked through Lessons 1&ndash;{n - 1}."
-              if n > 1 else "This is the very first lesson, so nothing comes before it.")
+    prereq = (f"It uses only sounds already taught in Lessons 1&ndash;{n - 1}."
+              if n > 1 else "It is the very first one, so any beginning reader can try it.")
 
     wb = L.get("requiresWordBank") or []
     wb_note = ""
     if wb:
         spellings = ", ".join(f"<code>{esc(w['spelling'])}</code>" for w in wb)
-        wb_note = (f'<p style="margin-top:6px">This lesson uses {spellings}, which can say '
-                   f'more than one sound. Every word here was picked from an approved list '
-                   f'so only the sound taught by Lesson {n} appears.</p>')
+        wb_note = (f" The spelling {spellings} can say more than one sound in English; "
+                   f"every word here uses only the one taught so far.")
 
     warm_html = "".join(f"<div>{esc(w)}</div>" for w in warm)
     # Heart words get mapped, not memorised. Show the newest few as sound boxes
@@ -251,9 +244,8 @@ def build_html(spec):
         f'<span class="aa">{esc(trim(q["listenFor"]))}</span></p>'
         for i, q in enumerate(questions, 1))
 
-    font_px, line_h, art_in = type_for(n)
-    scale_css = (f"\n  .passage p {{ font-size: {font_px}px; line-height: {line_h}; }}"
-                 f"\n  .art {{ max-width: {art_in}in; }}")
+    font_px, line_h = type_for(n)
+    scale_css = f"\n  .passage p {{ font-size: {font_px}px; line-height: {line_h}; }}"
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -283,47 +275,48 @@ def build_html(spec):
   </div>
 
   <div class="prereq">
-    <div class="h">Before you start &middot; is your child ready for this one?</div>
-    <p><strong>This is Lesson {n}. {prereq}</strong> Each lesson only uses sounds taught in the
-    ones before it. If your child has not had those yet, this story will be too hard &mdash; not
-    because of anything they did, but because the sounds have not been introduced yet. Ask their
-    teacher which sheet to start with.</p>
+    <div class="h">Before you start &middot; is this the right sheet?</div>
+    <p><strong>This is Lesson {n}. {prereq}</strong> If your child has not done those lessons yet,
+    this story will feel too hard &mdash; that is the sheet, not the child. Ask their teacher
+    where to start.</p>
   </div>
 
   <h2>About {minutes} minutes, in this order</h2>
   <div class="tip">
-    <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you
-    think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
-    <p><strong>2. Cover the picture while they read.</strong> It is there for understanding, not
-    for guessing words. Uncover it when they finish.</p>
-    <p><strong>3. Warm up on the words,</strong> check off the heart words, then read the story.</p>
-    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Ask them to <strong>sound it
-    out</strong> or <strong>use their sound spelling</strong> &mdash; the words their teacher uses.
-    Tap under each letter as they go.</p>
-    <p><strong>5. Read it three times,</strong> then <strong>draw what happened.</strong> The
-    drawing is the comprehension check at this age &mdash; no writing needed, and the picture shows
-    you what they understood.</p>
-    <p style="margin-top:6px; padding-top:5px; border-top:1px dotted #d9c7a8;"><strong>The last
-    sheet of questions is extra.</strong> Reading and drawing is the work &mdash; stopping there is
-    finishing.</p>
+    <p><strong>1. Say the practice words at the top of the story page,</strong> then the heart
+    words. A heart word has one part that cannot be sounded out &mdash; the little heart marks
+    the bit to just remember.</p>
+    <p><strong>2. Read the story. If they get stuck, don&rsquo;t say the word.</strong> Point
+    under the letters one at a time and say: &ldquo;Say each sound, then say them fast.&rdquo;
+    It sounds like this: &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
+    <p><strong>3. Read it three times</strong> &mdash; they color a circle each time.</p>
+    <p><strong>4. They draw what happened.</strong> There is no picture to copy &mdash; the
+    picture they make from the words shows you what they understood. No writing needed.</p>
+  </div>
+
+  <h2>When it does not go smoothly</h2>
+  <div class="tip">
+    <p><strong>They read a word wrong.</strong> Don&rsquo;t say &ldquo;no.&rdquo; Point at the word:
+    &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves is the win.</p>
+    <p><strong>They guess from the first letter.</strong> Say &ldquo;Check with your
+    finger &mdash; say every sound before you say the word.&rdquo;</p>
+    <p><strong>They sound it out twice and still can&rsquo;t get it.</strong> Just tell them the
+    word and carry on. A few told words do no harm.</p>
+    <p><strong>They are stuck on nearly every line, or fed up.</strong> Stop &mdash; that is fine.
+    Try an easier lesson, or the same one tomorrow. Five happy minutes beat twenty cross ones.</p>
   </div>
 
   <h2>If they want the questions</h2>
-  <p class="sub">Optional. They work just as well asked out loud over the drawing.</p>
+  <p class="sub">The questions page is extra &mdash; reading and drawing is the whole job. These
+  work just as well asked out loud.</p>
   <div class="answers">
     {q_adult}
   </div>
 
   <div class="audit">
-    <div class="h">Why you can trust this page &middot; checked, word by word</div>
-    <p style="margin:0 0 5px;"><strong>Every one of the {word_count} words in this story can be
-    sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
-    If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
-    spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words not sounded out are the {len(hearts)} heart words
-    taught so far &mdash; and even those are mostly regular. Only the marked part of each
-    is learned by heart. The newest are
-    {" ".join(f"<code>{esc(w)}</code>" for w in hearts[-6:])}.{wb_note}</p>
+    <p style="margin:0;"><strong>Checked word by word:</strong> all {word_count} words in this
+    story use only sounds taught by Lesson {n}, plus heart words already learned. Nothing here
+    needs guessing.{wb_note}</p>
   </div>
 
   <div class="foot">
@@ -344,8 +337,6 @@ def build_html(spec):
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
-
-  {picture_block}
 
   <h2>Say these first</h2>
   <div class="warm">{warm_html}</div>

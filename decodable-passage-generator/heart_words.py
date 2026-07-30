@@ -166,11 +166,20 @@ def available(n):
     return [w for w in WORDS if w.lesson <= n]
 
 
-def svg(hw: HeartWord, lesson: int, box=25, pad=3):
-    """One word as sound boxes, hearts under whatever is odd AT THIS LESSON."""
+def svg(hw: HeartWord, lesson: int, box=36, pad=4):
+    """One word as sound boxes, hearts under whatever is odd AT THIS LESSON.
+
+    Everything scales off `box` so the card can be sized in one place. The
+    default is big on purpose: a parent and child practising together need to
+    see at a glance which letters the heart sits under.
+    """
     hearts = set(hw.hearts_at(lesson))
     boxes = hw.boxes()
     w = len(boxes) * box + (len(boxes) - 1) * pad
+    font = round(box * 0.56)          # letter size inside each box
+    heart_scale = 0.48 * box / 25     # the heart grows with the box
+    heart_y = box + round(9 * box / 25)
+    h = box + round(16 * box / 25)
     parts = []
     for i, g in enumerate(boxes):
         x, odd = i * (box + pad), i in hearts
@@ -180,14 +189,15 @@ def svg(hw: HeartWord, lesson: int, box=25, pad=3):
             f'stroke="{"#b23f28" if odd else "#1a1a1a"}" stroke-width="1.5"/>')
         parts.append(
             f'<text x="{x + box/2:.0f}" y="{box*0.68:.0f}" text-anchor="middle" '
-            f'font-family="Century Gothic, Verdana, sans-serif" font-size="14" '
+            f'font-family="Century Gothic, Verdana, sans-serif" font-size="{font}" '
             f'fill="#1a1a1a">{g}</text>')
         if odd:
             parts.append(
-                f'<path transform="translate({x + box/2:.0f},{box + 9}) scale(0.48)" '
+                f'<path transform="translate({x + box/2:.0f},{heart_y}) '
+                f'scale({heart_scale:.2f})" '
                 f'd="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 '
                 f'C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/>')
-    return (f'<svg viewBox="0 0 {w} {box + 16}" width="{w}" height="{box + 16}" '
+    return (f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}" '
             f'role="img" aria-label="{hw.word}, with a heart under each tricky part">'
             f'{"".join(parts)}</svg>')
 

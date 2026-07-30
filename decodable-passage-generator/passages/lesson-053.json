@@ -8,7 +8,7 @@
     "Raj said, \"A crab can pinch. Do not grab.\"",
     "The crab grabs a stick and slips off.",
     "It hid in a crack next to a rock.",
-    "Beth taps the crack. The crab did not shift.",
+    "Beth taps the crack. The crab just sat still.",
     "Then Raj sticks a twig in the flat sand.",
     "The crab grabs it and drags it off.",
     "Beth and Raj grin. \"He wants that stick!\""
@@ -28,7 +28,7 @@
     },
     {
       "ask": "Beth taps the crack with the crab in it. Does the crab come out?",
-      "listenFor": "No - it did not shift. Line seven says it. That is the try that does not work."
+      "listenFor": "No - it just sat still. Line seven says it. That is the try that does not work."
     },
     {
       "ask": "Find the line that shows the crab wanted the stick. Read it to me.",

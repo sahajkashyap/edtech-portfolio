@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Decodable Passage &mdash; Lesson 128, Affixes Review 2</title>
 <style>
-  @page { size: letter; margin: 0.6in; }
+  /* Side margins are 0.5in (safe on ordinary home printers) so the story lines
+     get the widest column the paper allows; top and bottom stay 0.6in. */
+  @page { size: letter; margin: 0.6in 0.5in; }
   * { box-sizing: border-box; }
   body { font-family: "Century Gothic", "Verdana", sans-serif; color: #1a1a1a; background: #fff; margin: 0; line-height: 1.5; }
 
@@ -13,12 +15,12 @@
   .toolbar button { padding: 8px 16px; font-size: 14px; border: none; background: #378ADD; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
   .toolbar button:hover { background: #2966bb; }
 
-  /* Each .page is exactly one printed sheet: 8.5x11 letter minus 0.6in margins. */
-  .page { width: 7.3in; min-height: 9.8in; margin: 0 auto; background: #fff; position: relative; }
+  /* Each .page is exactly one printed sheet: 8.5x11 letter minus the margins. */
+  .page { width: 7.5in; min-height: 9.8in; margin: 0 auto; background: #fff; position: relative; }
 
   @media screen {
     body { background: #e9e5de; }
-    .page { box-shadow: 0 2px 10px rgba(0,0,0,0.18); padding: 0.6in; width: 8.5in; min-height: 11in; margin: 24px auto; }
+    .page { box-shadow: 0 2px 10px rgba(0,0,0,0.18); padding: 0.6in 0.5in; width: 8.5in; min-height: 11in; margin: 24px auto; }
   }
   @media print {
     .toolbar { display: none; }
@@ -44,7 +46,7 @@
               margin: 8px 0 10px; font-size: 12.5px; color: #4a545e; line-height: 1.45; }
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
-  .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
+  .sub { font-size: 12.5px; color: #555; margin: 0 0 3px 12px; }
   .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
@@ -68,11 +70,11 @@
   /* ---- the picture ---- */
   .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
-  .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
+  .artcap { font-size: 11px; color: #555; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
@@ -80,24 +82,24 @@
 .hwrow { display: flex; flex-wrap: wrap; gap: 10px 38px; margin: 0 0 1px 12px; align-items: flex-start; }
   .hwcard { text-align: center; }
   .hwcard svg { display: block; }
-  .hwword { font-size: 11px; color: #666; margin-top: 0; letter-spacing: 0.04em; }
+  .hwword { font-size: 13px; color: #444; margin-top: 1px; letter-spacing: 0.04em; }
 
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 12px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
-  .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
+  .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 0.12em; margin: 0; }
   .passage .ln { display: block; }
 
   /* ---- fluency tracker ---- */
   .fluency { display: flex; align-items: center; gap: 14px; margin: 8px 0 0 12px; }
   .fluency .star { width: 28px; height: 28px; border: 1.5px solid #1a1a1a; border-radius: 50%; display: inline-block; flex: none; }
   .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
-  .fluency .note { font-size: 11.5px; color: #777; }
+  .fluency .note { font-size: 11.5px; color: #555; }
 
   /* ---- comprehension: wide lines for young hands ---- */
   .q { font-size: 19px; margin: 0 0 34px 12px; }
   .q .qtext { display: block; margin-bottom: 10px; }
-  .qline { display: block; border-bottom: 1.5px solid #999; height: 80px; }
+  .qline { display: block; border-bottom: 1.5px solid #666; height: 80px; }
 
   /* ---- draw box: 50% bigger than the first draft ---- */
   .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 7.8in; margin: 2px 0 0 0; position: relative; }
@@ -108,10 +110,9 @@
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #777; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 
-  .passage p { font-size: 18px; line-height: 1.54; }
-  .art { max-width: 2.9in; }</style>
+  .passage p { font-size: 21px; line-height: 1.54; }</style>
 </head>
 <body>
 
@@ -133,49 +134,50 @@
   </div>
 
   <div class="prereq">
-    <div class="h">Before you start &middot; is your child ready for this one?</div>
-    <p><strong>This is Lesson 128. It assumes your child has already worked through Lessons 1&ndash;127.</strong> Each lesson only uses sounds taught in the
-    ones before it. If your child has not had those yet, this story will be too hard &mdash; not
-    because of anything they did, but because the sounds have not been introduced yet. Ask their
-    teacher which sheet to start with.</p>
+    <div class="h">Before you start &middot; is this the right sheet?</div>
+    <p><strong>This is Lesson 128. It uses only sounds already taught in Lessons 1&ndash;127.</strong> If your child has not done those lessons yet,
+    this story will feel too hard &mdash; that is the sheet, not the child. Ask their teacher
+    where to start.</p>
   </div>
 
   <h2>About 10 minutes, in this order</h2>
   <div class="tip">
-    <p><strong>1. Look at the picture together.</strong> Ask &ldquo;What do you see? What do you
-    think happens?&rdquo; This puts the story in their head before their eyes do the hard work.</p>
-    <p><strong>2. Cover the picture while they read.</strong> It is there for understanding, not
-    for guessing words. Uncover it when they finish.</p>
-    <p><strong>3. Warm up on the words,</strong> check off the heart words, then read the story.</p>
-    <p><strong>4. If they get stuck, don&rsquo;t say the word.</strong> Ask them to <strong>sound it
-    out</strong> or <strong>use their sound spelling</strong> &mdash; the words their teacher uses.
-    Tap under each letter as they go.</p>
-    <p><strong>5. Read it three times,</strong> then <strong>draw what happened.</strong> The
-    drawing is the comprehension check at this age &mdash; no writing needed, and the picture shows
-    you what they understood.</p>
-    <p style="margin-top:6px; padding-top:5px; border-top:1px dotted #d9c7a8;"><strong>The last
-    sheet of questions is extra.</strong> Reading and drawing is the work &mdash; stopping there is
-    finishing.</p>
+    <p><strong>1. Say the practice words at the top of the story page,</strong> then the heart
+    words. A heart word has one part that cannot be sounded out &mdash; the little heart marks
+    the bit to just remember.</p>
+    <p><strong>2. Read the story. If they get stuck, don&rsquo;t say the word.</strong> Point
+    under the letters one at a time and say: &ldquo;Say each sound, then say them fast.&rdquo;
+    It sounds like this: &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
+    <p><strong>3. Read it three times</strong> &mdash; they color a circle each time.</p>
+    <p><strong>4. They draw what happened.</strong> There is no picture to copy &mdash; the
+    picture they make from the words shows you what they understood. No writing needed.</p>
+  </div>
+
+  <h2>When it does not go smoothly</h2>
+  <div class="tip">
+    <p><strong>They read a word wrong.</strong> Don&rsquo;t say &ldquo;no.&rdquo; Point at the word:
+    &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves is the win.</p>
+    <p><strong>They guess from the first letter.</strong> Say &ldquo;Check with your
+    finger &mdash; say every sound before you say the word.&rdquo;</p>
+    <p><strong>They sound it out twice and still can&rsquo;t get it.</strong> Just tell them the
+    word and carry on. A few told words do no harm.</p>
+    <p><strong>They are stuck on nearly every line, or fed up.</strong> Stop &mdash; that is fine.
+    Try an easier lesson, or the same one tomorrow. Five happy minutes beat twenty cross ones.</p>
   </div>
 
   <h2>If they want the questions</h2>
-  <p class="sub">Optional. They work just as well asked out loud over the drawing.</p>
+  <p class="sub">The questions page is extra &mdash; reading and drawing is the whole job. These
+  work just as well asked out loud.</p>
   <div class="answers">
     <p class="qa"><span class="qq">1. Where did Rosa find the pup?</span><br><span class="aa">In the yard by the fence, wet and cold in the rain. The first four lines help.</span></p>
-    <p class="qa"><span class="qq">2. What did Rosa try before she made the sign?</span><br><span class="aa">She knocked at each house on her street, but no one had lost a pup.</span></p>
+    <p class="qa"><span class="qq">2. What did Rosa try before she made the sign?</span><br><span class="aa">She knocked at each house on her road, but no one had lost a pup.</span></p>
     <p class="qa"><span class="qq">3. Would you have taken the reward? Why?</span><br><span class="aa">There is no right answer here. Listen for a reason that fits the story.</span></p>
   </div>
 
   <div class="audit">
-    <div class="h">Why you can trust this page &middot; checked, word by word</div>
-    <p style="margin:0 0 5px;"><strong>Every one of the 195 words in this story can be
-    sounded out with what your child has already been taught.</strong> Nothing here needs guessing.
-    If they get stuck, the answer is always &ldquo;sound it out&rdquo; or &ldquo;use your sound
-    spelling&rdquo; &mdash; never &ldquo;let me tell you.&rdquo;</p>
-    <p style="margin:0;">The only words not sounded out are the 72 heart words
-    taught so far &mdash; and even those are mostly regular. Only the marked part of each
-    is learned by heart. The newest are
-    <code>where</code> <code>who</code> <code>woman</code> <code>would</code> <code>you</code> <code>your</code>.</p>
+    <p style="margin:0;"><strong>Checked word by word:</strong> all 196 words in this
+    story use only sounds taught by Lesson 128, plus heart words already learned. Nothing here
+    needs guessing.</p>
   </div>
 
   <div class="foot">
@@ -197,9 +199,6 @@
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <div class="art"><svg viewBox="0 0 660 250" role="img" aria-label="A simple line drawing of: a child, a child, dog, mat, house."><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="216" x2="642" y2="216"/><g transform="translate(82,112) scale(1.04)"><circle cx="50" cy="26" r="16" fill="#fff"/><circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/><path d="M43 32 q7 6 14 0"/><path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/><path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/><path d="M50 50 L32 62"/><path d="M50 50 L68 62"/></g><g transform="translate(209,112) scale(1.04)"><circle cx="50" cy="26" r="16" fill="#fff"/><circle cx="44" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="56" cy="24" r="2.5" fill="#1a1a1a"/><path d="M43 32 q7 6 14 0"/><path d="M36 12 q6 -8 14 -5 q10 -5 14 5"/><path d="M50 42 L50 70"/><path d="M50 70 L38 96"/><path d="M50 70 L62 96"/><path d="M50 50 L32 62"/><path d="M50 50 L68 62"/></g><g transform="translate(337,112) scale(1.04)"><ellipse cx="44" cy="66" rx="28" ry="17" fill="#fff"/><circle cx="76" cy="54" r="14" fill="#fff"/><path d="M68 42 L64 26 L78 34 z" fill="#fff"/><circle cx="80" cy="52" r="2" fill="#1a1a1a"/><circle cx="88" cy="56" r="3" fill="#1a1a1a"/><line x1="28" y1="82" x2="28" y2="96"/><line x1="44" y1="83" x2="44" y2="96"/><line x1="60" y1="83" x2="60" y2="96"/><path d="M16 60 q-8 -10 2 -14"/></g><g transform="translate(464,112) scale(1.04)"><path d="M6 78 L74 78 L94 94 L26 94 z" fill="#fff"/><path d="M20 82 L82 82" stroke-width="1.6"/><path d="M14 88 L76 88" stroke-width="1.6"/></g><path d="M50 216 l-4 -12 M56 216 l2 -14 M62 216 l6 -11" stroke-width="2"/><path d="M590 216 l-4 -12 M598 216 l2 -13" stroke-width="2"/></g></svg></div>
-  <p class="artcap">Talk about the picture first &mdash; then cover it up and read.</p>
-
   <h2>Say these first</h2>
   <div class="warm"><div>pup</div><div>yard</div><div>rain</div><div>cold</div><div>dry</div><div>girl</div></div>
 
@@ -218,8 +217,8 @@
       <span class="ln">She fed it and it went to sleep on the rug.</span>
       <span class="ln">"That was kindness," said her mom.</span>
       <span class="ln">Rosa was hopeful the pup had a home.</span>
-      <span class="ln">First she went to each house on her street.</span>
-      <span class="ln">She knocked and asked, but no one had lost a pup.</span>
+      <span class="ln">First she went to each house on her road.</span>
+      <span class="ln">She knocked at each door, but no one had lost a pup.</span>
     </p>
   </div>
   <p class="artcap" style="text-align:right;margin-top:2px">Keep going on the next page &rarr;</p>

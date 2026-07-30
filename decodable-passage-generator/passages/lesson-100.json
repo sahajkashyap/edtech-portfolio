@@ -13,7 +13,7 @@
     "Nick had a big grin. Meg did not.",
     "She sat down and looked at her sled.",
     "Then she lifted it up and looked under it.",
-    "Snow was packed hard under both rails.",
+    "Snow was packed hard under both sides.",
     "Meg got the hard snow off with her mitt.",
     "Up the hill she went for one more run.",
     "This time Meg was faster than Nick!",
@@ -25,14 +25,14 @@
   "questions": [
     {
       "ask": "Why was Meg's sled slower the first time?",
-      "listenFor": "Snow was packed hard under both rails. Have them find that line."
+      "listenFor": "Snow was packed hard under both sides of the sled. Have them find that line."
     },
     {
       "ask": "Who slid past Meg and Nick at the end?",
       "listenFor": "The brown dog, on a lid. If your child guesses, have them reread the line."
     },
     {
-      "ask": "Do you think Meg was cross at the end? Tell me why you think so.",
+      "ask": "Do you think Meg was mad at the end? Tell me why you think so.",
       "listenFor": "Either answer is fine. The grin is a clue, and so is the dog."
     }
   ]

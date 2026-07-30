@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Decodable Passage &mdash; Lesson 41, Short Vowels Review</title>
 <style>
-  @page { size: letter; margin: 0.6in; }
+  /* Side margins are 0.5in (safe on ordinary home printers) so the story lines
+     get the widest column the paper allows; top and bottom stay 0.6in. */
+  @page { size: letter; margin: 0.6in 0.5in; }
   * { box-sizing: border-box; }
   body { font-family: "Century Gothic", "Verdana", sans-serif; color: #1a1a1a; background: #fff; margin: 0; line-height: 1.5; }
 
@@ -13,12 +15,12 @@
   .toolbar button { padding: 8px 16px; font-size: 14px; border: none; background: #378ADD; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; }
   .toolbar button:hover { background: #2966bb; }
 
-  /* Each .page is exactly one printed sheet: 8.5x11 letter minus 0.6in margins. */
-  .page { width: 7.3in; min-height: 9.8in; margin: 0 auto; background: #fff; position: relative; }
+  /* Each .page is exactly one printed sheet: 8.5x11 letter minus the margins. */
+  .page { width: 7.5in; min-height: 9.8in; margin: 0 auto; background: #fff; position: relative; }
 
   @media screen {
     body { background: #e9e5de; }
-    .page { box-shadow: 0 2px 10px rgba(0,0,0,0.18); padding: 0.6in; width: 8.5in; min-height: 11in; margin: 24px auto; }
+    .page { box-shadow: 0 2px 10px rgba(0,0,0,0.18); padding: 0.6in 0.5in; width: 8.5in; min-height: 11in; margin: 24px auto; }
   }
   @media print {
     .toolbar { display: none; }
@@ -44,7 +46,7 @@
               margin: 8px 0 10px; font-size: 12.5px; color: #4a545e; line-height: 1.45; }
 
   h2 { font-size: 15px; margin: 10px 0 3px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
-  .sub { font-size: 12.5px; color: #666; margin: 0 0 3px 12px; }
+  .sub { font-size: 12.5px; color: #555; margin: 0 0 3px 12px; }
   .rowlab { font-size: 11.5px; color: #666; margin: 0 0 3px 12px; }
 
   /* ---- prerequisite banner: the first thing a grown-up should read ---- */
@@ -68,11 +70,11 @@
   /* ---- the picture ---- */
   .art { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 6px; margin: 0 auto 4px; background: #fff; max-width: 3.8in; }
   .art svg { display: block; width: 100%; height: auto; }
-  .artcap { font-size: 11px; color: #777; text-align: center; margin: 0 0 4px; font-style: italic; }
+  .artcap { font-size: 11px; color: #555; text-align: center; margin: 0 0 4px; font-style: italic; }
 
   /* ---- warm-up + heart words ---- */
   .warm { display: grid; grid-template-columns: repeat(6, 1fr); gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
+  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 0; letter-spacing: 0.04em; }
   .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
   .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
@@ -80,24 +82,24 @@
 .hwrow { display: flex; flex-wrap: wrap; gap: 10px 38px; margin: 0 0 1px 12px; align-items: flex-start; }
   .hwcard { text-align: center; }
   .hwcard svg { display: block; }
-  .hwword { font-size: 11px; color: #666; margin-top: 0; letter-spacing: 0.04em; }
+  .hwword { font-size: 13px; color: #444; margin-top: 1px; letter-spacing: 0.04em; }
 
   /* ---- the passage ---- */
-  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 22px 11px; }
+  .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 12px 11px; }
   .passage .ptitle { font-size: 22px; font-weight: bold; text-align: center; letter-spacing: 0.04em; margin: 0 0 8px; }
-  .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 4px; margin: 0; }
+  .passage p { font-size: 24px; line-height: 1.66; letter-spacing: 0.04em; word-spacing: 0.12em; margin: 0; }
   .passage .ln { display: block; }
 
   /* ---- fluency tracker ---- */
   .fluency { display: flex; align-items: center; gap: 14px; margin: 8px 0 0 12px; }
   .fluency .star { width: 28px; height: 28px; border: 1.5px solid #1a1a1a; border-radius: 50%; display: inline-block; flex: none; }
   .fluency .lbl { font-size: 11.5px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
-  .fluency .note { font-size: 11.5px; color: #777; }
+  .fluency .note { font-size: 11.5px; color: #555; }
 
   /* ---- comprehension: wide lines for young hands ---- */
   .q { font-size: 19px; margin: 0 0 34px 12px; }
   .q .qtext { display: block; margin-bottom: 10px; }
-  .qline { display: block; border-bottom: 1.5px solid #999; height: 80px; }
+  .qline { display: block; border-bottom: 1.5px solid #666; height: 80px; }
 
   /* ---- draw box: 50% bigger than the first draft ---- */
   .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 7.8in; margin: 2px 0 0 0; position: relative; }
@@ -108,7 +110,7 @@
   .audit .h { font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; font-size: 10.5px; color: #4a7040; margin-bottom: 4px; }
   .audit code { background: #e4efe0; padding: 1px 5px; border-radius: 3px; }
 
-  .foot { margin-top: 2px; font-size: 10.5px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  .foot { margin-top: 2px; font-size: 10.5px; color: #777; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>

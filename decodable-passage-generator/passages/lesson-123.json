@@ -10,15 +10,15 @@
     "It went up and up. Finn was happy.",
     "Then the wind took the kite away.",
     "It got stuck up in a tall green tree.",
-    "The string hung down but it was too high.",
+    "The tail hung down but it was too high.",
     "Finn felt sad as he looked up at it.",
-    "He jumped up at the string three times.",
+    "He jumped up at the tail three times.",
     "But he was much too small to reach it.",
     "Then he got a box and stood on top.",
     "The box did not hold him. He got down.",
     "Finn ran back to the shed for a rake.",
     "It was long, but Mom helped him hold it.",
-    "Finn hooked the string and gave it a tug.",
+    "Finn hooked the tail and gave it a tug.",
     "The kite fell down into the long grass.",
     "It was muddy but it did not rip.",
     "\"You got that,\" said Mom. Finn hugged his kite."
@@ -34,7 +34,7 @@
   "questions": [
     {
       "ask": "Where did the kite get stuck?",
-      "listenFor": "Up in a tall green tree, with the string hanging down. Lines eight and nine."
+      "listenFor": "Up in a tall green tree, with the tail hanging down. Lines eight and nine."
     },
     {
       "ask": "What did Finn try first, and what worked in the end?",

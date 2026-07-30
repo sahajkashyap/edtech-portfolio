@@ -3,15 +3,15 @@
   "title": "The Book by the Pond",
   "lines": [
     "Gus took a good book to the pond.",
-    "Mom sat with him on the soft bank.",
+    "Mom sat with him on the soft grass.",
     "Gus stood on a wood log to see the pond.",
     "A duck came to look at his book.",
     "Mom held Gus as the wet log shook.",
     "His good book fell in the pond!",
-    "Gus got a thin stick from the bank.",
+    "Gus got a thin stick from the grass.",
     "The stick was short and did not reach.",
     "Then Gus took a hook from his bag.",
-    "He set the hook on the stick with string.",
+    "He tied the hook on to the thin stick.",
     "Gus stood with Mom and got the book back.",
     "It was wet, so he took it home."
   ],
@@ -30,7 +30,7 @@
     },
     {
       "ask": "Why did the thin stick not work at first?",
-      "listenFor": "It was short and did not reach. So Gus set a hook on it with string."
+      "listenFor": "It was short and did not reach. So Gus tied a hook on to it."
     },
     {
       "ask": "The story says the wet log shook. What does shook mean? Show me with your hands.",

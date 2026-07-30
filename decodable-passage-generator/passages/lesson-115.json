@@ -17,10 +17,10 @@
     "Sam had a good look in the jug.",
     "It was not juice. It was blue glue.",
     "Max tried to spoon the glue back out.",
-    "But the blue had spread all the way down.",
+    "But the blue had gone all the way down.",
     "So the group had to start a new pot.",
     "Mom gave them a clean pot and sat back down.",
-    "This time Jen read the jug first.",
+    "This time Jen looked at the jug first.",
     "She let Max mix the juice in with a spoon.",
     "The new soup was good and hot.",
     "They ate it all up under the stars."
@@ -44,7 +44,7 @@
     },
     {
       "ask": "How could the kids keep this from happening again? Why?",
-      "listenFor": "Any sensible answer - read the jug, keep glue out of the camp pot. Listen for the reason."
+      "listenFor": "Any sensible answer - look at the jug first, keep glue out of the camp pot. Listen for the reason."
     }
   ]
 }
