@@ -1,15 +1,15 @@
 {
   "lesson": 32,
-  "title": "Sam Did Not Quit",
+  "title": "Max Did Not Quit",
   "lines": [
-    "Sam and Dad dig in the hot sun.",
-    "\"Can I quit?\" said Sam. \"It is hot.\"",
+    "Max and Dad dig in the hot sun.",
+    "\"Can I quit?\" said Max. \"It is hot.\"",
     "\"Do not quit yet,\" said Dad. \"Dig a bit.\"",
-    "Sam digs and taps a tin box!",
-    "Sam tugs at the lid and it pops up.",
+    "Max digs and taps a tin box!",
+    "Max tugs at the lid and it pops up.",
     "A map is in the box!",
     "\"You did not quit,\" said Dad.",
-    "Sam and Dad sit and look at the map."
+    "Max and Dad sit and look at the map."
   ],
   "warmup": [
     "digs",
@@ -25,12 +25,12 @@
       "listenFor": "A map. It is said in the story. Have your child find the line and read it back so they can show you they know."
     },
     {
-      "ask": "Why did Sam want to quit?",
+      "ask": "Why did Max want to quit?",
       "listenFor": "Digging was hard and the sun was hot. Either half of that is a good answer."
     },
     {
       "ask": "Have you ever wanted to stop in the middle of a hard job? What happened?",
-      "listenFor": "Any answer. Sam wanted to quit in line two and kept going. You are linking that to their own day."
+      "listenFor": "Any answer. Max wanted to quit in line two and kept going. You are linking that to their own day."
     }
   ]
 }

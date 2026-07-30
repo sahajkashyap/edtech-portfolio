@@ -1,27 +1,27 @@
 {
   "lesson": 123,
-  "title": "A Windy Day",
+  "title": "The Kite in the Tree",
   "lines": [
     "It was a windy, sunny day in May.",
-    "Tom had a new kite with a long tail.",
+    "Finn had a new kite with a long tail.",
     "He took it up the rocky hill by the farm.",
     "Mom sat on a rock to watch him.",
-    "Tom ran fast and the kite went up high.",
-    "It went up and up. Tom was happy.",
+    "Finn ran fast and the kite went up high.",
+    "It went up and up. Finn was happy.",
     "Then the wind took the kite away.",
     "It got stuck up in a tall green tree.",
     "The string hung down but it was too high.",
-    "Tom felt sad as he looked up at it.",
+    "Finn felt sad as he looked up at it.",
     "He jumped up at the string three times.",
     "But he was much too small to reach it.",
     "Then he got a box and stood on top.",
     "The box did not hold him. He got down.",
-    "Tom ran back to the shed for a rake.",
-    "Mom held the rake up next to him.",
-    "Tom hooked the string and gave it a tug.",
+    "Finn ran back to the shed for a rake.",
+    "It was long, but Mom helped him hold it.",
+    "Finn hooked the string and gave it a tug.",
     "The kite fell down into the long grass.",
     "It was muddy but it did not rip.",
-    "\"You got that,\" said Mom. Tom just grins."
+    "\"You got that,\" said Mom. Finn hugged his kite."
   ],
   "warmup": [
     "sunny",
@@ -37,11 +37,11 @@
       "listenFor": "Up in a tall green tree, with the string hanging down. Lines eight and nine."
     },
     {
-      "ask": "What did Tom try first, and what worked in the end?",
-      "listenFor": "He jumped three times, then stood on a box. The rake worked, with Mom holding it up next to him."
+      "ask": "What did Finn try first, and what worked in the end?",
+      "listenFor": "He jumped three times, then stood on a box. The rake worked, with Mom helping him hold it up."
     },
     {
-      "ask": "How do you think Tom felt at the end? Why?",
+      "ask": "How do you think Finn felt at the end? Why?",
       "listenFor": "Any answer is fine, as long as they point to something in the story."
     }
   ]

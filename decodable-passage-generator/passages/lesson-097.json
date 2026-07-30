@@ -8,7 +8,7 @@
     "The beans had to boil a long time.",
     "A brown cow ate grass in the next field.",
     "Soon a crowd sat down on the brown soil.",
-    "Then the cow stuck its head in the pot!",
+    "Then the cow bumped the hot pot with its head!",
     "The beans spilled on the ground.",
     "Nick shouted, but the cow did not go.",
     "Then Nick got a pail of oats from Dad.",
@@ -28,7 +28,7 @@
   "questions": [
     {
       "ask": "What went wrong with the beans?",
-      "listenFor": "A cow stuck its head in the pot and they spilled on the ground."
+      "listenFor": "The cow bumped the pot with its head, and the beans spilled on the ground."
     },
     {
       "ask": "How did Nick get the cow to go back to the field?",

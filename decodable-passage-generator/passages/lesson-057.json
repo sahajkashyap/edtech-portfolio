@@ -1,13 +1,13 @@
 {
   "lesson": 57,
-  "title": "Pete and These Hens",
+  "title": "Pete Hunts for Jade",
   "lines": [
     "Pete has five hens. Jade is his best hen.",
     "These hens like to hide in the grass.",
     "Pete calls, and all but Jade run in.",
     "He hunts by the lake and in the grass.",
-    "Pete stops and thinks. Jade hops up on rocks.",
-    "He checks the gate and the shed.",
+    "He checks the gate and the shed. No Jade.",
+    "Pete stops and thinks. Jade gets up on rocks!",
     "Then he spots Rex the cat on a stone.",
     "Jade is on Rex's back! Then she hops off.",
     "\"Jade is brave,\" said Pete with a grin.",
@@ -27,8 +27,8 @@
       "listenFor": "Jade. Lines one and three - send them back rather than telling them."
     },
     {
-      "ask": "Pete hunts by the lake and in the grass first. Where does he find Jade?",
-      "listenFor": "On Rex the cat's back, up on a stone. Lines seven and eight. The lake and the grass are the tries that fail."
+      "ask": "Pete hunts by the lake, the gate and the shed first. Where does he find Jade?",
+      "listenFor": "On Rex the cat's back, up on a stone. Lines seven and eight. The lake, the gate and the shed are the tries that fail."
     },
     {
       "ask": "Where do you think Jade will hide next time? What makes you say that?",

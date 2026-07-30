@@ -2,16 +2,16 @@
   "lesson": 58,
   "title": "Duke and the Tube",
   "lines": [
-    "Ben has a cute mule. His name is Duke.",
+    "Luke has a cute mule. His name is Duke.",
     "They take the long path home from the lake.",
     "Then Duke stops and sits in the dust.",
-    "\"Up, Duke!\" said Ben. The mule just sits.",
-    "Ben tugs. Duke will not get up.",
-    "Ben holds up a bun. Duke naps.",
-    "Then Ben gets a long tube from his bag.",
+    "\"Up, Duke!\" said Luke. The mule just sits.",
+    "Luke tugs. Duke will not get up.",
+    "Luke holds up a bun. Duke naps.",
+    "Then Luke gets a long tube from his bag.",
     "He hums a tune in the tube.",
     "Duke lifts his nose. He jumps up fast!",
-    "Duke walks home, and Ben hums the whole time."
+    "Duke walks home, and Luke hums the whole time."
   ],
   "warmup": [
     "cute",
@@ -23,15 +23,15 @@
   ],
   "questions": [
     {
-      "ask": "What does Ben try first to get Duke up?",
+      "ask": "What does Luke try first to get Duke up?",
       "listenFor": "He tugs, then he holds up a bun. Duke naps. Send them back to those two lines."
     },
     {
       "ask": "What finally gets Duke up on his feet?",
-      "listenFor": "The tune Ben hums in the tube. If they say \"the tube,\" ask what Ben did with it."
+      "listenFor": "The tune Luke hums in the tube. If they say \"the tube,\" ask what Luke did with it."
     },
     {
-      "ask": "Ben hums a tune in the tube. What is a tune? Hum me one.",
+      "ask": "Luke hums a tune in the tube. What is a tune? Hum me one.",
       "listenFor": "A little bit of a song. Line eight. Humming one back is the check that they have the word."
     }
   ]

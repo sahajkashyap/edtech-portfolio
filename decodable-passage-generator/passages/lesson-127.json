@@ -1,27 +1,27 @@
 {
   "lesson": 127,
-  "title": "Meg and the Unicorn",
+  "title": "One Horn, Two Wheels",
   "lines": [
-    "Meg rode a red tricycle with three wheels.",
+    "June rode a red tricycle with three wheels.",
     "She had it since she was three years old.",
-    "Meg wants a bicycle, but two wheels tip.",
+    "June wanted a bicycle, but two wheels tip.",
     "For her big day, Dad got her one.",
     "It was blue with a bell on the handles.",
     "He got her a unicorn helmet as well.",
     "\"A unicorn has one horn. Uni means one,\" he said.",
     "\"Tri is three and bi is two,\" said Dad.",
-    "Meg got on and went down the path fast.",
+    "June got on and went down the path fast.",
     "The bicycle tipped and she fell in the grass.",
     "She felt cross and went back to her tricycle.",
     "But the tricycle was much too small for her now.",
     "Her legs did not fit under the handles.",
-    "So Meg got up and tried the bicycle again.",
+    "So June got up and tried the bicycle again.",
     "Dad held the back of it at first.",
     "He ran next to her all the way down the path.",
-    "Then he let go, and Meg did not fall.",
-    "She rang the bell three times and grins.",
+    "Then he let go, and June did not fall.",
+    "She rang the bell three times and grinned.",
     "\"Look at me!\" she yelled to Dad.",
-    "Now Meg rides her bicycle every day."
+    "Now June rides her bicycle every day."
   ],
   "warmup": [
     "bicycle",
@@ -37,7 +37,7 @@
       "listenFor": "Three and two. Tri is three, bi is two, uni is one - the same one hiding inside unicorn."
     },
     {
-      "ask": "Why did Meg stop riding the tricycle?",
+      "ask": "Why did June stop riding the tricycle?",
       "listenFor": "It was much too small for her now, and her legs did not fit under the handles."
     },
     {

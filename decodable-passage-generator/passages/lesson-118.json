@@ -2,25 +2,25 @@
   "lesson": 118,
   "title": "The School Ghost",
   "lines": [
-    "Meg had her class in the old school.",
+    "Kim went to a school that was very old.",
     "Kids said a ghost lived in the halls.",
     "At night it made a long, sad sound.",
     "It went up and down like a song.",
     "The cook said it was just a machine.",
-    "But Meg did not think that was it.",
+    "But Kim did not think that was it.",
     "\"Can we go and look?\" she asked Mom.",
     "That night Mom got a lamp and they went in.",
-    "The dark hall felt still, and Meg led the way.",
+    "The dark hall felt still, and Kim led the way.",
     "They stood and did not hear a thing.",
-    "Meg felt let down. \"It has gone,\" she said.",
+    "Kim felt let down. \"It has gone,\" she said.",
     "Then the sad sound came again.",
     "It came from a door at the back.",
-    "Meg gave the door a hard tug.",
+    "Kim gave the door a hard tug.",
     "It did not open. The door was stuck.",
     "So she got a stick and tugged again.",
     "The door came free. Green eyes shone!",
     "It was a cat, stuck in there since lunch.",
-    "Mom held the lamp and Meg fed it milk.",
+    "Mom held the lamp and Kim fed it milk.",
     "Her school ghost sat and ate and shut its eyes."
   ],
   "warmup": [
@@ -42,7 +42,7 @@
     },
     {
       "ask": "What would you take with you to look? Why?",
-      "listenFor": "Any answer is fine. Meg took a lamp and her mom."
+      "listenFor": "Any answer is fine. Kim took a lamp and her mom."
     }
   ]
 }

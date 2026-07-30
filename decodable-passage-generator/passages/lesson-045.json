@@ -6,7 +6,7 @@
     "A cat picks up a big fish and runs.",
     "\"Not the big fish!\" yells Kim.",
     "Kim shuts the shop and runs to the cat.",
-    "The cat runs to a shed. Six wet cats!",
+    "The cat runs to a shed. Six sad cats!",
     "\"You can have the fish,\" said Kim.",
     "Kim gets a big dish and fills it up.",
     "The six cats run to the dish.",
@@ -27,11 +27,11 @@
     },
     {
       "ask": "What does Kim find at the shed?",
-      "listenFor": "Six wet cats. If they say only \"cats,\" ask them to find the word that tells how many."
+      "listenFor": "Six sad cats. If they say only \"cats,\" ask them to find the word that tells how many. Then ask why the cats might be sad — no fish to eat."
     },
     {
       "ask": "What was the problem in this story? How did Kim sort it out?",
-      "listenFor": "Six wet cats and no fish. Kim filled a big dish for them. Lines five and seven."
+      "listenFor": "Six sad cats with no fish. Kim filled a big dish for them. Lines five and seven."
     }
   ]
 }

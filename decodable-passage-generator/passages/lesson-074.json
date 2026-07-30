@@ -2,17 +2,17 @@
   "lesson": 74,
   "title": "The Funny Puppy",
   "lines": [
-    "Meg has a funny little puppy.",
+    "Liz has a funny little puppy.",
     "The puppy digs a big pit by the pond.",
     "It digs up a penny in the mud.",
     "The puppy will not let go of it.",
-    "Meg tugs at it, but the puppy runs off.",
-    "Then Meg holds up the puppy's red ball.",
+    "Liz tugs at it, but the puppy runs off.",
+    "Then Liz holds up the puppy's red ball.",
     "The puppy drops the penny and grabs the ball.",
-    "Then Meg spots a sad lady on the path.",
+    "Then Liz spots a sad lady on the path.",
     "The lady lost a penny in the grass.",
     "A happy baby sits next to the lady.",
-    "Meg hands the penny back, and the baby claps."
+    "Liz hands the penny back, and the baby claps."
   ],
   "warmup": [
     "funny",
@@ -28,7 +28,7 @@
       "listenFor": "A penny, out of the mud. Stated in the story - point them back to the line."
     },
     {
-      "ask": "How did Meg get the penny away from the puppy?",
+      "ask": "How did Liz get the penny away from the puppy?",
       "listenFor": "She held up the puppy's red ball, and the puppy dropped the penny. If they say \"she tugged it,\" ask \"did that work?\""
     },
     {

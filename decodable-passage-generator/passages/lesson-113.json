@@ -3,26 +3,27 @@
   "title": "A Sound by the Shed",
   "lines": [
     "It was a wet day at the start of the year.",
-    "Meg went out to the yard after the rain.",
+    "Fern went out to the yard after the rain.",
     "She could hear a small sound near the shed.",
     "It was not clear at all. It was very small.",
-    "Meg felt a bit of fear and stood still.",
+    "Fern felt a bit of fear and stood still.",
     "Then the sound came back, like a cry.",
     "\"Dad, I hear a sound,\" she called.",
     "Dad came out and said, \"I am near, dear.\"",
     "They went to the shed and looked all round.",
-    "Meg got down and held her ear near the grass.",
+    "Fern got down and held her ear near the grass.",
     "The sound got more clear on that side.",
-    "It came from a big box of old pots.",
-    "Meg took the pots out one at a time.",
-    "At the bottom was a small wet pup.",
-    "It was stuck under a flat lid.",
-    "Meg tried to lift the lid, but it stuck fast.",
+    "It came from a big box by the shed wall.",
+    "A flat lid was shut on the top of it.",
+    "Fern tried to lift the lid, but it stuck fast.",
     "So she tipped the box on its side.",
-    "Out came the pup, right on to her lap.",
+    "Out slid a small wet pup, on to her lap!",
+    "It had gone in to get out of the rain.",
+    "Then the lid had slipped down and shut it in.",
+    "The pup gave a big shake and got Fern wet.",
     "It licked her hand and her ear.",
     "\"You have good ears, dear,\" said Dad.",
-    "Meg has had that pup for a year now."
+    "Fern has had that pup for a year now."
   ],
   "warmup": [
     "hear",
@@ -35,10 +36,10 @@
   "questions": [
     {
       "ask": "What was making the sound, and where was it?",
-      "listenFor": "A small pup, stuck under a lid in a box of old pots by the shed."
+      "listenFor": "A small wet pup, shut in a big box by the shed."
     },
     {
-      "ask": "What did Meg try first to get the pup out, and did it work?",
+      "ask": "What did Fern try first to get the pup out, and did it work?",
       "listenFor": "She tried to lift the lid. It stuck fast, so she tipped the box on its side."
     },
     {

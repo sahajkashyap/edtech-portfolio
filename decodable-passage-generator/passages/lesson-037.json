@@ -5,8 +5,8 @@
     "Fog! Tom and Mom can not see a lot.",
     "\"The dog is not in his box,\" said Mom.",
     "Tom and Mom look and look in the fog.",
-    "A red pot! It is on the log.",
-    "\"The dog naps at the log!\" said Tom.",
+    "A red pot! It is up on the log.",
+    "\"The dog naps at his red pot!\" said Tom.",
     "Mom and Tom run to the red pot.",
     "The dog got up and ran to Tom.",
     "\"You got us to the dog,\" said Mom."
@@ -26,7 +26,7 @@
     },
     {
       "ask": "What did Tom spot that showed him where the dog was?",
-      "listenFor": "A red pot sitting on a log. Lines four and five say it. This is the turn of the story."
+      "listenFor": "His red pot, up on the log. The dog naps at his pot, so the pot showed Tom where he was. Lines four and five say it."
     },
     {
       "ask": "Find the line that shows the dog was glad to see Tom. Read it to me.",

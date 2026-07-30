@@ -5,7 +5,7 @@
     "Kim is a girl in a red shirt.",
     "She spots a bird sitting in the dirt.",
     "Its wing is bad, and it can not fly.",
-    "Kim holds a hand up, and it hops off.",
+    "Kim goes to pick it up, and it hops off.",
     "First she gets a box and a soft rag.",
     "She sets the box in the dirt by it.",
     "The bird turns and hops into the box.",
@@ -29,7 +29,7 @@
     },
     {
       "ask": "How did Kim get the bird into the box?",
-      "listenFor": "She set the box in the dirt next to it, and the bird hopped in on its own. If they say \"she picked it up,\" ask \"what happened when she held her hand up?\""
+      "listenFor": "She set the box in the dirt next to it, and the bird hopped in on its own. If they say \"she picked it up,\" ask \"what happened when she went to pick it up?\""
     },
     {
       "ask": "Which part will you draw — the bird in the box, or the bird lifting off?",

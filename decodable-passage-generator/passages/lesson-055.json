@@ -8,17 +8,17 @@
     "\"My kite!\" said Mike. \"I can not get it.\"",
     "Mike jumps up at it, but he slips.",
     "Jill stops next to him on a red bike.",
-    "Mike spots a long stick in the grass.",
+    "\"Look! A long stick in the grass,\" said Jill.",
     "He stands on a rock and taps the kite.",
     "The white kite drops off. Mike grabs it.",
-    "Mike and Jill ride off with a smile."
+    "\"Thank you, Jill!\" said Mike with a smile."
   ],
   "warmup": [
     "white",
     "kite",
     "pine",
     "bike",
-    "ride",
+    "stick",
     "smile"
   ],
   "questions": [
@@ -28,7 +28,7 @@
     },
     {
       "ask": "Jumping up at the kite does not work. What does Mike do that does?",
-      "listenFor": "He stands on a rock and taps the kite with a long stick. Lines seven and eight."
+      "listenFor": "He gets the long stick Jill spots, stands on a rock and taps the kite. Lines seven and eight."
     },
     {
       "ask": "Have you ever had something stuck up high? How did you get it down?",

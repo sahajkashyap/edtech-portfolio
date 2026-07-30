@@ -2,17 +2,17 @@
   "lesson": 89,
   "title": "The Book by the Pond",
   "lines": [
-    "Ben took a good book to the pond.",
+    "Gus took a good book to the pond.",
     "Mom sat with him on the soft bank.",
-    "Ben stood on a log made of wood.",
+    "Gus stood on a wood log to see the pond.",
     "A duck came to look at his book.",
-    "Mom held Ben as the wet log shook.",
+    "Mom held Gus as the wet log shook.",
     "His good book fell in the pond!",
-    "Ben got a long stick from the bank.",
+    "Gus got a thin stick from the bank.",
     "The stick was short and did not reach.",
-    "Then Ben took a hook from his bag.",
+    "Then Gus took a hook from his bag.",
     "He set the hook on the stick with string.",
-    "Ben stood with Mom and got the book back.",
+    "Gus stood with Mom and got the book back.",
     "It was wet, so he took it home."
   ],
   "warmup": [
@@ -25,12 +25,12 @@
   ],
   "questions": [
     {
-      "ask": "Where did Ben stand to read his book?",
-      "listenFor": "On a log made of wood, by the pond. Have them point to that line."
+      "ask": "Where did Gus stand to see the pond?",
+      "listenFor": "On a wood log, by the pond. Have them point to that line."
     },
     {
-      "ask": "Why did the long stick not work at first?",
-      "listenFor": "It was short and did not reach. So Ben set a hook on it with string."
+      "ask": "Why did the thin stick not work at first?",
+      "listenFor": "It was short and did not reach. So Gus set a hook on it with string."
     },
     {
       "ask": "The story says the wet log shook. What does shook mean? Show me with your hands.",

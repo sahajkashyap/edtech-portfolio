@@ -2,18 +2,18 @@
   "lesson": 90,
   "title": "Noon at the Zoo",
   "lines": [
-    "Meg went with her school to the zoo.",
+    "Dot went with her school to the zoo.",
     "At noon Mom gave her a bag of food.",
     "In the bag was a bun and a spoon.",
     "A goat came up and took the whole bag!",
-    "Meg ran fast, but the goat was fast too.",
+    "Dot ran fast, but the goat was fast too.",
     "It went up on the roof of the shed.",
-    "Meg made a big yell, but the goat sat.",
-    "Then Meg got a long tool from Mom.",
+    "Dot made a big yell, but the goat sat.",
+    "Then a zoo man gave Dot a long tool.",
     "She hooked the bag and got it back.",
     "The food was gone, but the spoon was not.",
-    "Mom gave Meg some of her noon food.",
-    "Meg will keep her bag shut at the zoo."
+    "Mom gave Dot some of her noon food.",
+    "Dot will keep her bag shut at the zoo."
   ],
   "warmup": [
     "zoo",
@@ -29,8 +29,8 @@
       "listenFor": "A bun and a spoon. It is in the third line."
     },
     {
-      "ask": "How did Meg get her bag back from the roof?",
-      "listenFor": "She got a long tool and hooked the bag. Yelling had not worked."
+      "ask": "How did Dot get her bag back from the roof?",
+      "listenFor": "A zoo man gave her a long tool, and she hooked the bag with it. Yelling had not worked."
     },
     {
       "ask": "Which part of the zoo trip did you like best? Read me that line.",

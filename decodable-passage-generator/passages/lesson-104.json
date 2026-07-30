@@ -7,7 +7,7 @@
     "The kids there had a big day soon.",
     "Kate had a plan to bake them a cake.",
     "Dad let her mix it up in the pan.",
-    "She set the pan in the hot stove to bake.",
+    "Dad set the pan in the hot stove to bake.",
     "The first cake came out flat and sad.",
     "It was as flat as a plate.",
     "Kate had to reread the plan two times.",
@@ -37,7 +37,7 @@
     },
     {
       "ask": "How did Kate work out what the problem was?",
-      "listenFor": "She had to reread the plan two times, and saw the pan was too big."
+      "listenFor": "She reread the plan and tried again. When that cake was flat too, she saw the pan was too big."
     },
     {
       "ask": "When is it good to reread a thing? Tell me why.",

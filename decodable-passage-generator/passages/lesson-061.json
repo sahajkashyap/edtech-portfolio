@@ -2,16 +2,16 @@
   "lesson": 61,
   "title": "Sage on the Stage",
   "lines": [
-    "Ben brings his pet rat to class.",
+    "Raj brings his pet rat to class.",
     "He has a huge cage up on the stage.",
     "\"This is Sage,\" he said. \"He is my rat.\"",
     "Sage hops from the cage and runs off!",
-    "The class jumps up, but Ben is brave.",
+    "The class jumps up, but Raj is brave.",
     "He calls, \"Sage! Sage!\" Sage will not stop.",
-    "Ben sets a bit of ham on a page.",
+    "Raj sets a bit of ham on a page.",
     "Sage smells the ham and runs back.",
-    "Ben picks him up and shuts the cage.",
-    "\"That rat and his ham!\" said Ben."
+    "Raj picks him up and shuts the cage.",
+    "\"That rat and his ham!\" said Raj."
   ],
   "warmup": [
     "huge",
@@ -23,12 +23,12 @@
   ],
   "questions": [
     {
-      "ask": "What does Ben do first when Sage runs off?",
+      "ask": "What does Raj do first when Sage runs off?",
       "listenFor": "He calls Sage by name, but Sage will not stop. Send them back to that line."
     },
     {
       "ask": "What finally gets Sage to come back?",
-      "listenFor": "A bit of ham that Ben sets on a page. If they say \"the ham,\" ask where Ben put it."
+      "listenFor": "A bit of ham that Raj sets on a page. If they say \"the ham,\" ask where Raj put it."
     },
     {
       "ask": "Which moment will you draw — Sage running off, or Sage back in his cage?",

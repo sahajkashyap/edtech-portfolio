@@ -2,10 +2,10 @@
   "lesson": 28,
   "title": "Wag Gets Wet",
   "lines": [
-    "Deb, Ned and Wag run in the fog.",
-    "Wag digs in the mud. Wag is wet!",
+    "Deb and Ned run in the fog.",
+    "Wag the pup digs in the mud. Wag is wet!",
     "\"Look at Wag,\" said Deb. \"He is wet.\"",
-    "Ned gets a big rag and rubs his legs.",
+    "Ned gets a big rag and rubs Wag.",
     "Deb rubs him and Wag wags and wags.",
     "\"We can set him in his den,\" said Ned.",
     "Wag naps in the den. He is not wet."
@@ -29,7 +29,7 @@
     },
     {
       "ask": "Walk me through how Wag got dry, step by step.",
-      "listenFor": "Ned rubbed his legs with a rag, Deb rubbed him too, then he napped in his den. Lines four to seven."
+      "listenFor": "Ned rubbed him with a big rag, Deb rubbed him too, then he napped in his den. Lines four to seven."
     }
   ]
 }

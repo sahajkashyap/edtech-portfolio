@@ -17,7 +17,8 @@
     "Tom sat down on the floor for a bit.",
     "Then he got the broom and cleaned it up.",
     "He set all eight bits up on the table.",
-    "He tried to make them stand. They fell down.",
+    "He tried to fit them back with just his hands.",
+    "But the bits slid apart when he let go.",
     "So Tom got Dad to hand him the glue.",
     "He set the bits back on, one at a time.",
     "It took a long time, but the plate held.",
@@ -40,7 +41,7 @@
     },
     {
       "ask": "What did Tom try first with the eight bits, and did it work?",
-      "listenFor": "He stood them up on the table and they fell. Then he got the glue and set them back on."
+      "listenFor": "He tried to fit them back with his hands, but the bits slid apart. Then he got the glue and set them back on."
     },
     {
       "ask": "Why was that plate a big deal to Mom?",

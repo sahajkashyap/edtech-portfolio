@@ -6,7 +6,7 @@
     "Dad said yes, so they packed a big bag.",
     "Sam set the fresh bread in it. Dad had a jug.",
     "The bag was heavy. Sam had to tug it.",
-    "The weather was hot on top of his head.",
+    "The weather was hot, and his head was wet with sweat.",
     "They spread a red rug on the grass.",
     "Dad cut the bread into thick bits.",
     "A big black crow sat up in the tree.",
@@ -18,7 +18,7 @@
     "Then Sam looked at the heavy bag again.",
     "Why was it heavy with no bread in it?",
     "He got it and looked in. Dad had packed more!",
-    "There was a second bread and some plums.",
+    "There was a second loaf and some plums.",
     "They ate in the meadow, and the crow ate too."
   ],
   "warmup": [
@@ -36,7 +36,7 @@
     },
     {
       "ask": "Why was the bag so heavy?",
-      "listenFor": "Dad had packed a second bread and plums. Have them find that line."
+      "listenFor": "Dad had packed a second loaf and plums. Have them find that line."
     },
     {
       "ask": "What would you have said to that crow? Tell me why.",

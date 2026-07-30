@@ -3,25 +3,25 @@
   "title": "Soup at Camp",
   "lines": [
     "The sun went down and camp got cold.",
-    "\"Let us make soup for all of us,\" said Meg.",
-    "Meg and Sam got out a big black pot.",
+    "\"Let us make soup for all of us,\" said Jen.",
+    "Jen, Sam and Max got out a big black pot.",
     "Mom set the pot on the camp fire.",
     "Then she sat at the table to watch them.",
     "Sam threw in beans, corn and nuts.",
-    "Meg cut a peach and a pear into bits.",
-    "\"It needs juice next,\" said Meg to Tom.",
-    "Tom went to the shed to get the juice.",
+    "Jen cut a peach and a pear into bits.",
+    "\"It needs juice next,\" said Jen to Max.",
+    "Max went to the shed to get the juice.",
     "He came back and threw it all in.",
     "Then the soup went blue!",
-    "\"Why is my soup blue?\" said Meg.",
+    "\"Why is my soup blue?\" said Jen.",
     "Sam had a good look in the jug.",
     "It was not juice. It was blue glue.",
-    "Tom tried to spoon the glue back out.",
+    "Max tried to spoon the glue back out.",
     "But the blue had spread all the way down.",
     "So the group had to start a new pot.",
     "Mom gave them a clean pot and sat back down.",
-    "This time Meg read the jug first.",
-    "She let Tom mix the juice in with a spoon.",
+    "This time Jen read the jug first.",
+    "She let Max mix the juice in with a spoon.",
     "The new soup was good and hot.",
     "They ate it all up under the stars."
   ],
@@ -36,10 +36,10 @@
   "questions": [
     {
       "ask": "What made the soup turn blue?",
-      "listenFor": "Blue glue that Tom threw in. Line fourteen says it."
+      "listenFor": "Blue glue that Max threw in. Line fourteen says it."
     },
     {
-      "ask": "What did Tom think he was putting in?",
+      "ask": "What did Max think he was putting in?",
       "listenFor": "Juice. Line nine says he went to get the juice."
     },
     {

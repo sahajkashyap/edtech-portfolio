@@ -2,23 +2,23 @@
   "lesson": 125,
   "title": "The Basement Cat",
   "lines": [
-    "Ben was in bed when he heard a sound.",
+    "Ray was in bed when he heard a sound.",
     "It came from down in the basement.",
     "For a moment he sat still in the dark.",
     "Then he heard a small movement down there.",
-    "Ben got up and went to get Mom.",
+    "Ray got up and went to get Mom.",
     "\"Can we look?\" he asked. \"I will go first.\"",
     "Mom came down the steps with a lamp.",
-    "Ben held the rail and went in front.",
+    "Ray held the rail and went in front.",
     "At first they saw just cans and rags.",
-    "He looked under the steps but saw no cat.",
+    "He looked under the steps, but all was still.",
     "Then a box in the back tipped over.",
-    "Ben got down on his hands to look.",
+    "Ray got down on his hands to look.",
     "A small gray cat sat in the box.",
     "It had three kittens tucked next to it.",
-    "Ben's fear turned into excitement.",
+    "Ray's fear turned into excitement.",
     "\"Can they stay?\" he asked. \"If you feed them.\"",
-    "That was the agreement Ben and Mom made.",
+    "That was the agreement Ray and Mom made.",
     "He ran up and got them milk in a bowl.",
     "Now the cat naps on the warm pavement.",
     "The three kittens play in the grass all day."
@@ -33,16 +33,16 @@
   ],
   "questions": [
     {
-      "ask": "What did Ben hear at the start?",
+      "ask": "What did Ray hear at the start?",
       "listenFor": "A sound from the basement, then a small movement. Lines one to four."
     },
     {
-      "ask": "What did Ben find in the box?",
+      "ask": "What did Ray find in the box?",
       "listenFor": "A small gray cat with three kittens tucked next to it. Line thirteen and line fourteen."
     },
     {
-      "ask": "What was the agreement Ben and Mom made?",
-      "listenFor": "The cats can stay if Ben feeds them. Two people agree - that is what an agreement is."
+      "ask": "What was the agreement Ray and Mom made?",
+      "listenFor": "The cats can stay if Ray feeds them. Two people agree - that is what an agreement is."
     }
   ]
 }

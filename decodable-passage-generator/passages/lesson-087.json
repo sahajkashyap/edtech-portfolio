@@ -3,7 +3,7 @@
   "title": "The Kite at Night",
   "lines": [
     "Meg made a big kite from sticks and cloth.",
-    "She had to fly it at night with Dad.",
+    "Her plan was to fly it at night with Dad.",
     "First Meg tied a small light to the kite.",
     "That light was not bright at all.",
     "So Meg tied on a big red light.",
@@ -12,7 +12,7 @@
     "\"That is not a star,\" said Meg.",
     "The wind was strong and the string snapped.",
     "The kite fell, and Meg gave a sad sigh.",
-    "But the bright light lets Ben find it.",
+    "But the bright light let Ben find it.",
     "At home Meg and Dad had hot pie."
   ],
   "warmup": [
@@ -34,7 +34,7 @@
     },
     {
       "ask": "How did Meg feel when the string snapped? Find the words that show you.",
-      "listenFor": "Sad — the story says she gave a sad sigh. Then the bright light lets Ben find the kite."
+      "listenFor": "Sad — the story says she gave a sad sigh. Then the bright light let Ben find the kite."
     }
   ]
 }

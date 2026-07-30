@@ -11,7 +11,8 @@
     "Tim pins the rags on the kite tip.",
     "He runs on the dry path and lets go.",
     "The kite lifts up into the sky.",
-    "Mom grins. Tim is not shy at all.",
+    "Tim yells to Mom, and Mom grins back.",
+    "Up in the sky, his kite dips and spins.",
     "He will try that trick next time."
   ],
   "warmup": [
@@ -33,7 +34,7 @@
     },
     {
       "ask": "Tim is shy at the start. What does shy mean?",
-      "listenFor": "Quiet with people, slow to join in. Line one says it, and the last line but one says he is not."
+      "listenFor": "Quiet with people, slow to join in. Line one says it — then at the end he yells to Mom, not shy at all."
     }
   ]
 }

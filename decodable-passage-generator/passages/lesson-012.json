@@ -1,8 +1,8 @@
 {
   "lesson": 12,
-  "title": "I Tap the Tin Pot",
+  "title": "The Pot on Top",
   "lines": [
-    "I am Tim. A tin pot is on top.",
+    "I am Tom. A tin pot is on top.",
     "I tap it. Tap, tap, tap.",
     "Pop! The pot is not on top.",
     "The pot is on the mat.",
@@ -19,16 +19,16 @@
   ],
   "questions": [
     {
-      "ask": "What happened after Tim tapped the pot?",
+      "ask": "What happened after Tom tapped the pot?",
       "listenFor": "It went pop and it landed on the mat. Lines three and four tell it together, so let them read both."
     },
     {
       "ask": "Who cleaned up the mat?",
-      "listenFor": "Tim did, on his own. Listen for Tim and not a grown-up - that is the whole point of the story."
+      "listenFor": "Tom did, on his own. Listen for Tom and not a grown-up - that is the whole point of the story."
     },
     {
       "ask": "What went wrong in this story? Who put it right?",
-      "listenFor": "The pot popped off and landed on the mat, and Tim mopped it up himself. Lines three to five."
+      "listenFor": "The pot popped off and landed on the mat, and Tom mopped it up himself. Lines three to five."
     }
   ]
 }

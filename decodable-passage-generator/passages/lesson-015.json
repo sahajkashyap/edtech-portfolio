@@ -2,13 +2,13 @@
   "lesson": 15,
   "title": "Mud is Fun",
   "lines": [
-    "Tim sat in the mud. Mud is fun!",
+    "Dot sat in the mud. Mud is fun!",
     "A pup sat in the mud.",
-    "Mud is on Tim. Mud is on the pup.",
-    "Dad sat up. \"Not in the mud, Tim!\"",
-    "\"Do it, Dad! It is fun,\" said Tim.",
+    "Mud is on Dot. Mud is on the pup.",
+    "Dad sat up. \"Not in the mud, Dot!\"",
+    "\"Do it, Dad! It is fun,\" said Dot.",
     "Dad sat in the mud!",
-    "Mud is on Dad. It is on us!",
+    "\"Mud is on us!\" said Dad.",
     "It is fun to nap in the sun."
   ],
   "warmup": [
@@ -22,14 +22,14 @@
   "questions": [
     {
       "ask": "Who sat down in the mud at the end?",
-      "listenFor": "Dad. The story says it plainly. If your child says Tim, point to the line and read it together."
+      "listenFor": "Dad. The story says it plainly. If your child says Dot, point to the line and read it together."
     },
     {
-      "ask": "What did Tim say to Dad?",
-      "listenFor": "Do it, Dad. It is fun. You want the idea that Tim talked Dad into it - that change of mind is the whole story."
+      "ask": "What did Dot say to Dad?",
+      "listenFor": "Do it, Dad. It is fun. You want the idea that Dot talked Dad into it - that change of mind is the whole story."
     },
     {
-      "ask": "Which bit did you like best — Tim in the mud, or Dad in the mud?",
+      "ask": "Which bit did you like best — Dot in the mud, or Dad in the mud?",
       "listenFor": "Either. Ask them to read the line their bit is on, so the pick stays tied to the page."
     }
   ]

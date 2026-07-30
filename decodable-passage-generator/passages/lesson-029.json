@@ -4,8 +4,8 @@
   "lines": [
     "Raj had a job. He got the jam pot.",
     "Mom had buns. Raj runs to Mom.",
-    "The lid was not on. The pot tips!",
-    "Jam is on his cap! Raj was sad.",
+    "The lid is not on. The pot tips!",
+    "Jam is on his cap! Raj is sad.",
     "\"I did not set the lid on,\" said Raj.",
     "Raj gets a rag and rubs the cap.",
     "\"Raj did a big job,\" said Mom.",
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Why did the jam come out of the pot?",
-      "listenFor": "The lid was not on. Line three says it, and Raj says so himself in line five. If they say \"it tipped,\" ask them why that mattered."
+      "listenFor": "The lid is not on. Line three says it, and Raj says so himself in line five. If they say \"it tipped,\" ask them why that mattered."
     },
     {
       "ask": "How did Raj feel when the jam went on his cap? Which words show you?",

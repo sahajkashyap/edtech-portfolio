@@ -6,7 +6,7 @@
     "Dad and Cole got in a small red boat.",
     "The goat got in the boat with them.",
     "A crow came to sit on the back.",
-    "The goat got up to blow at the crow.",
+    "The goat got up to snap at the crow.",
     "The boat tipped on its side.",
     "Dad held Cole as the goat fell in!",
     "Cole had to throw a rope to it.",
@@ -26,7 +26,7 @@
   "questions": [
     {
       "ask": "Why did the boat go on its side?",
-      "listenFor": "The goat got up to blow at the crow. Two steps - let them find both."
+      "listenFor": "The goat got up to snap at the crow. Two steps - let them find both."
     },
     {
       "ask": "What got the goat to swim back to the boat?",

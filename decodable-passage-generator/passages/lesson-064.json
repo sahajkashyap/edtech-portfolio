@@ -2,16 +2,16 @@
   "lesson": 64,
   "title": "The Milk Spilled",
   "lines": [
-    "Ben filled a big pot with milk for Mom.",
+    "Ted filled a big pot with milk for Mom.",
     "The pot tipped and the milk spilled.",
     "It dripped on the rug in many drops.",
-    "Ben grabbed a small rag and mopped it.",
+    "Ted grabbed a small rag and mopped it.",
     "The rag filled up fast. The rug is wet.",
     "\"Mom!\" he yelled. \"I spilled the milk!\"",
     "Mom picked up a big rag and helped him.",
-    "They mopped it up. Ben dumped the wet rag.",
-    "\"Is any milk left?\" said Ben.",
-    "\"Lots,\" said Mom. Ben helped fill the pot."
+    "They mopped it up. Ted dumped the wet rag.",
+    "\"Is any milk left?\" said Ted.",
+    "\"Lots,\" said Mom. Ted helped fill the pot."
   ],
   "warmup": [
     "filled",
@@ -27,12 +27,12 @@
       "listenFor": "The rug. It says so in the third line."
     },
     {
-      "ask": "Why did Ben call for Mom?",
+      "ask": "Why did Ted call for Mom?",
       "listenFor": "His small rag filled up fast and the rug was still wet, so he could not mop it all. Send them back to that line."
     },
     {
       "ask": "Start at the pot tipping. What happened next, and next?",
-      "listenFor": "Milk on the rug, Ben mops, his rag fills up, he calls Mom, they mop it up. Lines two to eight."
+      "listenFor": "Milk on the rug, Ted mops, his rag fills up, he calls Mom, they mop it up. Lines two to eight."
     }
   ]
 }

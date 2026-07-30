@@ -5,14 +5,14 @@
     "Ben got a little badge for his best catch.",
     "He pins it on his black vest.",
     "On the path, the pin slips off.",
-    "The badge drops into a thick, wet ditch.",
+    "The badge drops flat into the mud of the ditch.",
     "Ben digs in the mud but finds a rock.",
     "He digs and digs. No badge at all.",
-    "Then Meg hands him a long stick.",
+    "Then Jan hands him a long stick.",
     "Ben pokes at the edge of the ditch.",
     "The stick taps the badge in the thick mud.",
     "He tugs it up and rubs the mud off.",
-    "Meg pins the little badge back on his vest."
+    "Jan pins the little badge back on his vest."
   ],
   "warmup": [
     "badge",
@@ -29,11 +29,11 @@
     },
     {
       "ask": "What did Ben use to find the badge in the mud?",
-      "listenFor": "The long stick Meg handed him. If they say \"he dug for it,\" ask \"did digging work?\""
+      "listenFor": "The long stick Jan handed him. If they say \"he dug for it,\" ask \"did digging work?\""
     },
     {
       "ask": "What was Ben's problem in this story? Who helped him solve it?",
-      "listenFor": "The badge dropped in the ditch, and Meg handed him a long stick. Lines four and seven."
+      "listenFor": "The badge dropped in the ditch, and Jan handed him a long stick. Lines four and seven."
     }
   ]
 }

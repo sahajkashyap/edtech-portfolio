@@ -9,8 +9,8 @@
     "It gives the tulip to Mom, and she grins.",
     "Then the robot stops. It is silent.",
     "Ben taps it, but it will not hum.",
-    "He tips it up and finds gum in it.",
-    "Ben rubs at the gum, but it is stuck.",
+    "He tips it up. His gum is stuck in it!",
+    "Ben rubs at it, but the gum will not shift.",
     "Mom picks the gum off with a pin.",
     "The robot hums a tune and Ben claps."
   ],
@@ -29,11 +29,11 @@
     },
     {
       "ask": "Why did the robot go silent?",
-      "listenFor": "A bit of gum was stuck in it. Ben found it when he tipped the robot up."
+      "listenFor": "Ben's own bit of gum was stuck in it. He found it when he tipped the robot up."
     },
     {
       "ask": "Gum stopped the robot. What else could Ben check if it goes quiet again?",
-      "listenFor": "Any idea of their own. Ben tipped it up and found the gum in line eight — that is the model."
+      "listenFor": "Any idea of their own. Ben tipped it up and found his gum in line eight — that is the model."
     }
   ]
 }

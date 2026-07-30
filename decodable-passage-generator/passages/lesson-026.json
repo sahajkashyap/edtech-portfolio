@@ -7,9 +7,9 @@
     "Ned ran, but he did not get it.",
     "The lid is in the mud.",
     "Ned sat on a log. He is sad.",
-    "The pup digs and digs in the mud.",
-    "\"Look!\" said Ned. \"The pup has the lid!\"",
-    "Ned hugs the pup and it naps."
+    "The pup digs at the mud. Dig, dig!",
+    "Ned digs at it and gets the lid!",
+    "\"Look!\" said Ned. He hugs the pup, and it naps."
   ],
   "warmup": [
     "lid",
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Who got the lid back, and how?",
-      "listenFor": "The pup, by digging. Listen for the digging part - that is the bit that turns the story around. If they just say \"the pup,\" ask \"and what did it do?\""
+      "listenFor": "Ned did, with the pup. The pup digs at the spot, and Ned digs the lid out. Lines six and seven tell it together. If they say the pup did it all, ask who got the lid out of the mud."
     },
     {
       "ask": "How did Ned feel when the lid went in the mud? Find the words that tell you.",

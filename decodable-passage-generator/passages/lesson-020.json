@@ -2,14 +2,14 @@
   "lesson": 20,
   "title": "Ten Cups and a Nut",
   "lines": [
-    "Meg sets ten cups on a mat.",
-    "Meg tips a nut in a cup.",
-    "Meg taps the cups. \"Get it, Ben!\"",
-    "Ben taps a big cup. Not in it.",
-    "Ben taps a tan cup. Not it!",
-    "Ben taps the tin cup and gets the nut!",
-    "Meg nods. Ben gets to tip the nut in.",
-    "Meg taps the cups, and Meg gets it!"
+    "Peg sets ten cups on a mat.",
+    "Peg tips a nut in a cup.",
+    "Peg taps the cups. \"Get it, Ted!\"",
+    "Ted taps a big cup. Not in it.",
+    "Ted taps a tan cup. Not it!",
+    "Ted taps the tin cup and gets the nut!",
+    "Peg nods. Ted gets to tip the nut in.",
+    "Peg taps the cups, and Peg gets it!"
   ],
   "warmup": [
     "cups",
@@ -21,7 +21,7 @@
   ],
   "questions": [
     {
-      "ask": "How many cups did Meg set on the mat?",
+      "ask": "How many cups did Peg set on the mat?",
       "listenFor": "Ten. It is in the first line. If your child is not sure, put a finger on that line and let them read it again."
     },
     {
@@ -29,7 +29,7 @@
       "listenFor": "The tin cup. Line six says it. If they say \"the last one,\" ask them to find the line that names it."
     },
     {
-      "ask": "What did Ben tap first? What did he tap after that?",
+      "ask": "What did Ted tap first? What did he tap after that?",
       "listenFor": "The big cup, then the tan cup, then the tin cup. Lines four to six hold the order."
     }
   ]

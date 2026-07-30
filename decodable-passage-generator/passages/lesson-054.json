@@ -3,7 +3,7 @@
   "title": "Who Licks the Cake?",
   "lines": [
     "Jane and Mom bake a big cake.",
-    "They set the cake on a flat rock.",
+    "They set the cake on a big plate.",
     "Jane runs in to get a rag.",
     "When she gets back, the cake has a lick!",
     "\"Who did that?\" said Jane. Mom thinks a bug.",
@@ -18,13 +18,13 @@
     "cake",
     "make",
     "take",
-    "flat",
-    "rock"
+    "plate",
+    "spots"
   ],
   "questions": [
     {
       "ask": "Where did Jane and Mom put the big cake?",
-      "listenFor": "On a flat rock. Line two says it. Let your child reread rather than being told."
+      "listenFor": "On a big plate. Line two says it. Let your child reread rather than being told."
     },
     {
       "ask": "Mom thinks a bug licked the cake. How does Jane show it was not a bug?",

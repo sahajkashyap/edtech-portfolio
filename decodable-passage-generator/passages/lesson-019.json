@@ -1,15 +1,15 @@
 {
   "lesson": 19,
-  "title": "Tim Can Not See the Cat",
+  "title": "Sid Can Not See the Cat",
   "lines": [
-    "Tim can not see the cat.",
+    "Sid can not see the cat.",
     "\"Is it in the tub?\" said Mom.",
-    "Tim did not see it in the tub.",
+    "Sid did not see it in the tub.",
     "\"Is it in the bin?\" said Mom.",
-    "Tim can see a mop and a big bag.",
-    "Tim can tip the bag. A cat got up!",
-    "\"I see it!\" said Tim.",
-    "The cat sat on Tim. It can nap."
+    "Sid can see a mop and a big bag.",
+    "Sid can tip the bag. A cat got up!",
+    "\"I see it!\" said Sid.",
+    "The cat sat on Sid. It can nap."
   ],
   "warmup": [
     "cat",
@@ -25,11 +25,11 @@
       "listenFor": "In the big bag. The story says it. If your child says the tub, read the line about the bag again together."
     },
     {
-      "ask": "How did Tim find the cat?",
-      "listenFor": "He tipped the bag over and the cat got up. Listen for Tim doing the tipping - Mom gave ideas, but Tim did the looking."
+      "ask": "How did Sid find the cat?",
+      "listenFor": "He tipped the bag over and the cat got up. Listen for Sid doing the tipping - Mom gave ideas, but Sid did the looking."
     },
     {
-      "ask": "Where else could Tim have looked for the cat?",
+      "ask": "Where else could Sid have looked for the cat?",
       "listenFor": "Any spot. Mom named the tub and the bin; the bag is what worked. Ask what makes a good hiding spot."
     }
   ]
