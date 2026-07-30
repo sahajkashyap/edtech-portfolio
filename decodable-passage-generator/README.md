@@ -48,13 +48,18 @@ child's page, which is just more words for a young reader to get confused by.
 | Sheet | Owner | What's on it |
 |---|---|---|
 | 1 | Grown-up — keep this one | How to use it, what to say when it goes wrong, the dictation sentence to read aloud, what a good answer sounds like |
-| 2 (–3) | The reader | Warm-up words, heart-word cards, the story, three fluency circles, and the dictation writing lines. A long story takes a second page rather than smaller type |
-| next | The reader | A full-page drawing box |
-| last | The reader | Three questions, explicitly optional |
+| 2 | The reader | Practice words and heart words, running **down** the page and large |
+| 3 | The reader | **The story, whole.** Never split across pages |
+| 4 | The reader | Draw what happened (top half), then write the sentence you hear (bottom half) |
+| 5 | The reader | Three questions, explicitly optional |
 
-Most lessons print **five pages**; short ones print four and the longest print
-six. That is the page count giving way rather than the child's space, which is
-the rule working as intended.
+**Every lesson prints the same five pages in the same order.** One shape every
+time is one less thing for a child or a parent to work out.
+
+Story type is set per lesson rather than per band — it grows until the story
+fills its page, from **18px to 38px**. The binding limit is usually width, not
+height: a story line must never wrap, because the line is the unit a child
+points along. `wrap_check.py` confirms this in a real browser.
 
 The drawing got its own sheet the moment taller writing lines stopped fitting
 beside it. That is the rule working as intended: the page count gives, the

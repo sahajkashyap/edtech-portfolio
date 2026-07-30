@@ -55,65 +55,22 @@ def type_for(lesson):
     return TYPE_BANDS[-1][1]
 
 
-# When a story outgrows its page the story gets a second page. It does not get
-# smaller type. That is the teacher's standing rule for this project -- a
-# child's space is never shrunk to fit the paper; cut adult text or add a page
-# -- and type size is the child's space just as much as a drawing box is.
-# A second story page is always preferred over smaller type.
-#
-# These caps are the largest line counts measured as fitting at each type size,
-# with the warm-up strip and heart-word cards above them.
-#   lesson ceiling -> lines that fit on the first reading page
-FIRST_PAGE_LINES = [(45, 7), (65, 8), (90, 9), (128, 10)]
+# The story is never split, so the only question left is whether the warm-up
+# words and heart cards can share its page. When they cannot, they get a page
+# of their own ahead of it. words-page.json lists the lessons where that is
+# needed, found by rendering rather than guessed -- see decide_words_page.py.
+_WORDS_PAGE = None
 
 
-# Measured capacity beats a guessed constant. page-capacity.json records, per
-# lesson, how many story lines that reading page actually holds -- taken from
-# the rendered height, not estimated. The band constants below are the fallback
-# for when it has not been generated yet.
-_CAPACITY = None
+def _words_page_set():
+    global _WORDS_PAGE
+    if _WORDS_PAGE is None:
+        f = HERE / "words-page.json"
+        _WORDS_PAGE = (set(str(x) for x in json.loads(f.read_text())["lessons"])
+                       if f.exists() else set())
+    return _WORDS_PAGE
 
 
-def _measured():
-    global _CAPACITY
-    if _CAPACITY is None:
-        f = HERE / "page-capacity.json"
-        _CAPACITY = (json.loads(f.read_text())["linesByLesson"]
-                     if f.exists() else {})
-    return _CAPACITY
-
-
-def first_page_lines(lesson):
-    measured = _measured().get(str(lesson))
-    if measured:
-        return measured
-    for ceiling, cap in FIRST_PAGE_LINES:
-        if lesson <= ceiling:
-            return cap
-    return FIRST_PAGE_LINES[-1][1]
-
-
-def split_story(lesson, lines):
-    """Break a story into per-page chunks, first page smallest.
-
-    A continuation page carries no picture, warm-up or heart words, so it holds
-    more lines than the first one. Splitting evenly across the pages we need
-    beats filling page one to the brim and leaving two lines stranded alone.
-    """
-    cap = first_page_lines(lesson)
-    if len(lines) <= cap:
-        return [lines]
-    # A page with nothing above the story holds roughly half again as much.
-    later_cap = cap + cap // 2
-    pages = 1 + -(-(len(lines) - cap) // later_cap)
-    per = -(-len(lines) // pages)
-    per = min(per, cap)
-    out = [lines[:per]]
-    rest = lines[per:]
-    while rest:
-        out.append(rest[:later_cap])
-        rest = rest[later_cap:]
-    return out
 TEMPLATE = HERE / "example-lesson-41.html"
 SOUND_LIST = HERE / "sound-list.json"
 PASSAGES = HERE / "passages"
@@ -165,6 +122,48 @@ def pick_dictation(lines):
             abs(i - center), i)                         # middle of the story
 
     return lines[min(pool, key=key)].strip()
+
+
+# Now that a story has a page to itself, its type is no longer a band constant
+# -- it grows until the story fills the page. A nine-line story at Lesson 45 was
+# leaving a third of the sheet blank at 25px; there is no reason a child should
+# read small type on an empty page.
+#
+# Two ceilings, and the tighter one wins:
+#   height -- the lines have to fit between the header and the fluency stars
+#   width  -- a line must NEVER wrap. The line is the unit a child points
+#             along, so the widest line in the story sets the limit.
+PAGE_PX = 940.8         # usable height of a letter sheet
+COLUMN_PX = 690         # usable width inside the passage box
+HEADER_PX = 150         # banner, name line, "Read the story" heading
+TAIL_PX = 62            # the read-it-3-times row under the story
+BOX_PX = 34             # the passage box's own padding and border
+CHAR_EM = 0.605         # measured width of a character at 1em in this face
+TYPE_CEILING = 38       # past this it stops looking like a book to a child
+
+
+def story_type(lesson, lines):
+    """The largest type this story can be set in on a page of its own."""
+    base_px, line_h = type_for(lesson)
+    # 14px of slack: the header varies a little with title length, and a
+    # story page that misses by two pixels is as broken as one that misses
+    # by fifty.
+    room = PAGE_PX - HEADER_PX - TAIL_PX - BOX_PX - 14
+    # title sits above the lines and scales with them, at about 1.75x
+    by_height = room / (len(lines) * line_h + 1.75)
+    widest = max(len(l) for l in lines)
+    by_width = COLUMN_PX / (widest * CHAR_EM)
+    # 18px is the floor -- the smallest a seven-year-old should be asked to
+    # read. The band size is where a story STARTS, not a floor: the longest
+    # stories genuinely need to come down to 18 to keep the story whole on one
+    # page, and keeping the story whole is worth more than three points of type.
+    px = max(18, int(min(by_height, by_width, TYPE_CEILING)))
+    # A short story is capped by line WIDTH, not height, so growing the type
+    # cannot fill the page and the sheet ends up two-thirds empty. Spend what
+    # is left on leading instead: more air between lines is easier for a young
+    # reader to track along, and it is space the child gets rather than loses.
+    fits = (room / px - 1.75) / len(lines)
+    return px, round(max(line_h, min(fits, 2.5)), 2)
 
 
 def build_html(spec):
@@ -225,17 +224,21 @@ def build_html(spec):
                 for w in older[-6:]) + '</div>')
     else:
         heart_block = ""
-    story_pages = split_story(n, lines)
-    of_n = len(story_pages)
+    # The story is never broken across pages. The teacher's reason: a child
+    # should see it as one whole thing, and turning a page mid-story costs them
+    # the thread. Every one of the 123 stories fits on a page on its own at the
+    # current type sizes -- what does not always fit is the story WITH the
+    # warm-up words and heart cards above it, so those move to their own page
+    # when they have to. The story never gives way; the furniture does.
+    def story_block():
+        body = "\n      ".join(f'<span class="ln">{esc(l)}</span>' for l in lines)
+        return (f'<div class="passage">\n    <div class="ptitle">{esc(title)}</div>'
+                f'\n    <p>\n      {body}\n    </p>\n  </div>')
 
-    def story_block(chunk, idx):
-        """The story itself. Titled on page one, marked 'keep going' after."""
-        head = (f'<div class="ptitle">{esc(title)}</div>' if idx == 0 else
-                f'<div class="ptitle">{esc(title)} '
-                f'<span style="font-weight:400;font-size:.8em">&mdash; page {idx + 1}'
-                f'</span></div>')
-        body = "\n      ".join(f'<span class="ln">{esc(l)}</span>' for l in chunk)
-        return f'<div class="passage">\n    {head}\n    <p>\n      {body}\n    </p>\n  </div>'
+    # Always its own page now. Once the practice words and heart words run
+    # down the page at reading size they cannot share with the story, and a
+    # packet with the same shape every time beats one that varies.
+    words_own_page = True
 
     # Three stars for three readings belong on the last page of the story --
     # a child has not read it until they have read all of it.
@@ -259,32 +262,35 @@ def build_html(spec):
         '  <div class="ruled"><span class="mid"></span></div>\n'
         '  <div class="ruled"><span class="mid"></span></div>')
 
-    # Everything that follows the story's final line, wherever that line falls.
-    end_matter = f"{fluency_block}\n\n  {dictation_block}"
+    # The dictation no longer sits under the story. Order of work is now
+    # read it, draw it, then write the sentence you hear -- so the writing
+    # lives on the lower half of the drawing page, after the drawing.
 
-    turn_over = ('\n  <p class="artcap" style="text-align:right;margin-top:2px">'
-                 'Keep going on the next page &rarr;</p>')
-
-    continuation_pages = "".join(f"""
-<!-- ================= PAGE {i + 2} &mdash; STORY CONTINUED ================= -->
+    # A words page only exists when the warm-up cannot share with the story.
+    words_page = f"""
+<!-- ================= PAGE 2 &mdash; WORDS BEFORE THE STORY ================= -->
 <div class="page">
 
-  <div class="band" style="margin-bottom:4px;">
+  <div class="band">
     <div>
-      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <div class="tag">Keep reading</div>
-      <h1 style="font-size:18px;">{esc(title)}</h1>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">Words first</div>
+      <h1>{esc(title)}</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  {story_block(chunk, i)}
-  {end_matter if i == of_n - 1 else turn_over.strip()}
+  <h2>Say these first</h2>
+  <div class="warm">{warm_html}</div>
+
+  {heart_block}
+
+  <p class="artcap" style="text-align:right;margin-top:10px">The story is on the next page &rarr;</p>
 
 </div>
-""" for i, chunk in enumerate(story_pages) if i > 0)
+""" if words_own_page else ""
 
-    page_count = 3 + of_n
+    page_count = 4 + (1 if words_own_page else 0)
     page_note = (f"Prints as {page_count} pages: 1 grown-up sheet, then "
                  f"{page_count - 1} child sheets.")
 
@@ -308,7 +314,7 @@ def build_html(spec):
         f'<span class="aa">{esc(trim(q["listenFor"]))}</span></p>'
         for i, q in enumerate(questions, 1))
 
-    font_px, line_h = type_for(n)
+    font_px, line_h = story_type(n, lines)
     scale_css = f"\n  .passage p {{ font-size: {font_px}px; line-height: {line_h}; }}"
 
     return f"""<!DOCTYPE html>
@@ -398,7 +404,8 @@ def build_html(spec):
 
 </div>
 
-<!-- ================= PAGE 2 — CHILD'S READING SHEET ================= -->
+{words_page}
+<!-- ================= PAGE 3 &mdash; THE STORY ================= -->
 <div class="page">
 
   <div class="band">
@@ -410,18 +417,18 @@ def build_html(spec):
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <h2>Say these first</h2>
-  <div class="warm">{warm_html}</div>
+  {"" if words_own_page else '<h2>Say these first</h2>'}
+  {"" if words_own_page else f'<div class="warm">{warm_html}</div>'}
 
-  {heart_block}
+  {"" if words_own_page else heart_block}
 
   <h2>Read the story</h2>
-  {story_block(story_pages[0], 0)}
-  {end_matter if of_n == 1 else turn_over.strip()}
+  {story_block()}
+  {fluency_block}
 
 </div>
-{continuation_pages}
-<!-- ================= PAGE 3 — DRAW WHAT HAPPENED ================= -->
+
+<!-- ============ PAGE 4 &mdash; DRAW IT, THEN WRITE IT ============ -->
 <div class="page">
 
   <div class="band" style="margin-bottom:4px;">
@@ -437,9 +444,11 @@ def build_html(spec):
   <p class="sub">Read it again if you need to. Then draw what happened.</p>
   <div class="drawbox"><span class="dlab">Your picture</span></div>
 
+  {dictation_block}
+
 </div>
 
-<!-- ============ PAGE 4 — QUESTIONS, ONLY IF THEY WANT THEM ============ -->
+<!-- ============ PAGE 5 &mdash; QUESTIONS, ONLY IF THEY WANT THEM ============ -->
 <div class="page">
 
   <div class="band" style="margin-bottom:4px;">

@@ -76,16 +76,16 @@
   /* ---- warm-up + heart words ---- */
   /* boxes size to their word — late-lesson words like "adventure" must never
      collide with the box edge, and a second row is fine */
-  .warm { display: flex; flex-wrap: wrap; gap: 9px; font-size: 22px; text-align: center; margin: 0 0 10px 12px; }
-  .warm div { border: 1px dashed #999; border-radius: 6px; padding: 6px 18px; letter-spacing: 0.04em; flex: 1 0 auto; min-width: 1.05in; max-width: 1.8in; }
-  .hearts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0 0 0 12px; font-size: 22px; }
+  .warm { display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 30px; text-align: center; margin: 0 0 10px 0; }
+  .warm div { border: 1px dashed #999; border-radius: 8px; padding: 5px 18px; letter-spacing: 0.05em; width: 5.4in; }
+  .hearts { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 0 0 0 12px; font-size: 34px; }
   .hearts .hw { display: inline-flex; align-items: center; gap: 8px; }
-  .hearts .ubox { display: inline-block; width: 17px; height: 17px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
+  .hearts .ubox { display: inline-block; width: 26px; height: 26px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
 
-.hwrow { display: flex; flex-wrap: wrap; gap: 10px 38px; margin: 0 0 1px 12px; align-items: flex-start; }
+.hwrow { display: flex; flex-direction: column; gap: 10px; margin: 0; align-items: center; }
   .hwcard { text-align: center; }
   .hwcard svg { display: block; }
-  .hwword { font-size: 13px; color: #444; margin-top: 1px; letter-spacing: 0.04em; }
+  .hwword { font-size: 22px; color: #1a1a1a; margin-top: 2px; letter-spacing: 0.05em; }
 
   /* ---- the passage ---- */
   .passage { border: 1.5px solid #1a1a1a; border-radius: 10px; padding: 10px 12px 11px; }
@@ -115,7 +115,7 @@
   .qline { display: block; border-bottom: 1.5px solid #666; height: 80px; }
 
   /* ---- draw box: 50% bigger than the first draft ---- */
-  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 7.8in; margin: 2px 0 0 0; position: relative; }
+  .drawbox { border: 1.5px dashed #1a1a1a; border-radius: 10px; height: 5.2in; margin: 2px 0 0 0; position: relative; }
   .drawbox .dlab { position: absolute; top: 9px; left: 13px; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ---- audit strip (grown-up sheet only) ---- */
@@ -125,7 +125,7 @@
 
   .foot { margin-top: 2px; font-size: 10.5px; color: #777; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
 
-  .passage p { font-size: 21px; line-height: 1.54; }</style>
+  .passage p { font-size: 20px; line-height: 1.61; }</style>
 </head>
 <body>
 
@@ -208,7 +208,29 @@
 
 </div>
 
-<!-- ================= PAGE 2 — CHILD'S READING SHEET ================= -->
+
+<!-- ================= PAGE 2 &mdash; WORDS BEFORE THE STORY ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">Words first</div>
+      <h1>The Kite or the Paints</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <h2>Say these first</h2>
+  <div class="warm"><div>shop</div><div>kite</div><div>paints</div><div>box</div><div>bright</div><div>room</div></div>
+
+  <p class="rowlab" style="margin-top:6px">Heart words &mdash; read each one, then check the box.</p><div class="hearts"><span class="hw"><span class="ubox"></span>where</span><span class="hw"><span class="ubox"></span>who</span><span class="hw"><span class="ubox"></span>woman</span><span class="hw"><span class="ubox"></span>would</span><span class="hw"><span class="ubox"></span>you</span><span class="hw"><span class="ubox"></span>your</span></div>
+
+  <p class="artcap" style="text-align:right;margin-top:10px">The story is on the next page &rarr;</p>
+
+</div>
+
+<!-- ================= PAGE 3 &mdash; THE STORY ================= -->
 <div class="page">
 
   <div class="band">
@@ -220,10 +242,10 @@
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <h2>Say these first</h2>
-  <div class="warm"><div>shop</div><div>kite</div><div>paints</div><div>box</div><div>bright</div><div>room</div></div>
+  
+  
 
-  <p class="rowlab" style="margin-top:6px">Heart words &mdash; read each one, then check the box.</p><div class="hearts"><span class="hw"><span class="ubox"></span>where</span><span class="hw"><span class="ubox"></span>who</span><span class="hw"><span class="ubox"></span>woman</span><span class="hw"><span class="ubox"></span>would</span><span class="hw"><span class="ubox"></span>you</span><span class="hw"><span class="ubox"></span>your</span></div>
+  
 
   <h2>Read the story</h2>
   <div class="passage">
@@ -239,27 +261,6 @@
       <span class="ln">Ben stood there for a long while.</span>
       <span class="ln">He could not get both.</span>
       <span class="ln">He picked up the kite, then set it down.</span>
-    </p>
-  </div>
-  <p class="artcap" style="text-align:right;margin-top:2px">Keep going on the next page &rarr;</p>
-
-</div>
-
-<!-- ================= PAGE 3 &mdash; STORY CONTINUED ================= -->
-<div class="page">
-
-  <div class="band" style="margin-bottom:4px;">
-    <div>
-      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <div class="tag">Keep reading</div>
-      <h1 style="font-size:18px;">The Kite or the Paints</h1>
-    </div>
-    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
-  </div>
-
-  <div class="passage">
-    <div class="ptitle">The Kite or the Paints <span style="font-weight:400;font-size:.8em">&mdash; page 2</span></div>
-    <p>
       <span class="ln">Gran just stood back and let him think.</span>
       <span class="ln">In the end he bought the paints.</span>
       <span class="ln">He brought them home and started painting.</span>
@@ -278,14 +279,9 @@
     <span class="note">Color one circle each time.</span>
   </div>
 
-  <h2>Write the sentence you hear</h2>
-  <p class="sub">Your grown-up will say one sentence from the story. Say it back, then write it.</p>
-  <div class="ruled"><span class="mid"></span></div>
-  <div class="ruled"><span class="mid"></span></div>
-
 </div>
 
-<!-- ================= PAGE 3 — DRAW WHAT HAPPENED ================= -->
+<!-- ============ PAGE 4 &mdash; DRAW IT, THEN WRITE IT ============ -->
 <div class="page">
 
   <div class="band" style="margin-bottom:4px;">
@@ -301,9 +297,14 @@
   <p class="sub">Read it again if you need to. Then draw what happened.</p>
   <div class="drawbox"><span class="dlab">Your picture</span></div>
 
+  <h2>Write the sentence you hear</h2>
+  <p class="sub">Your grown-up will say one sentence from the story. Say it back, then write it.</p>
+  <div class="ruled"><span class="mid"></span></div>
+  <div class="ruled"><span class="mid"></span></div>
+
 </div>
 
-<!-- ============ PAGE 4 — QUESTIONS, ONLY IF THEY WANT THEM ============ -->
+<!-- ============ PAGE 5 &mdash; QUESTIONS, ONLY IF THEY WANT THEM ============ -->
 <div class="page">
 
   <div class="band" style="margin-bottom:4px;">

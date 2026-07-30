@@ -9,6 +9,59 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 30 July 2026 — The packet's final shape
+
+**Decided by the teacher, refining the same day's earlier decisions.**
+
+Every lesson now prints the same five pages, in the same order:
+
+| Page | Who | What |
+|---|---|---|
+| 1 | Grown-up | How to use it, what to say when it goes wrong, the dictation sentence |
+| 2 | Child | **Words first** — practice words, then heart words |
+| 3 | Child | **The story, whole** |
+| 4 | Child | **Draw it** (top half), then **write the sentence you hear** (bottom half) |
+| 5 | Child | Three questions, still optional |
+
+**The story is never split.** The teacher's reason: a child should meet it as
+one whole thing, and turning a page mid-story costs them the thread. Every
+story fits alone on a page. What does not always fit is the story *with* the
+practice words above it — so the words moved, not the story. The furniture
+gives way; the story does not.
+
+**Practice words and heart words run down the page, not across it**, and much
+larger — 30px cards one per line, heart-word boxes at 58px. On a page of their
+own there is room, and a big word is easier to see and to point along.
+
+**The drawing box came down to about half a page.** The teacher relaxed their
+own standing rule here, deliberately and with a reason: children normally get a
+third to a half of a page to draw on, and what was there was more than enough.
+The freed half carries the writing lines, which puts the work in its natural
+order — **read it, draw it, then write the sentence you hear.**
+
+### Story type is now set per lesson, not per band
+
+Giving each story its own page made this possible, and it is the change that
+most affects what a child sees. Type is no longer a fixed size by lesson band —
+it grows until the story fills its page. It ranges from **18px to 38px**, and
+Lesson 45 went from 24px to 29px.
+
+Two ceilings, and the tighter one wins:
+
+- **height** — the lines must fit between the header and the fluency stars
+- **width** — a line must NEVER wrap. The line is the unit a child points
+  along, so a wrapped line is worse than smaller type. `wrap_check.py` renders
+  every sheet in a browser and confirms it; it currently reports zero.
+
+18px stays the floor, and the band size is now where a story *starts* rather
+than a floor of its own: the two 23-line stories genuinely need 18px to stay
+whole on one page, and keeping the story whole is worth more than three points
+of type.
+
+Where the width ceiling binds and height is left over, **the spare space goes
+into line spacing** instead of sitting blank. More air between lines is easier
+for a young reader to track, and it is space the child gets rather than loses.
+
 ## 30 July 2026 — No picture on the reading page
 
 **Decided by the teacher. This reverses an earlier decision of theirs.**
