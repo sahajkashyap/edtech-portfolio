@@ -1,7 +1,7 @@
 {
  "lesson-001": {
   "heights": [
-   885,
+   850,
    863,
    620
   ],
@@ -10,37 +10,37 @@
  },
  "lesson-002": {
   "heights": [
-   868,
+   933,
    832,
    620,
-   336
+   493
   ],
   "overflowing": [],
   "measured": true
  },
  "lesson-003": {
   "heights": [
-   831,
+   897,
    825,
    620,
-   336
+   493
   ],
   "overflowing": [],
   "measured": true
  },
  "lesson-004": {
   "heights": [
-   850,
+   915,
    880,
    620,
-   556
+   713
   ],
   "overflowing": [],
   "measured": true
  },
  "lesson-005": {
   "heights": [
-   804,
+   814,
    865,
    670,
    381

@@ -473,6 +473,9 @@ def head(n, skill, page_note):
      air between them is what stops a small finger sliding on to the
      next word before the child has finished the one they are on. */
   .wline {{ gap: 54px 40px; margin-top: 26px; }}
+  .tip {{ padding: 4px 11px; margin: 2px 0 3px; }}
+  .tip p {{ margin: 1px 0; }}
+  .audit {{ padding: 4px 12px; margin-top: 6px; }}
 </style>
 </head>
 <body>
@@ -486,6 +489,17 @@ def head(n, skill, page_note):
 
 def adult_page_letter(n, skill, d):
     letter = d["letter"]
+    words_help = ""
+    if d["words"]:
+        words_help = """
+  <h2>How to run the words page</h2>
+  <div class="tip">
+    <p><strong>Two kinds of dot.</strong> The <strong>red</strong> dot on the writing
+    page is where the pencil starts. The dots under a word are its <strong>sounds</strong>
+    &mdash; touch each one, say its sound, then slide along the arrow and say the word.
+    Fuller instructions are on the words page itself.</p>
+  </div>
+"""
     if n == 1:
         ready = ("<strong>This is Lesson 1 &mdash; the very beginning.</strong> Nothing comes "
                  "before it, so any child who is ready to start reading can start here.")
@@ -530,23 +544,22 @@ def adult_page_letter(n, skill, d):
 
   <h2>How to run the writing page</h2>
   <div class="tip">
-    <p><strong>Big first, small last.</strong> Sky-write the letter huge in the air with a
-    straight arm, then finger-trace the big letters on the page, then pick up a pencil.
-    <strong>Always start at the dot,</strong> and say the sound &mdash; &ldquo;{d["say"]}&rdquo;
-    &mdash; each time a letter is finished, so hand and sound get glued together.</p>
+    <p><strong>Big first, small last.</strong> Sky-write it huge in the air, then
+    finger-trace the big letters, then pick up a pencil. <strong>Always start at the red
+    dot,</strong> and say &ldquo;{d["say"]}&rdquo; each time a letter is finished, so hand
+    and sound get glued together.</p>
     <p><strong>Backwards letters are completely normal at this age.</strong> Point at the
-    start dot and try again &mdash; don&rsquo;t make it a big deal. It fixes itself with
-    practice.</p>
+    start dot and try again &mdash; it fixes itself with practice.</p>
   </div>
 
+{words_help}
   <h2>Two games &mdash; no pencil, no paper</h2>
   <div class="tip">
     <p><strong>1. Thumbs up.</strong> Say words one at a time; thumbs up if the word starts
     with {d["sound"]}. Try: {d["thumbs"]}.</p>
-    <p><strong>2. Robot talk.</strong> You say a word in two robot pieces, they snap it
-    together: &ldquo;I say <em>c&hellip;at</em> &mdash; you say <em>cat</em>!&rdquo; Then
-    <em>d&hellip;og</em>, <em>s&hellip;un</em>, <em>m&hellip;op</em>. No letters needed
-    &mdash; this one works in the car.</p>
+    <p><strong>2. Robot talk.</strong> Say a word in two robot pieces, they snap it
+    together: &ldquo;I say <em>c&hellip;at</em> &mdash; you say <em>cat</em>!&rdquo; No
+    letters needed &mdash; this one works in the car.</p>
   </div>
 
   <div class="audit">
@@ -654,6 +667,18 @@ def word_page(n, d):
   without stopping &mdash; and say the word.</p>
   <div class="wline">{items}</div>
 
+  <div class="optional" style="margin-top:26px">
+    <strong>For the grown-up.</strong> The dots under each word are its
+    <strong>sounds</strong> &mdash; one dot per sound. Your child touches each dot and
+    says that sound, then slides a finger along the arrow and says the whole word.
+    <strong>The arrow matters as much as the dots:</strong> the dots show <em>where</em>
+    the sounds are, the arrow says <strong>do not stop between them</strong>. Said with
+    gaps, &ldquo;/m/ &hellip; /a/ &hellip; /t/&rdquo; does not sound like <em>mat</em>;
+    stretched together, &ldquo;mmmaaat&rdquo; does. The dots exist because a small finger
+    moves faster than a beginner can sound a letter out &mdash; they give it somewhere to
+    land. If your child gets stuck, you slide and stretch it first and let them copy you.
+  </div>
+
 </div>
 """
 
@@ -705,7 +730,7 @@ def adult_page_blend(n, skill):
   <div class="tip">
     <p><strong>1. The sound strip.</strong> They touch each letter and say its sound. Quick
     and confident before any words.</p>
-    <p><strong>2. Slide and read.</strong> Finger on the dot end of the arrow, slide, stretch,
+    <p><strong>2. Slide and read.</strong> They touch each dot below the word and say that sound, then slide a finger along the arrow &mdash; without stopping &mdash; and say the word fast. The dots show where the sounds are; the arrow says do not stop between them,
     then fast. The two-letter words come first. Words starting with m and s come before the
     t-words on purpose &mdash; you can stretch &ldquo;mmm&rdquo; and &ldquo;sss,&rdquo; but a
     /t/ cannot be held, which makes t-first words the hardest kind.</p>
