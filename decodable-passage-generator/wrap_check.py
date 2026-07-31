@@ -15,12 +15,18 @@ import sys
 import tempfile
 
 CHROME = "/Users/sahajkashyap/.claude/bin/chrome"
+# Measure the TEXT, not the element. .ln is a block, and a block returns a
+# single rectangle whether its text wraps or not -- so the obvious version of
+# this check reported zero wraps for the whole project while a line in Lesson
+# 85 was visibly running onto a second row. A Range over the text node returns
+# one rectangle per line box, which is the thing actually being asked about.
 PROBE = """
 <script>window.addEventListener('load',function(){
   var n=0;
   document.querySelectorAll('.passage .ln').forEach(function(s){
-    var r=s.getClientRects();
-    if(r.length>1) n++;
+    var r=document.createRange();
+    r.selectNodeContents(s);
+    if(r.getClientRects().length>1) n++;
   });
   document.title='W:'+n;
 });</script>

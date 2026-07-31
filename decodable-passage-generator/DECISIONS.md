@@ -9,6 +9,75 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 31 July 2026 — Independent audit, and what it found
+
+Three auditors went over all 128 sheets. None had built them, and each was told
+its job was to find what was wrong, not to confirm it was fine. They found
+things worth having, and two of them were serious.
+
+### The checker that was checking nothing
+
+`wrap_check.py` reported "0 sheets with a wrapped story line" for the whole
+project. It was counting rectangles on the line element — but that element is a
+block, and **a block returns one rectangle whether its text wraps or not**. It
+had never tested anything. Meanwhile a line in Lesson 85 was visibly running
+onto a second row.
+
+It now measures a Range over the text, which returns one rectangle per line
+box. To be sure the fix was real rather than a new way of reporting zero, a
+sheet with a deliberately over-long line was run through it: it caught it.
+**Verify the verifier, especially when it agrees with you.**
+
+### A guarantee that was printed and false
+
+Lesson 7's story used **"as"**, and Lesson 8's used **"is"**. Both are
+letter-decodable, so `audit_passage.py` passed them — but their **s says /z/**,
+and the curriculum's own data teaches them as heart words at Lessons 11 and 9
+for exactly that reason. A child at Lesson 7 sounding out "as" with the only
+s-sound they have says /ass/.
+
+Lesson 46 had the same shape in reverse: it teaches **voiced th**, and used
+**"both"**, whose th is unvoiced and whose o says its name. The curriculum
+teaches it as a heart word at Lesson 72.
+
+All three sheets printed: *"Checked word by word: all N words in this story use
+only sounds taught by Lesson N. Nothing here needs guessing."* On those three
+sheets that sentence was untrue.
+
+`early_hearts.py` now closes the hole, and `build_word_bank.py` will no longer
+offer a heart word before the lesson that teaches it — the bank was the actual
+source, handing "as" to a writer at Lesson 7.
+
+### The page written for the parent described a different sheet
+
+Every story packet's grown-up page still said *"say the practice words at the
+top of the story page"* (they moved to their own page three redesigns ago) and
+*"they write one sentence on the lines under the story"* (the lines are under
+the drawing). It also numbered writing before drawing, while the page itself
+puts drawing first.
+
+The one page written for a parent with no teaching background was wrong three
+ways in the same box. Corrected.
+
+### Two quieter ones
+
+**The heart-word block was mislabelled.** It shows the newest heart words in
+the sequence, which is reasonable as cumulative review — but the page presented
+them as preparation for the story about to be read, and in most lessons at
+least one of them never appears in that story. The heading now says what they
+are: *this week's words, not always in the story.*
+
+**The story was the one thing left off the font stack** that guarantees a
+single-storey lowercase `a` — the form children are taught to write. On a
+machine without the first font it would have fallen back to a double-storey `a`
+and quietly contradicted the handwriting pages.
+
+Pinning it exposed something else: the sizing model had been calibrated against
+a font that was not actually rendering. Since these sheets name several faces
+and those faces are not the same width, the width ceiling now carries headroom
+for a wider fallback. Type dropped a point or two on 95 lessons. **A slightly
+smaller line beats a line that wraps on somebody else's printer.**
+
 ## 31 July 2026 — More to practise on the early word pages
 
 Two fixes to the words page, both from the teacher looking at real output.

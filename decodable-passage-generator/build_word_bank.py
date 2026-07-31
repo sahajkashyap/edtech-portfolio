@@ -15,6 +15,7 @@ import json
 import pathlib
 
 import audit_passage as A
+import early_hearts
 import word_age
 from core_vocabulary import (AMBIGUOUS, ADJECTIVES, BLOCKED, FUNCTION_WORDS,
                              NOUNS_NO_PLURAL, VERBS, word_list)
@@ -179,9 +180,19 @@ def build():
         else:
             lesson = rule_lesson
 
+        # A word the curriculum teaches as a heart word must wait for that
+        # lesson, however decodable its letters look. 'as' is a and s, which
+        # the auditor approves from Lesson 3, but its s says /z/ -- so the
+        # bank was offering it four lessons before the child could read it.
+        hearts_from = early_hearts.allowed_from(w)
+        if hearts_from:
+            lesson = max(lesson, hearts_from)
         bank.setdefault(lesson, []).append(w)
 
     for form, lesson in extra.items():
+        hearts_from = early_hearts.allowed_from(form)
+        if hearts_from:
+            lesson = max(lesson, hearts_from)
         bank.setdefault(lesson, []).append(form)
 
     cumulative, running = {}, []

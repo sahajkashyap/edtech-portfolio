@@ -10,9 +10,6 @@
   "2": [
    "am"
   ],
-  "3": [
-   "as"
-  ],
   "4": [
    "at",
    "mat",
@@ -25,7 +22,6 @@
   ],
   "8": [
    "fit",
-   "is",
    "it",
    "pit",
    "sip",
@@ -36,12 +32,16 @@
    "an",
    "fan",
    "in",
+   "is",
    "man",
    "nap",
    "pan",
    "pin",
    "tan",
    "tin"
+  ],
+  "11": [
+   "as"
   ],
   "12": [
    "mop",
@@ -435,7 +435,6 @@
   ],
   "46": [
    "baths",
-   "both",
    "maths",
    "moths",
    "paths",
@@ -443,7 +442,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "this",
    "withs"
@@ -517,6 +515,7 @@
    "tanks",
    "thank",
    "thanks",
+   "there",
    "think",
    "thinks"
   ],
@@ -996,6 +995,7 @@
    "behinds",
    "blind",
    "blinds",
+   "both",
    "child",
    "childs",
    "cold",
@@ -1586,7 +1586,6 @@
    "toys"
   ],
   "96": [
-   "about",
    "brown",
    "cloud",
    "clouds",
@@ -1638,6 +1637,7 @@
    "youths"
   ],
   "98": [
+   "about",
    "know",
    "knows"
   ],
@@ -2016,26 +2016,22 @@
    "am"
   ],
   "3": [
-   "am",
-   "as"
+   "am"
   ],
   "4": [
    "am",
-   "as",
    "at",
    "mat",
    "sat"
   ],
   "5": [
    "am",
-   "as",
    "at",
    "mat",
    "sat"
   ],
   "6": [
    "am",
-   "as",
    "at",
    "map",
    "mat",
@@ -2045,7 +2041,6 @@
   ],
   "7": [
    "am",
-   "as",
    "at",
    "map",
    "mat",
@@ -2055,10 +2050,8 @@
   ],
   "8": [
    "am",
-   "as",
    "at",
    "fit",
-   "is",
    "it",
    "map",
    "mat",
@@ -2073,7 +2066,6 @@
   "9": [
    "am",
    "an",
-   "as",
    "at",
    "fan",
    "fit",
@@ -2099,7 +2091,6 @@
   "10": [
    "am",
    "an",
-   "as",
    "at",
    "fan",
    "fit",
@@ -9183,7 +9174,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -9486,7 +9476,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "this",
    "tick",
@@ -9565,7 +9554,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -9873,7 +9861,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "thick",
    "thin",
@@ -9956,7 +9943,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -10275,7 +10261,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "thick",
    "thin",
@@ -10358,7 +10343,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -10677,7 +10661,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "thick",
    "thin",
@@ -10760,7 +10743,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -11079,7 +11061,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "thick",
    "thin",
@@ -11168,7 +11149,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -11504,7 +11484,6 @@
    "that",
    "them",
    "then",
-   "there",
    "they",
    "thick",
    "thin",
@@ -11597,7 +11576,6 @@
    "bit",
    "bits",
    "boss",
-   "both",
    "box",
    "bud",
    "buds",
@@ -12052,7 +12030,6 @@
    "block",
    "blocks",
    "boss",
-   "both",
    "box",
    "brick",
    "bricks",
@@ -12670,7 +12647,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -13351,7 +13327,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -14034,7 +14009,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -14717,7 +14691,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -15400,7 +15373,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -16087,7 +16059,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -16774,7 +16745,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -17465,7 +17435,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -18160,7 +18129,6 @@
    "blocks",
    "bone",
    "boss",
-   "both",
    "box",
    "brave",
    "brick",
@@ -18856,7 +18824,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "box",
    "boxes",
    "brave",
@@ -19583,7 +19550,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "box",
    "boxes",
    "brave",
@@ -20368,7 +20334,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "box",
    "boxes",
    "brave",
@@ -21214,7 +21179,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "bottle",
    "bottles",
    "bottom",
@@ -22080,7 +22044,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "bottle",
    "bottles",
    "bottom",
@@ -22946,7 +22909,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "bottle",
    "bottles",
    "bottom",
@@ -23812,7 +23774,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "bottle",
    "bottles",
    "bottom",
@@ -24696,7 +24657,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "bottle",
    "bottles",
    "bottom",
@@ -25586,7 +25546,6 @@
    "bone",
    "boss",
    "bosses",
-   "both",
    "bottle",
    "bottles",
    "bottom",
@@ -54496,7 +54455,6 @@
    "zoos"
   ],
   "96": [
-   "about",
    "after",
    "all",
    "am",
@@ -55998,7 +55956,6 @@
    "zoos"
   ],
   "97": [
-   "about",
    "after",
    "all",
    "am",

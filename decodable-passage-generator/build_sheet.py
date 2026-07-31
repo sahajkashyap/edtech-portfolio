@@ -138,7 +138,13 @@ COLUMN_PX = 690         # usable width inside the passage box
 HEADER_PX = 150         # banner, name line, "Read the story" heading
 TAIL_PX = 62            # the read-it-3-times row under the story
 BOX_PX = 34             # the passage box's own padding and border
-CHAR_EM = 0.605         # measured width of a character at 1em in this face
+CHAR_EM = 0.655         # width of a character at 1em, with headroom. The
+                        # sheets name several faces so they still look right
+                        # on a machine that lacks the first one, and those
+                        # faces are not the same width. Measuring the
+                        # narrowest and sizing to it would wrap on somebody
+                        # else's printer, so this leaves room for a wider
+                        # fallback -- a slightly smaller line beats a broken one.
 TYPE_CEILING = 38       # past this it stops looking like a book to a child
 
 
@@ -211,7 +217,8 @@ def build_html(spec):
             # the heading rather than the child losing anything. Adult text is
             # what gets cut when a page runs short -- never the reader's space.
             f'<h2>Heart words <span style="font-weight:400;font-size:.75em;'
-            f'color:#444;letter-spacing:0">&mdash; say each sound; the '
+            f'color:#444;letter-spacing:0">&mdash; this week&rsquo;s words, not '
+            f'always in the story; the '
             f'<span style="color:#b23f28">&hearts;</span> part is learned by '
             f'heart</span></h2>'
             f'<div class="hwrow">{cards}</div>')
@@ -351,17 +358,17 @@ def build_html(spec):
 
   <h2>About {minutes} minutes, in this order</h2>
   <div class="tip">
-    <p><strong>1. Say the practice words at the top of the story page,</strong> then the heart
-    words. A heart word has one part that cannot be sounded out &mdash; the little heart marks
-    the bit to just remember.</p>
-    <p><strong>2. Read the story. If they get stuck, don&rsquo;t say the word.</strong> Point
-    under the letters and say: &ldquo;Say each sound, then say them fast&rdquo; &mdash;
-    &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
+    <p><strong>1. Say the practice words on the words page,</strong> then the heart words.
+    A heart word has one part that cannot be sounded out &mdash; the little heart marks the
+    bit to just remember.</p>
+    <p><strong>2. Read the story on the next page. If they get stuck, don&rsquo;t say the
+    word.</strong> Point under the letters and say: &ldquo;Say each sound, then say them
+    fast&rdquo; &mdash; &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
     <p><strong>3. Read it three times</strong> &mdash; they color a circle each time.</p>
-    <p><strong>4. They write one sentence</strong> on the lines under the story &mdash; the
-    words to say are in the box below.</p>
-    <p><strong>5. They draw what happened.</strong> No picture to copy &mdash; their picture of
-    the story shows you what they understood.</p>
+    <p><strong>4. They draw what happened,</strong> on the top half of the next page. No
+    picture to copy &mdash; their drawing is how you see what they understood.</p>
+    <p><strong>5. They write one sentence,</strong> on the lines under their drawing. The
+    sentence to read aloud is in the box below.</p>
   </div>
 
   <h2>The writing sentence &middot; read this aloud to them</h2>
@@ -467,8 +474,6 @@ def build_html(spec):
   </div>
 
   {q_child}
-
-</div>
 
 </div>
 

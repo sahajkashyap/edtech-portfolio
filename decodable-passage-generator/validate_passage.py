@@ -16,6 +16,7 @@ import re
 import sys
 
 import audit_passage as A
+import early_hearts
 import homographs
 import line_pointers
 import props
@@ -194,6 +195,11 @@ def validate(spec):
     # taught ea = /ee/ reads the past tense of 'read' as /reed/, does exactly
     # what they were taught, and is corrected for it.
     problems.extend(homographs.check(spec))
+
+    # 4d. a word the curriculum teaches as a heart word cannot appear before
+    # that lesson, however decodable its letters look. 'as' is a and s, which
+    # the auditor approves at Lesson 3, but its s says /z/.
+    problems.extend(early_hearts.check(spec))
 
     # 5. the title has to be readable too
     for w in words_in(spec["title"]):
