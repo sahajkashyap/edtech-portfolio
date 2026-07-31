@@ -9,6 +9,52 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 31 July 2026 — The grown-up's instructions fold off the child's page
+
+**The teacher's observation, and it reframes what a worksheet is for.**
+
+The instructions sat beside the words. Their objection: *a child seeing all
+those words next to the thing they are practising can feel overwhelmed — "what
+is all this stuff I have to figure out?"* A five-year-old cannot read a
+paragraph of adult text. What they can do is see that a page is **full of
+words they cannot manage**, and decide the page is hard before they have
+started.
+
+So on every words page the adult text now sits at the **foot of the page**,
+under a **dashed line the grown-up can fold back or tear off**, headed
+plainly **"Instructions for the grown-up."** Once it is folded, the child is
+holding a page with nothing on it but the words they are there to read.
+
+Three things this gets right at once, which is why it is worth recording:
+
+1. **It removes cognitive load from the child** without removing information
+   from the adult. Nothing was cut — it moved.
+2. **It puts the guidance where it is used.** The parent reads it while looking
+   straight at the dots it describes, rather than a page away.
+3. **It is a physical affordance a five-year-old understands.** A fold is not
+   an instruction to be read; it is a thing that happened to the paper.
+
+### What filled the space
+
+The words grew — **up to 128px** where a lesson has only one — and they now sit
+centred in the space above the fold rather than pinned to the top with a hole
+beneath them. A lone small word marooned on a page reads as a mistake.
+
+**The word lists could not simply be padded.** At Lesson 2 the entire readable
+vocabulary of the language, given the letters taught, is the word *am*. Lesson
+3 adds *Sam*. There is nothing being withheld. So what fills the page is
+**re-reading**, not more words: a read-them-3-times row with circles to colour.
+For a first reader, a word is learned by meeting it again, not by meeting more
+of them.
+
+### The layout detail worth keeping
+
+The fold block is pushed to the foot of the page with `margin-top: auto` in a
+flex column, so the fold lands in the same place whatever the words above it
+need. That put its bottom edge exactly on the page boundary and read as a 0.2px
+overflow; an 8px bottom margin makes it stop just short. Worth knowing, because
+the page-fit checker is right to be that strict and should not be loosened.
+
 ## 31 July 2026 — Sound dots under the words, and the words made large
 
 **Asked for by the teacher, who named the reason exactly right:** a small

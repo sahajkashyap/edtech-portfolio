@@ -472,10 +472,31 @@ def head(n, skill, page_note):
   /* The words page holds only words, so they get room to breathe --
      air between them is what stops a small finger sliding on to the
      next word before the child has finished the one they are on. */
-  .wline {{ gap: 54px 40px; margin-top: 26px; }}
+  /* the words sit in the middle of the space above the fold, rather than
+     at the top with a hole beneath them -- Lesson 2 has exactly one
+     readable word and a lone word pinned to the top reads as a mistake */
+  .wline {{ gap: 54px 40px; margin-top: auto; margin-bottom: auto; }}
   .tip {{ padding: 4px 11px; margin: 2px 0 3px; }}
   .tip p {{ margin: 1px 0; }}
   .audit {{ padding: 4px 12px; margin-top: 6px; }}
+  /* The grown-up's instructions live at the foot of the page, under a
+     line they can fold back or tear off. push it down so the fold lands
+     near the bottom of the sheet whatever the words above it need. */
+  /* margin-top:auto pushes this to the foot of the page, which landed its
+     bottom edge exactly on the page boundary and read as a 0.2px
+     overflow. The bottom margin makes it stop just short. */
+  .foldoff {{ margin-top: auto; margin-bottom: 8px; padding-top: 20px; }}
+  .page:has(.foldoff) {{ display: flex; flex-direction: column; }}
+  .foldline {{ border-top: 2px dashed #9a9a9a; position: relative;
+               margin: 0 0 12px; height: 0; }}
+  .foldline span {{ position: absolute; left: 50%; transform: translate(-50%, -50%);
+               background: #fff; padding: 0 12px; font-size: 10.5px;
+               letter-spacing: 0.14em; text-transform: uppercase; color: #8a8a8a; }}
+  .adultnote {{ font-size: 12.4px; line-height: 1.42; color: #4a3f2c; }}
+  .adultnote .anh {{ font-weight: bold; text-transform: uppercase;
+               letter-spacing: 0.12em; font-size: 11px; color: #8a6d3b;
+               margin-bottom: 5px; }}
+  .adultnote p {{ margin: 4px 0; }}
 </style>
 </head>
 <body>
@@ -644,10 +665,27 @@ def practice_page(n, d):
 
 
 def word_page(n, d):
-    """The read-the-words page. Only exists once there are words."""
+    """The read-the-words page, with the grown-up's instructions folded off.
+
+    The instructions used to sit right beside the words. The teacher's
+    objection, and it is the right one: a five-year-old looking at a
+    paragraph of adult text next to the thing they are trying to read sees
+    a page full of words they cannot manage. It reads as "look how much
+    there is to figure out" before they have started.
+
+    So the adult text goes to the bottom, under a dashed line the grown-up
+    can fold back or tear off once they have read it. After that the child
+    is holding a page with nothing on it but the words they are practising.
+    """
     if not d["words"]:
         return ""
-    items = "".join(word_item(w) for w in d["words"])
+    # Fewer words, bigger words. Lesson 2 has exactly one readable word in
+    # the language so far -- "am" -- and a lone small word marooned on a
+    # page looks like a mistake. Filling the page is also simply easier to
+    # read. The word list cannot be padded out: at these lessons every
+    # word the letters allow is already here.
+    px = {1: 128, 2: 112, 3: 96}.get(len(d["words"]), 84)
+    items = "".join(word_item(w, px) for w in d["words"])
     plural = "s" if len(d["words"]) > 1 else ""
     return f"""
 <!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
@@ -663,20 +701,31 @@ def word_page(n, d):
   </div>
 
   <h2>Touch, then slide</h2>
-  <p class="sub">Touch each dot and say its sound. Then slide along the arrow
-  without stopping &mdash; and say the word.</p>
   <div class="wline">{items}</div>
 
-  <div class="optional" style="margin-top:26px">
-    <strong>For the grown-up.</strong> The dots under each word are its
-    <strong>sounds</strong> &mdash; one dot per sound. Your child touches each dot and
-    says that sound, then slides a finger along the arrow and says the whole word.
-    <strong>The arrow matters as much as the dots:</strong> the dots show <em>where</em>
-    the sounds are, the arrow says <strong>do not stop between them</strong>. Said with
-    gaps, &ldquo;/m/ &hellip; /a/ &hellip; /t/&rdquo; does not sound like <em>mat</em>;
-    stretched together, &ldquo;mmmaaat&rdquo; does. The dots exist because a small finger
-    moves faster than a beginner can sound a letter out &mdash; they give it somewhere to
-    land. If your child gets stuck, you slide and stretch it first and let them copy you.
+  <div class="fluency" style="justify-content:center">
+    <span class="lbl">Read them 3 times</span>
+    <span class="star"></span><span class="star"></span><span class="star"></span>
+    <span class="note">Color one circle each time.</span>
+  </div>
+
+  <div class="foldoff">
+    <div class="foldline"><span>fold back or tear off along this line</span></div>
+    <div class="adultnote">
+      <div class="anh">Instructions for the grown-up</div>
+      <p>The dots under each word are its <strong>sounds</strong> &mdash; one dot per
+      sound. Your child touches each dot and says that sound, then slides a finger
+      along the arrow and says the whole word.</p>
+      <p><strong>The arrow matters as much as the dots.</strong> The dots show
+      <em>where</em> the sounds are; the arrow says <strong>do not stop between
+      them</strong>. Said with gaps, &ldquo;/m/ &hellip; /a/ &hellip; /t/&rdquo; does not
+      sound like <em>mat</em>; stretched together, &ldquo;mmmaaat&rdquo; does.</p>
+      <p>The dots are there because a small finger moves faster than a beginner can
+      sound a letter out &mdash; they give it somewhere to land. If your child gets
+      stuck, you slide and stretch it first and let them copy you.</p>
+      <p style="margin-bottom:0"><strong>Once you have read this, fold it back.</strong>
+      Then the page holds nothing but the words.</p>
+    </div>
   </div>
 
 </div>
