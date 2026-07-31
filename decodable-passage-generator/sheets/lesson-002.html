@@ -161,13 +161,26 @@
      they are taught to write; Futura and Comic Sans ship with macOS and
      both have it, so the fallback never lands on Verdana's double-story a */
   .lhunt, .bw .bwd, .sstrip div, .erow .eword, .chain span, .doit .dw { font-family: "Century Gothic", Futura, "Comic Sans MS", Verdana, sans-serif; }
+
+  /* Scoped to the five letter sheets only -- the other 123 keep the
+     stylesheet exactly as it is. The blend words were made much larger
+     on the teacher's request, so the room comes out of the gaps between
+     blocks rather than out of anything the child uses. */
+  h2 { margin-top: 10px; }
+  .sub { margin-bottom: 4px; }
+  .doit { margin: 2px 0; }
+  .chain { margin-bottom: 2px; }
+  /* The words page holds only words, so they get room to breathe --
+     air between them is what stops a small finger sliding on to the
+     next word before the child has finished the one they are on. */
+  .wline { gap: 54px 40px; margin-top: 26px; }
 </style>
 </head>
 <body>
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 3 pages: 1 grown-up sheet, then 2 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -290,9 +303,24 @@
   that start with /m/.</p>
   <div class="sortrow"><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="the moon"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M60 12 A43 43 0 1 0 60 96 A34 34 0 1 1 60 12 z" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="the sun"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="34" r="20"/><line x1="50" y1="4" x2="50" y2="-4"/><line x1="50" y1="72" x2="50" y2="64"/><line x1="20" y1="34" x2="12" y2="34"/><line x1="88" y1="34" x2="80" y2="34"/><line x1="28" y1="12" x2="23" y2="7"/><line x1="72" y1="56" x2="77" y2="61"/><line x1="72" y1="12" x2="77" y2="7"/><line x1="28" y1="56" x2="23" y2="61"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a mountain"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 96 L34 32 L52 68 L68 42 L96 96 z" fill="#fff"/><path d="M27 47 l7 6 l7 -6" stroke-width="2.4"/><path d="M62 51 l6 5 l6 -5" stroke-width="2.4"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="an apple"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="64" r="30" fill="#fff"/><path d="M50 36 C50 28 53 24 58 20"/><path d="M58 20 q16 -8 22 2 q-14 10 -22 -2 z" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a sock"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M34 12 L62 12 L62 52 Q62 66 74 74 Q86 82 78 92 Q68 100 56 90 L40 76 Q34 70 34 56 z" fill="#fff"/><line x1="34" y1="24" x2="62" y2="24"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a star"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M50 24 L59 52 L88 52 L64 69 L73 96 L50 79 L27 96 L36 69 L12 52 L41 52 z" fill="#fff"/></g></svg></div></div>
 
-  <h2>Read the word</h2>
-  <p class="sub">Slide your finger along the arrow. Stretch the sounds together, then say it fast.</p>
-  <div class="wline"><div class="bw"><div class="bwd">am</div><svg width="98" height="16" viewBox="0 0 98 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="84" y2="8"/><path d="M83 2 L95 8 L83 14"/></g></svg></div></div>
+</div>
+
+<!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My words page</div>
+      <h1>Read the word</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <h2>Touch, then slide</h2>
+  <p class="sub">Touch each dot and say its sound. Then slide along the arrow
+  without stopping &mdash; and say the word.</p>
+  <div class="wline"><div class="bw"><div class="bwd" style="font-size:84px">am</div><svg width="120" height="20" viewBox="0 0 120 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="144" height="16" viewBox="0 0 144 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="130" y2="8"/><path d="M129 2 L141 8 L129 14"/></g></svg></div></div>
 
 </div>
 

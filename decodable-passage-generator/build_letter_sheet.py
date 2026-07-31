@@ -392,9 +392,35 @@ def slide_arrow(w):
             f'<path d="M{w - 15} 2 L{w - 3} 8 L{w - 15} 14"/></g></svg>')
 
 
-def word_item(word, px=46):
-    aw = max(int(len(word) * px * 0.85) + 20, 96)
-    return (f'<div class="bw"><div class="bwd">{esc(word)}</div>{slide_arrow(aw)}</div>')
+def sound_dots(word, px):
+    """A dot under each sound, spaced to sit beneath its own letter.
+
+    This is the touch-and-sweep routine: the child touches each dot as they say
+    its sound, then sweeps along the arrow and says the whole word. The dots
+    matter for a reason a grown-up would not guess -- a small finger moves much
+    faster than a beginner can sound a letter out, so without landing places the
+    finger outruns the eye and the tracking stops helping.
+
+    The dots say WHERE each sound lives; the arrow underneath says do not stop
+    between them. Both are needed: dots alone invite "/m/ ... /a/ ... /t/",
+    which does not sound like mat.
+
+    One dot per GRAPHEME, not per letter -- at these lessons every grapheme is a
+    single letter, but a later sheet using sh or ck must give the pair one dot.
+    """
+    step = px * 0.62          # matches the letter-spacing of .bwd
+    w = int(len(word) * step) + 16
+    dots = "".join(
+        f'<circle cx="{8 + step * (i + 0.5):.0f}" cy="9" r="{px * 0.075:.1f}" '
+        f'fill="{INK}"/>'
+        for i in range(len(word)))
+    return f'<svg width="{w}" height="20" viewBox="0 0 {w} 20">{dots}</svg>'
+
+
+def word_item(word, px=84):
+    aw = max(int(len(word) * px * 0.72) + 24, 120)
+    return (f'<div class="bw"><div class="bwd" style="font-size:{px}px">{esc(word)}</div>'
+            f'{sound_dots(word, px)}{slide_arrow(aw)}</div>')
 
 
 def hunt_grid(n, letter, distractors, total=24, targets=9):
@@ -434,7 +460,20 @@ def head(n, skill, page_note):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Letter &amp; Sound Sheet &mdash; Lesson {n}, {esc(skill)}</title>
-<style>{css()}</style>
+<style>{css()}
+  /* Scoped to the five letter sheets only -- the other 123 keep the
+     stylesheet exactly as it is. The blend words were made much larger
+     on the teacher's request, so the room comes out of the gaps between
+     blocks rather than out of anything the child uses. */
+  h2 {{ margin-top: 10px; }}
+  .sub {{ margin-bottom: 4px; }}
+  .doit {{ margin: 2px 0; }}
+  .chain {{ margin-bottom: 2px; }}
+  /* The words page holds only words, so they get room to breathe --
+     air between them is what stops a small finger sliding on to the
+     next word before the child has finished the one they are on. */
+  .wline {{ gap: 54px 40px; margin-top: 26px; }}
+</style>
 </head>
 <body>
 
@@ -565,14 +604,6 @@ def letter_page(n, d):
 def practice_page(n, d):
     letter = d["letter"]
     targets, grid = hunt_grid(n, letter, d["hunt_distractors"])
-    word_block = ""
-    if d["words"]:
-        items = "".join(word_item(w) for w in d["words"])
-        word_block = f"""
-  <h2>Read the word{"s" if len(d["words"]) > 1 else ""}</h2>
-  <p class="sub">Slide your finger along the arrow. Stretch the sounds together, then say it fast.</p>
-  <div class="wline">{items}</div>
-"""
     return f"""
 <!-- ================= PAGE 3 — MY PRACTICE ================= -->
 <div class="page">
@@ -594,7 +625,35 @@ def practice_page(n, d):
   <p class="sub">Name each picture out loud with your grown-up first. Then circle the ones
   that start with {d["sound"]}.</p>
   {sort_row(d["sort"])}
-{word_block}
+
+</div>
+"""
+
+
+def word_page(n, d):
+    """The read-the-words page. Only exists once there are words."""
+    if not d["words"]:
+        return ""
+    items = "".join(word_item(w) for w in d["words"])
+    plural = "s" if len(d["words"]) > 1 else ""
+    return f"""
+<!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My words page</div>
+      <h1>Read the word{plural}</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <h2>Touch, then slide</h2>
+  <p class="sub">Touch each dot and say its sound. Then slide along the arrow
+  without stopping &mdash; and say the word.</p>
+  <div class="wline">{items}</div>
+
 </div>
 """
 
@@ -697,16 +756,20 @@ def blend_read_page():
   <div class="sstrip"><div>a</div><div>m</div><div>s</div><div>t</div></div>
 
   <h2>Slide and read</h2>
-  <p class="sub">Slide your finger along the arrow. Stretch the sounds together with no gaps,
+  <p class="sub">Touch each dot and say its sound. Then slide along the arrow without stopping,
   then say the word fast.</p>
   <div class="blendrows">{rows}</div>
 
+
+</div>
+"""
+
+
+DOIT_BLOCK = """
   <h2>Read it and do it</h2>
   <p class="sub">Read the word. Your grown-up reads the job.</p>
   <div class="doit"><span class="dw">sat</span><span class="da">&mdash; now sit down!</span></div>
   <div class="doit"><span class="dw">mat</span><span class="da">&mdash; now touch the floor!</span></div>
-
-</div>
 """
 
 
@@ -736,6 +799,24 @@ def sound_box_page():
   {elkonin_row("", 2, write=True, label="1.")}
   {elkonin_row("", 3, write=True, label="2.")}
 
+</div>
+"""
+
+
+def chain_page():
+    return f"""
+<!-- ================= PAGE 4 &mdash; THE CHANGING WORD ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My words page</div>
+      <h1>One letter changes</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
   <h2>The changing word</h2>
   <p class="sub">Read across. What changed each time? Point at the new letter.</p>
   <div class="chain">
@@ -745,6 +826,8 @@ def sound_box_page():
     <span>sat</span>
   </div>
 
+{DOIT_BLOCK}
+
 </div>
 """
 
@@ -753,13 +836,16 @@ def sound_box_page():
 def build_html(n):
     L, _ = lesson_info(n)
     skill = L["skill"]
-    note = "Prints as 3 pages: 1 grown-up sheet, then 2 child sheets."
     if n == 5:
-        body = adult_page_blend(n, skill) + blend_read_page() + sound_box_page()
+        body = (adult_page_blend(n, skill) + blend_read_page()
+                + sound_box_page() + chain_page())
     else:
         d = DATA[n]
         body = (adult_page_letter(n, skill, d) + letter_page(n, d)
-                + practice_page(n, d))
+                + practice_page(n, d) + word_page(n, d))
+    pages = body.count('<div class="page">')
+    note = (f"Prints as {pages} pages: 1 grown-up sheet, then "
+            f"{pages - 1} child sheets.")
     return head(n, skill, note) + body + "\n</body>\n</html>\n"
 
 

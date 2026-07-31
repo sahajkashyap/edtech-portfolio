@@ -161,13 +161,26 @@
      they are taught to write; Futura and Comic Sans ship with macOS and
      both have it, so the fallback never lands on Verdana's double-story a */
   .lhunt, .bw .bwd, .sstrip div, .erow .eword, .chain span, .doit .dw { font-family: "Century Gothic", Futura, "Comic Sans MS", Verdana, sans-serif; }
+
+  /* Scoped to the five letter sheets only -- the other 123 keep the
+     stylesheet exactly as it is. The blend words were made much larger
+     on the teacher's request, so the room comes out of the gaps between
+     blocks rather than out of anything the child uses. */
+  h2 { margin-top: 10px; }
+  .sub { margin-bottom: 4px; }
+  .doit { margin: 2px 0; }
+  .chain { margin-bottom: 2px; }
+  /* The words page holds only words, so they get room to breathe --
+     air between them is what stops a small finger sliding on to the
+     next word before the child has finished the one they are on. */
+  .wline { gap: 54px 40px; margin-top: 26px; }
 </style>
 </head>
 <body>
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 3 pages: 1 grown-up sheet, then 2 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -258,14 +271,10 @@
   <div class="sstrip"><div>a</div><div>m</div><div>s</div><div>t</div></div>
 
   <h2>Slide and read</h2>
-  <p class="sub">Slide your finger along the arrow. Stretch the sounds together with no gaps,
+  <p class="sub">Touch each dot and say its sound. Then slide along the arrow without stopping,
   then say the word fast.</p>
-  <div class="blendrows"><div class="bw"><div class="bwd">am</div><svg width="98" height="16" viewBox="0 0 98 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="84" y2="8"/><path d="M83 2 L95 8 L83 14"/></g></svg></div><div class="bw"><div class="bwd">at</div><svg width="98" height="16" viewBox="0 0 98 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="84" y2="8"/><path d="M83 2 L95 8 L83 14"/></g></svg></div><div class="bw"><div class="bwd">mat</div><svg width="137" height="16" viewBox="0 0 137 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="123" y2="8"/><path d="M122 2 L134 8 L122 14"/></g></svg></div><div class="bw"><div class="bwd">sat</div><svg width="137" height="16" viewBox="0 0 137 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="123" y2="8"/><path d="M122 2 L134 8 L122 14"/></g></svg></div><div class="bw"><div class="bwd">Sam</div><svg width="137" height="16" viewBox="0 0 137 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="123" y2="8"/><path d="M122 2 L134 8 L122 14"/></g></svg></div></div>
+  <div class="blendrows"><div class="bw"><div class="bwd" style="font-size:46px">am</div><svg width="73" height="20" viewBox="0 0 73 20"><circle cx="22" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="51" cy="9" r="3.4" fill="#1a1a1a"/></svg><svg width="120" height="16" viewBox="0 0 120 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="106" y2="8"/><path d="M105 2 L117 8 L105 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:46px">at</div><svg width="73" height="20" viewBox="0 0 73 20"><circle cx="22" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="51" cy="9" r="3.4" fill="#1a1a1a"/></svg><svg width="120" height="16" viewBox="0 0 120 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="106" y2="8"/><path d="M105 2 L117 8 L105 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:46px">mat</div><svg width="101" height="20" viewBox="0 0 101 20"><circle cx="22" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="51" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="79" cy="9" r="3.4" fill="#1a1a1a"/></svg><svg width="123" height="16" viewBox="0 0 123 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="109" y2="8"/><path d="M108 2 L120 8 L108 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:46px">sat</div><svg width="101" height="20" viewBox="0 0 101 20"><circle cx="22" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="51" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="79" cy="9" r="3.4" fill="#1a1a1a"/></svg><svg width="123" height="16" viewBox="0 0 123 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="109" y2="8"/><path d="M108 2 L120 8 L108 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:46px">Sam</div><svg width="101" height="20" viewBox="0 0 101 20"><circle cx="22" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="51" cy="9" r="3.4" fill="#1a1a1a"/><circle cx="79" cy="9" r="3.4" fill="#1a1a1a"/></svg><svg width="123" height="16" viewBox="0 0 123 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="109" y2="8"/><path d="M108 2 L120 8 L108 14"/></g></svg></div></div>
 
-  <h2>Read it and do it</h2>
-  <p class="sub">Read the word. Your grown-up reads the job.</p>
-  <div class="doit"><span class="dw">sat</span><span class="da">&mdash; now sit down!</span></div>
-  <div class="doit"><span class="dw">mat</span><span class="da">&mdash; now touch the floor!</span></div>
 
 </div>
 
@@ -293,6 +302,20 @@
   <div class="erow"><span class="enum">1.</span><div class="ecol"><div class="eboxes"><span class="ebox"></span><span class="ebox"></span></div><svg width="164" height="16" viewBox="0 0 164 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="150" y2="8"/><path d="M149 2 L161 8 L149 14"/></g></svg></div></div>
   <div class="erow"><span class="enum">2.</span><div class="ecol"><div class="eboxes"><span class="ebox"></span><span class="ebox"></span><span class="ebox"></span></div><svg width="251" height="16" viewBox="0 0 251 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="237" y2="8"/><path d="M236 2 L248 8 L236 14"/></g></svg></div></div>
 
+</div>
+
+<!-- ================= PAGE 4 &mdash; THE CHANGING WORD ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My words page</div>
+      <h1>One letter changes</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
   <h2>The changing word</h2>
   <p class="sub">Read across. What changed each time? Point at the new letter.</p>
   <div class="chain">
@@ -301,6 +324,13 @@
     <span>mat</span><span class="chev">&#9654;</span>
     <span>sat</span>
   </div>
+
+
+  <h2>Read it and do it</h2>
+  <p class="sub">Read the word. Your grown-up reads the job.</p>
+  <div class="doit"><span class="dw">sat</span><span class="da">&mdash; now sit down!</span></div>
+  <div class="doit"><span class="dw">mat</span><span class="da">&mdash; now touch the floor!</span></div>
+
 
 </div>
 

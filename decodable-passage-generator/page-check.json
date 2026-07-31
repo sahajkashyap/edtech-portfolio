@@ -12,7 +12,8 @@
   "heights": [
    868,
    832,
-   774
+   620,
+   336
   ],
   "overflowing": [],
   "measured": true
@@ -21,7 +22,8 @@
   "heights": [
    831,
    825,
-   774
+   620,
+   336
   ],
   "overflowing": [],
   "measured": true
@@ -30,7 +32,8 @@
   "heights": [
    850,
    880,
-   875
+   620,
+   556
   ],
   "overflowing": [],
   "measured": true
@@ -38,8 +41,9 @@
  "lesson-005": {
   "heights": [
    804,
-   929,
-   800
+   865,
+   670,
+   381
   ],
   "overflowing": [],
   "measured": true

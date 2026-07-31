@@ -9,6 +9,37 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 31 July 2026 — Sound dots under the words, and the words made large
+
+**Asked for by the teacher, who named the reason exactly right:** a small
+finger moves much faster than a beginner can sound a letter out, so without
+somewhere to land the finger outruns the eye and the tracking stops helping.
+
+The words are now **84px** — roughly double — and every word carries a **dot
+under each sound**, with the sweep arrow underneath.
+
+This is the *touch-and-sweep* routine used across structured literacy: touch
+each dot as you say its sound, then sweep along the arrow and say the whole
+word. The dots give the finger discrete places to land.
+
+**The nuance that decides the wording.** Dots and continuous blending pull
+against each other: dots invite stopping on each sound, and stopping is exactly
+what makes blending hard — "/m/ … /a/ … /t/" does not sound like *mat*. So the
+two marks are given different jobs, and the instruction says both: **the dots
+show WHERE each sound lives; the arrow says DO NOT STOP between them.** The
+page reads "Touch each dot and say its sound. Then slide along the arrow
+without stopping — and say the word."
+
+One rule for anyone extending this: **one dot per grapheme, not per letter.**
+At Lessons 1–5 every grapheme is a single letter, but a sheet using `sh` or
+`ck` must give the pair a single dot, or it teaches the wrong split.
+
+Because the words got much bigger, they no longer share a page with the letter
+hunt and the picture sort — **they have a page of their own**, and Lesson 5's
+word chain and act-it-out moved to theirs. Lessons 2–5 print four pages;
+Lesson 1 prints three, having no words yet. That is the standing rule again:
+add a page rather than shrink anything the child uses.
+
 ## 31 July 2026 — Lessons 1–5 get letter-and-sound sheets
 
 **Asked for by the teacher; the design follows a research pass over published

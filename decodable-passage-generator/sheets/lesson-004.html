@@ -161,13 +161,26 @@
      they are taught to write; Futura and Comic Sans ship with macOS and
      both have it, so the fallback never lands on Verdana's double-story a */
   .lhunt, .bw .bwd, .sstrip div, .erow .eword, .chain span, .doit .dw { font-family: "Century Gothic", Futura, "Comic Sans MS", Verdana, sans-serif; }
+
+  /* Scoped to the five letter sheets only -- the other 123 keep the
+     stylesheet exactly as it is. The blend words were made much larger
+     on the teacher's request, so the room comes out of the gaps between
+     blocks rather than out of anything the child uses. */
+  h2 { margin-top: 10px; }
+  .sub { margin-bottom: 4px; }
+  .doit { margin: 2px 0; }
+  .chain { margin-bottom: 2px; }
+  /* The words page holds only words, so they get room to breathe --
+     air between them is what stops a small finger sliding on to the
+     next word before the child has finished the one they are on. */
+  .wline { gap: 54px 40px; margin-top: 26px; }
 </style>
 </head>
 <body>
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 3 pages: 1 grown-up sheet, then 2 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -290,9 +303,24 @@
   that start with /t/.</p>
   <div class="sortrow"><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a tent"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M50 14 L6 96 L94 96 z" fill="#fff"/><line x1="50" y1="14" x2="50" y2="96"/><path d="M38 96 L50 68 L62 96" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="the sun"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="34" r="20"/><line x1="50" y1="4" x2="50" y2="-4"/><line x1="50" y1="72" x2="50" y2="64"/><line x1="20" y1="34" x2="12" y2="34"/><line x1="88" y1="34" x2="80" y2="34"/><line x1="28" y1="12" x2="23" y2="7"/><line x1="72" y1="56" x2="77" y2="61"/><line x1="72" y1="12" x2="77" y2="7"/><line x1="28" y1="56" x2="23" y2="61"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a tooth"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M28 34 C28 14 46 12 50 20 C54 12 72 14 72 34 C72 48 66 52 64 62 C62 76 60 90 54 90 C49 90 51 68 50 62 C49 68 51 90 46 90 C40 90 38 76 36 62 C34 52 28 48 28 34 z" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="the moon"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M60 12 A43 43 0 1 0 60 96 A34 34 0 1 1 60 12 z" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="the number ten"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><text x="50" y="86" text-anchor="middle" font-size="66" font-weight="bold" fill="#1a1a1a" stroke="none" font-family="Century Gothic, Verdana, sans-serif">10</text></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a star"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M50 24 L59 52 L88 52 L64 69 L73 96 L50 79 L27 96 L36 69 L12 52 L41 52 z" fill="#fff"/></g></svg></div></div>
 
-  <h2>Read the words</h2>
-  <p class="sub">Slide your finger along the arrow. Stretch the sounds together, then say it fast.</p>
-  <div class="wline"><div class="bw"><div class="bwd">am</div><svg width="98" height="16" viewBox="0 0 98 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="84" y2="8"/><path d="M83 2 L95 8 L83 14"/></g></svg></div><div class="bw"><div class="bwd">at</div><svg width="98" height="16" viewBox="0 0 98 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="84" y2="8"/><path d="M83 2 L95 8 L83 14"/></g></svg></div><div class="bw"><div class="bwd">mat</div><svg width="137" height="16" viewBox="0 0 137 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="123" y2="8"/><path d="M122 2 L134 8 L122 14"/></g></svg></div><div class="bw"><div class="bwd">sat</div><svg width="137" height="16" viewBox="0 0 137 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="123" y2="8"/><path d="M122 2 L134 8 L122 14"/></g></svg></div><div class="bw"><div class="bwd">Sam</div><svg width="137" height="16" viewBox="0 0 137 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="123" y2="8"/><path d="M122 2 L134 8 L122 14"/></g></svg></div></div>
+</div>
+
+<!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My words page</div>
+      <h1>Read the words</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
+  </div>
+
+  <h2>Touch, then slide</h2>
+  <p class="sub">Touch each dot and say its sound. Then slide along the arrow
+  without stopping &mdash; and say the word.</p>
+  <div class="wline"><div class="bw"><div class="bwd" style="font-size:84px">am</div><svg width="120" height="20" viewBox="0 0 120 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="144" height="16" viewBox="0 0 144 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="130" y2="8"/><path d="M129 2 L141 8 L129 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">at</div><svg width="120" height="20" viewBox="0 0 120 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="144" height="16" viewBox="0 0 144 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="130" y2="8"/><path d="M129 2 L141 8 L129 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">mat</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">sat</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">Sam</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div></div>
 
 </div>
 
