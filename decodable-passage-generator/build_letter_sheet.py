@@ -684,8 +684,10 @@ def word_page(n, d):
     # page looks like a mistake. Filling the page is also simply easier to
     # read. The word list cannot be padded out: at these lessons every
     # word the letters allow is already here.
-    px = {1: 128, 2: 112, 3: 96}.get(len(d["words"]), 84)
+    px = {1: 96, 2: 92, 3: 88}.get(len(d["words"]), 84)
     items = "".join(word_item(w, px) for w in d["words"])
+    sounds = "".join(f"<div>{DATA[i]['letter']}</div>"
+                     for i in range(1, n + 1))
     plural = "s" if len(d["words"]) > 1 else ""
     return f"""
 <!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
@@ -700,6 +702,10 @@ def word_page(n, d):
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
+  <h2>Say the sounds</h2>
+  <p class="sub">Touch each letter and say its sound &mdash; clean and clear.</p>
+  <div class="sstrip">{sounds}</div>
+
   <h2>Touch, then slide</h2>
   <div class="wline">{items}</div>
 
@@ -713,6 +719,9 @@ def word_page(n, d):
     <div class="foldline"><span>fold back or tear off along this line</span></div>
     <div class="adultnote">
       <div class="anh">Instructions for the grown-up</div>
+      <p><strong>Start with the letter row at the top:</strong> touch each letter and
+      say its sound, cleanly &mdash; &ldquo;mmm&rdquo; not &ldquo;muh&rdquo;. Then go to
+      the words.</p>
       <p>The dots under each word are its <strong>sounds</strong> &mdash; one dot per
       sound. Your child touches each dot and says that sound, then slides a finger
       along the arrow and says the whole word.</p>
@@ -720,9 +729,8 @@ def word_page(n, d):
       <em>where</em> the sounds are; the arrow says <strong>do not stop between
       them</strong>. Said with gaps, &ldquo;/m/ &hellip; /a/ &hellip; /t/&rdquo; does not
       sound like <em>mat</em>; stretched together, &ldquo;mmmaaat&rdquo; does.</p>
-      <p>The dots are there because a small finger moves faster than a beginner can
-      sound a letter out &mdash; they give it somewhere to land. If your child gets
-      stuck, you slide and stretch it first and let them copy you.</p>
+      <p>If your child gets stuck, you slide and stretch it first and let them copy
+      you.</p>
       <p style="margin-bottom:0"><strong>Once you have read this, fold it back.</strong>
       Then the page holds nothing but the words.</p>
     </div>

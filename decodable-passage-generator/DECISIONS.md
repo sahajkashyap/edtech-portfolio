@@ -9,6 +9,39 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 31 July 2026 — More to practise on the early word pages
+
+Two fixes to the words page, both from the teacher looking at real output.
+
+**The words were bigger than they needed to be.** A single word had been set at
+128px to stop it looking marooned. The bar is *big enough for a child to read*,
+not big enough to fill a sheet — so the range narrowed to 84–96px, judged
+against the five-word Lesson 4 page, which reads right.
+
+**And there was too little to do.** A lesson with one readable word still has
+every letter-sound taught so far, so the words page now opens with a **row of
+those letters** to touch and say before the words. It is exactly what Lesson 5
+opens with, it is real practice a grown-up can work through with a child, and
+it means the earliest pages have several things on them rather than one.
+
+Lesson 2 now offers `a`, `m`, then the word *am*. Lesson 4 offers `a m s t`,
+then *am, at, mat, sat, Sam*.
+
+Worth stating plainly, because it looks like an omission and is not: **the word
+lists are not being held back.** At Lesson 2 the entire readable vocabulary of
+English, given the letters taught, is the word *am*. That is the sequence, not
+a gap in the tool.
+
+## 31 July 2026 — Verified: every lesson from 6 to 128 has a real story
+
+Asked for directly, and checked rather than asserted. All 123 have a title, at
+least four lines, and — the part worth checking — the story text actually
+present in the sheet a child receives, not merely in the source file. 123 of
+123.
+
+Lessons 1–5 have no story by design: Lesson 1 teaches one letter and yields no
+readable word at all. They are letter-and-sound sheets instead.
+
 ## 31 July 2026 — The grown-up's instructions fold off the child's page
 
 **The teacher's observation, and it reframes what a worksheet is for.**
