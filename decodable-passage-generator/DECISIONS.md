@@ -9,6 +9,86 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 31 July 2026 — Lessons 1–5 get letter-and-sound sheets
+
+**Asked for by the teacher; the design follows a research pass over published
+programs.**
+
+Lessons 1–5 had nothing, and the reason was real: Lesson 1 teaches only `a`, so
+there is not a single word a child could read. Lesson 2 adds `m` and yields
+exactly one word — *am*. A story is not possible until about Lesson 6.
+
+**A finding worth keeping: UFLI itself has no home-practice sheet for Lessons
+1–4.** Their home materials begin at Lesson 5 and their decodable passages at
+Lesson 8. This gap is the program's gap, so filling it extends the sequence
+rather than catching up with it.
+
+### What the sheets contain, and where each part comes from
+
+Lessons 1–4, three pages each — grown-up sheet, the letter, then practice:
+
+- **Keyword anchor with the picture drawn into the letter's shape** — a—apple,
+  m—mountains, s—snake, t—tent. Embedded mnemonics have direct research support
+  (Ehri, Deffner & Wilce): a letter drawn into its picture needs fewer
+  repetitions before the sound sticks.
+- **Mouth check** — one line on what the lips and tongue do, and "look in a
+  mirror together." Both CKLA and UFLI teach the articulatory gesture.
+- **Letter formation**, the largest block: numbered stroke arrows, a start dot
+  on every letter, three-line guides with a dotted midline, and the child says
+  the **sound** each time they finish one.
+- **Letter hunt** whose distractors are the letters already taught, so it is
+  quietly cumulative review, and a **beginning-sound picture sort**.
+- **A word line from Lesson 2 on**: am; then am, Sam; then am, at, mat, sat, Sam.
+
+Lesson 5 is the blending sheet: sound strip, **continuous blending**
+("mmmaaat", no gaps, then say it fast), blend-and-read lines with finger
+arrows, Elkonin sound boxes including the child's first spelling, a
+one-letter-change chain, and a small do-what-it-says.
+
+Continuous blending beats choppy /m/ … /a/ … /t/ for beginners (Gonzalez-Frey &
+Ehri, 2021). It is also why the sequence opens `a m s t`: m, s and a can be
+stretched, t cannot, so the first blending words begin with m and s.
+
+### Two corrections the research forced
+
+- **"as" is out.** It is spelled with `s` but says /z/, and week one is no place
+  for an exception.
+- **"tam" is out** — it fails the age gate.
+
+### Do the alphabet sheets need pictures, when the stories do not?
+
+Yes, and the distinction matters. Story pictures were removed because a picture
+of the plot tells a child what happens and stops them building meaning from the
+words. **There is no plot in an alphabet lesson.** The picture holds a *sound*
+in place; it is a memory hook, not a spoiler — and every mainstream program
+anchors early letter-sounds to a picture. Exactly two kinds of drawing appear
+on these five sheets, the keyword anchor and the sort pictures, and nothing else.
+
+### What was dropped rather than shipped
+
+**A drawing a child names wrongly is worse than no drawing** — in a /m/ sort it
+actively teaches the wrong sound. Applied honestly, that cost us three things:
+
+- the **t embedded in the tent** made the crossbar read as a mast, so it fell
+  back to a plain bold `t` beside a clean tent. A legible letter beats a clever one.
+- a standalone **snake** in the sort read as a worm, and a **spinning top** could
+  be named a kite — both replaced.
+- the **mouse** was dropped after two attempts, having read as something a child
+  could as easily call a snail or a rock. Two clear targets in the /m/ sort beat
+  three where one is a guess.
+
+Also fixed on inspection: the lowercase **t was drawn as a bare cross** — no
+hook at the baseline — which read as a dagger rather than the letterform
+children are taught. It now turns right at the baseline.
+
+### Left out deliberately, though real programs use them in class
+
+Pseudowords (a parent will "correct" them), timed or scored anything (pressure
+with no teacher's judgment in the room), cut-and-glue and card games (they
+assume prepared materials; pencil-only survives a kitchen table), and uppercase
+*writing* practice — capitals are shown but not practised, since most have
+different shapes and it doubles the load.
+
 ## 30 July 2026 — The packet's final shape
 
 **Decided by the teacher, refining the same day's earlier decisions.**

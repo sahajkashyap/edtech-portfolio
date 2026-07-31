@@ -1,4 +1,49 @@
 {
+ "lesson-001": {
+  "heights": [
+   885,
+   863,
+   620
+  ],
+  "overflowing": [],
+  "measured": true
+ },
+ "lesson-002": {
+  "heights": [
+   868,
+   832,
+   774
+  ],
+  "overflowing": [],
+  "measured": true
+ },
+ "lesson-003": {
+  "heights": [
+   831,
+   825,
+   774
+  ],
+  "overflowing": [],
+  "measured": true
+ },
+ "lesson-004": {
+  "heights": [
+   850,
+   880,
+   875
+  ],
+  "overflowing": [],
+  "measured": true
+ },
+ "lesson-005": {
+  "heights": [
+   804,
+   929,
+   800
+  ],
+  "overflowing": [],
+  "measured": true
+ },
  "lesson-006": {
   "heights": [
    904,

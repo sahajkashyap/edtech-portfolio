@@ -84,6 +84,9 @@ details.card .warm{margin-top:.45rem;font-size:.72rem;color:var(--muted);font-fa
 details.card[open]{border-color:var(--accent)}
 details.card .tnote{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--warn);cursor:text}
 .card.none{opacity:.72;border-style:dashed}
+.card.letter{border-style:solid}
+.card.letter .n a{color:inherit;text-decoration:none}
+.card.letter .n a:hover{text-decoration:underline}
 footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font-size:.82rem;color:var(--muted)}
 """
 
@@ -124,6 +127,16 @@ def build():
                          f'<div class="story">{story}</div>'
                          f'<div class="warm">warm-up: {warm}</div>'
                          f'{note_html}</details>')
+            elif (HERE / "sheets" / f"lesson-{n:03d}.html").exists():
+                # Lessons 1-5 have no story -- Lesson 1 teaches one letter and
+                # yields no readable word at all -- so they get letter-and-sound
+                # sheets instead. They are real packets, not gaps, and the index
+                # links them like any other.
+                kind = "Blending &mdash; first words" if n == 5 else "Letter and sound"
+                body += (f'<div class="card letter">'
+                         f'<div class="n"><a href="sheets/lesson-{n:03d}.html">Lesson {n}</a></div>'
+                         f'<div class="t">{kind}</div>'
+                         f'<div class="s">{L["skill"]}</div></div>')
             else:
                 body += (f'<div class="card none">'
                          f'<div class="n">Lesson {n}</div>'
@@ -134,6 +147,10 @@ def build():
 
     words = sum(len(" ".join(s["lines"]).split()) for s in passages.values())
     missing = [n for n in range(1, 129) if n not in passages]
+    letter_sheets = sorted(n for n in missing
+                           if (HERE / "sheets" / f"lesson-{n:03d}.html").exists())
+    still_missing = [n for n in missing if n not in letter_sheets]
+    total_pages = len(passages) * 5 + len(letter_sheets) * 3
 
     page = f"""<title>Decodable Passages &mdash; all 128 lessons</title>
 <style>{CSS}</style>
@@ -146,16 +163,19 @@ def build():
   were eyeballed. Click any lesson to open its packet, then use the
   <strong>Print / Save as PDF</strong> button. Click any lesson below to read its story.</p>
   <div class="stats">
-    <div class="stat"><div class="v">{len(passages)}</div><div class="k">Passages</div></div>
+    <div class="stat"><div class="v">{len(passages)}</div><div class="k">Stories</div></div>
     <div class="stat"><div class="v">{words:,}</div><div class="k">Words written</div></div>
-    <div class="stat"><div class="v">{len(passages) * 4}</div><div class="k">Printable pages</div></div>
+    <div class="stat"><div class="v">{total_pages}</div><div class="k">Printable pages</div></div>
     <div class="stat"><div class="v">100%</div><div class="k">Passed the gate</div></div>
   </div>
 </header>
 
 <section>
-  <div class="note"><strong>Lessons {min(missing)}&ndash;{max(missing)} have no passage, on purpose.</strong>
-  {NO_PASSAGE_REASON}</div>
+  <div class="note"><strong>Lessons {min(letter_sheets)}&ndash;{max(letter_sheets)} are
+  letter-and-sound sheets, not stories.</strong> {NO_PASSAGE_REASON} So those five teach the
+  letter and its sound instead: the letter with a keyword picture, how the mouth makes the
+  sound, handwriting practice on three-line guides, a letter hunt and a beginning-sound sort
+  &mdash; and, at Lesson 5, first blending. Click them like any other lesson.</div>
 </section>
 
 <section>
