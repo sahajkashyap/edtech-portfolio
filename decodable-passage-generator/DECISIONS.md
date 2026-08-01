@@ -9,6 +9,37 @@ disagree, their judgement wins and the entry says so.
 
 ---
 
+## 1 August 2026 — Why dots and arrows are on Lessons 1–5 only
+
+Asked as a question — *why is the touch-and-slide there for some lessons and
+not the others?* — and the answer turns out to be a principle nobody had
+written down. Writing it down so it is not mistaken for an oversight and
+"fixed" later.
+
+**Lessons 1–5 are lessons. Lessons 6–128 are assignments.**
+
+Lessons 1–5 are not decodables at all. There is no story yet: Lesson 1 teaches
+a single letter and yields no readable word. Those sheets have to teach the
+mechanics — this letter, this sound, now blend them — so the sound dots and the
+sweep arrow *are* the content. Take them away and the page is empty.
+
+From Lesson 6 the story is the assignment. In the teacher's classroom a
+decodable goes home as itself: the child reads it and draws what happened. The
+practice words at the top are a run-up, not a blending lesson. Putting dots and
+arrows under them would turn a twenty-minute assignment into a taught lesson,
+which is not what the sheet is for and not how it is used.
+
+**Decided: do not extend the dots and arrows past Lesson 5.**
+
+A grapheme splitter was started for this and then thrown away rather than left
+as dead code. Recording the hard part in case it is ever wanted: the dots mark
+**sounds, not letters**, and the two stop matching the moment digraphs arrive.
+At Lesson 45 *shop* is three sounds across four letters, so a dot per letter
+would teach the wrong split and undo the lesson that just taught `sh`. The
+split also depends on the lesson — `sh` is two sounds to a child at Lesson 20
+and one at Lesson 45 — so it has to be taken against what that lesson has
+taught, longest match first, the same rule `audit_passage.mask_longest` uses.
+
 ## 31 July 2026 — Independent audit, and what it found
 
 Three auditors went over all 128 sheets. None had built them, and each was told
