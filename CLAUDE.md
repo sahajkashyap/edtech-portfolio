@@ -137,6 +137,8 @@ the page the link was on, and a link named `lesson-095.html` must actually say
 "Lesson 95"). "The file exists" is not verification; all three checks are.
 
 When a new tool or page type joins the portfolio, add its start page to
-`DEFAULT_STARTS` and a content rule for what its filenames promise. The full
-write-up lives in `LINK-VERIFY-SKILL.md` at the repo root (destined for
-`.claude/skills/link-verify/` when a session can write there).
+`DEFAULT_STARTS` and a content rule for what its filenames promise. The skill
+lives at `.claude/skills/link-verify/SKILL.md`; its editable source is
+`LINK-VERIFY-SKILL.md` at the repo root (Claude's sessions can't write inside
+`.claude/skills/`, so edit the root copy and deploy it with
+`! cp LINK-VERIFY-SKILL.md .claude/skills/link-verify/SKILL.md`).
