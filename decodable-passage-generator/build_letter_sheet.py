@@ -819,7 +819,7 @@ def adult_page_blend(n, skill):
 
 
 def blend_read_page():
-    rows = "".join(word_item(w, 46) for w in ["am", "at", "mat", "sat", "Sam"])
+    rows = "".join(word_item(w, 72) for w in ["am", "at", "mat", "sat", "Sam"])
     return f"""
 <!-- ================= PAGE 2 — SLIDE AND READ ================= -->
 <div class="page">
@@ -838,10 +838,32 @@ def blend_read_page():
   <div class="sstrip"><div>a</div><div>m</div><div>s</div><div>t</div></div>
 
   <h2>Slide and read</h2>
-  <p class="sub">Touch each dot and say its sound. Then slide along the arrow without stopping,
-  then say the word fast.</p>
-  <div class="blendrows">{rows}</div>
+  <div class="wline">{rows}</div>
 
+  <div class="fluency" style="justify-content:center">
+    <span class="lbl">Read them 3 times</span>
+    <span class="star"></span><span class="star"></span><span class="star"></span>
+    <span class="note">Color one circle each time.</span>
+  </div>
+
+  <div class="foldoff">
+    <div class="foldline"><span>fold back or tear off along this line</span></div>
+    <div class="adultnote">
+      <div class="anh">Instructions for the grown-up</div>
+      <p><strong>Start with the letter boxes at the top:</strong> your child touches
+      each one and says its sound, cleanly &mdash; &ldquo;mmm&rdquo; not
+      &ldquo;muh&rdquo;. Then go down to the words.</p>
+      <p>The dots under each word are its <strong>sounds</strong> &mdash; one per sound.
+      Your child touches each dot and says that sound, then slides a finger along the
+      arrow and says the whole word.</p>
+      <p><strong>Stretch, do not stop.</strong> The dots show <em>where</em> the sounds
+      are; the arrow says do not stop between them. &ldquo;/m/ &hellip; /a/ &hellip;
+      /t/&rdquo; said with gaps does not sound like <em>mat</em>; &ldquo;mmmaaat&rdquo;
+      does. If your child gets stuck, you stretch it first and let them copy you.</p>
+      <p style="margin-bottom:0"><strong>Once you have read this, fold it back.</strong>
+      Then the page holds nothing but the letters and words.</p>
+    </div>
+  </div>
 
 </div>
 """
