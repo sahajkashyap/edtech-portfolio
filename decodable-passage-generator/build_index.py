@@ -29,9 +29,8 @@ TARGET_SOUND_NOTES = {
 NO_PASSAGE_REASON = (
     "No decodable passage exists this early. A story needs a vocabulary, and "
     "these lessons are still introducing single letter-sounds — at Lesson 1 there "
-    "are no words a child can sound out at all, and by Lesson 5 there are five "
-    "(<em>am, as, at, mat, sat</em>). Letter-sound practice for these lessons "
-    "comes from the worksheet generator in the assessment tool instead."
+    "are no words a child can sound out at all, and by Lesson 5 there are four "
+    "(<em>am, at, mat, sat</em>)."
 )
 
 CSS = """
@@ -157,11 +156,11 @@ def build():
 <div class="wrap">
 <header>
   <div class="eyebrow">Reading Foundations &middot; decodable passages</div>
-  <h1>A story for every lesson a story is possible</h1>
+  <h1>Reading practice for every lesson: 128 lessons with 128 printable practice sheets</h1>
   <p class="lede">Each one uses only the sounds taught by that point. Every word was
   checked against the lesson's rulebook before the sheet was made &mdash; none of these
-  were eyeballed. Click any lesson to open its packet, then use the
-  <strong>Print / Save as PDF</strong> button. Click any lesson below to read its story.</p>
+  were eyeballed. Click any lesson below to read its story and open its printable
+  packet.</p>
   <div class="stats">
     <div class="stat"><div class="v">{len(passages)}</div><div class="k">Stories</div></div>
     <div class="stat"><div class="v">{words:,}</div><div class="k">Words written</div></div>
