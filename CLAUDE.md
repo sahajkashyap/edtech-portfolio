@@ -120,3 +120,23 @@ Done — all 128 skills generate printable worksheets across six sheet types
 (sound patterns, magic-e, letter-sounds, word endings/affixes, reviews, and
 syllables). Browser-verified, backed up on `main`. The full build spec lives in
 the `phonics-worksheet` skill in `.claude/skills/`.
+
+## Standing rule — verify every link before calling anything "done"
+
+Established Aug 1, 2026, after a lesson link was reported opening a blank or
+duplicate page. At the end of ANY project or change that adds, moves, renames,
+or restyles pages or links — and before telling me a build works — run the
+checker at the repo root, in both modes:
+
+    python3 check_links.py            # against the files on this computer
+    python3 check_links.py --live     # against the live GitHub Pages site
+
+It verifies three things per link: the target EXISTS, it is NOT BLANK (real
+visible text, not an empty shell), and it is the RIGHT PAGE (not identical to
+the page the link was on, and a link named `lesson-095.html` must actually say
+"Lesson 95"). "The file exists" is not verification; all three checks are.
+
+When a new tool or page type joins the portfolio, add its start page to
+`DEFAULT_STARTS` and a content rule for what its filenames promise. The full
+write-up lives in `LINK-VERIFY-SKILL.md` at the repo root (destined for
+`.claude/skills/link-verify/` when a session can write there).
