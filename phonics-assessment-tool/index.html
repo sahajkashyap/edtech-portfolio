@@ -104,17 +104,20 @@
   
   .btn-primary { background: #378ADD; border-color: #378ADD; color: white; font-weight: 500; }
   .btn-primary:hover { background: #2966bb; }
+  a.btn-primary { display: inline-block; text-decoration: none; padding: 10px 16px; font-size: 14px; border: 0.5px solid #378ADD; border-radius: 6px; }
 
   /* worksheet picker */
   .worksheet-intro { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 1rem 0; }
   .worksheet-unit { margin-top: 1.25rem; margin-bottom: .6rem; padding-bottom: .4rem; border-bottom: 2px solid var(--color-border-secondary); font-size: 14px; font-weight: 700; color: var(--color-text-primary); }
   .worksheet-unit:first-child { margin-top: 0; }
-  .ws-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; margin-bottom: 8px; }
+  .ws-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; margin-bottom: 8px; }
   .ws-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
   .ws-ready { background: #639922; border-color: #639922; color: #fff; font-weight: 500; }
   .ws-ready:hover { background: #527d1c; }
   .ws-soon { font-size: 12px; color: var(--color-text-secondary); font-style: italic; }
   .ws-get { margin-top: 8px; padding: 6px 12px; font-size: 12px; }
+  .ws-story { background: #2a6db0; border: 0.5px solid #2a6db0; color: #fff; font-weight: 500; font-size: 12px; padding: 6px 12px; border-radius: 6px; text-decoration: none; display: inline-block; }
+  .ws-story:hover { background: #22598f; }
 </style>
 
 <div class="container">
@@ -193,15 +196,16 @@
   <div id="worksheetModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeWorksheetModal()">&times;</span>
-      <div class="modal-title">Generate practice worksheets</div>
-      <p class="worksheet-intro">Choose the skill you want to practice. We'll open a printable sheet matched to that exact skill &mdash; print it or save it as a PDF to do at home.</p>
+      <div class="modal-title">Get practice sheets</div>
+      <p class="worksheet-intro">Find the lesson your child is working on. <strong>Generate</strong> opens a worksheet to write on. <strong>Reading practice</strong> opens that lesson's page to read out loud, built only from sounds taught so far. Print either one, or save it as a PDF.</p>
       <div id="worksheetPickerList"></div>
     </div>
   </div>
 
   <!-- BUTTONS -->
   <div class="section" style="display: flex; gap: 8px; flex-wrap: wrap;">
-    <button class="btn-primary" onclick="openWorksheetPicker()">Generate practice worksheets</button>
+    <button class="btn-primary" onclick="openWorksheetPicker()">Get practice sheets</button>
+    <a class="btn-primary" href="../decodable-passage-generator/index.html" target="_blank" rel="noopener">Reading practice &mdash; all 128 lessons</a>
     <button class="btn-primary" onclick="exportPDF()">Export PDF</button>
     <button onclick="exportJSON()">Export JSON</button>
     <button onclick="exportCSV()">Export CSV</button>
@@ -567,10 +571,14 @@ function showLessonsByScore(scoreLevel) {
         const wsBtn = WORKSHEETS[lesson.name]
           ? `<button class="ws-ready ws-get" onclick="openWorksheet('${lesson.name}')">Get practice worksheet</button>`
           : '';
+        const rpUrl = readingPracticeURL(lesson.name);
+        const rpLink = rpUrl
+          ? `<a class="ws-story ws-get" href="${rpUrl}" target="_blank" rel="noopener">Get reading practice</a>`
+          : '';
         item.innerHTML = `
           <div class="lesson-item-name">${lesson.name}</div>
           <div class="lesson-item-skill">${lesson.skill}</div>
-          ${wsBtn}
+          ${wsBtn} ${rpLink}
         `;
         modalList.appendChild(item);
       });
@@ -1944,6 +1952,12 @@ function buildSyllableHTML(c) {
   return wsDoc(`Practice &mdash; ${c.footNote}`, css, body);
 }
 
+function readingPracticeURL(lessonName) {
+  const n = parseInt(String(lessonName).replace(/\D/g, ''), 10);
+  if (!n || n < 1 || n > 128) return null;
+  return `../decodable-passage-generator/sheets/lesson-${String(n).padStart(3, '0')}.html`;
+}
+
 function openWorksheet(lessonName) {
   const c = WORKSHEETS[lessonName];
   if (!c) return;
@@ -1971,11 +1985,13 @@ function openWorksheetPicker() {
       const ready = !!WORKSHEETS[lesson.name];
       const row = document.createElement('div');
       row.className = 'ws-row';
+      const rp = readingPracticeURL(lesson.name);
       row.innerHTML = `
         <div class="ws-name">${lesson.name}: ${lesson.skill}</div>
         ${ready
           ? `<button class="ws-ready" onclick="openWorksheet('${lesson.name}')">Generate</button>`
           : `<span class="ws-soon">Coming soon</span>`}
+        ${rp ? `<a class="ws-story" href="${rp}" target="_blank" rel="noopener">Reading practice</a>` : ''}
       `;
       list.appendChild(row);
     });

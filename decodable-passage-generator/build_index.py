@@ -34,16 +34,13 @@ NO_PASSAGE_REASON = (
 )
 
 CSS = """
-:root{--ink:#17212B;--paper:#F3F5F6;--card:#fff;--line:#DCE2E6;--muted:#5F6B77;
- --accent:#1F5C8B;--warn:#A3521A;
+/* Fixed warm palette matching the phonics assessment tracker exactly.
+   Deliberately no dark-mode variant: parents arrive from the tracker, and the
+   page must look the same on every machine regardless of system setting. */
+:root{--ink:#2c3e50;--paper:#E8D4C4;--card:#FBF9F7;--card2:#F3EFE7;--line:#D4C5B9;
+ --muted:#5F574E;--accent:#378ADD;--warn:#A3521A;
  --serif:"Iowan Old Style",Georgia,serif;--sans:system-ui,-apple-system,sans-serif;
  --mono:ui-monospace,Menlo,monospace}
-@media (prefers-color-scheme:dark){:root{--ink:#E3E9ED;--paper:#111820;--card:#19212B;
- --line:#2A343F;--muted:#93A0AC;--accent:#79B2DF;--warn:#DFA063}}
-:root[data-theme="dark"]{--ink:#E3E9ED;--paper:#111820;--card:#19212B;--line:#2A343F;
- --muted:#93A0AC;--accent:#79B2DF;--warn:#DFA063}
-:root[data-theme="light"]{--ink:#17212B;--paper:#F3F5F6;--card:#fff;--line:#DCE2E6;
- --muted:#5F6B77;--accent:#1F5C8B;--warn:#A3521A}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55}
 .wrap{max-width:62rem;margin:0 auto;padding:2.5rem 1.25rem 5rem}
@@ -56,23 +53,33 @@ header{border-bottom:2px solid var(--ink);padding-bottom:1.6rem}
 section{margin-top:2.4rem}
 .sub{color:var(--muted);font-size:.9rem;margin:.2rem 0 1rem;max-width:42em}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.7rem;margin-top:1.5rem}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:.75rem .85rem}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:.75rem .85rem}
 .stat .v{font-family:var(--serif);font-size:1.7rem;line-height:1;font-variant-numeric:tabular-nums}
 .stat .k{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.35rem}
-.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);
- border-radius:3px;padding:.9rem 1.1rem;font-size:.9rem}
-.unit{margin-top:1.6rem}
-.uh{font-family:var(--serif);font-size:1.05rem;border-bottom:1px solid var(--ink);
- padding-bottom:.3rem;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:baseline}
-.uh .rg{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.note{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--warn);
+ border-radius:8px;padding:.9rem 1.1rem;font-size:.9rem}
+.unit{margin-top:1.6rem;scroll-margin-top:3.6rem}
+.uh{font-family:var(--serif);font-size:1.45rem;font-weight:700;border-bottom:2px solid var(--ink);
+ padding:.6rem 0 .35rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:baseline;
+ position:sticky;top:0;background:var(--paper);z-index:2}
+.uh .rg{font-family:var(--mono);font-size:.85rem;color:var(--muted);white-space:nowrap}
+.jump{display:flex;flex-wrap:wrap;gap:.45rem;margin:1rem 0 .25rem}
+.jump a{background:var(--card);border:1px solid var(--line);border-radius:6px;
+ padding:.35rem .7rem;font-size:.85rem;font-weight:600;color:var(--ink);text-decoration:none}
+.jump a:hover{border-color:var(--accent);color:var(--accent)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.5rem}
-a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:3px;
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:8px;
  padding:.55rem .7rem;text-decoration:none;color:inherit}
-a.card:hover{border-color:var(--accent)}
-a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.card .n{font-family:var(--mono);font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.card .t{font-weight:600;font-size:.95rem;margin:.1rem 0}
+.card:hover{border-color:var(--accent)}
+.card:focus-visible,.card:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.card .n{font-family:var(--mono);font-size:1.05rem;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.card .t{font-weight:600;font-size:.95rem;margin:.15rem 0;color:var(--muted)}
 .card .s{font-size:.75rem;color:var(--muted)}
+.card .print{margin-top:.5rem}
+.card .print a{display:inline-block;background:var(--accent);color:#fff;
+ font-family:var(--mono);font-size:.72rem;font-weight:600;padding:.32rem .7rem;
+ border-radius:6px;text-decoration:none}
+.card .print a:hover{filter:brightness(1.15)}
 details.card{cursor:pointer}
 details.card summary{list-style:none;cursor:pointer}
 details.card summary::-webkit-details-marker{display:none}
@@ -104,10 +111,10 @@ def build():
             order.append(L["unit"])
 
     body = ""
-    for unit in order:
+    for ui, unit in enumerate(order, 1):
         rows = units[unit]
         ns = [L["lesson"] for L in rows]
-        body += (f'<div class="unit"><div class="uh"><span>{unit}</span>'
+        body += (f'<div class="unit" id="u{ui}"><div class="uh"><span>{unit}</span>'
                  f'<span class="rg">lessons {min(ns)}&ndash;{max(ns)}</span></div>'
                  f'<div class="grid">')
         for L in rows:
@@ -122,7 +129,10 @@ def build():
                 body += (f'<details class="card"><summary>'
                          f'<div class="n">Lesson {n}{flag}</div>'
                          f'<div class="t">{spec["title"]}</div>'
-                         f'<div class="s">{L["skill"]}</div></summary>'
+                         f'<div class="s">{L["skill"]}</div>'
+                         f'<div class="print"><a href="sheets/lesson-{n:03d}.html" '
+                         f'target="_blank" rel="noopener">Print this sheet</a></div>'
+                         f'</summary>'
                          f'<div class="story">{story}</div>'
                          f'<div class="warm">warm-up: {warm}</div>'
                          f'{note_html}</details>')
@@ -135,7 +145,9 @@ def build():
                 body += (f'<div class="card letter">'
                          f'<div class="n"><a href="sheets/lesson-{n:03d}.html">Lesson {n}</a></div>'
                          f'<div class="t">{kind}</div>'
-                         f'<div class="s">{L["skill"]}</div></div>')
+                         f'<div class="s">{L["skill"]}</div>'
+                         f'<div class="print"><a href="sheets/lesson-{n:03d}.html" '
+                         f'target="_blank" rel="noopener">Print this sheet</a></div></div>')
             else:
                 body += (f'<div class="card none">'
                          f'<div class="n">Lesson {n}</div>'
@@ -150,6 +162,10 @@ def build():
                            if (HERE / "sheets" / f"lesson-{n:03d}.html").exists())
     still_missing = [n for n in missing if n not in letter_sheets]
     total_pages = len(passages) * 5 + len(letter_sheets) * 3
+
+    jump = ('<nav class="jump">'
+            + "".join(f'<a href="#u{i}">{u}</a>' for i, u in enumerate(order, 1))
+            + "</nav>")
 
     page = f"""<title>Decodable Passages &mdash; all 128 lessons</title>
 <style>{CSS}</style>
@@ -179,9 +195,11 @@ def build():
 
 <section>
   <h2>Every lesson</h2>
-  <p class="sub">Grouped by UFLI's real units. Click a lesson to read its story. A
-  dashed card means no passage exists for that lesson. The printable packets
-  live beside this file in <code>sheets/</code>.</p>
+  <p class="sub">Grouped by UFLI's real units. Click a card to preview its story
+  right here. <strong>Print this sheet</strong> opens that lesson's printable
+  packet in a new tab &mdash; that's the one to print for your child. Use the
+  buttons below to jump straight to a unit.</p>
+  {jump}
   {body}
 </section>
 
