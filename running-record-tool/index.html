@@ -200,6 +200,56 @@
   .recrow .acc{min-width:52px; font-weight:bold; margin-left:auto}
   .btn.tiny{font-size:12.5px; padding:4px 10px}
   .norecs{color:var(--muted); font-size:14px; margin:2px 0}
+  /* --- Print: what the learning specialist actually receives ---------------
+     Everything a teacher needs on screen is scaffolding on paper. Hide the
+     controls, unpin the fixed bars, and print the record itself. Colours are
+     forced on so the mark types survive; the letter tags carry it in mono. */
+  .printonly{display:none}
+  @media print{
+    @page{margin:14mm}
+    body{background:#fff; font-size:12pt}
+    header, .cols, #stats, #pop, #recordscard, .tbtns,
+    #undobtn, .privacy, .warnflag{display:none !important}
+    main{max-width:none; padding:0; margin:0}
+    .work{display:block}
+    .panel{display:none}
+    .printonly{display:block}
+    #passage{
+      border:1px solid #999; border-radius:6px; padding:14px 16px;
+      font-size:19pt; line-height:2.4; background:#fff;
+    }
+    #passage.wordlist{font-size:20pt; line-height:1.9}
+    .w{cursor:default}
+    .w.cursor{border-color:transparent !important; background:transparent !important}
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .prhead{
+      display:flex; justify-content:space-between; align-items:flex-end;
+      border-bottom:2px solid #333; padding-bottom:6px; margin-bottom:12px;
+    }
+    .prhead h1{font-size:15pt; margin:0}
+    .prhead .prwho{font-size:12pt; text-align:right; line-height:1.5}
+    .prhead .prwho b{font-size:15pt; letter-spacing:1px}
+    .prnums{
+      display:flex; gap:0; margin:14px 0 10px; border:1px solid #999;
+      border-radius:6px; overflow:hidden;
+    }
+    .prnums div{
+      flex:1; padding:8px 10px; border-right:1px solid #ccc; text-align:center;
+    }
+    .prnums div:last-child{border-right:none}
+    .prnums .v{font-size:16pt; font-weight:bold; line-height:1.2}
+    .prnums .k{font-size:8pt; text-transform:uppercase; letter-spacing:.6px; color:#555}
+    .prmarks{margin-top:10px; font-size:10.5pt}
+    .prmarks h3{font-size:9pt; text-transform:uppercase; letter-spacing:.7px;
+                color:#555; margin:0 0 4px}
+    .prmarks td{padding:2px 12px 2px 0; vertical-align:top}
+    .prnotes{margin-top:12px; font-size:11pt; white-space:pre-wrap;
+             border-top:1px solid #999; padding-top:8px}
+    .prnotes h3{font-size:9pt; text-transform:uppercase; letter-spacing:.7px;
+                color:#555; margin:0 0 4px}
+    .prfoot{margin-top:14px; font-size:8.5pt; color:#666;
+            border-top:1px solid #ccc; padding-top:6px}
+  }
   .saved{font-size:12px; color:var(--c-sc); height:16px; margin-top:5px}
 </style>
 </head>
@@ -223,6 +273,12 @@
 </header>
 
 <main>
+  <div class="printonly prhead">
+    <h1>Running Record <span style="font-weight:normal; font-size:11pt">&middot; Form B</span></h1>
+    <div class="prwho" id="prwho"></div>
+  </div>
+  <div class="printonly prnums" id="prnums"></div>
+
   <p class="passage-title" id="ptitle"></p>
 
   <div class="work">
@@ -300,17 +356,31 @@
       <textarea id="notes" placeholder="Anything the marks can't hold. Ran out of breath at line 4. Kept checking the picture. Voice dropped on every question."></textarea>
       <div class="saved" id="savedmsg"></div>
       <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn" id="printbtn">Print this record</button>
+        <button class="btn" id="exportbtn">Export all records</button>
         <button class="btn" id="clearmarksbtn">Clear all marks</button>
         <button class="btn" id="clearbtn">Start a new record</button>
       </div>
       <div style="font-size:12px; color:var(--muted); margin-top:8px">
-        Clear all marks keeps this child, the date and your notes, and starts
-        the read over. Start a new record clears everything for the next child.
+        Print gives you one page for the learning specialist: the marked passage,
+        every miscue listed, the numbers and your notes. Export writes a
+        spreadsheet of every saved record. Clear all marks keeps this child and
+        starts the read over; Start a new record moves on to the next child and
+        leaves this one saved.
       </div>
     </div>
   </div>
 
-  <div class="card" style="margin-top:20px">
+  <div class="printonly prmarks" id="prmarks"></div>
+  <div class="printonly prnotes" id="prnotes"></div>
+  <div class="printonly prfoot">
+    Repetitions and self-corrections are not counted as errors.
+    Words correct per minute is measured over the whole passage, not a
+    one-minute timing, so it is not comparable to a DIBELS benchmark score.
+    Kept on the teacher's laptop; not stored or sent anywhere.
+  </div>
+
+  <div class="card" id="recordscard" style="margin-top:20px">
     <h2>Saved records &mdash; one per child, nothing is overwritten</h2>
     <div id="records"></div>
   </div>
@@ -1295,6 +1365,48 @@ function render(){
   pb.style.opacity = pb.disabled ? .45 : 1;
   document.getElementById('finishbtn').textContent =
     (clockState === 'done') ? 'Reopen' : 'Finish';
+  paintPrint();
+}
+
+// Fill the print-only blocks. Called from render(), so the paper version is
+// never out of step with the screen.
+const MARKNAME = { sub:'Wrong word', omit:'Skipped', told:'Told',
+                   sc:'Self-corrected', rep:'Repeated', appeal:'Appealed' };
+
+function paintPrint(){
+  const s = stats(), L = LESSONS[currentLesson];
+  const initials = (document.getElementById('initials').value || '\u2014').toUpperCase();
+  const date = document.getElementById('rdate').value || '';
+  document.getElementById('prwho').innerHTML =
+    '<b>' + initials + '</b><br>Lesson ' + currentLesson + ' &middot; ' + L.skill +
+    '<br>' + L.title + (date ? ' &middot; ' + date : '');
+
+  const band = (s.acc >= 95) ? 'Independent' : (s.acc >= 90) ? 'Instructional' : 'Frustration';
+  const cell = (v, k) => '<div><div class="v">' + v + '</div><div class="k">' + k + '</div></div>';
+  document.getElementById('prnums').innerHTML =
+    cell(Math.round(s.acc) + '%', 'Accuracy') +
+    cell(band, 'Level') +
+    cell(s.read, 'Words read') +
+    cell(s.errors, 'Errors') +
+    cell(s.errors ? '1:' + Math.round(s.read / s.errors) : '\u2013', 'Error rate') +
+    cell(s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '\u2013', 'Self-correction rate') +
+    cell(s.wcpm === null ? '\u2013' : s.wcpm, 'Words correct/min') +
+    cell(fmt(totalMs()), 'Time');
+
+  const rows = [];
+  words.forEach(w => {
+    if (!w.code) return;
+    rows.push('<tr><td><b>' + w.text + '</b></td><td>' + MARKNAME[w.code] +
+              '</td><td>' + (w.said ? 'read as \u201c' + w.said + '\u201d' : '') + '</td></tr>');
+  });
+  if (insertions) rows.push('<tr><td colspan="3">' + insertions + ' added word(s)</td></tr>');
+  document.getElementById('prmarks').innerHTML = rows.length
+    ? '<h3>Every mark</h3><table>' + rows.join('') + '</table>'
+    : '<h3>Every mark</h3><p>No miscues recorded.</p>';
+
+  const n = document.getElementById('notes').value.trim();
+  document.getElementById('prnotes').innerHTML =
+    '<h3>Teacher notes</h3>' + (n ? n.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) : '\u2014');
 }
 
 // keeps the clock moving without touching any of the marks
@@ -1540,6 +1652,77 @@ document.getElementById('clearmarksbtn').addEventListener('click', () => {
 });
 
 document.getElementById('clearbtn').addEventListener('click', newRecord);
+
+// --- print ------------------------------------------------------------------
+document.getElementById('printbtn').addEventListener('click', () => {
+  paintPrint();
+  window.print();
+});
+
+// --- export -----------------------------------------------------------------
+// A spreadsheet of every saved record, one row per record, with the miscues
+// spelled out so a learning specialist can read the pattern without the tool.
+// The download is built as a data: URI in the page — nothing is uploaded, and
+// this file still makes no network requests of any kind.
+function csvCell(v){
+  v = (v === null || v === undefined) ? '' : String(v);
+  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+
+function exportCsv(){
+  const list = readIndex();
+  if (!list.length){ alert('There are no saved records to export yet.'); return; }
+  const head = ['Child','Lesson','Skill','Text','Date','Words read','Errors',
+                'Accuracy %','Level','Error rate','Self-correction rate',
+                'Words correct per min','Time','Wrong word','Skipped','Told',
+                'Self-corrected','Repeated','Appealed','Added words',
+                'Miscues','Teacher notes'];
+  const rows = [head.map(csvCell).join(',')];
+
+  list.forEach(e => {
+    let d;
+    try { d = JSON.parse(localStorage.getItem(recKey(e.id))); } catch (err) { return; }
+    if (!d) return;
+    const L = LESSONS[d.lesson] || { skill:'', title:'' };
+    const w = d.words || [];
+    const last = (d.stoppedAt === null || d.stoppedAt === undefined) ? w.length - 1 : d.stoppedAt;
+    const by = { sub:0, omit:0, told:0, sc:0, rep:0, appeal:0 };
+    let read = 0, errors = 0;
+    const miscues = [];
+    w.forEach((x, i) => {
+      if (i > last) return;
+      if (/[a-z]/i.test(x.text)) read++;
+      if (x.code){
+        by[x.code]++;
+        if (IS_ERROR[x.code]) errors++;
+        miscues.push(x.text + ' (' + MARKNAME[x.code] +
+                     (x.said ? ', read as "' + x.said + '"' : '') + ')');
+      }
+    });
+    errors += (d.insertions || 0);
+    const acc = read ? Math.max(0, ((read - errors) / read) * 100) : 100;
+    const accShown = Math.round(acc);
+    const mins = (d.elapsed || 0) / 60000;
+    const wcpm = (mins > 0.02) ? Math.round((read - errors) / mins) : '';
+    rows.push([
+      e.initials, d.lesson, L.skill, L.title, d.date, read, errors, accShown,
+      accShown >= 95 ? 'Independent' : accShown >= 90 ? 'Instructional' : 'Frustration',
+      errors ? '1:' + Math.round(read / errors) : '',
+      by.sc ? '1:' + Math.round((errors + by.sc) / by.sc) : '',
+      wcpm, fmt(d.elapsed || 0),
+      by.sub, by.omit, by.told, by.sc, by.rep, by.appeal, d.insertions || 0,
+      miscues.join('; '), d.notes || ''
+    ].map(csvCell).join(','));
+  });
+
+  const csv = '\ufeff' + rows.join('\r\n');       // BOM so Excel reads accents
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'running-records-' +
+    (new Date().toISOString().slice(0, 10)) + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+document.getElementById('exportbtn').addEventListener('click', exportCsv);
 
 // --- lesson picker ---------------------------------------------------------
 function paintTitle(){
