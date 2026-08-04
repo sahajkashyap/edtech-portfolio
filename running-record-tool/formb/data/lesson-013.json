@@ -5,17 +5,12 @@
   "instrument": "word list",
   "real_words": [
     "dad",
-    "dim",
+    "did",
     "dip",
-    "dot",
-    "mad"
+    "man",
+    "top"
   ],
-  "nonsense_words": [
-    "ot",
-    "pid",
-    "som",
-    "fom"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
@@ -24,10 +19,11 @@
     "is"
   ],
   "sentences": [
-    "Dad is not mad.",
-    "The dot is dim."
+    "Dad and I nod.",
+    "I dip the mop in a pan."
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": ""
+  "nwf_note": "No nonsense-word subtest: the taught letters spell thirteen legal pseudowords, but ten of them are heard as a real word, a respelling or slang -- ap (\"app\"), dat (\"that\"), fom (\"foam\"), ip (the letters I-P), nad (slang), nin (\"nine\"), nop (\"nope\"), op and ot (bare rimes), som (\"some\"). Only fim, mip and pid survive being said aloud, and three items are not the five-item subtest this measure needs.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test."
 }

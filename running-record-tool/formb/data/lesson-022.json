@@ -3,20 +3,17 @@
   "skill": "k /k/",
   "form": "B",
   "instrument": "passage",
-  "title": "The Nut Pot",
+  "title": "The Bug in the Pot",
   "lines": [
-    "The kids dig a pit in a pot.",
-    "Kim pops a nut in it.",
-    "The kids pat it.",
-    "But a tan cat taps at it.",
-    "It digs and digs.",
-    "The nut pops up on a mat!",
-    "\"Cat, do not dig,\" said Kim.",
-    "The kids beg it to nap on a bag.",
-    "Kim pops the nut in the pit.",
-    "The kids fit a cap on top.",
-    "Kim pats the cat.",
-    "It sits on a cot."
+    "A bug is on a bag.",
+    "\"A bug!\" said Gus. \"Do not tap it.\"",
+    "Ted pops a pot on it.",
+    "Gus pops a cap on the pot.",
+    "A bud is up in a tub.",
+    "Gus and Ted pop the pot on the tub.",
+    "Ted pops the cap up.",
+    "The bug is on the bud!",
+    "\"Bug, not the bag!\" said Gus."
   ],
   "gates_passed": true
 }

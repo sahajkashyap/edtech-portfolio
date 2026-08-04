@@ -3,16 +3,17 @@
   "skill": "b /b/",
   "form": "B",
   "instrument": "passage",
-  "title": "The Bat",
+  "title": "The Cap",
   "lines": [
-    "Bob is sad. The bat is not on the mat.",
-    "Is it in the tub? It is not in the tub.",
-    "Is it in the bin? It is not in the bin.",
-    "The dog did tug it in the mud!",
-    "\"Do not tug it, dog,\" said Bob.",
-    "Bob did dip the bat in the tub.",
-    "\"It is not a bad dog,\" said Bob.",
-    "Bob did pat the dog."
+    "Dan and a dog sit on a mat.",
+    "A tan cap is on Dan.",
+    "The dog and Dan tug at the cap.",
+    "\"Dog! Not the cap!\" said Dan.",
+    "The dog can tug it to a bin.",
+    "Mud is on the dog and the cap!",
+    "Dan can not dip it, but Pam can.",
+    "Dan and Pam dip the cap in a tub.",
+    "The cap is on Dan. Dan and Pam pat the dog."
   ],
   "gates_passed": true
 }

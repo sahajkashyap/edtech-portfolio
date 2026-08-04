@@ -3,19 +3,18 @@
   "skill": "y /y/",
   "form": "B",
   "instrument": "passage",
-  "title": "In the Bag",
+  "title": "Do Not Look in the Bag",
   "lines": [
-    "Sal has a red hat in a bag.",
+    "Sal is on a mat and hugs a bag.",
+    "\"Do not look in the bag,\" said Sal.",
     "\"Is it big?\" said Tom.",
-    "\"Yes,\" said Sal.",
-    "\"Is it a cup?\" said Tom.",
-    "\"It is not a cup,\" said Sal. \"It fits a kid.\"",
+    "\"Yes, it is big,\" said Sal.",
+    "\"Is it a mug?\" said Tom.",
+    "\"It is not a mug. It fits on a kid,\" said Sal.",
     "\"Is it a hat?\" said Tom.",
-    "\"Yes, Tom got it,\" said Sal.",
-    "Sal pops the hat on Tom.",
-    "Tom has a mug in the bag.",
-    "\"Is it a cup?\" said Sal.",
-    "\"Yup,\" said Tom, and Sal hugs him."
+    "\"Yes! Tom got it,\" said Sal.",
+    "Sal pops the hat on Tom. It fits!",
+    "Tom hops up and up in the red hat."
   ],
   "gates_passed": true
 }

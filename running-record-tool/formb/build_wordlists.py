@@ -272,7 +272,7 @@ def controlled_sentences(lesson: int, words=None, hearts=None):
     return list(HAND_SENTENCES.get(lesson, []))
 
 
-def build(lesson: int, sentences=None) -> dict:
+def _build_uncached(lesson: int, sentences=None) -> dict:
     L = ap.load(lesson)
     fa = form_a_text(lesson)
     rec = {
@@ -297,6 +297,40 @@ def build(lesson: int, sentences=None) -> dict:
     rec["audit_clean"] = not checks
     rec["audit_problems"] = checks
     return rec
+
+
+def build(lesson: int, sentences=None) -> dict:
+    """Deterministic regardless of call order — always computed through the full
+    pass. The bare version is _build_uncached and must not be called directly."""
+    return build_all()[lesson]
+
+
+def build_all(first: int = 6, last: int = 14) -> dict:
+    """Build the whole range in one deterministic pass.
+
+    USED_REAL and USED_PSEUDO are cross-lesson state — a lesson's answer depends
+    on what earlier lessons already spent. Exposing a bare build(n) made that
+    state invisible and the result order-dependent, so no single lesson could be
+    re-verified. Always go through here.
+    """
+    USED_REAL.clear(); USED_PSEUDO.clear()
+    out = {}
+    for n in range(first, last + 1):
+        rec = _build_uncached(n)
+        rec["sentences"] = controlled_sentences(n)
+        probs = [f"{i!r}: {ap.audit(i, n)['violations'][:1]}"
+                 for i in rec["real_words"] + rec["nonsense_words"] + rec["sentences"]
+                 if not ap.audit(i, n)["clean"]]
+        rec["audit_clean"] = not probs
+        rec["audit_problems"] = probs
+        out[n] = rec
+    return out
+
+
+def build_one(lesson: int) -> dict:
+    """A single lesson, but computed through the full deterministic pass so the
+    answer never depends on call order."""
+    return build_all()[lesson]
 
 
 if __name__ == "__main__":

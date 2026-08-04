@@ -1,22 +1,16 @@
 {
   "lesson": 12,
-  "skill": "o /\u014f/",
+  "skill": "o /ŏ/",
   "form": "B",
   "instrument": "word list",
   "real_words": [
     "mop",
-    "pop",
     "pot",
     "top",
-    "fan"
+    "not",
+    "man"
   ],
-  "nonsense_words": [
-    "fim",
-    "nom",
-    "im",
-    "ip",
-    "mip"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
@@ -25,10 +19,11 @@
     "is"
   ],
   "sentences": [
-    "The pot is on top.",
-    "I mop the pot."
+    "A man sat on the mat.",
+    "The map is not on top."
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": ""
+  "nwf_note": "No nonsense-word subtest: the taught letters spell ten legal pseudowords, but eight of them are heard as something real -- ap (\"app\"), ip (the letters I-P), op and ot (bare rimes a child finishes as hop/hot), nin (\"nine\"), nop (\"nope\"), som (\"some\") and fom (\"foam\"). Only fim and mip survive being said aloud, and two items are not a subtest.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test."
 }

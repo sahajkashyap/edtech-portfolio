@@ -5,10 +5,10 @@
   "instrument": "word list",
   "real_words": [
     "map",
-    "pat",
-    "tap",
     "mat",
-    "sat"
+    "sat",
+    "am",
+    "at"
   ],
   "nonsense_words": [],
   "high_frequency": [
@@ -18,10 +18,12 @@
     "the"
   ],
   "sentences": [
-    "I pat the map.",
-    "Sam sat and Pam sat."
+    "Sam sat and I sat.",
+    "Sam and I pat a mat."
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson.",
+  "supply_note": "Lesson 7 teaches f /f/ and no real word containing f is legal here. The taught letters are a f m p s t; the only decodable f word in English is 'fat', which is on core_vocabulary.BLOCKED. The word bank therefore stocks zero f words at this lesson. This is a supply limit in the curriculum, not a writing failure — recorded rather than worked around. The /f/ sound is first assessable at Lesson 8.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test."
 }

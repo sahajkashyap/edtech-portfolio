@@ -7,8 +7,8 @@
     "map",
     "pat",
     "tap",
-    "mat",
-    "sat"
+    "am",
+    "at"
   ],
   "nonsense_words": [],
   "high_frequency": [
@@ -17,10 +17,11 @@
     "the"
   ],
   "sentences": [
-    "I tap the mat.",
-    "Sam and Pam sat."
+    "I pat the map.",
+    "Sam and I tap the mat."
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test."
 }

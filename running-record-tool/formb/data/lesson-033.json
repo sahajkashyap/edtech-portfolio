@@ -3,16 +3,18 @@
   "skill": "v /v/",
   "form": "B",
   "instrument": "passage",
-  "title": "Ten Vans",
+  "title": "Do You See Ten Vans?",
   "lines": [
-    "Gus and Mom sit in the bus in the hot sun.",
-    "\"Do you see ten vans?\" said Mom.",
-    "Gus and Mom look and look.",
-    "Gus has six vans, but he is sad.",
-    "\"I do not see ten,\" he said to Mom.",
-    "The bus sits, and Mom nods at a lot of red vans.",
-    "Gus hums, and he is not sad.",
-    "\"Ten! I win,\" said Gus, and Mom hugs him."
+    "Gus and Mom sit in a bus.",
+    "\"Gus, see a jet, a hat, a bin, ten vans,\" said Mom.",
+    "The bus hums. \"A jet!\" said Gus.",
+    "Gus sits up. \"A hat! A bin!\" he said.",
+    "Mom nods. \"We see six vans,\" she said.",
+    "\"I do not see ten,\" said Gus. He is sad.",
+    "\"Sit up, Gus. Look!\" said Mom.",
+    "A lot of red vans are in the hot sun!",
+    "\"Ten! We win!\" said Gus, and he hops up.",
+    "Mom hugs Gus and pats him."
   ],
   "gates_passed": true
 }

@@ -1,14 +1,14 @@
 {
   "lesson": 8,
-  "skill": "i /\u012d/",
+  "skill": "i /ĭ/",
   "form": "B",
   "instrument": "word list",
   "real_words": [
-    "fit",
-    "pit",
-    "sip",
+    "it",
     "sit",
-    "tip"
+    "sip",
+    "tip",
+    "map"
   ],
   "nonsense_words": [],
   "high_frequency": [
@@ -18,10 +18,11 @@
     "the"
   ],
   "sentences": [
-    "I sit and sip.",
-    "Tim sat at the pit."
+    "Tim and I sit.",
+    "I tap the map and I sip."
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test."
 }

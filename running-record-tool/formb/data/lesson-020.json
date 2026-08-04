@@ -3,17 +3,17 @@
   "skill": "-s /s/",
   "form": "B",
   "instrument": "passage",
-  "title": "Bugs on Buns",
+  "title": "A Cat Naps in Mud",
   "lines": [
-    "Sam and Ted sit in the sun.",
-    "Ted digs in a bag of buns.",
-    "Bugs sit on the buns!",
-    "\"Not the buns, bugs!\" said Sam.",
-    "Sam fits the buns in a pot.",
-    "Ted pops a bit of bun on a cob.",
-    "The bugs sit on it.",
-    "Sam dips a bun in a mug.",
-    "Ted and Sam sip in the sun."
+    "Sam and Dan sit in the sun.",
+    "A cat naps in a pot.",
+    "Mud is in the pot.",
+    "\"Not in the pot, cat!\" said Sam.",
+    "Sam pats the cat.",
+    "Mud is on it! Mud is on Sam.",
+    "Dan dips a mop in a tub.",
+    "Dan mops up the mud.",
+    "The cat naps. Sam sits in the sun."
   ],
   "gates_passed": true
 }

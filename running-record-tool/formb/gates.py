@@ -80,8 +80,13 @@ def sentences(text: str):
         quotes.append(m.group(0))
         return "\x00%d\x00" % (len(quotes) - 1)
 
+    # A quoted sentence with its own terminal punctuation and no attribution
+    # after it ('"It fits a kid." "Is it a hat?" said Tom.') used to be swallowed
+    # whole, because masking hid the period that ended it. Keep a boundary
+    # marker where a quote is followed by whitespace and another capital.
+    text = re.sub(r'(["\u201d])\s+(?=["\u201c]?[A-Z])', "\\1 \x01 ", text)
     masked = QUOTED.sub(stash, text)
-    for part in re.split(r"[.!?]+", masked):
+    for part in re.split(r"[.!?\x01]+", masked):
         part = part.strip()
         if not part:
             continue

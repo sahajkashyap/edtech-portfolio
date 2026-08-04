@@ -3,19 +3,18 @@
   "skill": "l /l/ Part 1",
   "form": "B",
   "instrument": "passage",
-  "title": "Let Ned Look",
+  "title": "Ned Can Not See His Cap",
   "lines": [
     "Ned can not see his cap.",
-    "It is not on the cot.",
-    "\"Let me look in the bin,\" said Ned.",
-    "Ned tips the bin up.",
-    "Lots of bags, but not his cap.",
-    "A hen sits on the mat.",
-    "Ned pats it and it hops up.",
-    "The cap is on the mat!",
-    "\"Hen, it is not a bed,\" said Ned.",
-    "He pops the cap on.",
-    "Ned lets the hen nap on his lap."
+    "\"Look on the bed,\" said Gus.",
+    "Ned tips a bin up.",
+    "He can see lots of bags, but not his cap.",
+    "A dog sits on the mat.",
+    "Ned can see the cap!",
+    "The dog sits on it!",
+    "\"A cap is not a bed,\" said Ned.",
+    "Ned taps the dog. The dog hops up.",
+    "Ned pops the cap on and the dog sits on his lap."
   ],
   "gates_passed": true
 }

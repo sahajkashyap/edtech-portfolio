@@ -3,17 +3,19 @@
   "skill": "x /ks/",
   "form": "B",
   "instrument": "passage",
-  "title": "The Big Ox",
+  "title": "Ben and the Wax",
   "lines": [
-    "Dad has a big ox.",
-    "Ben has a job at the pen.",
-    "Dad lets him mix cobs in a tub.",
-    "The ox taps the tub. Cobs are in the mud!",
-    "Ben is mad. Ben has a lot to mix.",
-    "He sets the tub up on a log.",
-    "The ox tugs at it, but it is up.",
-    "The ox has its cobs. Ben pats it.",
-    "\"The ox is fed,\" said Dad."
+    "Dad has an ax and a log.",
+    "The ax is big. Ben tugs at it.",
+    "\"Do not tug at it,\" said Dad.",
+    "Ben sits. He is sad.",
+    "\"Ben, do the wax,\" said Dad.",
+    "Dad cuts the log.",
+    "Dad and Ben mix wax.",
+    "Ben rubs wax on the log.",
+    "Dad sets the log up. Ben is not sad.",
+    "Dad and Ben sit on the log.",
+    "\"Ben did the wax,\" said Dad."
   ],
   "gates_passed": true
 }

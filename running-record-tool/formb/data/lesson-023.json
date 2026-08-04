@@ -3,17 +3,15 @@
   "skill": "h /h/",
   "form": "B",
   "instrument": "passage",
-  "title": "Hot and Not",
+  "title": "Tom Hid a Cap",
   "lines": [
-    "Deb hid a cap in a bag.",
-    "Sam did not see it.",
-    "Sam digs in a bin.",
-    "\"Not hot,\" said Deb.",
-    "But Sam sits on the mat.",
-    "\"Hot!\" said Deb, and she hums.",
-    "Sam tips up a pot.",
-    "The bag is in it!",
-    "Sam pops the cap on and hums."
+    "The sun is hot.",
+    "\"I hid a cap,\" said Tom.",
+    "Sam digs in a bin, but the cap is not in it.",
+    "\"The cap is up,\" said Tom.",
+    "Sam tips a pot up. The cap is in the pot!",
+    "Sam pops the cap on.",
+    "\"The sun is hot!\" said Tom. Sam nods."
   ],
   "gates_passed": true
 }

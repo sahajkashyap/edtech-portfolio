@@ -3,19 +3,16 @@
   "skill": "Short I Review",
   "form": "B",
   "instrument": "passage",
-  "title": "Pins Fix It",
+  "title": "The Box Is Big",
   "lines": [
-    "Sid has a rip in his bag.",
-    "His bun and cap are on the mat.",
-    "\"I have to fix it,\" said Sid.",
-    "Tim runs up to him.",
-    "He has a box of pins.",
-    "\"Pins can fix a rip,\" said Tim.",
-    "Tim pins the rip up.",
-    "The bun and cap fit in the bag.",
-    "The pins do the job!",
-    "\"You did it, Tim,\" said Sid.",
-    "Sid and Tim run to the bus."
+    "Tim and Pip have a big box.",
+    "\"Can it be in the bin?\" said Val.",
+    "Tim tips the box in. It can not fit.",
+    "\"A lot of bags are in the bin,\" said Pip.",
+    "Tim digs in the bin and tips a bag up.",
+    "\"Tip the box up,\" said Pip.",
+    "Tim tips the box up. It fits in the bin!",
+    "\"It fits!\" said Tim, and Pip nods."
   ],
   "gates_passed": true
 }
