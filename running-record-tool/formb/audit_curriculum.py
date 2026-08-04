@@ -60,11 +60,19 @@ GATE = {"flsz_double": 42, "ck": 44, "th": 46, "blends": 53, "vce": 54,
 # it must not be counted as evidence that a lesson exercises its own grapheme
 # (a Lesson 22 sheet whose only k is "Kim" has not tested k). Hand-listed
 # because "capitalised" cannot tell Dot-the-girl from dot-the-spot.
+#
+# A hand-list the data can outgrow is a check that quietly stops working, so
+# check_cast_list_covers_data() below re-derives the cast from the files and
+# fails if this set has fallen behind. It had: Bev, Dev, Jan, Jon, Val and Zeb
+# shipped in Lessons 34-41 and were missing here, which made Lesson 34's only
+# "z word" the name Zeb -- exactly the Kim-at-Lesson-22 error this list exists
+# to prevent.
 CHARACTER_NAMES = {
     "sam", "pam", "tim", "nan", "dot", "gus", "bob", "meg", "ben", "sid",
     "ted", "kim", "deb", "reg", "mom", "dad", "ron", "ned", "hal", "raj",
     "sal", "tom", "max", "liz", "zac", "dan", "jen", "tam", "nat", "pip",
     "peg", "kip", "bud", "wag",
+    "zeb", "jan", "val", "jon", "bev", "dev",
 }
 
 # Words that carry no lesson content: they cannot show a skill was practised.
@@ -326,7 +334,9 @@ def check_target_exercised(n, sheet):
     if unspent:
         why = (f"the word bank offers {len(avail)} and Form A leaves "
                f"{unspent} unspent")
-        sev = "LOW" if lesson in ALTERNATE_FORM_IMPOSSIBLE else "HIGH"
+        # `lesson` (the loader function) was written here instead of `n`, so this
+        # was always False and the downgrade never applied.
+        sev = "LOW" if n in ALTERNATE_FORM_IMPOSSIBLE else "HIGH"
     else:
         why = ("the word bank offers nothing further at this lesson -- this "
                "is a supply problem, not a writing problem")
@@ -806,6 +816,329 @@ def check_title(n, sheet):
     return findings
 
 
+# ===========================================================================
+# CHECK 13 -- the target read off the lesson's NAME, one target at a time
+#
+# Checks 2 and 3 read the target out of sound-list's `introduces` block and
+# then POOL every target into one count. Two whole defect classes hide in
+# that shape:
+#
+#   * `introduces` is EMPTY for "r /r/ Part 2" (25), "l /l/ Part 2" (27) and
+#     "VC & CVC Practice (all)" (19), because those lessons teach no NEW
+#     letter. target_graphemes() returns [], check_target_exercised returns
+#     immediately, and the three lessons are exempt from every content check
+#     in this file. They print CLEAN because nothing looked. Lesson 25 has one
+#     r word in the whole passage ("rubs"); Lesson 27 has two l words.
+#   * Pooling hides a missing member of a set. "Short A, I, O Review" is
+#     satisfied by 4 a-words + 7 i-words even though the whole passage has ONE
+#     short-o content word ("lot"). Lesson 41, "Short Vowels Review (all)",
+#     has two short-a and two short-u words.
+#
+# So the target is derived here from the SKILL STRING, which is the thing the
+# lesson is named for and the thing a teacher reads, and every named target is
+# counted separately. verify_all.target_letters() already parses the skill
+# string this way -- but only for word lists, so lessons 15-41 never saw it,
+# and the two modules disagree about lessons 19/25/27 with nothing comparing
+# them.
+# ===========================================================================
+def named_targets(n):
+    """Every target the lesson's NAME promises, from the name alone."""
+    s = lesson(n)["skill"].lower().strip()
+    if s.startswith("-s"):
+        return ["-s"]
+    if "short vowels review" in s or "vc & cvc practice" in s:
+        return ["a", "e", "i", "o", "u"]
+    m = re.match(r"^(qu|[a-z]{1,3})\s*/", s)          # "f /f/", "r /r/ Part 2"
+    if m:
+        return [m.group(1)]
+    m = re.match(r"^short ([a-z, ]+?) review", s)     # "Short A, I, O Review"
+    if m:
+        return [x.strip() for x in m.group(1).split(",") if x.strip()]
+    m = re.match(r"^[a-z ]*\(([a-z, ]+)\)", s)        # "CVC Practice (a, i)"
+    if m:
+        return [x.strip() for x in m.group(1).split(",") if x.strip()]
+    return []
+
+
+def named_target_voicing(n):
+    """For a -s lesson, the sound the lesson's own name promises."""
+    m = re.search(r"/([sz])/", lesson(n)["skill"])
+    return "/%s/" % m.group(1) if m else None
+
+
+def target_hits(n, sheet, t):
+    """Distinct non-name content stems on the sheet that carry target t."""
+    want = named_target_voicing(n) if t == "-s" else None
+    out = set()
+    for tok in tokens(child_text(sheet)):
+        low = tok.lower()
+        if low in CHARACTER_NAMES:
+            continue
+        if t == "-s":
+            sound = s_suffix_sound(low)
+            if sound and (want is None or sound == want):
+                out.add(stem(low))
+            continue
+        if t in low:
+            if len(t) == 1 and t in VOWELS and low in FUNCTION_WORDS:
+                continue
+            out.add(stem(low))
+    return out
+
+
+def check_named_target_exercised(n, sheet):
+    """Every target the lesson's name promises must be exercised on its own.
+
+    Scoped to the 27 passages: for lessons 6-14 check 3 already counts each
+    target separately over the real-word list, and reporting twice would train
+    a reader to skim.
+    """
+    if sheet.get("instrument") != "passage":
+        return []
+    named = named_targets(n)
+    old = target_graphemes(n)
+    # Only the cases the pooled check cannot see: no target at all, or more
+    # than one target pooled into a single count.
+    if not named or (len(named) == 1 and len(old) == 1 and named == old):
+        return []
+    findings = []
+    is_review = "review" in lesson(n)["skill"].lower()
+    minimum = (MIN_TARGET_WORDS_REVIEW if is_review and len(named) == 1
+               else MIN_TARGET_WORDS)
+    for t in named:
+        hits = target_hits(n, sheet, t)
+        if len(hits) >= minimum:
+            continue
+        if t == "-s":
+            want = named_target_voicing(n)
+            findings.append(finding(
+                n, "named target not exercised",
+                f"{sorted(hits)} (target -s said {want})",
+                f"Lesson {n} is named {lesson(n)['skill']!r} but only "
+                f"{len(hits)} distinct word(s) show -s saying {want}; check 1 "
+                f"only forbids the WRONG voicing early, it never requires the "
+                f"RIGHT one to be present.",
+                f"Add -s words whose s says {want}."))
+            continue
+        spare = sorted(available_target_words(n, [t])
+                       - content_stems(child_text(sheet))
+                       - content_stems(form_a_text(n)))
+        findings.append(finding(
+            n, "named target not exercised",
+            f"{sorted(hits)} (target {t!r} of {named})",
+            f"Lesson {n} is named {lesson(n)['skill']!r}, which promises {t!r}, "
+            f"but only {len(hits)} distinct non-name word(s) carry it. "
+            + (f"target_graphemes() returns {old} for this lesson, so no "
+               f"existing check looked at {t!r} at all."
+               if not old else
+               f"The pooled count over {old} clears the floor, so the shortfall "
+               f"in {t!r} alone is invisible.")
+            + (f" The word bank offers {len(spare)} unspent {t!r} word(s): "
+               f"{spare[:10]}." if spare else
+               " The word bank offers nothing further -- a supply limit."),
+            f"Add {minimum - len(hits)} more word(s) carrying {t!r}"
+            + (f", e.g. {spare[:5]}." if spare else "."),
+            "HIGH" if spare else "LOW"))
+    return findings
+
+
+# ===========================================================================
+# CHECK 14 -- the heart words this lesson TEACHES must appear on the sheet
+#
+# Check 10 is one-directional: it catches a heart word used EARLY and has no
+# opinion about one never used at all. So a lesson can teach "she" and hand
+# the child a page without it. Form A does not have this problem, which is
+# what makes it a Form B defect rather than a curriculum limit: at Lesson 13
+# Form A says "said" and Form B does not; the same at 15 (do, to), 17 (of),
+# 19 (see), 23 (she), 25 (from), 27 (are), 33 (have, what).
+#
+# It matters because a heart word is the one thing on the sheet that CANNOT
+# be sounded out. If the sheet omits it, the running record has no evidence
+# about the skill the lesson actually added.
+# ===========================================================================
+def check_new_heart_words_used(n, sheet):
+    new = [h.lower() for h in lesson(n)["newHeartWords"]]
+    if not new:
+        return []
+    used = {t.lower() for t in tokens(child_text(sheet))}
+    a_used = {t.lower() for t in tokens(form_a_text(n))}
+    findings = []
+    for h in new:
+        if h in used:
+            continue
+        in_a = h in a_used
+        findings.append(finding(
+            n, "new heart word never used",
+            f"{h!r}",
+            f"Lesson {n} is the lesson that teaches the heart word {h!r}, and "
+            f"it appears nowhere on the Form B sheet -- not in the lines, the "
+            f"sentences, the high-frequency list or the title. "
+            + (f"Form A lesson {n} does use it, so this is not a limit of the "
+               f"curriculum." if in_a else
+               f"Form A lesson {n} omits it too, so the gap is inherited "
+               f"rather than introduced here."),
+            f"Put {h!r} in a sentence, or add it to high_frequency on a word "
+            f"list.",
+            "MEDIUM" if in_a else "LOW"))
+    return findings
+
+
+# ===========================================================================
+# CHECK 15 -- the hand-written cast list must still cover the data
+#
+# CHARACTER_NAMES decides what counts as evidence that a lesson exercised its
+# own grapheme. It is hand-maintained, and nothing checked it against the
+# files, so six names shipped without being added: Zeb (34), Jan (35), Val
+# (36), Bev and Jon (37), Dev (41). The cost is silent and specific -- Lesson
+# 34 is the z lesson, its only z word was the name "Zeb", and check 2 counted
+# that name as evidence and reported "1 word carries the target" for a
+# passage whose true count is zero.
+#
+# A capital letter that is not the first word of a sentence is a proper noun.
+# Titles are Title Case, so they are excluded rather than guessed at.
+# ===========================================================================
+def cast_in_data(data_dir):
+    found = {}
+    for n in LESSON_RANGE:
+        sheet = load_sheet(data_dir, n)
+        body = " ".join(sheet.get("lines", []) + sheet.get("sentences", []))
+        for s in re.split(r"(?<=[.!?])\s+", body):
+            toks = re.findall(r"[A-Za-z']+", s)
+            for i, t in enumerate(toks):
+                if i == 0 or t == "I" or not t[0].isupper():
+                    continue
+                if t.lower() in FUNCTION_WORDS:
+                    continue
+                found.setdefault(t.lower(), set()).add(n)
+    return found
+
+
+def check_cast_list_covers_data(data_dir):
+    findings = []
+    for name, lessons in sorted(cast_in_data(data_dir).items()):
+        if name in CHARACTER_NAMES:
+            continue
+        n = min(lessons)
+        findings.append(finding(
+            n, "character name missing from CHARACTER_NAMES",
+            f"{name.title()!r} (lessons {sorted(lessons)})",
+            f"{name.title()!r} is used as a character in the data but is not in "
+            f"this file's CHARACTER_NAMES set, so every check that says "
+            f"'not a name' counts it as a curriculum word: it can be scored as "
+            f"evidence that a lesson exercised its target, and "
+            f"check_shared_characters cannot see it at all.",
+            f"Add {name!r} to CHARACTER_NAMES."))
+    return findings
+
+
+# ===========================================================================
+# CHECK 16 -- verbatim reuse ACROSS lessons, not just within one
+#
+# Check 8 compares Form B lesson n against Form A lesson n and nothing else,
+# and verify_all's corpus rule compares whole LINES. A sentence repeated
+# inside two differently-worded lines, or borrowed from a different lesson's
+# Form A, passes both. Real: "He is sad." is in Form B 31, 32 AND 33 and in
+# Form A 26; "It is up!" is in Form B 39 and Form A 34; "The mat is tan." is
+# in Form B 10 and Form A 12.
+#
+# It matters because the child meets these forms in lesson order. A sentence
+# they read in Form A at Lesson 26 is a sentence they have already practised
+# when Form B hands it back at Lesson 31.
+# ===========================================================================
+def _all_form_a_sentences():
+    if "a_sents" not in _CACHE:
+        out = {}
+        for m in range(1, len(sound_list()["lessons"]) + 1):
+            text = form_a_text(m)
+            if text:
+                for s in sentences_of(text):
+                    out.setdefault(s, set()).add(m)
+        _CACHE["a_sents"] = out
+    return _CACHE["a_sents"]
+
+
+def check_cross_lesson_verbatim(data_dir):
+    findings = []
+    b_sents = {}
+    for n in LESSON_RANGE:
+        sheet = load_sheet(data_dir, n)
+        body = " ".join(sheet.get("lines", []) + sheet.get("sentences", []))
+        for s in sentences_of(body):
+            if len(tokens(s)) >= MIN_VERBATIM_WORDS:
+                b_sents.setdefault(s, set()).add(n)
+
+    for s, lessons in sorted(b_sents.items()):
+        if len(lessons) > 1:
+            findings.append(finding(
+                min(lessons), "sentence repeated across Form B lessons",
+                f"{s!r}",
+                f"this exact sentence is in Form B lessons {sorted(lessons)}. "
+                f"The corpus rule in verify_all compares whole LINES, so a "
+                f"sentence shared by three differently-worded lines is not "
+                f"visible to it, and check 8 only ever looks at one lesson.",
+                "Rewrite it in all but one lesson.", "MEDIUM"))
+
+    a_sents = _all_form_a_sentences()
+    for s, lessons in sorted(b_sents.items()):
+        where = sorted(a_sents.get(s, set()))
+        for n in sorted(lessons):
+            other = [m for m in where if m != n]
+            if not other:
+                continue
+            already = [m for m in other if m < n]
+            findings.append(finding(
+                n, "sentence copied from another lesson's Form A",
+                f"{s!r}",
+                f"this exact sentence is in Form A lesson(s) {other}. "
+                + (f"Lesson(s) {already} come BEFORE this one, so a child "
+                   f"working through Form A has already read it."
+                   if already else
+                   "Those lessons come later, so the child has not met it yet."),
+                "Rewrite the sentence with different content words.",
+                "MEDIUM" if already else "LOW"))
+    return findings
+
+
+# ===========================================================================
+# CHECK 17 -- a check whose input is never anything is not a check
+#
+# check_nonsense_wellformed runs 36 times per audit and cannot fail: every one
+# of the 36 files has "nonsense_words": []. The same is true of the "wrong
+# nonsense-word count" branch of check 5. --selftest proves those checks CAN
+# fire when handed a synthetic sheet, which is exactly what makes the silence
+# convincing and wrong: the passing run is evidence about a code path the real
+# data never enters. This names it in the report instead of leaving it to be
+# rediscovered on a later pass.
+# ===========================================================================
+CHILD_FIELDS = ("real_words", "nonsense_words", "high_frequency", "sentences",
+                "lines", "title")
+
+
+def check_check_liveness(data_dir):
+    sheets = {n: load_sheet(data_dir, n) for n in LESSON_RANGE}
+    findings = []
+    for field in CHILD_FIELDS:
+        present = [n for n, s in sheets.items() if field in s]
+        if not present:
+            continue
+        if any(sheets[n].get(field) for n in present):
+            continue
+        findings.append(finding(
+            min(present), "check has constant-empty input",
+            f"{field!r} is [] in all {len(present)} file(s) that declare it",
+            f"every check that reads {field!r} runs on every audit and can "
+            f"never fire, because no file in data/ has ever put anything in "
+            f"it. A green run says nothing about those rules. For "
+            f"'nonsense_words' this is by design (each word list carries an "
+            f"nwf_note giving the reason) -- but the design decision is what "
+            f"should be recorded, not a clean result from an unexercised "
+            f"check.",
+            f"Either ship {field!r} somewhere, or record in this file that the "
+            f"rules reading it are dormant by design so a later pass does not "
+            f"read their silence as a pass.", "LOW"))
+    return findings
+
+
 # ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
@@ -820,6 +1153,15 @@ PER_LESSON_CHECKS = [
     check_shared_characters,
     check_decodability,
     check_title,
+    check_named_target_exercised,
+    check_new_heart_words_used,
+]
+
+CORPUS_CHECKS = [
+    check_wordlist_duplication,
+    check_cast_list_covers_data,
+    check_cross_lesson_verbatim,
+    check_check_liveness,
 ]
 
 SEVERITY_ORDER = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
@@ -832,7 +1174,8 @@ def run(data_dir):
         for check in PER_LESSON_CHECKS:
             findings += check(n, sheet)
         findings += check_word_bank_stocks_target(n)
-    findings += check_wordlist_duplication(data_dir)
+    for check in CORPUS_CHECKS:
+        findings += check(data_dir)
     return findings
 
 
@@ -890,6 +1233,22 @@ def selftest():
         ("sentence copied verbatim from Form A", 6,
          {"lesson": 6, "instrument": "word list",
           "sentences": ["I tap the mat."]}, check_verbatim_sentences),
+        # check 13: a lesson whose `introduces` is empty is still named for a
+        # sound, and a pooled review still has to cover every vowel it names.
+        ("named target not exercised", 25,
+         {"lesson": 25, "instrument": "passage", "title": "Mud in a Tub",
+          "lines": ["Mom digs in the mud.", "Mom dips a cup in a tub."]},
+         check_named_target_exercised),
+        ("named target not exercised", 38,
+         {"lesson": 38, "instrument": "passage", "title": "The Rip in the Bag",
+          "lines": ["Tim has a bag and a bin.", "Tim digs and pins a rip.",
+                    "Dad has a pin and a bat.", "Tim is sad and Dad is glad."]},
+         check_named_target_exercised),
+        # check 14: the lesson that teaches a heart word must use it.
+        ("new heart word never used", 13,
+         {"lesson": 13, "instrument": "word list",
+          "real_words": ["dad", "did", "dip"], "high_frequency": ["I", "the"],
+          "sentences": ["Dad and I nod."]}, check_new_heart_words_used),
     ]
     failures = 0
     for want_rule, n, sheet, check in cases:
@@ -898,7 +1257,34 @@ def selftest():
         print(f"  {'PASS' if ok else 'FAIL'}  L{n:<3} expects {want_rule!r}"
               f"{'' if ok else f' -- got {got}'}")
         failures += 0 if ok else 1
-    print(f"\nself-test: {len(cases) - failures}/{len(cases)} checks can fire")
+
+    # The corpus checks take a directory, so they are proved against a
+    # throwaway copy rather than a dict.
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        d = pathlib.Path(tmp)
+        for n in LESSON_RANGE:
+            body = {"lesson": n, "skill": lesson(n)["skill"], "form": "B",
+                    "instrument": "passage", "title": "A Cat",
+                    "lines": ["The cat and Xan nap."],
+                    "nonsense_words": [], "gates_passed": True}
+            (d / f"lesson-{n:03d}.json").write_text(json.dumps(body))
+        corpus_cases = [
+            ("character name missing from CHARACTER_NAMES",
+             check_cast_list_covers_data),
+            ("sentence repeated across Form B lessons",
+             check_cross_lesson_verbatim),
+            ("check has constant-empty input", check_check_liveness),
+        ]
+        for want_rule, check in corpus_cases:
+            got = [f["rule"] for f in check(d)]
+            ok = any(want_rule in g for g in got)
+            print(f"  {'PASS' if ok else 'FAIL'}  corpus expects {want_rule!r}"
+                  f"{'' if ok else f' -- got {sorted(set(got))}'}")
+            failures += 0 if ok else 1
+
+    total = len(cases) + len(corpus_cases)
+    print(f"\nself-test: {total - failures}/{total} checks can fire")
     return failures
 
 

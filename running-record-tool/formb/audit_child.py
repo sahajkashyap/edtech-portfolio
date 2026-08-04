@@ -44,6 +44,56 @@ WHAT IT CHECKS
   9  context          What the passage assumes the child has at home -- a pet,
                       a farm, food that is always there.
 
+WHAT THE SECOND PASS ADDED (checks 10-18)
+
+Checks 1-9 all ask one shape of question: is THIS word, in THIS item, one the
+child has? Everything below asks a question that shape cannot reach -- because
+the defect lives in a field nobody scans, or in the SENSE rather than the word,
+or only in the 36 items taken together.
+
+ 10  notes            The *_note and instrument_claim fields. fields_of() never
+                      looked at them, because they were assumed to be for the
+                      examiner. index.html appends L.note into #passage, the
+                      same element the items are in. Lessons 13 and 14 print
+                      "nad (slang)" -- a word this file's own PSEUDO_BANNED
+                      calls "slang for a testicle" -- onto the page, along with
+                      eight real words during a decoding measure.
+ 11  register         Decodability forbids apostrophes, so the corpus writes
+                      "can not", "do not", "Let us". A child who reads for
+                      meaning says "can't", "don't", "let's" -- and a running
+                      record scores each as a substitution. The instrument
+                      penalises the child who understands it.
+ 12  sense            A word inside the child's vocabulary, used in a sense the
+                      child does not have. "pop" thirteen times meaning PUT.
+                      word_age rates the lemma; nobody rates the sense.
+ 13  polysemy         Check 4 hand-wrote ONE rule for `den` ("one instrument
+                      should not teach two senses"). This generalises it. `cap`
+                      is a hat in six lessons and a lid in three.
+ 14  literal          "A mug is a pot." "The cap is a fan." Sentences that are
+                      false as written. A literal-minded or EAL five-year-old
+                      stops dead, and the stop is scored as disfluency.
+ 15  failure          The reader of these pages is a child being assessed
+                      BECAUSE reading is hard. "Dan can not dip it, but Pam
+                      can." is a peer-competence comparison handed to them
+                      mid-test. Check 7 misses it: nobody is sad, so nothing
+                      needs resolving.
+ 16  agency           Who fixes it. Every repair in the corpus is Dad's -- the
+                      ax, the pin, the log the children could not lift. Mom
+                      explains, directs and hugs, and never touches a tool. And
+                      of 29 pronouns across the 36 items, 28 are masculine: no
+                      girl in the instrument is ever "she".
+ 17  event            Every word known, the EVENT unknown. Waxing a cut log.
+                      Composting. Check 9 asks what the child HAS at home;
+                      this asks what the child has ever SEEN done.
+ 18  cast             Twenty-nine named characters over a year, three of them
+                      not Anglo -- and decodability did not force that. Jin,
+                      Rin, Min, Han, Tam, Nam, Lin and Kim are all CVC.
+
+Checks 13, 16 and 18, plus the animal half of 9, are CORPUS-level: they run in
+corpus_checks() over the whole folder and report against lesson 0. Asking them
+of a subset would be asking a question three lessons cannot answer, so
+audit(whole_set=False) skips them.
+
 SEVERITY
 
   BLOCK   never ship. A blocked word, or a pseudoword that is a real word.
@@ -263,7 +313,7 @@ TOPICS = [
     ("nut allergy", r"\bnuts?\b",
      "nut allergy is the commonest food protocol in a primary school, and this "
      "instrument uses nuts as its default prop across seven lessons."),
-    ("sharps", r"\bpins?\b|\btacks?\b",
+    ("sharps", r"\bpins?\b|\btacks?\b|\bax\b|\baxe\b|\bsaw\b",
      "check whether it is a CHILD handling them; a grown-up doing it reads "
      "differently."),
     ("rats", r"\brats?\b",
@@ -311,6 +361,213 @@ ACCEPTED = {
         "Lesson 40 is the model, not the problem: the fox is watched from a "
         "log, with a grown-up, and Dad says 'do not run'. Nobody touches it.",
 }
+
+# ---------------------------------------------------------------------------
+# CHECK 10 -- the fields nobody scanned.
+#
+# These were written for the examiner, so fields_of() skips them. But
+# index.html builds the word-list card like this:
+#
+#     if (L.note){ nt.className='wlnote'; nt.textContent = L.note;
+#                  passageEl.appendChild(nt); }
+#
+# passageEl is #passage -- the element the child's five words live in. There is
+# no separate child stimulus page in this tool, so whatever the child reads
+# from, the note is on it. Everything in checks 1-9 applies to these fields too.
+# ---------------------------------------------------------------------------
+NOTE_FIELDS = ("nwf_note", "supply_note", "instrument_claim")
+
+# ---------------------------------------------------------------------------
+# CHECK 11 -- the register decodability forces, and what it costs at scoring.
+#
+# Each entry: the written form, what a fluent child actually says, and whether
+# a running record will call that a substitution.
+# ---------------------------------------------------------------------------
+CONTRACTIBLE = {
+    r"\bcan not\b": "can't",
+    r"\bdo not\b": "don't",
+    r"\blet us\b": "let's",
+    r"\bdid not\b": "didn't",
+    r"\bis not\b": "isn't",
+    r"\bare not\b": "aren't",
+    r"\bdoes not\b": "doesn't",
+    r"\bi am\b": "I'm",
+    r"\bit is\b": "it's",
+    r"\bwe are\b": "we're",
+    r"\blet me\b": "lemme",
+}
+# The forms above that no six-year-old says aloud at all, contraction or not.
+UNSPOKEN_REGISTER = {
+    r"\blet us\b": "'Let us look at bugs' is not a register any six-year-old "
+                   "speaks. It reads as archaic, and the child will say "
+                   "\"let's\", which scores as an error.",
+}
+
+# ---------------------------------------------------------------------------
+# CHECK 12 -- the word is known, the SENSE is not.
+#
+# word_age.check('pop') passes, and it is right to: children know 'pop'. They
+# know it as a bang and as a fizzy drink. They do not know it as PUT. This is
+# the same failure mode as check 4 but one level down -- check 4 rejects a
+# word, this rejects a use of a word that is fine elsewhere.
+# ---------------------------------------------------------------------------
+SENSE_RULES = [
+    (r"\bpops?\b(?!\s*(up|out)\b)",
+     "REVIEW",
+     "'pop' meaning PUT ('pop buns in a bag', 'pops a cap on the pot') is "
+     "British-colloquial and adult. A five-year-old's senses of 'pop' are "
+     "burst and fizzy drink, so the sentence pictures buns exploding. It is "
+     "used this way thirteen times across the instrument. 'Put' is the child's "
+     "word; where 'put' is not decodable yet, rewrite the action."),
+    (r"\bsets?\b(?!\s*(up)\b)",
+     "REVIEW",
+     "'set' meaning PUT ('Mom set a bud in the mug', 'Nan sets a lid on top'). "
+     "A child's 'set' is a set of things. Same substitution-for-decodability "
+     "problem as 'pop'."),
+    (r"\bfits? a \w+ on\b",
+     "REVIEW",
+     "transitive 'fit' ('Meg fits a cap on the tub'). A child's 'fit' is "
+     "intransitive -- does it fit. Fitting one thing onto another is an "
+     "adult's use."),
+    (r"\bon a peg\b|\bup on the peg\b",
+     "REVIEW",
+     "'peg' meaning a wall hook is British. An American five-year-old's peg is "
+     "a clothes peg or a peg in a hole, and a mug hanging on one has no "
+     "picture."),
+    (r"\b(and|,)? ?\w+ tag in\b|\bdog tag\b",
+     "REVIEW",
+     "'tag' as an intransitive verb ('Sid and the dog tag in the fog'). You "
+     "PLAY tag; nobody tags. The sentence is not English a child has heard."),
+]
+
+# ---------------------------------------------------------------------------
+# CHECK 13 -- two senses of one word across the instrument, generalised.
+#
+# CONTEXT_RULES already carries this rule for `den`, written by hand, at one
+# word. The principle is not about den: a child who is still building the word
+# is being shown two different things behind it inside a single measure. Each
+# entry names the senses and how to spot each one. Order matters -- the first
+# pattern that matches wins, so the narrower sense goes first.
+# ---------------------------------------------------------------------------
+SENSE_KEYS = {
+    "cap": [
+        ("a lid", r"\b(fits?|fit|pops?|pop|put) (a|the) cap (on|onto) the "
+                  r"(tub|pot|rip|bin|jug|box)\b|\bcap on the (tub|pot|rip)\b"),
+        ("a hat you wear", r"\bcap\b"),
+    ],
+    "den": [
+        ("an animal's home", r"\b(fox|cub|cubs) [^.!?]*\bden\b|"
+                             r"\bden\b[^.!?]*\b(fox|cub|cubs)\b"),
+        ("a room in the house", r"\bden\b"),
+    ],
+    "fan": [
+        ("to fan somebody", r"\bfans (him|her|it|me)\b"),
+        ("the machine", r"\bfan\b"),
+    ],
+    "pot": [
+        ("a plant pot", r"\b(bud|buds|mug is a pot)\b[^.!?]*\bpot\b|"
+                        r"\bpot\b[^.!?]*\b(bud|buds)\b"),
+        ("a cooking pot", r"\bpot\b"),
+    ],
+}
+
+# ---------------------------------------------------------------------------
+# CHECK 14 -- sentences that are false as written.
+#
+# A running record scores hesitation and self-correction. A child who stops to
+# work out how a mug can be a pot is scored as less fluent for thinking. The
+# two in this corpus are both said by a PARENT, which makes them assertions of
+# fact rather than jokes the child is invited to get.
+# ---------------------------------------------------------------------------
+LITERAL_FALSE = [
+    (r"\b(a|the) (\w+) is (a|the) (\w+)\b",
+     "an 'X is a Y' identity statement between two different concrete things. "
+     "Read it literally, the way a five-year-old, an EAL child or a literal "
+     "thinker will: it is false. Say what is meant -- 'we can use the mug as a "
+     "pot', 'Dad waves the cap' -- or cut it."),
+]
+# Pairs already judged fine (a real category statement, not a metaphor).
+LITERAL_OK = {("cap", "bed"), ("bug", "bug")}
+
+# ---------------------------------------------------------------------------
+# CHECK 15 -- what the page says to the child who is failing at it.
+#
+# These pages are handed to the child who finds reading hardest, with an adult
+# watching and a stopwatch running. That is the reading context, and no check
+# so far has taken it into account. Check 7 asks whether a CHARACTER's feeling
+# resolves. This asks what the READER hears.
+# ---------------------------------------------------------------------------
+FAILURE_RULES = [
+    (r"\b(\w+) can not [^.!?,]{1,20}, but (\w+) can\b",
+     "HIGH",
+     "an explicit peer-competence comparison -- this child cannot, that child "
+     "can -- handed to a child who is at that moment failing a task in front "
+     "of an adult. Give both children the action, or let the same child "
+     "succeed on the second try."),
+    (r"\bI do not see\b|\bI can not see\b",
+     "REVIEW",
+     "a child who cannot SEE what an adult can see, is corrected, and is sad "
+     "about it. This is the shape of the assessment the child is sitting in. "
+     "Let the child spot it first, or make the adult the one who misses it."),
+    (r"\bhe is not big\b|\bshe is not big\b|\bis not big\b",
+     "REVIEW",
+     "the child's own body named as the reason they cannot. Make the obstacle "
+     "the situation, not the child."),
+    (r"\bdo the wax\b|\bdo the \w+,\" said (Dad|Mom)\b",
+     "REVIEW",
+     "the child is stopped from the real task and assigned a lesser one by an "
+     "adult. Read whether it lands as being included or as being sidelined."),
+]
+
+# ---------------------------------------------------------------------------
+# CHECK 16 -- who is allowed to solve it, and who is allowed a pronoun.
+#
+# Item-level. The corpus-level counting is in corpus_checks().
+# ---------------------------------------------------------------------------
+REPAIR_VERBS = r"\b(fix|fixes|fixed|cuts?|pins? up|mix wax|sets? .{0,12}up|" \
+               r"tugs? (at )?the log|has an ax|have a pin)\b"
+FEMALE_CAST = {"nan", "pam", "peg", "meg", "deb", "liz", "jan", "sal", "jen",
+               "bev", "val", "kim", "mom"}
+MALE_CAST = {"sam", "tim", "sid", "dan", "ted", "bob", "gus", "tom", "ron",
+             "ned", "hal", "ben", "max", "raj", "zeb", "jon", "pip", "dev",
+             "zac", "reg", "dad"}
+
+# ---------------------------------------------------------------------------
+# CHECK 17 -- every word known, the event unknown.
+#
+# Vocabulary is not comprehension. A child can decode every word of "Dad and
+# Ben mix wax" and have no idea what is happening, because sealing the cut end
+# of a log is not a thing any five-year-old has watched. With no picture, the
+# child reads word by word, which is exactly what the fluency score punishes.
+# ---------------------------------------------------------------------------
+UNFAMILIAR_EVENTS = [
+    (r"\bmix wax\b|\brubs? wax on\b|\bdo the wax\b",
+     "waxing a cut log. Sealing log ends is a thing almost no child has seen "
+     "done, and the passage never says what the wax is for. Every word passes "
+     "the age gate and the scene is still a blank."),
+    (r"\bbuds? rot\b|\btip mud and buds in a bin\b|\brot in the sun\b",
+     "composting. 'The mud and buds rot in the sun' assumes a garden waste "
+     "bin and the idea that rotting is on purpose."),
+    (r"\bpop the rug in a tub\b|\brug in a tub\b",
+     "washing a rug by hand in a tub. Most of the audience has only seen a "
+     "washing machine, if that."),
+    (r"\bdigs? up a (cup|mug|pot)\b",
+     "digging crockery out of the ground and keeping it. Read whether the "
+     "child can picture why a cup was in the mud."),
+    (r"\bmug is up on a peg\b",
+     "a mug hanging on a wall peg, out of a child's reach, as the premise of "
+     "the whole passage."),
+]
+
+# ---------------------------------------------------------------------------
+# CHECK 18 -- the cast, over a whole year.
+#
+# Corpus-level. Decodable CVC does not mean Anglo: Jin, Rin, Min, Han, Tam,
+# Nam, Lin, Bo, Kip, Kim, Raj, Dev, Zeb all fit the same letter budget.
+# ---------------------------------------------------------------------------
+NON_ANGLO_CAST = {"raj", "dev", "zeb"}
+DECODABLE_ALTERNATIVES = ("Jin, Rin, Min, Han, Tam, Nam, Lin, Bo, Kip, Kim, "
+                          "Ravi (later), Nia")
 
 FIELDS = ("real_words", "nonsense_words", "high_frequency", "sentences", "lines")
 SEVERITIES = {"BLOCK": 0, "HIGH": 1, "REVIEW": 2}
@@ -545,6 +802,321 @@ def check_context(doc, found):
                   "whole lesson", text[:80])
 
 
+# --- checks 10-18 ----------------------------------------------------------
+def note_fields_of(doc):
+    """The fields fields_of() deliberately skips. index.html prints these onto
+    the same element as the items, so the child sees them."""
+    out = []
+    for key in NOTE_FIELDS:
+        if doc.get(key):
+            out.append((key, doc[key]))
+    for key in doc:
+        if key.endswith("_note") and key not in NOTE_FIELDS and doc.get(key):
+            out.append((key, doc[key]))
+    return out
+
+
+def check_notes(doc, found):
+    """One finding per lesson, not per word -- a writer moves the whole note,
+    not each word out of it."""
+    fields = note_fields_of(doc)
+    if not fields:
+        return
+    blocked, banned, leaks, chars = set(), {}, set(), 0
+    for label, text in fields:
+        chars += len(text)
+        for w in tokens(text):
+            if w in BLOCKED:
+                blocked.add(w)
+            if w in PSEUDO_BANNED:
+                banned[w] = PSEUDO_BANNED[w]
+        for q in re.findall(r'"([a-z]+)"', text.lower()):
+            if is_real(q):
+                leaks.add(q)
+    first_label, first_text = fields[0]
+    if blocked:
+        found("BLOCK", "notes", ", ".join(sorted(blocked))[:24],
+              "BLOCKED words printed on the page. index.html does "
+              "`nt.textContent = L.note; passageEl.appendChild(nt)`, so the "
+              "note lands in #passage -- the same element the child's items "
+              "are in. 'Examiner-only' was an assumption about these fields; "
+              "the renderer does not honour it.", first_label, first_text)
+    if banned:
+        found("BLOCK", "notes", ", ".join(sorted(banned))[:24],
+              "this same file refuses these as test items -- %s -- and then "
+              "prints them, spelled out, onto the child's page in the "
+              "rationale for refusing them. A reason is not a hiding place."
+              % "; ".join("%s: %s" % (k, v) for k, v in sorted(banned.items())),
+              first_label, first_text)
+    if leaks:
+        found("HIGH", "notes", ", ".join(sorted(leaks))[:24],
+              "real words (%s) printed on the page of a measure whose whole "
+              "premise is that the child cannot recognise the items. Move "
+              "every note out of the child-visible field and into an "
+              "examiner-only one the renderer does not draw."
+              % ", ".join(sorted(leaks)), first_label, first_text)
+    if chars > 200:
+        found("REVIEW", "notes", "%d chars" % chars,
+              "%d characters of adult prose in %d fields, on a five-year-old's "
+              "page. Even unread it says: this page is not for you. It is also "
+              "longer than everything the child is asked to read."
+              % (chars, len(fields)), first_label, first_text)
+
+
+def check_register(doc, found):
+    """One finding per lesson listing every contractible form in it."""
+    hits, unspoken = {}, []
+    example = ("", "")
+    for label, text in fields_of(doc):
+        if label.startswith(("nonsense_words", "real_words", "high_frequency")):
+            continue
+        low = text.lower()
+        for pattern, spoken in CONTRACTIBLE.items():
+            m = re.search(pattern, low)
+            if not m:
+                continue
+            hits[m.group(0)] = spoken
+            if not example[0]:
+                example = (label, text)
+            if pattern in UNSPOKEN_REGISTER:
+                unspoken.append((m.group(0), UNSPOKEN_REGISTER[pattern],
+                                 label, text))
+    for hit, why, label, text in unspoken:
+        found("HIGH", "register", hit, why, label, text)
+    plain = {k: v for k, v in hits.items()
+             if not any(k == u[0] for u in unspoken)}
+    if plain:
+        found("REVIEW", "register", ", ".join(sorted(plain))[:24],
+              "uncontracted forms a fluent child will not say aloud: %s. A "
+              "running record scores each spoken contraction as a "
+              "substitution, so this instrument marks down the child who is "
+              "reading for meaning -- and no field anywhere in these files "
+              "tells the examiner otherwise."
+              % "; ".join("'%s' -> \"%s\"" % (k, v)
+                          for k, v in sorted(plain.items())),
+              example[0], example[1])
+
+
+def check_sense(doc, found):
+    for label, text in fields_of(doc):
+        if label.startswith("nonsense_words"):
+            continue
+        low = text.lower()
+        for pattern, severity, why in SENSE_RULES:
+            m = re.search(pattern, low)
+            if m:
+                # name the finding after the lemma so pop/pops are one fix
+                item = re.sub(r"s\b", "", m.group(0).strip().split()[-1]) \
+                    if m.group(0).strip().split() else m.group(0)
+                found(severity, "sense", item, why, label, text)
+
+
+def check_literal(doc, found):
+    for label, text in fields_of(doc):
+        if label.startswith(("nonsense_words", "real_words", "high_frequency")):
+            continue
+        for pattern, why in LITERAL_FALSE:
+            for m in re.finditer(pattern, text.lower()):
+                a, b = m.group(2), m.group(4)
+                if a == b or (a, b) in LITERAL_OK or (b, a) in LITERAL_OK:
+                    continue
+                if a in CAST or b in CAST:
+                    continue
+                found("HIGH", "literal", "%s is a %s" % (a, b), why, label, text)
+
+
+def check_failure(doc, found):
+    for label, text in fields_of(doc):
+        if label.startswith("nonsense_words"):
+            continue
+        low = text.lower()
+        for pattern, severity, why in FAILURE_RULES:
+            m = re.search(pattern, low)
+            if m:
+                found(severity, "failure", m.group(0)[:24], why, label, text)
+
+
+def check_agency(doc, found):
+    """Item-level half of check 16: an adult present, and the adult doing the
+    repair while the child watches or is told no."""
+    lines = list(doc.get("lines") or [])
+    if not lines:
+        return
+    text = " ".join(lines)
+    if not re.search(r"\b(Mom|Dad)\b", text):
+        return
+    adult = "Dad" if "Dad" in text else "Mom"
+    repairs = [ln for ln in lines
+               if re.search(r"\b(Mom|Dad)\b", ln)
+               and re.search(REPAIR_VERBS, ln, re.I)]
+    child_blocked = [ln for ln in lines
+                     if re.search(r'"do not [^"]*," said (Mom|Dad)', ln, re.I)]
+    if repairs:
+        found("REVIEW", "agency", "%s solves it" % adult,
+              "the thing that fixes the story is done by the grown-up. Across "
+              "the 36 items every repair belongs to Dad -- the ax, the pin, "
+              "the log the children could not lift -- and Mom never handles a "
+              "tool. Let the child do the fixing at least as often, and let "
+              "Mom hold the tool sometimes.", "lines", repairs[0])
+    if child_blocked and repairs:
+        found("REVIEW", "agency", "told no, then watches",
+              "the child is told not to, and then watches the adult do it. "
+              "That is the shape of the assessment the reader is sitting in.",
+              "lines", child_blocked[0])
+
+
+def check_event(doc, found):
+    for label, text in fields_of(doc):
+        if label.startswith(("nonsense_words", "real_words", "high_frequency")):
+            continue
+        low = text.lower()
+        for i, (pattern, why) in enumerate(UNFAMILIAR_EVENTS):
+            m = re.search(pattern, low)
+            if m:
+                # keyed by the RULE, not the wording, so one unfamiliar event
+                # is one finding however many lines it spreads over
+                found("REVIEW", "event", why.split(".")[0][:24], why,
+                      label, text)
+
+
+def corpus_checks(docs, found_corpus):
+    """Checks that no single item can fail. A child meets all of these across a
+    year; these are the questions you can only ask of the set.
+
+    Only meaningful over the WHOLE folder -- audit() skips it for a subset,
+    because "28 masculine pronouns across the set" is not a claim you can make
+    from three lessons."""
+    n = len(docs)
+    def visible(doc):
+        return " ".join(t for l, t in fields_of(doc)
+                        if not l.startswith("nonsense_words"))
+
+    # --- 13: one word, two senses, across lessons --------------------------
+    for word, senses in SENSE_KEYS.items():
+        where = {}
+        for doc in docs:
+            for ln in re.split(r"(?<=[.!?])\s+", visible(doc)):
+                if not re.search(r"\b%s\b" % word, ln, re.I):
+                    continue
+                for name, pattern in senses:
+                    if re.search(pattern, ln.lower()):
+                        where.setdefault(name, set()).add(doc["lesson"])
+                        break
+        if len(where) > 1:
+            parts = "; ".join(
+                "%s in L%s" % (name, ",".join(str(x) for x in sorted(ls)))
+                for name, ls in sorted(where.items()))
+            found_corpus("REVIEW", "polysemy", word,
+                         "'%s' carries two senses inside one instrument (%s). "
+                         "A child still building the word is shown two "
+                         "different things behind it. Pick one sense for the "
+                         "whole instrument, or name the other thing." % (word, parts),
+                         "corpus", parts)
+
+    # --- 16: gendered agency, over the whole set ---------------------------
+    male = female = 0
+    male_names = collections_counter()
+    female_names = collections_counter()
+    sad_boys, sad_girls = set(), set()
+    for doc in docs:
+        t = visible(doc)
+        male += len(re.findall(r"\b(he|him|his)\b", t, re.I))
+        female += len(re.findall(r"\b(she|her|hers)\b", t, re.I))
+        for m in re.finditer(r"said ([A-Z][a-z]+)", t):
+            who = m.group(1).lower()
+            if who in FEMALE_CAST:
+                female_names[who] += 1
+            elif who in MALE_CAST:
+                male_names[who] += 1
+        for ln in (doc.get("lines") or []):
+            m = re.search(r"\b([A-Z][a-z]+) is (sad|mad)\b", ln)
+            if m:
+                (sad_girls if m.group(1).lower() in FEMALE_CAST
+                 else sad_boys).add(doc["lesson"])
+    if male and female * 4 < male:
+        found_corpus("HIGH", "agency", "pronouns %d:%d" % (male, female),
+                     "%d masculine pronouns and %d feminine across all %d "
+                     "items. Girls appear only as names attached to actions; "
+                     "no girl in the instrument is ever 'she'. A pronoun is "
+                     "where a reader sits inside a character, and that seat is "
+                     "male throughout. Give the girls the pronouns and the "
+                     "interior lines." % (male, female, n), "corpus", "")
+    mt, ft = sum(male_names.values()), sum(female_names.values())
+    if mt and ft * 2 < mt:
+        found_corpus("REVIEW", "agency", "speaks %d:%d" % (mt, ft),
+                     "boys and men carry %d of the %d speaking turns. Over a "
+                     "year the child hears the instrument talk in a male "
+                     "voice." % (mt, mt + ft), "corpus", "")
+    if sad_boys and not sad_girls:
+        found_corpus("REVIEW", "agency", "only boys feel",
+                     "every named feeling in the instrument belongs to a boy "
+                     "(L%s); no girl is ever sad, and no girl is ever "
+                     "comforted. The inner life of the set is entirely male."
+                     % ",".join(str(x) for x in sorted(sad_boys)), "corpus", "")
+
+    # --- 18: the cast, over a whole year -----------------------------------
+    cast_seen = set()
+    for doc in docs:
+        for m in re.finditer(r"\b([A-Z][a-z]{1,3})\b", visible(doc)):
+            who = m.group(1).lower()
+            if who in FEMALE_CAST or who in MALE_CAST or who in NON_ANGLO_CAST:
+                cast_seen.add(who)
+    cast_seen -= {"mom", "dad"}
+    diverse = cast_seen & NON_ANGLO_CAST
+    if cast_seen and len(diverse) * 6 < len(cast_seen):
+        found_corpus("REVIEW", "cast", "%d of %d" % (len(diverse), len(cast_seen)),
+                     "%d named characters across the year, %d of them not "
+                     "Anglo (%s). Decodability did not force this -- %s all "
+                     "fit the same letter budget. Every child in the class "
+                     "sits this instrument."
+                     % (len(cast_seen), len(diverse),
+                        ", ".join(sorted(diverse)) or "none",
+                        DECODABLE_ALTERNATIVES), "corpus", "")
+
+    # --- 11, corpus half: nothing warns the examiner -----------------------
+    contractible_lessons = {
+        doc["lesson"] for doc in docs
+        if any(re.search(p, visible(doc), re.I) for p in CONTRACTIBLE)}
+    warns = any(re.search(r"contraction|can't|don't|not an error",
+                          json.dumps(doc), re.I) for doc in docs)
+    if contractible_lessons and not warns:
+        found_corpus("HIGH", "register", "no examiner warning",
+                     "%d of the %d items are written in uncontracted forms a "
+                     "fluent child will not say, and not one field anywhere in "
+                     "the data tells the examiner that \"can't\" for \"can "
+                     "not\" is not an error. Add one line to instrument_claim "
+                     "and to every passage: contractions of the written form "
+                     "are read as correct." % (len(contractible_lessons), n),
+                     "corpus", "")
+
+    # --- animals: present in the check, absent from the role ---------------
+    # check 9 asks whether the child has a pet. It never asks what the animal
+    # DOES. In this corpus the animal is nearly always the one causing the mess.
+    # The tell is a quoted line that names the animal AND says "not" -- the
+    # animal being told off. "Not the buns, dog!"  "Not in the pot, cat!"
+    ANIMAL = r"dog|cat|pup|rat|bug|pig|hen|fox|hog|ox"
+    culprit = set()
+    for doc in docs:
+        for quote in re.findall(r'"([^"]+)"', visible(doc)):
+            if re.search(r"\b(%s)s?\b" % ANIMAL, quote, re.I) and \
+                    re.search(r"\bnot\b", quote, re.I):
+                culprit.add(doc["lesson"])
+    if len(culprit) >= 5:
+        found_corpus("REVIEW", "context", "the animal is the culprit",
+                     "in %d items (L%s) the animal is the one who takes, "
+                     "dirties or sits on the thing, and a child puts it right. "
+                     "No single passage is a problem; the year teaches that "
+                     "the pet is the trouble. Let an animal help, or be the "
+                     "one helped, at least once."
+                     % (len(culprit), ",".join(str(x) for x in sorted(culprit))),
+                     "corpus", "")
+
+
+def collections_counter():
+    import collections
+    return collections.Counter()
+
+
 # --- driver ----------------------------------------------------------------
 def corpus_index(docs):
     """Which lessons use each word LOWERCASE -- i.e. as an ordinary word and
@@ -561,7 +1133,7 @@ def corpus_index(docs):
     return words, {k: sorted(v) for k, v in lessons.items()}
 
 
-def audit(paths):
+def audit(paths, whole_set=True):
     docs = [json.loads(p.read_text()) for p in paths]
     corpus_words, corpus_lessons = corpus_index(docs)
     all_findings = []
@@ -587,6 +1159,13 @@ def audit(paths):
         check_feelings(doc, found)
         check_topics(doc, found)
         check_context(doc, found)
+        check_notes(doc, found)
+        check_register(doc, found)
+        check_sense(doc, found)
+        check_literal(doc, found)
+        check_failure(doc, found)
+        check_agency(doc, found)
+        check_event(doc, found)
 
         # One finding per (check, item) per lesson, carrying how many times it
         # occurs. A teacher fixes the word, not each line separately.
@@ -600,6 +1179,22 @@ def audit(paths):
             first[k] = r
             order.append(k)
         all_findings += [first[k] for k in order]
+
+    # Checks that no single item can fail. Reported against lesson 0 -- they
+    # belong to the instrument, not to any one page.
+    corpus_rows = []
+
+    def found_corpus(severity, check, item, why, label, text):
+        key = "0:%s:%s" % (check, item)
+        if key in ACCEPTED:
+            return
+        corpus_rows.append({"lesson": 0, "severity": severity, "check": check,
+                            "item": item, "why": why, "field": label,
+                            "text": text, "times": 1})
+
+    if whole_set:
+        corpus_checks(docs, found_corpus)
+        all_findings += corpus_rows
 
     all_findings.sort(key=lambda r: (SEVERITIES[r["severity"]], r["lesson"]))
     return all_findings
@@ -629,7 +1224,7 @@ def main(argv=None):
         print("no lesson files in %s" % folder)
         return 2
 
-    findings = audit(paths)
+    findings = audit(paths, whole_set=not args.lessons)
     if args.check:
         findings = [f for f in findings if f["check"] == args.check]
 

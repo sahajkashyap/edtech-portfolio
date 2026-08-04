@@ -153,6 +153,35 @@ pops up! Ten nuts are in his lap." — a lid popping off does not throw the
 contents into your lap; the pot has to tip. L21: a pig inside a pen cannot tip a
 tub the children are still carrying toward it.)*
 
+**3.6 The preposition must name the real spatial relation — and if the true
+preposition is not decodable yet, change the story, not the preposition.**
+Rule 3.1 checks verb-noun pairs; the preposition goes unchecked and it is where
+the geometry actually lives.
+
+At lessons 15–41 the decodable preposition inventory is essentially **at, in,
+on, up, of, to**. `over`, `under`, `through`, `into`, `onto`, `behind`,
+`beside`, `across` are all untaught. So any plot whose central action is *cover*,
+*trap beneath*, *pass through* or *put inside* can only be written by using a
+preposition that says something false:
+
+- **L22** — the whole plot is trapping a bug **under** a pot. Written: "Ted pops
+  a pot **on** it." On the bug is where the pot would crush it. The title then
+  promises "The Bug **in** the Pot", a third relation that never occurs.
+- **L24** — a rat gets **through** a tear. Written: "A rat hops **in** the rip!"
+  which puts the rat inside the tear itself.
+- **L16** — "Sid, Pam and a dog sit **at** a mat." You sit *on* a mat, and `on`
+  is fully decodable here; line 8 then says "nap **on** the mat," so one relation
+  gets two prepositions in one passage.
+
+The fix is at story-selection time. If the passage needs `under` or `through` to
+be true, pick a different passage. A lie about where a thing is costs more than a
+lost plot: the child builds the wrong picture and then miscues on the line that
+contradicts it.
+
+> **[MECHANICAL]** Whitelist the decodable prepositions per lesson. Flag any
+> passage whose title and body use different prepositions for the same
+> noun pair, and any noun that takes two different prepositions in one passage.
+
 ---
 
 ## 4. Reference and introduction
@@ -250,6 +279,52 @@ twice, L29, L32, L33, L34).
 > **[MECHANICAL]** Count final lines by pattern across the whole set. No pattern
 > may exceed 15% (4 of 27).
 
+**6.6 Dialogue must be in the register of the speaker's age, not merely be
+humanly sayable.** Rule 6.1 asks "would a real person say this?" — which passes
+lines no *child* would ever say, and lines no *parent* would ever say. Both drifts
+are present:
+
+- **A child talking like an adult.** L38: "**You fix a lot**," said Tim — a
+  summative judgement about a parent's character. A six-year-old says "Thanks,
+  Dad!" L34: "**The cat can have the rug**," said Zeb — granting property
+  rights. L28: "**Deb wins**," said Ned — refereeing a game nobody was playing.
+- **An adult talking like a textbook.** L19: "**A mug is a pot**," said Mom — a
+  definition, not a sentence a mother says. L24: "**Buds rot in a hot bin**,"
+  said Mom — a generic scientific truth.
+
+**6.7 Read every line aloud as an adult, not just the title.** Rule 7.5 applies
+this test to titles only; the body is where it is actually failing, because
+literal decodable words keep colliding with fixed adult expressions.
+
+- **L39** — "Dad sets the log on the mud. **The bugs dig in.**" *Dig in* is the
+  idiom for *start eating heartily*. The last line of the passage is a joke.
+- **L31** — "Ben, **do the wax**," said Dad — reads as grooming.
+- **L22** — "**Do not tap it**," said Gus — has an adult slang reading.
+
+**6.8 Vary the OPENING and every recurring line, not only the ending.** Rule 6.5
+counts final lines and nothing else, so two much larger repetitions ran straight
+through it:
+
+- **Openings.** 15 of 27 passages open with `<Name> and <Name>` as the subject.
+  Eight of those open with the identical frame **`<Name> and <Name> sit …`**
+  (L15, L16, L17, L20, L28, L29, L33, L40 — "Nan and Pip sit on a mat," "Deb and
+  Ned sit in the sun," "Ben and Dad sit on a log"). Six of 27 put the sun in the
+  first line (L20, L23, L28, L29, L37, L39). Nearly a third of the set opens on
+  two characters at rest on a surface — no want, no motion, no reason to turn to
+  line 2.
+- **Mid-passage catchphrases.** Six of 27 contain the same verbless scold at an
+  animal: "Dog! Not the cap!" (L17), "Not in the pot, cat!" (L20), "Not the
+  buns, dog!" (L21), "Bug, not the bag!" (L22), "Not in the bin, rat!" (L24),
+  "Not on the rug, pup!" (L37). Five of 27 open a line of dialogue with "Do not
+  …" (L22, L29, L30, L31, L34).
+
+The opening does more work than the ending. It is where the child sets their
+reading rate, and where the teacher's running record begins.
+
+> **[MECHANICAL]** Run the 6.5 pattern count over *first* lines and over *all*
+> lines, not just last lines. Cap any first-line frame at 15%. Flag any quoted
+> sentence whose first two words recur in 4+ passages.
+
 ---
 
 ## 7. Titles
@@ -271,6 +346,24 @@ for a story about one rat.
 
 **7.5 Read the title aloud as an adult before shipping it.** "The Nut Bag"
 (L38) has an adult slang reading. So does "In the Bag" (L30), mildly.
+*(See 6.7 — this test must be run over every line, not only the title.)*
+
+**7.6 A title may not be a verbatim line of the passage.** The title is read
+first and it is read aloud. If it is also line 1, the child decodes that sentence
+once as a title and then *recalls* it as their first scored line — so the running
+record opens with a word count the child never actually read.
+
+- **L26** — title "Ned Can Not See His Cap"; line 1 "Ned can not see his cap."
+  Identical, seven words, the whole first line of the record.
+- **L30** — title "Do Not Look in the Bag"; line 2 "\"Do not look in the bag,\"
+  said Sal."
+- Near-misses to watch: L41 "The Bug Hops Up" / "The bug hops up on a bag";
+  L27 "Hal Hops and Hops" / "He hops and hops"; L32 "The Fan Quits" / "But the
+  fan quits and Max hops up."
+
+> **[MECHANICAL]** Lowercase and strip punctuation from the title and from every
+> line. Fail on exact match; flag when the title's content words are a subset of
+> any one line's.
 
 ---
 
@@ -308,6 +401,144 @@ L22, L35).
 
 ---
 
+## 9. Sound
+
+Rules 1–8 are all about grammar, sense and story. None of them listen. But this
+text is never read silently — it exists only as sound in a child's mouth, and the
+sound is what the teacher scores.
+
+**9.1 No rhyme inside a sentence.** Two CVC words sharing a rime in one sentence
+turn the line into a chant. A chanting child stops decoding and starts
+predicting, and their accuracy score measures the wrong thing. 31 instances:
+
+- L41: "**A bug hops on a rug.**" — the first line of the passage, five words,
+  a perfect rhyme.
+- L34: "A tan **cat** hops up and naps on the **hat**." then "The **cat** is on
+  the **hat**!"
+- L37: "Bev and Jon have the **bun** in the **sun**." L39: "Gus and Jen **run**
+  in the **sun**."
+- L29: three lines in a row rhyme **jug/mug** ("Raj has a jug and a mug," "Do
+  not tug at the jug," "Raj dips the mug in the jug").
+- L16: "Sid and the dog **tag** in the **fog**" (and the title, "Tag in the
+  Fog"). L33: "**Gus** and Mom sit in a **bus**."
+
+CVC decodables make rhyme almost free, which is exactly why it has to be
+deliberate. Keep a rhyme only if the passage wants it *everywhere*; never one
+line in nine.
+
+**9.2 Two words in one sentence may not be one phoneme apart** — and this
+applies hardest to character names. When the child says the wrong one, the
+teacher cannot tell what the error was: a decoding failure on the target sound,
+an eye-slip to the neighbouring word, or a name confusion. The miscue becomes
+unattributable, and an unattributable miscue is a hole in the assessment.
+
+- **L18 casts `Peg`, `Meg` and `Ted`.** Peg and Meg differ by one phoneme, are
+  both female, and both handle the bin and the cap: "Ted met Meg at the bin." /
+  "Meg got the cap in the bin!" / "Ted got the cap to Peg."
+- **L35 casts `Jan` and `Dan`** and puts them side by side three times: "Jan,
+  Dan and Sal are on a rug." / "Jan and Dan have buns and jam." / "Dan lets Jan
+  have a bit of his bun." (Plus **jam** — one phoneme from both.)
+- **L31's payoff line** is one phoneme from its setup: "**Ben, do the wax**,"
+  said Dad → "**Ben did the wax**," said Dad.
+- **L22** runs **bug / bud / bag** through the whole passage: "A **bug** is on a
+  **bag**." / "A **bud** is up in a tub." / "The **bug** is on the **bud**!"
+  Worse, the confusion still makes sense — "A bug is up in a tub" is a sentence
+  this story could contain, so the child gets no self-correction cue and the
+  teacher's meaning-check does not fire. **A minimal-pair miscue must produce
+  nonsense.** If both readings work, rename one.
+- Also L26 (can/cap, three lines), L27 (tug/tub), L34 (has/hat, cat/can), L19
+  (mud/mug), L16 (Sid/sit, Pam/pan).
+
+**9.3 No consonant pile-up across a word boundary.** A stumble here is scored as
+the child's error. Watch runs of /s/ and /z/, and stop-to-stop joins:
+
+- L20: "The cat na**ps**. **S**am **s**it**s** in the **s**un."
+- L33: "\"We **s**ee **s**ix van**s**,\" **s**he **s**aid." — five sibilants in
+  five words, plus **see/she** one phoneme apart.
+- L36: "**T**im **t**ips **t**he box up. I**t** fi**ts** in **t**he bin!"
+- L38: "**T**im **t**ips **t**en buns in the bag and zi**ps it**."
+- L22: "Gus and Ted **pop** the **pot** on the tub."
+
+> **[MECHANICAL]** All three are scriptable on the word forms alone, no
+> pronunciation dictionary needed, because the vocabulary is CVC.
+> 9.1 — within each sentence, compare all 3-letter words; fail on equal final two
+> letters with different first letters. 9.2 — fail on Hamming distance 1 between
+> any two words in a sentence, and between any two character names anywhere in a
+> passage. 9.3 — count words per sentence beginning or ending in `s`/`z`; flag 4+.
+
+---
+
+## 10. The passage is a scored instrument
+
+Everything above asks whether the writing is good. These ask whether the *score*
+means anything. A defect here leaves the prose clean and the data wrong.
+
+**10.1 No two lines of a passage may be near-duplicates.** A child who has just
+read a line does not decode its twin — they recite it. The teacher marks those
+words correct, and the accuracy percentage counts words that were never read.
+This is the one defect that *inflates* a score.
+
+- **L41** is built from a single frame. Title "The Bug Hops Up", then "A bug
+  hops on a rug." / "The bug hops up on a bag." / "Let the bug hop in a pot," /
+  "The bug hops in!" / "The bug hops on the log." — six occurrences in a nine-line
+  passage, and this is the **Short Vowels Review (all)** passage, the one that has
+  to prove the most.
+- **L22** — "Ted **pops a pot on** it." / "Gus **pops a cap on** the pot." / "Gus
+  and Ted **pop the pot on** the tub." / "Ted **pops the cap** up." Four of nine.
+- **L36** — "**Tim tips the box in.**" / "**Tim tips the box up.**" Two lines
+  apart, differing in one particle; plus "tips a bag up" and "Tip the box up."
+- **L21** — line 1 "Bob and Sid pop buns in a bag." and line 6 "Bob and Sid pop
+  the buns in a tub."
+- **L26** — "A dog sits on the mat." / "The dog sits on it!" / "the dog sits on
+  his lap."
+
+Deliberate refrains are allowed *if the child is meant to join in* — L30's three
+"Is it a …?" guesses are a game and they earn their repetition. Nothing else does.
+
+> **[MECHANICAL]** For every pair of lines in a passage, compare content-word
+> sets. Fail on ≥4 shared words with ≤3 differing. This finds L15, L16, L18, L19,
+> L21, L26, L31 immediately.
+
+**10.2 The plot turn may not ride on the word `not` alone.** `not` is
+unstressed, monosyllabic, and the single most-omitted word in a running record.
+When a passage's obstacle is "can not V" and its resolution is the same verb
+without the `not`, dropping one small word turns the passage into a different,
+still perfectly grammatical story — so the teacher records a one-word omission
+and the total comprehension failure underneath it is invisible. It also breaks
+meaning/structure/visual analysis, because the miscue *looks* meaning-preserving.
+
+Eight of 27 passages state their obstacle as "can not": L15, L17, L18, L24, L26,
+L27, L36, L39. Five resolve by removing the `not` and nothing else:
+
+| passage | obstacle | resolution |
+|---|---|---|
+| L15 | "Pip can not tip it up." | "Nan and Pip tip it up." |
+| L18 | "I can not nap," said Peg. | "I can nap," said Peg. |
+| L26 | "Ned can not see his cap." | "Ned can see the cap!" |
+| L36 | "It can not fit." | "It fits in the bin!" |
+| L39 | "We can not tug it up." | "It is up!" |
+
+Give the turn a second signal the child cannot miss — a new actor, a new object,
+or a physical change ("The lid is off," not "It is not on").
+
+**10.3 A line is the teacher's marking unit and the child's return sweep.
+Treat it like one.** Nothing in these rules governs the `lines` array itself,
+and it is inconsistent: lines run 3 to 13 words, and hold anywhere from one to
+four sentences, with no pattern within a passage or across the set. L33 line 2
+is one 12-word sentence — "\"Gus, see a jet, a hat, a bin, ten vans,\" said
+Mom." — and also drops the coordinator before the last item, which no
+six-year-old can supply from the punctuation alone. L23 pairs a 4-word line with
+a 12-word one.
+
+Set a house rule: **one line = one to two sentences and no more than 10 words**,
+and no line that wraps. Rule 1.6 caps the *sentence*; nothing caps the line, and
+the line is what the child's eye and the teacher's pen both work on.
+
+> **[MECHANICAL]** Flag any line over 10 words or holding 3+ sentences. Flag any
+> comma list of 3+ items with no `and` before the final item.
+
+---
+
 ## The five-minute check before shipping a passage
 
 1. Read it aloud. Any sentence you stumble on, rewrite.
@@ -318,5 +549,15 @@ L22, L35).
 5. Cover the last line. Can a six-year-old say what the character wanted, what
    was in the way, and how it ended?
 6. Read the title aloud as an adult. Does it read as English, mean something,
-   and keep the secret?
+   and keep the secret? Is it a line of the passage? Then change it.
 7. `grep` the sentence against Form A. Zero hits.
+8. Read it aloud *again*, listening only for sound. Any two words that rhyme in
+   one sentence, any two that are one sound apart, any place your tongue
+   stumbles — rewrite. Say the character names one after another: can you hear
+   the difference across a classroom?
+9. Cover every line but one and ask: could a child say this line correctly from
+   having read an earlier line? If yes, the score is inflated. Rewrite.
+10. Find the sentence where the story turns. If the turn is the word `not`, add
+    a second signal.
+11. Read only the first lines of the last ten passages you wrote. Do they sound
+    like one passage?

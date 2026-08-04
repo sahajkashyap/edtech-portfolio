@@ -47,7 +47,57 @@ WHAT IT RUNS
   6  index.html drift     the page must be derivable from data/
   7  corpus               properties no per-item gate can see
   8  gate self-test       every gate handed an input it MUST refuse
-  9  sibling audits       audit_curriculum.py / audit_child.py, if present
+  9  sibling audits       audit_curriculum.py / audit_child.py, REQUIRED, plus
+                          their own self-tests and their judgement-call findings
+
+WHAT THE CONVERGENCE PASS ADDED
+-------------------------------
+The question this file could not answer about itself was "can I be made to pass
+something I should refuse?". Fifty-two defects were injected into a copy of the
+36 files and run back through it. Eleven got past, and every one of them was a
+check that could not fire rather than a check that was missing:
+
+  * A claim was read as a STRING. The nwf_note truth test fired only on the
+    literal words "fewer than five", so rewording the note deleted the
+    explanation and the check in one edit. Claims are now read for meaning: a
+    supply claim is matched by what it asserts, a stated count must not
+    understate the real one, and the legal pseudowords a note never names are
+    counted — five unaccounted-for items is a subtest the file is not shipping.
+  * An exemption silenced its neighbours. `accepted("L7 f-supply")` ended in
+    `continue`, which skipped the six checks written after it — including every
+    pseudoword filter — for that lesson.
+  * An exemption could not be refused. `if not accepted("wordlist
+    hand-corrections")` was unreachable, because accepted() returns True
+    whenever the key exists. It guarded a failure that could never print.
+  * A sign-off asserted something nothing checked. ACCEPTED says every word list
+    states its limit "in its instrument_claim field". All nine could be deleted
+    and the run stayed green.
+  * A tolerance had a hole at the bottom. The heart-word count only fired when a
+    lesson had taught five or more, so at Lessons 6-8 the whole subtest could be
+    removed silently. Sentence count was never checked at all, and a repeated
+    item counted as a second item.
+  * Half the coverage was optional. Deleting audit_curriculum.py and
+    audit_child.py left every section green and printed a note. audit_child
+    grades judgement calls REVIEW, which never fail without --strict, and
+    nothing passed --strict: pork, a farm the child has never seen, and a bare
+    "Dad is not mad." all shipped past a green run. The count is now signed off
+    in verified.json and a NEW one fails.
+  * The evidence tripwire had one wire and it was cuttable. A missing
+    verified.json was a note, not a failure — and since a stale manifest made
+    the run dirty, and a dirty run refused to stamp, deleting the manifest was
+    the only way back to green after any honest edit. Missing is now a failure,
+    index.html is hashed too, and --update-manifest can stamp when the manifest
+    is the ONLY thing outstanding.
+  * index.html was checked inside one object. One appended line —
+    LESSONS["41"] = {...} — put an undecodable passage in front of the child
+    with every gate green.
+  * A liveness check punished the repair. "gate 3's stem matching found nothing
+    in the corpus" FAILED when the corpus contained no inflected reuse, so
+    fixing the last two instances turned the suite red. Liveness is proved on a
+    built input now, and the corpus is only reported.
+  * Two functions named legal_pseudowords, in the same folder, disagreed. This
+    one counted two-letter rimes that audit_child rates HIGH and would never
+    ship, so it said thirteen where the shipped notes said nine.
 """
 
 import collections
@@ -166,6 +216,11 @@ WORDLIST_FIELDS = {"lesson", "skill", "form", "instrument", "real_words",
                    "audit_clean", "audit_problems"}
 WORDLIST_OPTIONAL = {"nwf_note", "supply_note", "instrument_claim"}
 
+# Measured, not assumed, and the same set audit_curriculum uses: at these lessons
+# Form A spends every on-target word that exists, so "exercise the sound" and
+# "do not reuse Form A" cannot both be met. See ACCEPTED below.
+ALTERNATE_FORM_IMPOSSIBLE = {6, 7, 8, 10, 11, 12}
+
 # --- accepted limits -------------------------------------------------------
 # A finding is silenced ONLY with a written reason beside it, the same pattern
 # word_age.APPROVED and audit_child.ACCEPTED use. The point is that a limit the
@@ -179,6 +234,12 @@ ACCEPTED = {
         "bank stocks zero f words here. Recorded rather than worked around; the "
         "/f/ sound is first assessable at Lesson 8. Fixing it means adding a "
         "word to the curriculum data, which is a separate decision.",
+    # No check consults this key: it is the written record behind the
+    # instrument_claim field on each word-list file. Section 4 now verifies that
+    # each of those files actually carries the claim, and that the six lessons
+    # named below say they are not a clean alternate form. The sentence "every
+    # file states that in its instrument_claim field" was true when it was
+    # written and, until that check existed, nothing kept it true.
     "wordlist alternate-form impossible":
         "Below Lesson 13 the two requirements 'exercise the lesson's own sound' "
         "and 'do not reuse Form A's words' are mathematically incompatible. "
@@ -228,9 +289,13 @@ def check_schema(R, items):
             continue
 
         want = PASSAGE_FIELDS if d["instrument"] == "passage" else WORDLIST_FIELDS
+        # The optional fields are WORD-LIST fields. Allowing them on a passage too
+        # let a passage file carry an nwf_note that sync_index never renders and
+        # no check ever read: data that looks authoritative and is not on the page.
+        allowed = want | (WORDLIST_OPTIONAL if d["instrument"] == "word list" else set())
         got = set(d)
-        if got - want - WORDLIST_OPTIONAL:
-            extra = sorted(got - want - WORDLIST_OPTIONAL)
+        if got - allowed:
+            extra = sorted(got - allowed)
             if extra:
                 R.fail("%s: unexpected fields %s" % (tag, extra)); bad += 1
         if want - got:
@@ -324,13 +389,23 @@ def check_passages(R, items):
                                  check_formb.cast_of(n))
         if r.get("inflected"):
             inflected[n] = r["inflected"]
-    if inflected:
-        R.info("gate 3's stem matching is catching reuse the old exact-form gate could "
-               "not see: %s" % "; ".join("L%d %s" % (k, ",".join(v))
-                                         for k, v in sorted(inflected.items())))
+    # Liveness has to be proved on an input we control, not on the corpus. The
+    # old version FAILED when `inflected` came back empty — so it rested on
+    # exactly two shipped words (L32 "quits", L33 "vans"), and cleaning those up,
+    # which is the fix the gate exists to prompt, turned the suite red. A check
+    # that punishes the repair is worse than no check.
+    probe = gates.gate3_distinct("Nan sits on the mat. The pig digs.",
+                                 "Nan sit on a rug. The pig dig.", L)
+    if not probe.get("inflected"):
+        R.fail("gate 3's stem matching is not live: handed 'sits/digs' in Form A and "
+               "'sit/dig' in Form B it reported no reuse. That is the half of the gate "
+               "that was missing the first time")
     else:
-        R.fail("gate 3's stem matching found nothing anywhere in the corpus — check it "
-               "is still wired up, because it is the half that was missing")
+        R.ok("gate 3's stem matching is live (proved on a built input: %s)"
+             % ",".join(probe["inflected"]))
+    if inflected:
+        R.info("and in the shipped corpus it is catching: %s"
+               % "; ".join("L%d %s" % (k, ",".join(v)) for k, v in sorted(inflected.items())))
 
 
 # ---------------------------------------------------------------------------
@@ -354,6 +429,15 @@ def target_letters(skill: str):
 
 
 def legal_pseudowords(lesson: int):
+    """Pseudowords that could actually be SHIPPED at this lesson.
+
+    Two-letter VC items are excluded. audit_child rates any two-letter item HIGH
+    ("a rime standing alone; a child reads it as the end of a word they know"),
+    so nothing would ever ship one — and counting them made this function say
+    thirteen where its sibling audit and the shipped notes said nine. A count
+    used to judge whether a written claim is true has to count the same things
+    the claim is about.
+    """
     L = ap.load(lesson)
     g = sorted(L["allowedGraphemes"])
     vowels = [x for x in g if x in set("aeiou")]
@@ -361,19 +445,43 @@ def legal_pseudowords(lesson: int):
     out = []
     if not vowels or not cons:
         return out
-    for shape in ((cons, vowels, cons), (vowels, cons)):
-        for parts in product(*shape):
-            w = "".join(parts)
-            if w in out:
-                continue
-            if w in bw.REAL or w in bw.BLOCKED or bw.one_edit_from_blocked(w):
-                continue
-            if w[-1] in "flsz" or w.endswith("c") or bw.doubles_to_real(w, bw.REAL):
-                continue
-            if not ap.audit(w, lesson)["clean"]:
-                continue
-            out.append(w)
+    for parts in product(cons, vowels, cons):
+        w = "".join(parts)
+        if w in out:
+            continue
+        if w in bw.REAL or w in bw.BLOCKED or bw.one_edit_from_blocked(w):
+            continue
+        if w[-1] in "flsz" or w.endswith("c") or bw.doubles_to_real(w, bw.REAL):
+            continue
+        if not ap.audit(w, lesson)["clean"]:
+            continue
+        out.append(w)
     return out
+
+
+# A claim is only checkable if it says something. These are the ways a note can
+# assert "there were not enough pseudowords to build a subtest" — matched by
+# MEANING rather than by one literal phrase, because the phrase-bound version
+# was dodged by rewording the note.
+SCARCITY = re.compile(
+    r"(fewer|less)\s+than\s+(five|5)|"
+    r"(no|not\s+enough|too\s+few|zero)\s+(legal\s+)?pseudowords?|"
+    r"pseudowords?\s+(do\s+not|don't)\s+exist|"
+    r"none\s+(of\s+them\s+)?(exist|are\s+legal)", re.I)
+
+NUMWORD = {"zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+           "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+           "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+           "fifteen": 15, "sixteen": 16}
+
+
+def stated_pseudoword_count(note: str):
+    """The number a note asserts about how many legal pseudowords exist, or None."""
+    m = re.search(r"\b([a-z]+|\d+)\s+legal\s+pseudowords?", note or "", re.I)
+    if not m:
+        return None
+    tok = m.group(1).lower()
+    return int(tok) if tok.isdigit() else NUMWORD.get(tok)
 
 
 def check_wordlists(R, items):
@@ -414,11 +522,43 @@ def check_wordlists(R, items):
         got = {w.lower() for w in d["high_frequency"]}
         if not got <= hearts:
             R.fail("%s high_frequency contains non-heart words: %s" % (tag, sorted(got - hearts)))
-        if len(got) < 5 and len(hearts) >= 5:
-            R.fail("%s lists only %d high-frequency words although %d heart words are "
-                   "taught by this lesson" % (tag, len(got), len(hearts)))
-        if not d["sentences"]:
-            R.fail("%s has no controlled sentences" % tag)
+        # "five, or all of them if the lesson has taught fewer than five". The old
+        # rule only fired when the lesson taught five or more, so at Lessons 6, 7
+        # and 8 the whole heart-word subtest could be deleted and nothing said so.
+        expect_hf = min(5, len(hearts))
+        if len(got) != expect_hf:
+            R.fail("%s lists %d high-frequency words; this lesson has taught %d heart "
+                   "words, so the subtest is %d items"
+                   % (tag, len(got), len(hearts), expect_hf))
+        # The design says two controlled sentences. Nothing checked the number, so
+        # one sentence, four, or the same sentence twice all shipped as "clean".
+        if len(d["sentences"]) != 2:
+            R.fail("%s has %d controlled sentences, the design says 2"
+                   % (tag, len(d["sentences"])))
+
+        # A five-item subtest with three unique items is a three-item subtest.
+        for key in ("real_words", "nonsense_words", "high_frequency", "sentences"):
+            vals = [str(v).lower() for v in d[key]]
+            dupes = sorted({v for v in vals if vals.count(v) > 1})
+            if dupes:
+                R.fail("%s %s repeats %s — a repeated item is not a second item"
+                       % (tag, key, ", ".join(repr(x) for x in dupes)))
+
+        # instrument_claim is not decoration: verify_all.ACCEPTED's
+        # "wordlist alternate-form impossible" sign-off says every one of these
+        # files states in that field that it is NOT a clean alternate form. That
+        # sentence was true when it was written and nothing kept it true — all
+        # nine claims could be deleted and every check stayed green.
+        claim = (d.get("instrument_claim") or "").strip()
+        if not claim:
+            R.fail("%s has no instrument_claim. A word list is not an alternate form "
+                   "and the file has to say what it is, or the score gets read as "
+                   "something it is not (see ACCEPTED 'wordlist alternate-form "
+                   "impossible')" % tag)
+        elif n in ALTERNATE_FORM_IMPOSSIBLE and "alternate form" not in claim.lower():
+            R.fail("%s's instrument_claim does not say it is not a clean alternate "
+                   "form, although Form A spends every on-target word at this lesson: "
+                   "%r" % (tag, claim[:90]))
 
         # the pronoun I
         for w in d["high_frequency"]:
@@ -432,9 +572,15 @@ def check_wordlists(R, items):
             if not hits:
                 pool = [w.lower() for w in bw.AVAILABLE.get(str(n), [])]
                 pool = [w for w in pool if any(t in w for t in targets)]
+                # `continue` here skipped EVERY remaining check for this lesson —
+                # the duplicate-list check, the nwf_note truth check and all five
+                # pseudoword filters — on the strength of a sign-off about one
+                # missing letter. An accepted limit silences its own finding, not
+                # the six checks that happen to be written after it.
                 if not pool and accepted("L7 f-supply", R):
-                    continue
-                R.fail("%s is the %r lesson but not one of its real words (%s) contains "
+                    pass
+                else:
+                    R.fail("%s is the %r lesson but not one of its real words (%s) contains "
                        "%s. %s"
                        % (tag, d["skill"], " ".join(d["real_words"]), " or ".join(targets),
                           ("The word bank offers %s at this lesson, so this is a picking "
@@ -457,11 +603,31 @@ def check_wordlists(R, items):
         if not d["nonsense_words"]:
             if not note:
                 R.fail("%s has no nonsense words and no note explaining why" % tag)
-            elif "fewer than five" in note and len(legal) >= 5:
-                R.fail("%s's note claims fewer than five legal pseudowords exist, but %d "
-                       "do (%s). The subtest is missing for another reason — the "
-                       "three-lesson reuse cooldown starved it — and the note is a "
-                       "fabricated explanation." % (tag, len(legal), " ".join(legal)))
+            else:
+                # The old rule fired only on the literal words "fewer than five".
+                # Rewording the note to "No nonsense-word subtest at this lesson."
+                # removed the explanation AND the check in the same edit. A claim
+                # is checked by what it means, not by the string it is made of.
+                if SCARCITY.search(note) and len(legal) >= 5:
+                    R.fail("%s's note claims there are not enough legal pseudowords, but "
+                           "%d exist (%s). The subtest is missing for another reason and "
+                           "the note is a fabricated explanation."
+                           % (tag, len(legal), " ".join(legal)))
+                said = stated_pseudoword_count(note)
+                if said is not None and said < len(legal):
+                    R.fail("%s's note says %d legal pseudowords exist; %d do (%s). "
+                           "Understating the supply is how a missing subtest gets "
+                           "explained away." % (tag, said, len(legal), " ".join(legal)))
+                # The real claim every one of these notes makes is "too few SURVIVE
+                # being said aloud". That is checkable: the legal words the note
+                # never names are the ones it never rejected.
+                named = set(re.findall(r"[a-z]{2,}", note.lower()))
+                unaddressed = [w for w in legal if w not in named]
+                if len(unaddressed) >= 5:
+                    R.fail("%s ships no nonsense-word subtest, but %d pseudowords are "
+                           "legal at this lesson and the note does not account for %s. "
+                           "Five items is a subtest; the note has to say why these are "
+                           "not it." % (tag, len(legal), " ".join(unaddressed)))
         elif note:
             R.fail("%s carries a no-subtest note but also lists nonsense words" % tag)
 
@@ -496,13 +662,31 @@ def check_wordlists(R, items):
         shipped = json.loads((DATA / "lesson-014.json").read_text())
         if alone["nonsense_words"] != shipped["nonsense_words"] or \
                 alone["real_words"] != shipped["real_words"]:
-            if not accepted("wordlist hand-corrections", R):
-                R.fail("build_wordlists.build(14) run on its own gives real=%s nwf=%s but the "
-                   "shipped file has real=%s nwf=%s. USED_REAL and USED_PSEUDO are module "
-                   "globals, so a lesson's answer depends on which lessons were built "
-                   "before it in the same process. No single lesson can be re-verified."
-                   % (alone["real_words"], alone["nonsense_words"],
-                      shipped["real_words"], shipped["nonsense_words"]))
+            # `if not accepted(...)` could never be true — accepted() returns True
+            # whenever the key is in the table, so this branch was an unreachable
+            # failure guarding the ONE difference the run knew about. Show the
+            # whole divergence instead: an accepted limit that nobody can see the
+            # size of is not a decision, it is a habit.
+            accepted("wordlist hand-corrections", R)
+            diffs = []
+            for p, d in lists:
+                g = alone if d["lesson"] == 14 else None
+                if g is None:
+                    continue
+                diffs.append("L%d generator real=%s nwf=%s / shipped real=%s nwf=%s"
+                             % (d["lesson"], " ".join(g["real_words"]),
+                                " ".join(g["nonsense_words"]) or "none",
+                                " ".join(d["real_words"]),
+                                " ".join(d["nonsense_words"]) or "none"))
+            for line in diffs:
+                R.info("hand-corrected away from the generator: " + line)
+            # The accepted limit is "the shipped list was corrected by hand". It is
+            # NOT "the shipped list may contain anything". Anything the generator's
+            # own filters would refuse is still a failure.
+            for w in shipped["real_words"]:
+                if w in bw.BLOCKED or w in gates.FUNCTION_WORDS:
+                    R.fail("L14 hand-corrected real word %r is blocked or a function "
+                           "word — the hand-correction sign-off does not cover this" % w)
         else:
             R.ok("build_wordlists reproduces lesson 14 identically on its own")
 
@@ -535,17 +719,23 @@ def check_evidence(R, items):
     # A boolean in a file is not evidence. Record what was verified, when, and
     # over exactly which bytes, so a later hand-edit shows up as a stale claim
     # instead of a claim that quietly stays true.
-    now = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p, _ in items}
+    now = manifest_hashes(items)
     if not MANIFEST.exists():
-        R.info("no verified.json yet — the gates_passed/audit_clean flags in the data "
-               "files have no timestamp and no content hash behind them. Run "
-               "verify_all.py --update-manifest after a clean run to create one.")
+        # This used to be a note. Deleting verified.json therefore cleared every
+        # stale-evidence failure in one command — and because a stale manifest
+        # made the run dirty, and a dirty run refuses to re-stamp, deleting it was
+        # the ONLY way to get back to green after any edit. The tripwire had one
+        # wire and it was cuttable.
+        R.fail("MANIFEST no verified.json — the gates_passed/audit_clean flags in "
+               "the data files have no timestamp and no content hash behind them, "
+               "and nothing can tell an edited file from a verified one. Run "
+               "verify_all.py --update-manifest to stamp this run.")
         return
     man = json.loads(MANIFEST.read_text())
     stale = [k for k, v in now.items() if man.get("files", {}).get(k) != v]
     gone = [k for k in man.get("files", {}) if k not in now]
     if stale or gone:
-        R.fail("verified.json was stamped at %s but %s changed since "
+        R.fail("MANIFEST verified.json was stamped at %s but %s changed since "
                "(%s). Their gates_passed/audit_clean flags are unproven until this "
                "run's result is stamped again."
                % (man.get("verified_at", "?"), len(stale) + len(gone),
@@ -555,16 +745,36 @@ def check_evidence(R, items):
              % (len(now), man.get("verified_at", "?")))
 
 
-def write_manifest(items):
+def manifest_hashes(items):
+    """Everything a child can end up reading, hashed.
+
+    index.html is in here because sync_index only compares the LESSONS object.
+    Every other line of that page — the instructions the teacher follows, the
+    scoring, the renderer that decides which fields reach the screen — was
+    outside every check in this file.
+    """
+    h = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p, _ in items}
+    if INDEX.exists():
+        h["../index.html"] = hashlib.sha256(INDEX.read_bytes()).hexdigest()
+    return h
+
+
+def write_manifest(items, review_baseline=None):
     payload = {
         "verified_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
         "verifier": "verify_all.py",
         "gates": ["1 decodable", "2 equivalent", "3 distinct", "4 story quality",
                   "5 age + blocked", "6 title", "corpus", "schema"],
-        "files": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p, _ in items},
+        # How many judgement-call findings audit_child --strict reported when this
+        # was stamped. Those findings never fail the run on their own; without a
+        # recorded number, new ones are indistinguishable from the old ones and
+        # content that only ever draws a REVIEW is invisible to this file.
+        "audit_child_review": review_baseline,
+        "files": manifest_hashes(items),
     }
     MANIFEST.write_text(json.dumps(payload, indent=2) + "\n")
-    print("stamped %s over %d files" % (MANIFEST.name, len(payload["files"])))
+    print("stamped %s over %d files (audit_child REVIEW baseline: %s)"
+          % (MANIFEST.name, len(payload["files"]), review_baseline))
 
 
 # ---------------------------------------------------------------------------
@@ -581,6 +791,27 @@ def check_index(R):
                 R.fail(line.strip())
     else:
         R.ok("index.html LESSONS is exactly what formb/data/ generates")
+
+    # sync_index compares the FIRST `const LESSONS = {` block and nothing else, so
+    # anything that edits the object after that block wins on the screen and is
+    # invisible here. One appended line —
+    #     LESSONS["41"] = {... "lines": ["Sam ate a huge green cake."]};
+    # — put an undecodable passage in front of the child with every gate green.
+    html = INDEX.read_text()
+    n_decl = len(re.findall(r"\bconst\s+LESSONS\s*=", html))
+    if n_decl != 1:
+        R.fail("index.html declares LESSONS %d times; sync_index only compares the "
+               "first one, so the others are unchecked content" % n_decl)
+    i = html.index(sync_index.OPEN)
+    j = html.index(sync_index.CLOSE, i) + len(sync_index.CLOSE)
+    after = html[j:]
+    tamper = re.findall(r"LESSONS\s*(?:\[[^\]]*\]\s*=|\.\w+\s*=|=\s)", after)
+    if tamper:
+        R.fail("index.html assigns to LESSONS after the generated block (%s). The "
+               "page would show something formb/data/ never said and sync_index "
+               "cannot see it" % ", ".join(sorted(set(tamper))[:4]))
+    if n_decl == 1 and not tamper:
+        R.ok("LESSONS is declared once and never reassigned after the generated block")
 
 
 # ---------------------------------------------------------------------------
@@ -959,6 +1190,39 @@ def check_self_test(R):
         R.fail("target_letters() no longer reads a lesson's own name correctly")
     R.ok("word-list filters refuse: sub-lesson-12 pseudowords, ap/app, blocked near-misses")
 
+    # ---- the claim-reading predicates ---------------------------------------
+    # These are the pieces that turned "does the note contain this phrase?" into
+    # "is what the note says true?". Each is handed a case it must recognise and
+    # a case it must not, because a matcher that says yes to everything and a
+    # matcher that says no to everything both look calm in a passing run.
+    bad = []
+    for note in ("No nonsense-word subtest: fewer than five legal pseudowords exist.",
+                 "There are not enough pseudowords at this lesson.",
+                 "No legal pseudowords at this lesson."):
+        if not SCARCITY.search(note):
+            bad.append("SCARCITY does not recognise a supply claim: %r" % note)
+    if SCARCITY.search("the taught letters spell thirteen legal pseudowords, but ten "
+                       "are heard as real words"):
+        bad.append("SCARCITY fires on a note that makes no supply claim, so every "
+                   "honest note would be called a lie")
+    if stated_pseudoword_count("spell thirteen legal pseudowords") != 13 or \
+            stated_pseudoword_count("no note about counting") is not None:
+        bad.append("stated_pseudoword_count() no longer reads the number a note asserts")
+    two_letter = [w for w in legal_pseudowords(14) if len(w) < 3]
+    if two_letter:
+        bad.append("legal_pseudowords still counts two-letter rimes (%s); audit_child "
+                   "rates those HIGH, so nothing would ever ship one and counting them "
+                   "inflates every claim measured against the count" % two_letter)
+    if not re.findall(r"LESSONS\s*(?:\[[^\]]*\]\s*=|\.\w+\s*=|=\s)",
+                      'LESSONS["41"] = {"title": "The Cake"};'):
+        bad.append("the index.html tamper pattern no longer matches an assignment made "
+                   "after the generated block")
+    for b in bad:
+        R.fail(b)
+    if not bad:
+        R.ok("the claim-reading checks refuse: reworded supply claims, understated "
+             "counts, two-letter rimes, post-block LESSONS assignment")
+
     # ---- corpus checks -----------------------------------------------------
     synth = [{"lesson": 100 + i, "title": "The Big Bug", "instrument": "passage",
               "lines": ["Sam ran to the pot.", "Sam sat on the mat.",
@@ -980,14 +1244,22 @@ def check_self_test(R):
 # 9  sibling audits
 # ---------------------------------------------------------------------------
 def check_siblings(R):
+    """Run the sibling audits, and require them to be there.
+
+    Most of what this suite catches about MEANING — a pseudoword that is rude
+    said aloud, a name that mirrors another word on the page, a word used in a
+    sense a five-year-old does not have — is only ever found by these two files.
+    They used to be optional: deleting both left every section above green and
+    printed a note. A dependency that carries half the coverage is not optional.
+    """
     R.start("9  sibling audits")
-    found = False
+    review = None
     for name in ("audit_curriculum", "audit_child"):
         path = HERE / (name + ".py")
         if not path.exists():
-            R.info("%s.py not present — skipped" % name)
+            R.fail("%s.py is missing. It is not an optional extra: the checks that "
+                   "only live in it stop running and nothing above notices." % name)
             continue
-        found = True
         p = subprocess.run([sys.executable, str(path)], capture_output=True,
                            text=True, cwd=str(HERE))
         out = (p.stdout or "") + (p.stderr or "")
@@ -998,9 +1270,56 @@ def check_siblings(R):
             R.ok("%s.py clean" % name)
             if not R.quiet and out.strip():
                 print("\n".join("        " + l for l in out.splitlines()[-8:]))
-    if not found:
-        R.info("neither sibling audit exists yet; verify_all will pick them up "
-               "automatically when they land in formb/")
+
+    # A sibling's own self-test, which proves its checks can still fire, was
+    # behind a flag nothing ever passed.
+    st = HERE / "audit_curriculum.py"
+    if st.exists():
+        p = subprocess.run([sys.executable, str(st), "--selftest"],
+                           capture_output=True, text=True, cwd=str(HERE))
+        if p.returncode != 0:
+            R.fail("audit_curriculum.py --selftest fails — one of its checks can no "
+                   "longer fire:\n%s"
+                   % "\n".join("      " + l for l in (p.stdout or "").splitlines()[-12:]))
+        else:
+            R.ok("audit_curriculum --selftest: %s"
+                 % next((l.strip() for l in reversed((p.stdout or "").splitlines())
+                         if "self-test" in l), "all checks can fire"))
+
+    # audit_child grades findings BLOCK / HIGH / REVIEW and only fails on the
+    # first two unless --strict is passed, which nothing passed. So every
+    # judgement-call finding — pork in a passage that half the class does not
+    # eat, a farm the child has never seen, a bare "Dad is not mad." — printed
+    # and passed. Run it strict and hold the count to what was signed off.
+    ch = HERE / "audit_child.py"
+    if ch.exists():
+        p = subprocess.run([sys.executable, str(ch), "--strict"],
+                           capture_output=True, text=True, cwd=str(HERE))
+        m = re.search(r"REVIEW (\d+)", p.stdout or "")
+        review = int(m.group(1)) if m else 0
+        base = None
+        if MANIFEST.exists():
+            base = json.loads(MANIFEST.read_text()).get("audit_child_review")
+        if base is None:
+            R.fail("MANIFEST no signed-off audit_child REVIEW baseline. --strict "
+                   "reports %d judgement-call findings and nothing records how many "
+                   "were accepted, so a new one cannot be told from an old one. "
+                   "Stamp it with --update-manifest." % review)
+        elif review > base:
+            R.fail("audit_child --strict reports %d REVIEW findings, %d more than the "
+                   "%d signed off in verified.json. A REVIEW finding does not fail on "
+                   "its own — that is the point of the grade — but a NEW one is new "
+                   "content nobody has looked at:\n%s"
+                   % (review, review - base, base,
+                      "\n".join("      " + l for l in (p.stdout or "").splitlines()
+                                if re.match(r"\s+L\d+\s", l))[:1200]))
+        elif review < base:
+            R.info("audit_child --strict now reports %d REVIEW findings, down from the "
+                   "%d signed off — re-stamp with --update-manifest" % (review, base))
+        else:
+            R.ok("audit_child --strict: %d REVIEW findings, all of them signed off"
+                 % review)
+    return review
 
 
 # ---------------------------------------------------------------------------
@@ -1017,10 +1336,19 @@ def main(argv):
     check_index(R)
     check_corpus(R, items)
     check_self_test(R)
-    check_siblings(R)
+    review = check_siblings(R)
+
+    # A manifest failure says "these bytes have not been proven yet", which is
+    # exactly what --update-manifest is for. Treating it like any other failure
+    # made the stamp unreachable: the first legitimate edit put the suite in a
+    # state where the only two moves were to revert the edit or delete the
+    # manifest, and deleting it used to be free. Stamping is allowed when
+    # NOTHING ELSE is wrong, and says out loud what it is stamping.
+    content_fails = [f for f in R.fails if "MANIFEST" not in f]
+    manifest_fails = [f for f in R.fails if "MANIFEST" in f]
 
     print("\n" + "=" * 72)
-    if R.fails:
+    if content_fails or (manifest_fails and "--update-manifest" not in argv):
         print("VERIFY FAILED — %d problem(s)\n" % len(R.fails))
         for i, f in enumerate(R.fails, 1):
             print("%3d. %s" % (i, f))
@@ -1028,10 +1356,21 @@ def main(argv):
               "said no.")
         return 1
 
+    if manifest_fails:
+        print("Every content check passed. The only outstanding items are unproven "
+              "bytes:\n")
+        for f in manifest_fails:
+            print("   - %s" % f)
+        print()
+        write_manifest(items, review)
+        print("\nVERIFY PASSED — %d files, every gate ran, every gate proved it can "
+              "still refuse." % len(items))
+        return 0
+
     print("VERIFY PASSED — %d files, every gate ran, every gate proved it can still "
           "refuse." % len(items))
     if "--update-manifest" in argv:
-        write_manifest(items)
+        write_manifest(items, review)
     else:
         print("Stamp the evidence with:  python3 verify_all.py --update-manifest")
     return 0

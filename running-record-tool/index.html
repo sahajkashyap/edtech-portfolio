@@ -43,7 +43,11 @@
   .wlhead:first-child{margin-top:0}
   .wlrow{display:flex; flex-wrap:wrap; gap:6px 20px}
   /* Why a subtest is missing. Without it the gap reads as a broken tool. */
-  .wlnote{font-size:13px; line-height:1.5; color:var(--muted);
+  /* Examiner-only. This must never be appended to #passage: the child reads
+     that element, and these notes name pseudowords and real words, which would
+     hand away the very items the subtest depends on being unfamiliar. */
+  .wlnote{font-size:12.5px; line-height:1.45; color:var(--muted);
+          margin-top:12px; padding-top:10px; border-top:2px solid var(--rule);
           margin-top:16px; max-width:52ch; font-family:inherit}
   input[type=text],input[type=date]{
     font:inherit; font-size:15px; padding:5px 8px;
@@ -324,6 +328,8 @@
 
       <div class="totalrow"><span>Words read</span><span class="ct" id="ct-words">0</span></div>
       <div class="totalrow"><span>Total errors</span><span class="ct" id="ct-err">0</span></div>
+
+      <div id="lessonnote" class="wlnote"></div>
 
       <div class="timer">
         <h2 style="margin-bottom:6px">Time</h2>
@@ -1219,11 +1225,6 @@ function build(){
       list.forEach(tok => addWord(lineEl, tok));
       passageEl.appendChild(lineEl);
     });
-    if (L.note){
-      const nt = document.createElement('div');
-      nt.className = 'wlnote'; nt.textContent = L.note;
-      passageEl.appendChild(nt);
-    }
     return;
   }
 
@@ -1599,7 +1600,7 @@ function openRecord(id){
   document.getElementById('initials').value = d.initials || '';
   document.getElementById('rdate').value = d.date || '';
   document.getElementById('notes').value = d.notes || '';
-  paintTitle(); render(); paintRecords();
+  paintTitle(); paintNote(); render(); paintRecords();
   return true;
 }
 
@@ -1612,7 +1613,7 @@ function newRecord(){
   document.getElementById('initials').value = '';
   document.getElementById('notes').value = '';
   document.getElementById('rdate').valueAsDate = new Date();
-  paintTitle(); render(); paintRecords();
+  paintTitle(); paintNote(); render(); paintRecords();
 }
 
 function deleteRecord(id){
@@ -1739,6 +1740,17 @@ function exportCsv(){
 document.getElementById('exportbtn').addEventListener('click', exportCsv);
 
 // --- lesson picker ---------------------------------------------------------
+function paintNote(){
+  const el = document.getElementById('lessonnote');
+  const L = LESSONS[currentLesson];
+  if (!el) return;
+  el.innerHTML = L.note
+    ? '<b style="color:var(--deepblue)">For the teacher</b><br>' +
+      L.note.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))
+    : '';
+  el.style.display = L.note ? 'block' : 'none';
+}
+
 function paintTitle(){
   const L = LESSONS[currentLesson];
   document.getElementById('ptitle').innerHTML =
@@ -1767,6 +1779,7 @@ function switchLesson(n){
 })();
 
 paintTitle();
+paintNote();
 build();
 document.getElementById('rdate').valueAsDate = new Date();
 paintRecords();
