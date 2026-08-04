@@ -10,15 +10,17 @@
     "mat",
     "sat"
   ],
-  "nonsense_words": [
-    "ap"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "and",
-    "i",
+    "I",
     "the"
   ],
-  "sentences": [],
+  "sentences": [
+    "I tap the mat.",
+    "Sam and Pam sat."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
 }

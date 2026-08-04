@@ -42,6 +42,9 @@
   }
   .wlhead:first-child{margin-top:0}
   .wlrow{display:flex; flex-wrap:wrap; gap:6px 20px}
+  /* Why a subtest is missing. Without it the gap reads as a broken tool. */
+  .wlnote{font-size:13px; line-height:1.5; color:var(--muted);
+          margin-top:16px; max-width:52ch; font-family:inherit}
   input[type=text],input[type=date]{
     font:inherit; font-size:15px; padding:5px 8px;
     border:1.5px solid var(--rule); border-radius:6px; background:#fff;
@@ -441,20 +444,22 @@ const LESSONS = {
     ]
    ],
    [
-    "Nonsense words",
-    [
-     "ap"
-    ]
-   ],
-   [
     "Heart words",
     [
      "and",
-     "i",
+     "I",
      "the"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "I tap the mat.",
+     "Sam and Pam sat."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "7": {
   "skill": "f /f/",
@@ -472,25 +477,23 @@ const LESSONS = {
     ]
    ],
    [
-    "Nonsense words",
-    [
-     "ap",
-     "maf",
-     "paf",
-     "saf",
-     "taf"
-    ]
-   ],
-   [
     "Heart words",
     [
      "a",
      "and",
-     "i",
+     "I",
      "the"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "I pat the map.",
+     "Sam sat and Pam sat."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "8": {
   "skill": "i /ĭ/",
@@ -508,25 +511,23 @@ const LESSONS = {
     ]
    ],
    [
-    "Nonsense words",
-    [
-     "im",
-     "maf",
-     "ip",
-     "mif",
-     "mip"
-    ]
-   ],
-   [
     "Heart words",
     [
      "a",
      "and",
-     "i",
+     "I",
      "the"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "I sit and sip.",
+     "Tim sat at the pit."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "9": {
   "skill": "n /n/",
@@ -544,26 +545,24 @@ const LESSONS = {
     ]
    ],
    [
-    "Nonsense words",
-    [
-     "maf",
-     "nif",
-     "mif",
-     "mip",
-     "mis"
-    ]
-   ],
-   [
     "Heart words",
     [
      "a",
      "and",
-     "i",
+     "I",
      "is",
      "the"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "The pin is in the tin.",
+     "Nan and Tim nap."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "10": {
   "skill": "CVC Practice (a, i)",
@@ -573,21 +572,11 @@ const LESSONS = {
    [
     "Real words",
     [
+     "tan",
      "fan",
      "man",
      "nap",
-     "pan",
-     "pin"
-    ]
-   ],
-   [
-    "Nonsense words",
-    [
-     "af",
-     "fif",
-     "ap",
-     "maf",
-     "paf"
+     "pan"
     ]
    ],
    [
@@ -595,12 +584,20 @@ const LESSONS = {
     [
      "a",
      "and",
-     "i",
+     "I",
      "is",
      "the"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "The tan man sat.",
+     "I fit the pin in it."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "11": {
   "skill": "Nasalized A (am, an)",
@@ -618,26 +615,24 @@ const LESSONS = {
     ]
    ],
    [
-    "Nonsense words",
-    [
-     "nis",
-     "af",
-     "ap",
-     "fif",
-     "fim"
-    ]
-   ],
-   [
     "Heart words",
     [
      "a",
      "and",
      "as",
-     "i",
+     "I",
      "is"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "I am Nan.",
+     "The man is tan."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "12": {
   "skill": "o /ŏ/",
@@ -657,11 +652,11 @@ const LESSONS = {
    [
     "Nonsense words",
     [
-     "paf",
-     "tif",
-     "fof",
-     "pif",
-     "saf"
+     "fim",
+     "nom",
+     "im",
+     "ip",
+     "mip"
     ]
    ],
    [
@@ -670,8 +665,15 @@ const LESSONS = {
      "a",
      "and",
      "as",
-     "i",
+     "I",
      "is"
+    ]
+   ],
+   [
+    "Sentences",
+    [
+     "The pot is on top.",
+     "I mop the pot."
     ]
    ]
   ]
@@ -694,11 +696,10 @@ const LESSONS = {
    [
     "Nonsense words",
     [
-     "fof",
+     "ot",
      "pid",
-     "af",
-     "fom",
-     "fos"
+     "som",
+     "fom"
     ]
    ],
    [
@@ -707,8 +708,15 @@ const LESSONS = {
      "a",
      "and",
      "as",
-     "i",
+     "I",
      "is"
+    ]
+   ],
+   [
+    "Sentences",
+    [
+     "Dad is not mad.",
+     "The dot is dim."
     ]
    ]
   ]
@@ -725,17 +733,7 @@ const LESSONS = {
      "cap",
      "cat",
      "cot",
-     "dad"
-    ]
-   ],
-   [
-    "Nonsense words",
-    [
-     "mic",
-     "noc",
-     "paf",
-     "nic",
-     "nof"
+     "nod"
     ]
    ],
    [
@@ -744,11 +742,19 @@ const LESSONS = {
      "a",
      "and",
      "as",
-     "i",
+     "I",
      "is"
     ]
+   ],
+   [
+    "Sentences",
+    [
+     "The cat is on the cot.",
+     "I can pat the cat."
+    ]
    ]
-  ]
+  ],
+  "note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
  },
  "15": {
   "skill": "u /ŭ/",
@@ -1235,6 +1241,11 @@ function build(){
       list.forEach(tok => addWord(lineEl, tok));
       passageEl.appendChild(lineEl);
     });
+    if (L.note){
+      const nt = document.createElement('div');
+      nt.className = 'wlnote'; nt.textContent = L.note;
+      passageEl.appendChild(nt);
+    }
     return;
   }
 

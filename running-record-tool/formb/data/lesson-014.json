@@ -8,23 +8,21 @@
     "cap",
     "cat",
     "cot",
-    "dad"
+    "nod"
   ],
-  "nonsense_words": [
-    "mic",
-    "noc",
-    "paf",
-    "nic",
-    "nof"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
     "as",
-    "i",
+    "I",
     "is"
   ],
-  "sentences": [],
+  "sentences": [
+    "The cat is on the cot.",
+    "I can pat the cat."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
 }

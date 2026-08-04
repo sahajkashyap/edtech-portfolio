@@ -36,10 +36,27 @@ import gates                        # noqa: E402
 WORD_BANK = json.loads((GENERATOR / "word-bank.json").read_text())
 AVAILABLE = WORD_BANK["availableByLesson"]
 
+# Words the system dictionary does not know, because /usr/share/dict/words on a
+# Mac is Webster's Second International — 1934. That is how "mic" was published
+# as a nonsense word: it is not in a dictionary printed before the microphone
+# was called one. Every entry below was found by an auditor reading the output
+# aloud, which is the only test that catches this class of defect.
+MODERN = set("""
+app apps mic mics gif jpg pdf url wifi blog vlog meme emo dev pro
+nick rick mick dick vic ric tik tok pic pics vid vids fam bro sis
+ok okay yep yup nope dude mom dad pop nan gran
+""".split())
+
+# A pseudoword is contaminated if DOUBLING its final consonant makes a real
+# word — a child reads "ap" as "app", "mis" as "miss", "tif" as "tiff".
+def doubles_to_real(word, real):
+    return len(word) >= 2 and (word + word[-1]) in real
+
+
 # Every real English word we can lay hands on, so a "nonsense" word is never
 # accidentally a real one.
 def real_words():
-    words = set()
+    words = set(MODERN)
     for p in ("/usr/share/dict/words", "/usr/dict/words"):
         f = pathlib.Path(p)
         if f.exists():
@@ -74,7 +91,22 @@ def one_edit_from_blocked(word: str) -> bool:
     return False
 
 
+USED_PSEUDO = {}      # word -> last lesson used; no reuse within 3 lessons
+USED_REAL = set()     # and consecutive lessons must not repeat a word list
+
+
+# Exhaustive count of legal pseudowords per lesson (decodable, not a real word
+# or name, FLSZ-legal, no bare final c, not real when its final letter doubles):
+#   L6=0  L7=1  L8-11=5-6  L12=12  L13=15  L14=16
+# A nonsense-word subtest needs five items a child has genuinely never seen. It
+# is therefore NOT VIABLE before Lesson 12, and pretending otherwise is how the
+# first version shipped "mic", "ap" and eighteen spellings English never uses.
+NWF_FROM_LESSON = 12
+
+
 def nonsense_candidates(lesson: int, limit: int = 5):
+    if lesson < NWF_FROM_LESSON:
+        return []
     """Build pseudowords from the lesson's own graphemes and keep the ones the
     real audit calls decodable."""
     L = ap.load(lesson)
@@ -95,6 +127,19 @@ def nonsense_candidates(lesson: int, limit: int = 5):
                 continue
             seen.add(w)
             if w in REAL or w in BLOCKED or one_edit_from_blocked(w):
+                continue
+            # FLSZ: English doubles f, l, s and z after a short vowel in a
+            # one-syllable word (off, fuss, bell, buzz). This curriculum teaches
+            # that rule at Lesson 42, so a pseudoword like "maf" or "fos" trains
+            # the eye on a spelling the child will later be told is wrong.
+            if w[-1] in "flsz":
+                continue
+            # English never spells final /k/ with a bare c: it is -ck or -k.
+            # "noc" and "nic" are not possible English words, so a child has no
+            # orthographic basis to attack them and the item measures nothing.
+            if w.endswith("c"):
+                continue
+            if doubles_to_real(w, REAL):
                 continue
             if not ap.audit(w, lesson)["clean"]:
                 continue
@@ -119,6 +164,7 @@ def nonsense_candidates(lesson: int, limit: int = 5):
         off = (lesson * 7) % len(out)
         out = out[off:] + out[:off]
 
+    out = [w for w in out if lesson - USED_PSEUDO.get(w, -99) >= 3]
     picked, used_first, used_vowel = [], set(), set()
     for w in out:
         v = next((c for c in w if c in "aeiou"), "")
@@ -132,6 +178,7 @@ def nonsense_candidates(lesson: int, limit: int = 5):
             break
         if w not in picked:
             picked.append(w)
+    for w in picked: USED_PSEUDO[w] = lesson
     return picked[:limit]
 
 
@@ -154,19 +201,40 @@ def real_word_picks(lesson: int, form_a_text: str, limit: int = 5):
             if w in pool and w not in gates.FUNCTION_WORDS:
                 (brand_new if back == 0 else recent).append(w)
 
+    # The lesson is named for a sound; its real words must contain it. Lesson 7
+    # was the /f/ lesson and its five real words had no f in them at all.
+    import re as _re
+    m = _re.match(r"^(qu|[a-z]{1,2})\b", ap.load(lesson)["skill"].lower())
+    target = m.group(1) if m else ""
+    on_target = [w for w in pool if target and target in w]
+
+    fresh = lambda g: [w for w in g if w not in USED_REAL]
     picks = []
-    for group in (brand_new, recent, [w for w in pool if w not in used], pool):
+    for group in (
+            fresh([w for w in brand_new if w in on_target]),
+            fresh(on_target),
+            fresh(brand_new),
+            fresh([w for w in pool if w not in used]),
+            [w for w in brand_new if w in on_target],
+            [w for w in recent if w in on_target],
+            on_target,
+            brand_new, recent, [w for w in pool if w not in used], pool):
         for w in group:
             if w not in picks:
                 picks.append(w)
             if len(picks) >= limit:
+                USED_REAL.update(picks)
                 return picks[:limit]
+    USED_REAL.update(picks)
     return picks[:limit]
 
 
 def heart_picks(lesson: int, limit: int = 5):
+    """The pronoun I is a capital letter. Nine word lists printed it as "i",
+    which is not a word."""
     L = ap.load(lesson)
-    return sorted({w.lower() for w in L["allowedHeartWords"]})[:limit]
+    out = sorted({w for w in L["allowedHeartWords"]}, key=lambda w: w.lower())
+    return [("I" if w.lower() == "i" else w.lower()) for w in out][:limit]
 
 
 def form_a_text(lesson: int) -> str:
@@ -181,6 +249,29 @@ def form_a_text(lesson: int) -> str:
     )
 
 
+# Written by hand, then audited against the lesson. Slot-filling templates were
+# tried first and produced "Sam and Pam man." and "It is a dad." - a template
+# has no way to know which of a lesson's five words is a verb.
+HAND_SENTENCES = {
+    6:  ["I tap the mat.", "Sam and Pam sat."],
+    7:  ["I pat the map.", "Sam sat and Pam sat."],
+    8:  ["I sit and sip.", "Tim sat at the pit."],
+    9:  ["The pin is in the tin.", "Nan and Tim nap."],
+    10: ["The tan man sat.", "I fit the pin in it."],
+    11: ["I am Nan.", "The man is tan."],
+    12: ["The pot is on top.", "I mop the pot."],
+    13: ["Dad is not mad.", "The dot is dim."],
+    14: ["The cat is on the cot.", "I can pat the cat."],
+}
+
+
+def controlled_sentences(lesson: int, words=None, hearts=None):
+    """Two short sentences using only this lesson's own words. Specified in the
+    original design and never built - all nine files carried "sentences": []
+    while still claiming audit_clean."""
+    return list(HAND_SENTENCES.get(lesson, []))
+
+
 def build(lesson: int, sentences=None) -> dict:
     L = ap.load(lesson)
     fa = form_a_text(lesson)
@@ -192,7 +283,7 @@ def build(lesson: int, sentences=None) -> dict:
         "real_words": real_word_picks(lesson, fa),
         "nonsense_words": nonsense_candidates(lesson),
         "high_frequency": heart_picks(lesson),
-        "sentences": sentences or [],
+        "sentences": sentences if sentences is not None else [],
     }
     checks = []
     for w in rec["real_words"] + rec["nonsense_words"]:

@@ -4,27 +4,25 @@
   "form": "B",
   "instrument": "word list",
   "real_words": [
+    "tan",
     "fan",
     "man",
     "nap",
-    "pan",
-    "pin"
+    "pan"
   ],
-  "nonsense_words": [
-    "af",
-    "fif",
-    "ap",
-    "maf",
-    "paf"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
-    "i",
+    "I",
     "is",
     "the"
   ],
-  "sentences": [],
+  "sentences": [
+    "The tan man sat.",
+    "I fit the pin in it."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
 }

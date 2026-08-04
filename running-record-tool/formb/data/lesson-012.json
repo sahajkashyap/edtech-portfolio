@@ -11,20 +11,24 @@
     "fan"
   ],
   "nonsense_words": [
-    "paf",
-    "tif",
-    "fof",
-    "pif",
-    "saf"
+    "fim",
+    "nom",
+    "im",
+    "ip",
+    "mip"
   ],
   "high_frequency": [
     "a",
     "and",
     "as",
-    "i",
+    "I",
     "is"
   ],
-  "sentences": [],
+  "sentences": [
+    "The pot is on top.",
+    "I mop the pot."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": ""
 }

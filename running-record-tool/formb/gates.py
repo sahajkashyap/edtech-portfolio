@@ -50,6 +50,16 @@ EQUIV = {
     "mean_syllables": 0.25,
 }
 
+# mean_syllables is a real measure of difficulty and a dead one before Lesson
+# 66. Gate 1 refuses any word of more than one syllable until syllable division
+# is taught, so mean_syllables is exactly 1.000 in both forms at every lesson
+# this tool covers, and the tolerance above could never be exceeded. It was
+# printing PASS on a comparison it was arithmetically unable to fail, which is
+# the same defect the fourth audit found in cast_of. The tolerance stays,
+# because it becomes meaningful the moment the tool reaches Lesson 66; it is now
+# only APPLIED where it can bite, and skipped explicitly rather than silently.
+SYLLABLES_MEANINGFUL_FROM = ap.MULTISYLLABLE_LESSON      # 66
+
 
 # Any run of text inside straight or curly double quotes. Dialogue punctuation
 # lives in here and must not be treated as a sentence boundary.
@@ -160,8 +170,17 @@ def gate1_decodable(form_b: str, lesson: int) -> dict:
 
 
 def gate2_equivalent(form_a: str, form_b: str, lesson: int) -> dict:
+    # Refuse to judge rather than judge against nothing. profile("") is all
+    # zeros, and comparing to zero produces confident-looking numbers about a
+    # document that was never read.
+    if not form_a.strip():
+        return {"gate": "2 equivalent", "passed": False,
+                "detail": "cannot judge equivalence: Form A for lesson %d is empty or "
+                          "could not be read" % lesson,
+                "profile_a": {}, "profile_b": {}}
     a, b = profile(form_a, lesson), profile(form_b, lesson)
     problems = []
+    skipped = []
 
     def pct(key, tol, label):
         if a[key] == 0:
@@ -181,36 +200,77 @@ def gate2_equivalent(form_a: str, form_b: str, lesson: int) -> dict:
     pct("mean_sentence_len", EQUIV["mean_sentence_len_pct"], "sentence length")
     absolute("mean_word_len", EQUIV["mean_word_len"], "word length")
     absolute("heart_share", EQUIV["heart_share_points"], "heart-word share")
-    absolute("mean_syllables", EQUIV["mean_syllables"], "syllables per word")
+    if lesson >= SYLLABLES_MEANINGFUL_FROM:
+        absolute("mean_syllables", EQUIV["mean_syllables"], "syllables per word")
+    else:
+        skipped.append("syllables per word (every word is one syllable before "
+                       "lesson %d, so the measure cannot vary)"
+                       % SYLLABLES_MEANINGFUL_FROM)
 
+    detail = "same difficulty as Form A" if not problems else "; ".join(problems)
+    if skipped and not problems:
+        detail += "  [not measured: %s]" % "; ".join(skipped)
     return {
         "gate": "2 equivalent",
         "passed": not problems,
-        "detail": "same difficulty as Form A" if not problems else "; ".join(problems),
+        "detail": detail,
         "profile_a": a, "profile_b": b,
+        "skipped": skipped,
     }
 
 
-# KNOWN LIMITATION, to fix before the full run: this compares exact word
-# forms, so "sit" in Form B would slip past "sits" in Form A even though a
-# child who can read one can read the other. audit_passage.strip_suffix()
-# already knows which suffixes are taught at each lesson and is the right tool
-# for stem matching. Until then, whoever writes Form B watches for it by eye.
+def stem_of(word: str, lesson: int) -> str:
+    """The word with one taught ending peeled off, using the generator's own
+    rule for which endings a child has met by this lesson. 'sits' and 'sit' are
+    the same item to a child who has been taught -s; treating them as different
+    words is how a reused vocabulary passes a distinctness gate."""
+    L = ap.load(lesson)
+    got = ap.strip_suffix(word, L.get("allowedSuffixes") or [])
+    root = got[0] if isinstance(got, (tuple, list)) else got
+    return root or word
+
+
+# FIXED (was a KNOWN LIMITATION carried in this file as a comment): gate 3
+# compared exact word forms, so "sit" in Form B slipped past "sits" in Form A
+# even though a child who can read one can read the other. Across the 27 shipped
+# passages that blind spot hid 14 reuses, five of them in Lesson 22 alone — a
+# passage the gate was passing at 4.8% against a 5% allowance. The comment said
+# "whoever writes Form B watches for it by eye"; nobody can watch 128 pairs by
+# eye, which is the whole reason the gate exists.
 def gate3_distinct(form_a: str, form_b: str, lesson: int,
                    characters=frozenset()) -> dict:
+    if not form_a.strip():
+        # An empty Form A shares no words with anything, so every Form B looked
+        # distinct. The gate approved everything and said "no reused content
+        # words" while doing it. Refuse to judge instead.
+        return {"gate": "3 distinct", "passed": False,
+                "detail": "cannot judge distinctness: Form A for lesson %d is empty "
+                          "or could not be read" % lesson,
+                "shared": [], "ratio": 0.0}
+
     ca = content_words(form_a, lesson, characters)
     cb = content_words(form_b, lesson, characters)
-    shared = sorted(ca & cb)
+
+    exact = sorted(ca & cb)
+    stems_a = {stem_of(w, lesson) for w in ca}
+    shared = sorted({w for w in cb if w in ca or stem_of(w, lesson) in stems_a})
+    inflected = [w for w in shared if w not in exact]
+
     allowance = overlap_allowance(lesson)
     ratio = len(shared) / (len(cb) or 1)
     ok = ratio <= allowance
     return {
         "gate": "3 distinct",
         "passed": ok,
+        "exact": exact,
+        "inflected": inflected,
         "detail": ("no reused content words" if not shared else
-                   "reuses %d of %d content words (%.0f%%, max %.0f%%): %s"
+                   "reuses %d of %d content words (%.0f%%, max %.0f%%)%s%s"
                    % (len(shared), len(cb), ratio * 100, allowance * 100,
-                      ", ".join(shared))),
+                      (": " + ", ".join(exact)) if exact else "",
+                      ("%s same word in another form: %s"
+                       % ("," if exact else ":", ", ".join(inflected)))
+                      if inflected else "")),
         "shared": shared,
         "ratio": ratio,
     }

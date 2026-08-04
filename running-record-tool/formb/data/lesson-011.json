@@ -10,21 +10,19 @@
     "pan",
     "pin"
   ],
-  "nonsense_words": [
-    "nis",
-    "af",
-    "ap",
-    "fif",
-    "fim"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
     "as",
-    "i",
+    "I",
     "is"
   ],
-  "sentences": [],
+  "sentences": [
+    "I am Nan.",
+    "The man is tan."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
 }

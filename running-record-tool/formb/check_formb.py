@@ -59,7 +59,13 @@ def run(lesson: int, text: str, verbose: bool = True, title: str = ''):
     res["passed"] = res["passed"] and q["passed"] and a["passed"]
     if title:
         t1 = gates.gate1_decodable(title, lesson)
-        t5 = age_gate.judge(title + ".", lesson, characters=cast)
+        # Lowercase the title before the age check. A title is Title Case, so
+        # every word after the first is capitalised, and age_gate treats a
+        # capitalised mid-string word as a character name and skips it. That made
+        # the age half of this gate inert for every multi-word title: "The Nip"
+        # passed, "the nip" does not. The real cast is still exempt, because it
+        # is passed in explicitly.
+        t5 = age_gate.judge(title.lower() + ".", lesson, characters=cast)
         ok = t1["passed"] and t5["passed"] and "'" not in title
         res["results"].append({
             "gate": "6 title", "passed": ok,

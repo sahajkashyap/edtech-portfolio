@@ -10,21 +10,19 @@
     "pan",
     "pin"
   ],
-  "nonsense_words": [
-    "maf",
-    "nif",
-    "mif",
-    "mip",
-    "mis"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
-    "i",
+    "I",
     "is",
     "the"
   ],
-  "sentences": [],
+  "sentences": [
+    "The pin is in the tin.",
+    "Nan and Tim nap."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
 }

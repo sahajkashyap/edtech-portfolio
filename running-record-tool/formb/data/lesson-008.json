@@ -10,20 +10,18 @@
     "sit",
     "tip"
   ],
-  "nonsense_words": [
-    "im",
-    "maf",
-    "ip",
-    "mif",
-    "mip"
-  ],
+  "nonsense_words": [],
   "high_frequency": [
     "a",
     "and",
-    "i",
+    "I",
     "the"
   ],
-  "sentences": [],
+  "sentences": [
+    "I sit and sip.",
+    "Tim sat at the pit."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson."
 }

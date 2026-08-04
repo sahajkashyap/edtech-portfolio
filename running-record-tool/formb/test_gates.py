@@ -3,6 +3,18 @@
 A quality gate that has never rejected anything is decoration, not a gate. So
 before generating a single real assessment passage, each gate is handed a
 passage built to break it, and must catch its own failure.
+
+SCOPE WARNING — this file covers gates 1, 2 and 3 only, using a hand-written
+Form A that is NOT the real Lesson 41 sheet. It therefore proves nothing about
+gate 4 (story quality), gate 5 (age + blocked) or gate 6 (title), and nothing
+about production data. Four of gate 2's five sub-metrics are untested here too.
+Reading this file as "the gates are proven" is exactly how a gate stayed
+decoration for four audits.
+
+The complete falsification harness — every gate, every sub-check, against the
+real Form A — lives in verify_all.py section 8. Run that:
+
+    python3 verify_all.py
 """
 
 import gates

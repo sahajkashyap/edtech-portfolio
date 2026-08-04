@@ -11,20 +11,23 @@
     "mad"
   ],
   "nonsense_words": [
-    "fof",
+    "ot",
     "pid",
-    "af",
-    "fom",
-    "fos"
+    "som",
+    "fom"
   ],
   "high_frequency": [
     "a",
     "and",
     "as",
-    "i",
+    "I",
     "is"
   ],
-  "sentences": [],
+  "sentences": [
+    "Dad is not mad.",
+    "The dot is dim."
+  ],
   "audit_clean": true,
-  "audit_problems": []
+  "audit_problems": [],
+  "nwf_note": ""
 }
