@@ -20,6 +20,7 @@ GENERATOR = HERE.parents[1] / "decodable-passage-generator"
 
 import gates                      # noqa: E402
 import quality                    # noqa: E402
+import age_gate                   # noqa: E402
 
 
 def form_a(lesson: int) -> str:
@@ -37,17 +38,15 @@ def cast_of(lesson: int):
     """Who the story is about. Characters may repeat between Form A and Form B —
     they are names, not vocabulary being measured.
 
-    Two sources: capitalised names (Sam), and any content word the Form A story
-    leans on three or more times. A word used that heavily is the subject of
-    the story, not a word being tested — "pig" in Mud Pig appears five times.
+    Capitalised names ONLY. An earlier version also promoted any content word
+    Form A used three or more times, on the theory that a heavily-repeated word
+    is the subject rather than a word under test. The fourth audit showed that
+    reasoning backwards: Form A correctly leans on the grapheme the lesson
+    teaches, so the rule exempted `quit`, `yaps`, `van`, `zip`, `hen`, `box`,
+    `nut` and `cup` — the exact words being measured. Gate 3 had been widened
+    until it could not fail.
     """
-    fa = form_a(lesson)
-    cast = {w.lower() for w in gates.character_names(fa)}
-    words = [w for w in gates.bare_words(fa) if w not in gates.FUNCTION_WORDS]
-    for w in set(words):
-        if words.count(w) >= 3:
-            cast.add(w)
-    return cast
+    return {w.lower() for w in gates.character_names(form_a(lesson))}
 
 
 def run(lesson: int, text: str, verbose: bool = True):
@@ -55,8 +54,9 @@ def run(lesson: int, text: str, verbose: bool = True):
     cast = cast_of(lesson)
     res = gates.check(fa, text, lesson, characters=cast)
     q = quality.judge(text, lesson)
-    res["results"].append(q)
-    res["passed"] = res["passed"] and q["passed"]
+    a = age_gate.judge(text, lesson, characters=cast)
+    res["results"] += [q, a]
+    res["passed"] = res["passed"] and q["passed"] and a["passed"]
     if verbose:
         print("Lesson %d  |  Form A cast: %s" % (lesson, ", ".join(sorted(cast)) or "none"))
         print(gates.report(res))
