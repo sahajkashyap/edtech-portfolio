@@ -1103,7 +1103,7 @@ function addWord(lineEl, tok){
   words.push({ text: tok, code: null, said: '' });
   const s = document.createElement('span');
   s.className = 'w'; s.dataset.i = i; s.textContent = tok;
-  s.addEventListener('click', e => { e.stopPropagation(); cursor = i; render(); openPop(i); });
+  s.addEventListener('click', e => { e.stopPropagation(); cursor = i; cursorFromClick = true; render(); openPop(i); });
   lineEl.appendChild(s);
   lineEl.appendChild(document.createTextNode(' '));
 }
@@ -1187,7 +1187,7 @@ function mark(i, code){
   if (code !== 'sub') words[i].said = '';
   render(); save();
 }
-function advance(){ autoStart(); if (cursor < words.length - 1) cursor++; render(); }
+function advance(){ autoStart(); cursorFromClick = false; if (cursor < words.length - 1) cursor++; render(); }
 function retreat(){ if (cursor > 0) cursor--; render(); }
 
 // --- the numbers -----------------------------------------------------------
@@ -1247,7 +1247,10 @@ function render(){
   document.getElementById('ct-words').textContent = s.read;
   document.getElementById('ct-err').textContent = s.errors;
 
-  document.getElementById('sAcc').textContent = s.acc.toFixed(0) + '%';
+  // Band the SAME number the teacher sees. Banding the unrounded value while
+  // displaying the rounded one printed "95%" beside "Instructional".
+  const accShown = Math.round(s.acc);
+  document.getElementById('sAcc').textContent = accShown + '%';
   document.getElementById('sErrRatio').textContent =
     s.errors ? '1:' + Math.round(s.read / s.errors) : '–';
   document.getElementById('sSCRatio').textContent =
@@ -1255,8 +1258,8 @@ function render(){
   document.getElementById('sWcpm').textContent = s.wcpm === null ? '–' : s.wcpm;
 
   const band = document.getElementById('band');
-  if (s.acc >= 95){ band.textContent = 'Independent'; band.className = 'b-ind'; }
-  else if (s.acc >= 90){ band.textContent = 'Instructional'; band.className = 'b-ins'; }
+  if (accShown >= 95){ band.textContent = 'Independent'; band.className = 'b-ind'; }
+  else if (accShown >= 90){ band.textContent = 'Instructional'; band.className = 'b-ins'; }
   else { band.textContent = 'Frustration'; band.className = 'b-fru'; }
 
   const clock = document.getElementById('clock');
@@ -1290,6 +1293,7 @@ function openPop(i){
   pop.style.left = Math.min(r.left + window.scrollX, window.innerWidth - 270) + 'px';
   pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
   saidbox.value = words[i].said || '';
+  saidWasBlank = !saidbox.value.trim();
   pop.querySelectorAll('button[data-code]').forEach(b => {
     const on = words[i].code === b.dataset.code;
     b.classList.toggle('on', on);
@@ -1305,10 +1309,16 @@ pop.querySelectorAll('button[data-code]').forEach(b => {
     mark(popFor, b.dataset.code); openPop(popFor);
   });
 });
+let saidWasBlank = true;
 saidbox.addEventListener('input', () => {
   if (popFor === null) return;
+  const nowBlank = !saidbox.value.trim();
+  if (saidWasBlank !== nowBlank) snapshot();       // undoable like every other mark
+  saidWasBlank = nowBlank;
   words[popFor].said = saidbox.value;
-  if (saidbox.value && !words[popFor].code) words[popFor].code = 'sub';
+  if (!nowBlank && !words[popFor].code) words[popFor].code = 'sub';
+  // Deleting the text again must not leave a substitution behind.
+  if (nowBlank && words[popFor].code === 'sub') words[popFor].code = null;
   render(); save();
 });
 saidbox.addEventListener('keydown', e => {
@@ -1341,7 +1351,12 @@ document.addEventListener('keydown', e => {
 });
 
 // The word just dealt with — the cursor has usually already moved past it.
+// The word the teacher just dealt with. After X or Space the cursor has moved
+// past it; after a mouse click it is sitting ON it. Tracking which happened is
+// the only way to refine the right word.
+let cursorFromClick = false;
 function prev(){
+  if (cursorFromClick) return cursor;
   if (words[cursor] && words[cursor].code) return cursor;
   return Math.max(0, cursor - 1);
 }
@@ -1406,12 +1421,13 @@ document.getElementById('clearmarksbtn').addEventListener('click', () => {
   if (!confirm('Clear every mark and restart the clock?\n\nThe child, the date and your notes are kept.')) return;
   snapshot();
   words.forEach(w => { w.code = null; w.said = ''; });
-  cursor = 0; stoppedAt = null; insertions = 0;
+  cursor = 0; stoppedAt = null; insertions = 0; history = [];
   resetClock(); closePop(); render(); save();
 });
 
 document.getElementById('clearbtn').addEventListener('click', () => {
   if (!confirm('Clear this record and start a new one?')) return;
+  clearTimeout(saveTimer);      // or the stale timer writes it straight back
   localStorage.removeItem(KEY);
   build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
   resetClock();
@@ -1432,11 +1448,18 @@ function paintTitle(){
 }
 
 function switchLesson(n){
+  clearTimeout(saveTimer);      // don't let the old lesson's save land on the new key
   currentLesson = n;
   KEY = keyFor(n);
   build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
   resetClock();
-  if (!load()) document.getElementById('rdate').valueAsDate = new Date();
+  if (!load()){
+    // No draft for this lesson: clear the previous child's details rather than
+    // stamping them onto a different lesson's record.
+    document.getElementById('initials').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('rdate').valueAsDate = new Date();
+  }
   paintTitle(); render();
 }
 
