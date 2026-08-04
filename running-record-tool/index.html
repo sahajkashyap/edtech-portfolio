@@ -188,6 +188,18 @@
     width:100%; min-height:150px; font:inherit; font-size:15px; padding:11px;
     border:1.5px solid var(--rule); border-radius:8px; background:#fff; resize:vertical;
   }
+  .recrow{
+    display:flex; align-items:center; gap:12px; padding:8px 4px;
+    border-bottom:1px solid #efe8da; font-size:14.5px;
+  }
+  .recrow:last-child{border-bottom:none}
+  .recrow.open{background:var(--bg-rep); border-radius:6px}
+  .recrow .who2{font-weight:bold; min-width:62px; letter-spacing:1px}
+  .recrow .les{min-width:96px; color:var(--muted)}
+  .recrow .dt{min-width:104px; color:var(--muted)}
+  .recrow .acc{min-width:52px; font-weight:bold; margin-left:auto}
+  .btn.tiny{font-size:12.5px; padding:4px 10px}
+  .norecs{color:var(--muted); font-size:14px; margin:2px 0}
   .saved{font-size:12px; color:var(--c-sc); height:16px; margin-top:5px}
 </style>
 </head>
@@ -296,6 +308,11 @@
         the read over. Start a new record clears everything for the next child.
       </div>
     </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h2>Saved records &mdash; one per child, nothing is overwritten</h2>
+    <div id="records"></div>
   </div>
 </main>
 
@@ -1374,21 +1391,60 @@ function undo(){
 }
 document.getElementById('undobtn').addEventListener('click', undo);
 
-// --- saved on this device only ---------------------------------------------
-// localStorage lives in this browser on this laptop. There are no network
-// calls anywhere in this file, on purpose.
-const keyFor = n => 'running-record-draft-L' + n;
-let KEY = keyFor(41);
+// --- the record store ------------------------------------------------------
+// One slot per RECORD, not per lesson. The old key was the lesson number alone,
+// so assessing a second child on the same lesson silently overwrote the first
+// child's record. A running record that cannot hold more than one record is
+// failing at its only job.
+//
+// Each record now carries its own id, an index lists them all, and nothing is
+// ever destroyed unless you ask for it by name. Still entirely on this laptop:
+// localStorage only, no network calls anywhere in this file.
+const INDEX_KEY = 'running-record-index';
+const recKey = id => 'running-record-rec-' + id;
+
+let recordId = null;          // stays null until the record has something in it
 let saveTimer = null;
+
+function newId(){
+  return 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+function readIndex(){
+  try { return JSON.parse(localStorage.getItem(INDEX_KEY)) || []; }
+  catch (e) { return []; }
+}
+function writeIndex(list){ localStorage.setItem(INDEX_KEY, JSON.stringify(list)); }
+
+// Don't litter storage with blank records nobody started.
+function hasContent(){
+  return words.some(w => w.code) || insertions > 0 || totalMs() > 0 ||
+         document.getElementById('initials').value.trim() !== '' ||
+         document.getElementById('notes').value.trim() !== '';
+}
+
 function save(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
-    localStorage.setItem(KEY, JSON.stringify({
+    if (!hasContent()) return;
+    if (!recordId) recordId = newId();
+    const st = stats();
+    const rec = {
+      id: recordId, lesson: currentLesson,
       initials: document.getElementById('initials').value,
       date: document.getElementById('rdate').value,
       notes: document.getElementById('notes').value,
-      words, cursor, stoppedAt, insertions, elapsed: totalMs(), clockState
-    }));
+      words, cursor, stoppedAt, insertions,
+      elapsed: totalMs(), clockState,
+      updated: new Date().toISOString(),
+      accuracy: Math.round(st.acc), errors: st.errors, read: st.read
+    };
+    localStorage.setItem(recKey(recordId), JSON.stringify(rec));
+    const list = readIndex().filter(e => e.id !== recordId);
+    list.unshift({ id: rec.id, lesson: rec.lesson, initials: rec.initials,
+                   date: rec.date, updated: rec.updated,
+                   accuracy: rec.accuracy, errors: rec.errors, read: rec.read });
+    writeIndex(list);
+    paintRecords();
     const m = document.getElementById('savedmsg');
     m.textContent = 'Saved on this laptop';
     setTimeout(() => m.textContent = '', 1600);
@@ -1397,26 +1453,84 @@ function save(){
 ['initials','rdate','notes'].forEach(id =>
   document.getElementById(id).addEventListener('input', save));
 
-function load(){
-  const raw = localStorage.getItem(KEY);
+function openRecord(id){
+  const raw = localStorage.getItem(recKey(id));
   if (!raw) return false;
-  try{
-    const d = JSON.parse(raw);
-    if (!d.words || d.words.length !== words.length) return false;
-    words = d.words; cursor = d.cursor || 0;
-    stoppedAt = (d.stoppedAt === undefined) ? null : d.stoppedAt;
-    insertions = d.insertions || 0;
-    elapsed = d.elapsed || 0; runningSince = null;
-    clockState = d.clockState || (elapsed > 0 ? 'paused' : 'idle');
-    document.getElementById('initials').value = d.initials || '';
-    document.getElementById('rdate').value = d.date || '';
-    document.getElementById('notes').value = d.notes || '';
-    return true;
-  }catch(err){ return false; }
+  let d;
+  try { d = JSON.parse(raw); } catch (e) { return false; }
+  clearTimeout(saveTimer);
+  currentLesson = d.lesson;
+  document.getElementById('lessonpick').value = d.lesson;
+  build();
+  if (!d.words || d.words.length !== words.length){ render(); return false; }
+  recordId = id;
+  words = d.words; cursor = d.cursor || 0;
+  stoppedAt = (d.stoppedAt === undefined) ? null : d.stoppedAt;
+  insertions = d.insertions || 0;
+  elapsed = d.elapsed || 0; runningSince = null;
+  clockState = d.clockState || (elapsed > 0 ? 'paused' : 'idle');
+  history = [];
+  document.getElementById('initials').value = d.initials || '';
+  document.getElementById('rdate').value = d.date || '';
+  document.getElementById('notes').value = d.notes || '';
+  paintTitle(); render(); paintRecords();
+  return true;
 }
 
-// Same child, start the read again: wipe the marks and the clock, keep who
-// it is, the date, and anything already written in the notes.
+// Start a fresh record. The previous one is already saved and stays saved.
+function newRecord(){
+  clearTimeout(saveTimer);
+  recordId = null;
+  build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
+  resetClock();
+  document.getElementById('initials').value = '';
+  document.getElementById('notes').value = '';
+  document.getElementById('rdate').valueAsDate = new Date();
+  paintTitle(); render(); paintRecords();
+}
+
+function deleteRecord(id){
+  const e = readIndex().find(x => x.id === id);
+  const who = (e && e.initials) ? e.initials : 'this record';
+  if (!confirm('Delete the record for ' + who + '?\n\nThis cannot be undone.')) return;
+  localStorage.removeItem(recKey(id));
+  writeIndex(readIndex().filter(x => x.id !== id));
+  if (recordId === id) newRecord(); else paintRecords();
+}
+
+function paintRecords(){
+  const host = document.getElementById('records');
+  const list = readIndex();
+  if (!list.length){
+    host.innerHTML = '<p class="norecs">No saved records yet. One is kept for ' +
+                     'every child you assess — nothing overwrites anything.</p>';
+    return;
+  }
+  host.innerHTML = '';
+  list.forEach(e => {
+    const row = document.createElement('div');
+    row.className = 'recrow' + (e.id === recordId ? ' open' : '');
+    row.innerHTML =
+      '<span class="who2">' + ((e.initials || '\u2014').toUpperCase()) + '</span>' +
+      '<span class="les">Lesson ' + e.lesson + '</span>' +
+      '<span class="dt">' + (e.date || '') + '</span>' +
+      '<span class="acc">' + (e.read ? e.accuracy + '%' : '') + '</span>';
+    const open = document.createElement('button');
+    open.className = 'btn tiny';
+    open.textContent = (e.id === recordId) ? 'Open now' : 'Open';
+    open.disabled = (e.id === recordId);
+    open.addEventListener('click', () => openRecord(e.id));
+    const del = document.createElement('button');
+    del.className = 'btn tiny';
+    del.textContent = 'Delete';
+    del.addEventListener('click', () => deleteRecord(e.id));
+    row.appendChild(open); row.appendChild(del);
+    host.appendChild(row);
+  });
+}
+
+// Same child, start the read again: wipe the marks and the clock, keep who it
+// is, the date, and anything already written in the notes.
 document.getElementById('clearmarksbtn').addEventListener('click', () => {
   if (!confirm('Clear every mark and restart the clock?\n\nThe child, the date and your notes are kept.')) return;
   snapshot();
@@ -1425,17 +1539,7 @@ document.getElementById('clearmarksbtn').addEventListener('click', () => {
   resetClock(); closePop(); render(); save();
 });
 
-document.getElementById('clearbtn').addEventListener('click', () => {
-  if (!confirm('Clear this record and start a new one?')) return;
-  clearTimeout(saveTimer);      // or the stale timer writes it straight back
-  localStorage.removeItem(KEY);
-  build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
-  resetClock();
-  document.getElementById('initials').value = '';
-  document.getElementById('notes').value = '';
-  document.getElementById('rdate').valueAsDate = new Date();
-  render();
-});
+document.getElementById('clearbtn').addEventListener('click', newRecord);
 
 // --- lesson picker ---------------------------------------------------------
 function paintTitle(){
@@ -1448,19 +1552,8 @@ function paintTitle(){
 }
 
 function switchLesson(n){
-  clearTimeout(saveTimer);      // don't let the old lesson's save land on the new key
   currentLesson = n;
-  KEY = keyFor(n);
-  build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
-  resetClock();
-  if (!load()){
-    // No draft for this lesson: clear the previous child's details rather than
-    // stamping them onto a different lesson's record.
-    document.getElementById('initials').value = '';
-    document.getElementById('notes').value = '';
-    document.getElementById('rdate').valueAsDate = new Date();
-  }
-  paintTitle(); render();
+  newRecord();          // a fresh record; the previous one is already saved
 }
 
 (function fillPicker(){
@@ -1478,7 +1571,8 @@ function switchLesson(n){
 
 paintTitle();
 build();
-if (!load()) document.getElementById('rdate').valueAsDate = new Date();
+document.getElementById('rdate').valueAsDate = new Date();
+paintRecords();
 render();
 </script>
 </body>
