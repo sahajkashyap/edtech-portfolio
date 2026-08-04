@@ -27,6 +27,7 @@ LIVE_BASE = "https://sahajkashyap.github.io/edtech-portfolio/"
 DEFAULT_STARTS = [
     "decodable-passage-generator/index.html",
     "phonics-assessment-tool/index.html",
+    "running-record-tool/index.html",
 ]
 MIN_VISIBLE_WORDS = 20  # fewer than this and a page counts as blank
 

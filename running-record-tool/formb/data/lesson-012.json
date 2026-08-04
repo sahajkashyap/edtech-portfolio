@@ -1,0 +1,30 @@
+{
+  "lesson": 12,
+  "skill": "o /\u014f/",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "mop",
+    "pop",
+    "pot",
+    "top",
+    "fan"
+  ],
+  "nonsense_words": [
+    "paf",
+    "tif",
+    "fof",
+    "pif",
+    "saf"
+  ],
+  "high_frequency": [
+    "a",
+    "and",
+    "as",
+    "i",
+    "is"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}

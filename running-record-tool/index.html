@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Record — Marking Screen</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --cream:#faf6ee; --paper:#fffdf8; --rule:#d9c7a8;
+    --blue:#378ADD; --deepblue:#2966bb; --soft:#f3efe7; --muted:#8a6d3b;
+
+    /* One colour per mark. Warm colours count against the child,
+       cool colours do not. */
+    --c-sub:#b23b00;    --bg-sub:#fdeee8;
+    --c-omit:#8a2846;   --bg-omit:#fbe9ee;
+    --c-told:#BA7517;   --bg-told:#fdf3e2;
+    --c-sc:#639922;     --bg-sc:#eef6e2;
+    --c-rep:#378ADD;    --bg-rep:#e3f2fd;
+    --c-appeal:#6b4c9a; --bg-appeal:#f0eaf7;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:"Century Gothic","Verdana",sans-serif;
+    font-size:17px; line-height:1.5;
+  }
+  header{
+    background:var(--paper); border-bottom:2px solid var(--rule);
+    padding:14px 22px; display:flex; flex-wrap:wrap; gap:18px; align-items:center;
+  }
+  h1{font-size:19px; margin:0 18px 0 0; letter-spacing:.2px}
+  .who{display:flex; gap:8px; align-items:center; font-size:14px}
+  .who label{color:var(--muted)}
+  select{
+    font:inherit; font-size:15px; padding:5px 8px; background:#fff;
+    border:1.5px solid var(--rule); border-radius:6px; max-width:290px;
+  }
+  #passage.wordlist{font-size:30px; line-height:2.1}
+  .wlhead{
+    font-size:12px; text-transform:uppercase; letter-spacing:.7px;
+    color:var(--muted); margin:14px 0 2px; font-family:inherit;
+  }
+  .wlhead:first-child{margin-top:0}
+  .wlrow{display:flex; flex-wrap:wrap; gap:6px 20px}
+  input[type=text],input[type=date]{
+    font:inherit; font-size:15px; padding:5px 8px;
+    border:1.5px solid var(--rule); border-radius:6px; background:#fff;
+  }
+  #initials{width:80px; text-transform:uppercase; font-weight:bold; letter-spacing:1px}
+  .privacy{margin-left:auto; font-size:12.5px; color:var(--c-sc); font-weight:bold}
+
+  main{max-width:1240px; margin:0 auto; padding:22px 22px 130px}
+  .passage-title{font-size:15px; color:var(--muted); margin:0 0 10px}
+  .passage-title strong{color:var(--ink); font-size:20px}
+  .warnflag{
+    display:inline-block; margin-left:10px; padding:3px 9px; border-radius:5px;
+    background:var(--bg-rep); color:var(--deepblue); border:1.5px solid var(--blue);
+    font-size:12px; font-weight:bold; vertical-align:2px;
+  }
+
+  /* Passage on the left, live data on the right */
+  .work{display:grid; grid-template-columns:1fr 310px; gap:20px; align-items:start}
+  @media (max-width:1000px){ .work{grid-template-columns:1fr} }
+
+  #passage{
+    background:var(--paper); border:1.5px solid var(--rule); border-radius:12px;
+    padding:24px 26px; font-size:26px; line-height:2.6;
+  }
+  @media (max-width:860px){ #passage{font-size:22px} }
+  .line{margin-bottom:4px}
+  .w{
+    display:inline-block; position:relative; padding:2px 5px; margin:0 1px;
+    border-radius:6px; cursor:pointer; border:2px solid transparent;
+  }
+  .w:hover{background:var(--soft)}
+  .w.cursor{border-color:var(--blue); background:#E3F2FD}
+  .w.past{color:#b3b3b3}
+
+  .w.m-sub{background:var(--bg-sub); color:var(--c-sub);
+           text-decoration:line-through; text-decoration-thickness:2px}
+  .w.m-omit{background:var(--bg-omit); color:var(--c-omit);
+            text-decoration:line-through; text-decoration-thickness:2px; opacity:.6}
+  .w.m-told{background:var(--bg-told); color:var(--c-told)}
+  .w.m-sc{background:var(--bg-sc); color:var(--c-sc)}
+  .w.m-rep{background:var(--bg-rep); color:var(--c-rep)}
+  .w.m-appeal{background:var(--bg-appeal); color:var(--c-appeal)}
+
+  .tag{
+    position:absolute; top:-11px; right:-3px; font-size:11px; font-weight:bold;
+    color:#fff; border-radius:4px; padding:0 4px; line-height:1.5; letter-spacing:.5px;
+  }
+  .t-sub{background:var(--c-sub)} .t-omit{background:var(--c-omit)}
+  .t-told{background:var(--c-told)} .t-sc{background:var(--c-sc)}
+  .t-rep{background:var(--c-rep)} .t-appeal{background:var(--c-appeal)}
+  .said{
+    display:block; position:absolute; top:-19px; left:0; white-space:nowrap;
+    font-size:14px; color:var(--deepblue); font-style:italic; font-weight:bold;
+  }
+  .stopmark{color:var(--c-sub); font-weight:bold; font-size:20px; padding:0 4px}
+
+  /* Live raw data panel */
+  .panel{
+    background:var(--paper); border:1.5px solid var(--rule);
+    border-radius:12px; padding:15px 16px; position:sticky; top:16px;
+  }
+  .panel h2{
+    font-size:12px; text-transform:uppercase; letter-spacing:.7px;
+    color:var(--muted); margin:0 0 10px;
+  }
+  .panel h3{
+    font-size:11px; text-transform:uppercase; letter-spacing:.6px;
+    color:var(--muted); margin:14px 0 6px; font-weight:normal;
+  }
+  .tallyrow{
+    display:flex; align-items:center; gap:9px; padding:5px 0;
+    border-bottom:1px solid #efe8da; font-size:14.5px;
+  }
+  .tallyrow:last-child{border-bottom:none}
+  .sw{width:13px; height:13px; border-radius:3px; flex:none}
+  .tallyrow .nm{flex:1}
+  .tallyrow .ct{font-weight:bold; font-size:18px; min-width:24px; text-align:right}
+  .tallyrow.zero{opacity:.42}
+  .totalrow{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-top:4px; padding-top:9px; border-top:2px solid var(--rule);
+  }
+  .totalrow .ct{font-weight:bold; font-size:22px}
+
+  /* Timer */
+  .timer{
+    margin-top:14px; padding-top:12px; border-top:2px solid var(--rule);
+  }
+  .clock{font-size:27px; font-weight:bold; letter-spacing:1px; line-height:1.1}
+  .clock.idle{color:#b9ad97}
+  .wcpm{font-size:14px; color:var(--muted); margin-top:3px}
+  .wcpm b{color:var(--ink); font-size:18px}
+  .tbtns{display:flex; gap:6px; margin-top:9px}
+  .tbtns .btn{font-size:12.5px; padding:5px 10px}
+
+  /* Popover */
+  #pop{
+    position:absolute; z-index:50; display:none; background:#fff;
+    border:2px solid var(--rule); border-radius:10px; padding:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,.16); font-size:14px;
+  }
+  #pop .row{display:flex; gap:5px; margin-bottom:8px}
+  #pop button{
+    font:inherit; font-size:13px; padding:5px 9px; cursor:pointer;
+    border:1.5px solid var(--rule); border-radius:6px; background:var(--soft);
+    border-left-width:5px;
+  }
+  #pop button:hover{filter:brightness(.96)}
+  #pop button.on{color:#fff}
+  #saidbox{width:190px; border-left-width:1.5px}
+  #pop .hint{font-size:11.5px; color:var(--muted); margin-top:6px}
+
+  /* Bottom bar: the worked-out numbers */
+  #stats{
+    position:fixed; left:0; right:0; bottom:0; background:var(--paper);
+    border-top:2px solid var(--rule); padding:11px 22px;
+    display:flex; gap:26px; align-items:center; flex-wrap:wrap;
+  }
+  .stat .n{font-size:24px; font-weight:bold; line-height:1.1}
+  .stat .l{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px}
+  #band{padding:7px 15px; border-radius:20px; color:#fff; font-weight:bold; font-size:14px}
+  .b-ind{background:var(--c-sc)} .b-ins{background:var(--c-told)} .b-fru{background:var(--c-sub)}
+  #stats .spacer{margin-left:auto}
+  .btn{
+    font:inherit; font-size:14px; padding:8px 14px; cursor:pointer;
+    border:1.5px solid var(--rule); border-radius:7px; background:var(--soft);
+  }
+  .btn:hover{background:#E3F2FD; border-color:var(--blue)}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px}
+  @media (max-width:860px){ .cols{grid-template-columns:1fr} }
+  .card{background:var(--paper); border:1.5px solid var(--rule); border-radius:12px; padding:16px 18px}
+  .card h2{font-size:13px; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); margin:0 0 10px}
+  kbd{
+    display:inline-block; min-width:22px; text-align:center; background:#fff;
+    border:1.5px solid var(--rule); border-bottom-width:3px; border-radius:5px;
+    padding:1px 6px; font-family:inherit; font-size:13px; font-weight:bold;
+  }
+  .keys{padding:0; margin:0}
+  .keys li{margin-bottom:6px; font-size:14.5px; list-style:none}
+  .keys .grp{margin-top:11px; font-size:11.5px; color:var(--muted);
+             text-transform:uppercase; letter-spacing:.6px}
+  #notes{
+    width:100%; min-height:150px; font:inherit; font-size:15px; padding:11px;
+    border:1.5px solid var(--rule); border-radius:8px; background:#fff; resize:vertical;
+  }
+  .saved{font-size:12px; color:var(--c-sc); height:16px; margin-top:5px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Running Record</h1>
+  <div class="who">
+    <label for="initials">Child</label>
+    <input type="text" id="initials" maxlength="4" placeholder="J.M." autocomplete="off">
+  </div>
+  <div class="who">
+    <label for="lessonpick">Lesson</label>
+    <select id="lessonpick"></select>
+  </div>
+  <div class="who">
+    <label for="rdate">Date</label>
+    <input type="date" id="rdate">
+  </div>
+  <div class="privacy">● Stays on this laptop</div>
+</header>
+
+<main>
+  <p class="passage-title" id="ptitle"></p>
+
+  <div class="work">
+    <div id="passage"></div>
+
+    <aside class="panel">
+      <h2>What's happening</h2>
+
+      <h3>Counts against</h3>
+      <div class="tallyrow" id="row-sub">
+        <span class="sw" style="background:var(--c-sub)"></span>
+        <span class="nm">Wrong word</span><span class="ct" id="ct-sub">0</span>
+      </div>
+      <div class="tallyrow" id="row-omit">
+        <span class="sw" style="background:var(--c-omit)"></span>
+        <span class="nm">Skipped</span><span class="ct" id="ct-omit">0</span>
+      </div>
+      <div class="tallyrow" id="row-told">
+        <span class="sw" style="background:var(--c-told)"></span>
+        <span class="nm">Told</span><span class="ct" id="ct-told">0</span>
+      </div>
+      <div class="tallyrow" id="row-ins">
+        <span class="sw" style="background:var(--c-sub)"></span>
+        <span class="nm">Added a word</span><span class="ct" id="ct-ins">0</span>
+      </div>
+
+      <h3>Does not count against</h3>
+      <div class="tallyrow" id="row-sc">
+        <span class="sw" style="background:var(--c-sc)"></span>
+        <span class="nm">Self&#8209;corrected</span><span class="ct" id="ct-sc">0</span>
+      </div>
+      <div class="tallyrow" id="row-rep">
+        <span class="sw" style="background:var(--c-rep)"></span>
+        <span class="nm">Repeated</span><span class="ct" id="ct-rep">0</span>
+      </div>
+      <div class="tallyrow" id="row-appeal">
+        <span class="sw" style="background:var(--c-appeal)"></span>
+        <span class="nm">Appealed</span><span class="ct" id="ct-appeal">0</span>
+      </div>
+
+      <div class="totalrow"><span>Words read</span><span class="ct" id="ct-words">0</span></div>
+      <div class="totalrow"><span>Total errors</span><span class="ct" id="ct-err">0</span></div>
+
+      <div class="timer">
+        <h2 style="margin-bottom:6px">Time</h2>
+        <div class="clock idle" id="clock">0:00</div>
+        <div class="wcpm" id="wcpm">starts when you begin</div>
+        <div class="tbtns">
+          <button class="btn" id="pausebtn">Pause</button>
+          <button class="btn" id="finishbtn">Finish</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <h2>Keys — you only need the first two</h2>
+      <ul class="keys">
+        <li><kbd>Space</kbd> read correctly, move on</li>
+        <li><kbd>X</kbd> missed it, move on</li>
+        <li class="grp">Refine the word you just marked</li>
+        <li><kbd>S</kbd> self&#8209;corrected &nbsp; <kbd>R</kbd> repeated &nbsp; <kbd>A</kbd> appealed</li>
+        <li><kbd>T</kbd> you told them &nbsp; <kbd>O</kbd> skipped it entirely</li>
+        <li><kbd>Enter</kbd> type what they actually said <em>(optional)</em></li>
+        <li class="grp">Getting around</li>
+        <li><kbd>&larr;</kbd> back &nbsp; <kbd>&rarr;</kbd> forward &nbsp; <kbd>Backspace</kbd> undo</li>
+        <li><kbd>E</kbd> stopped reading here &nbsp; <kbd>I</kbd> added a word</li>
+        <li><kbd>P</kbd> pause the clock</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Notes</h2>
+      <textarea id="notes" placeholder="Anything the marks can't hold. Ran out of breath at line 4. Kept checking the picture. Voice dropped on every question."></textarea>
+      <div class="saved" id="savedmsg"></div>
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn" id="clearmarksbtn">Clear all marks</button>
+        <button class="btn" id="clearbtn">Start a new record</button>
+      </div>
+      <div style="font-size:12px; color:var(--muted); margin-top:8px">
+        Clear all marks keeps this child, the date and your notes, and starts
+        the read over. Start a new record clears everything for the next child.
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="pop">
+  <div class="row">
+    <button data-code="sub"   style="border-left-color:var(--c-sub)">Wrong word</button>
+    <button data-code="omit"  style="border-left-color:var(--c-omit)">Skipped</button>
+    <button data-code="told"  style="border-left-color:var(--c-told)">Told</button>
+  </div>
+  <div class="row">
+    <button data-code="sc"     style="border-left-color:var(--c-sc)">Self&#8209;corrected</button>
+    <button data-code="rep"    style="border-left-color:var(--c-rep)">Repeated</button>
+    <button data-code="appeal" style="border-left-color:var(--c-appeal)">Appealed</button>
+  </div>
+  <div class="row">
+    <input type="text" id="saidbox" placeholder="What they said (optional)" autocomplete="off">
+  </div>
+  <div class="row"><button data-code="correct">Clear this mark</button></div>
+  <div class="hint">Esc closes. Nothing here is required.</div>
+</div>
+
+<div id="stats">
+  <div class="stat"><div class="n" id="sAcc">100%</div><div class="l">Accuracy</div></div>
+  <div id="band" class="b-ind">Independent</div>
+  <div class="stat"><div class="n" id="sErrRatio">&ndash;</div><div class="l">Error rate</div></div>
+  <div class="stat"><div class="n" id="sSCRatio">&ndash;</div><div class="l">Self&#8209;correction rate</div></div>
+  <div class="stat"><div class="n" id="sWcpm">&ndash;</div><div class="l">Words correct / min</div></div>
+  <div class="spacer"></div>
+  <button class="btn" id="undobtn">Undo last mark</button>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Form B — the ASSESSMENT texts. Not the parent sheets.
+//
+// Lessons 6-14 are word lists and 15-41 are passages, which is what the field
+// does: word-level measures first, passage-level later. Every item cleared four
+// gates — decodable at its lesson, same difficulty as the published Form A, no
+// reused content words, and reads as a story. Baked in rather than fetched so
+// the page still makes no network calls of any kind.
+// ---------------------------------------------------------------------------
+const LESSONS = {
+ "6": {
+  "skill": "p /p/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "map",
+     "pat",
+     "tap",
+     "mat",
+     "sat"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "ap"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "and",
+     "i",
+     "the"
+    ]
+   ]
+  ]
+ },
+ "7": {
+  "skill": "f /f/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "map",
+     "pat",
+     "tap",
+     "mat",
+     "sat"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "ap",
+     "maf",
+     "paf",
+     "saf",
+     "taf"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "i",
+     "the"
+    ]
+   ]
+  ]
+ },
+ "8": {
+  "skill": "i /ĭ/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "fit",
+     "pit",
+     "sip",
+     "sit",
+     "tip"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "im",
+     "maf",
+     "ip",
+     "mif",
+     "mip"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "i",
+     "the"
+    ]
+   ]
+  ]
+ },
+ "9": {
+  "skill": "n /n/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "fan",
+     "man",
+     "nap",
+     "pan",
+     "pin"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "maf",
+     "nif",
+     "mif",
+     "mip",
+     "mis"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "i",
+     "is",
+     "the"
+    ]
+   ]
+  ]
+ },
+ "10": {
+  "skill": "CVC Practice (a, i)",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "fan",
+     "man",
+     "nap",
+     "pan",
+     "pin"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "af",
+     "fif",
+     "ap",
+     "maf",
+     "paf"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "i",
+     "is",
+     "the"
+    ]
+   ]
+  ]
+ },
+ "11": {
+  "skill": "Nasalized A (am, an)",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "fan",
+     "man",
+     "nap",
+     "pan",
+     "pin"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "nis",
+     "af",
+     "ap",
+     "fif",
+     "fim"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "as",
+     "i",
+     "is"
+    ]
+   ]
+  ]
+ },
+ "12": {
+  "skill": "o /ŏ/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "mop",
+     "pop",
+     "pot",
+     "top",
+     "fan"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "paf",
+     "tif",
+     "fof",
+     "pif",
+     "saf"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "as",
+     "i",
+     "is"
+    ]
+   ]
+  ]
+ },
+ "13": {
+  "skill": "d /d/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "dad",
+     "dim",
+     "dip",
+     "dot",
+     "mad"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "fof",
+     "pid",
+     "af",
+     "fom",
+     "fos"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "as",
+     "i",
+     "is"
+    ]
+   ]
+  ]
+ },
+ "14": {
+  "skill": "c /k/",
+  "title": "Word list",
+  "kind": "wordlist",
+  "groups": [
+   [
+    "Real words",
+    [
+     "can",
+     "cap",
+     "cat",
+     "cot",
+     "dad"
+    ]
+   ],
+   [
+    "Nonsense words",
+    [
+     "mic",
+     "noc",
+     "paf",
+     "nic",
+     "nof"
+    ]
+   ],
+   [
+    "Heart words",
+    [
+     "a",
+     "and",
+     "as",
+     "i",
+     "is"
+    ]
+   ]
+  ]
+ },
+ "15": {
+  "skill": "u /ŭ/",
+  "title": "The Mad Cat",
+  "kind": "passage",
+  "lines": [
+   "Dot is sad. The cat is mad.",
+   "\"It is not fun,\" said Dot.",
+   "Dad did tip a can in a pot.",
+   "Dot did dip a cup in it.",
+   "The cat can sip. Sip, sip, sip!",
+   "\"It is not mad,\" said Dad.",
+   "Dot can pat the cat. The cat sat on Dot.",
+   "Dot is not sad. \"It is fun!\" said Dot."
+  ]
+ },
+ "16": {
+  "skill": "g /g/",
+  "title": "Pig Is It",
+  "kind": "passage",
+  "lines": [
+   "Gus and the pup did tag in the sun.",
+   "\"Tag is fun,\" said Gus.",
+   "A pig sat on a mat.",
+   "\"Do it, pig,\" said Gus.",
+   "The pig did tag Gus!",
+   "The pig did tag the pup!",
+   "Gus and the pup sit.",
+   "\"The pig is it,\" said Gus.",
+   "It is fun to tag in the sun."
+  ]
+ },
+ "17": {
+  "skill": "b /b/",
+  "title": "Pup in a Tub",
+  "kind": "passage",
+  "lines": [
+   "Bob and a pup dug in the mud. Mud is on it.",
+   "Bob did tip a pot in a tub.",
+   "\"Dip in it, pup,\" said Bob.",
+   "But the pup did not sit in it.",
+   "It did tug and tug.",
+   "Bob did tug the pup to the tub.",
+   "Mud is not on it! It is a tan pup!",
+   "Bob and the pup sit in the sun."
+  ]
+ },
+ "18": {
+  "skill": "e /ĕ/",
+  "title": "A Pig Pen",
+  "kind": "passage",
+  "lines": [
+   "Ben got a pig.",
+   "\"A pig can not sit in a bed,\" said Meg.",
+   "Ben and Meg dig a pen.",
+   "Meg got a peg. Ben can tap it in.",
+   "\"Can it fit?\" said Meg.",
+   "The pig did fit. It can nap in the pen.",
+   "Meg got it a nut.",
+   "The pig can dig in the pen.",
+   "\"It is fun,\" said Ben."
+  ]
+ },
+ "19": {
+  "skill": "VC & CVC Practice (all)",
+  "title": "Sid Can Dig",
+  "kind": "passage",
+  "lines": [
+   "Sid can dig. Sid did dig a pit.",
+   "\"Do it, Sid!\" said Mom.",
+   "Mud is on Sid.",
+   "Mom set a bud in it. Sid did pat the mud.",
+   "The cat can see it. It did sit in the pit!",
+   "\"Not in it, cat,\" said Mom.",
+   "Sid did tug the cat up. The cat is on Mom.",
+   "\"It is fun to dig,\" said Sid. Mud is fun!"
+  ]
+ },
+ "20": {
+  "skill": "-s /s/",
+  "title": "Buds in Pots",
+  "kind": "passage",
+  "lines": [
+   "Peg digs in a pot. Ted digs in a pot.",
+   "\"Pop a bud in it,\" said Peg.",
+   "Ted pops a bud in the pot.",
+   "Peg pats the mud on top.",
+   "The pots sit in the sun. Ted and Peg nap.",
+   "A bud is up!",
+   "\"It is up,\" said Ted. Peg and Ted see the buds.",
+   "It is fun to dig in the mud.",
+   "Peg and Ted dig and dig."
+  ]
+ },
+ "21": {
+  "skill": "-s /z/",
+  "title": "Pups in Tubs",
+  "kind": "passage",
+  "lines": [
+   "Ben and Meg set up tubs.",
+   "Meg tugs a pup to a tub.",
+   "Ben tugs a pup to a tub.",
+   "The pups sit in the tubs.",
+   "\"Do not tip the tubs,\" said Meg.",
+   "But a pup tips a tub!",
+   "The pups get up. The pups sit on Ben.",
+   "Meg pats the pups. \"It is fun,\" said Ben."
+  ]
+ },
+ "22": {
+  "skill": "k /k/",
+  "title": "The Bug Cup",
+  "kind": "passage",
+  "lines": [
+   "Kim and Kip dig in a pit.",
+   "A fat bug pops up!",
+   "\"Kip, it is not a nut!\" said Kim.",
+   "Kim got the bug in a cup. Kip taps at the cup.",
+   "A bud is at the top of the pot.",
+   "Kim taps the cup at the bud.",
+   "The bug is on the bud and sips.",
+   "\"It is at its bud,\" said Kim.",
+   "Kim pats Kip. It is fun."
+  ]
+ },
+ "23": {
+  "skill": "h /h/",
+  "title": "Hen on the Hog",
+  "kind": "passage",
+  "lines": [
+   "Deb has a hen and a big hog.",
+   "The hen is not in the pen.",
+   "\"The hen hid,\" said Deb.",
+   "Deb sits and hums.",
+   "The hog naps in the mud.",
+   "The hen is on him!",
+   "Deb pats the hen.",
+   "\"She can nap on him,\" said Deb."
+  ]
+ },
+ "24": {
+  "skill": "r /r/ Part 1",
+  "title": "Cat in the Tub",
+  "kind": "passage",
+  "lines": [
+   "Reg has a pup and a rag.",
+   "\"The pup can nap on it,\" said Mom.",
+   "Reg set the rag in a tin tub.",
+   "The pup hops in. It naps and naps.",
+   "But a cat hid in the tub!",
+   "The pup did not nip it.",
+   "The pup and the cat nap in the tub.",
+   "\"Mom, the cat can nap!\" said Reg."
+  ]
+ },
+ "25": {
+  "skill": "r /r/ Part 2",
+  "title": "The Rip in the Rug",
+  "kind": "passage",
+  "lines": [
+   "The big rug has a rip in it.",
+   "\"The pup did it,\" said Mom.",
+   "Mom gets a rag and a pin from a tin.",
+   "Ron tugs the rug up on the mat.",
+   "The hen hops on the rug and taps at the rip.",
+   "Ron pats the hen and Mom pins the rag on the rip.",
+   "\"It is a top rug,\" said Ron, and the pup hops on it."
+  ]
+ },
+ "26": {
+  "skill": "l /l/ Part 1",
+  "title": "Pup on the Bed",
+  "kind": "passage",
+  "lines": [
+   "Ned has a bed and a big rug.",
+   "The pup hops up on the bed.",
+   "\"It can nap on the rug,\" said Dad.",
+   "Ned pats the pup.",
+   "But it hops up on his lap. It taps at his leg.",
+   "It is a fun pup.",
+   "\"It can be on the bed,\" said Ned.",
+   "The pup is up on it. Ned is on the rug!"
+  ]
+ },
+ "27": {
+  "skill": "l /l/ Part 2",
+  "title": "The Red Cap",
+  "kind": "passage",
+  "lines": [
+   "Hal and Dad sit on the logs.",
+   "The hens hop up and nap on his lap.",
+   "\"The hens are fun,\" said Hal.",
+   "But the hens tug at his red cap!",
+   "The cap is on the logs. The hens hop on it!",
+   "Hal hops up. Dad taps the cap on his leg.",
+   "\"It is not bad,\" said Dad.",
+   "He lets Hal tug it on. Hal rubs the hens."
+  ]
+ },
+ "28": {
+  "skill": "w /w/",
+  "title": "Wag and the Wig",
+  "kind": "passage",
+  "lines": [
+   "Deb has a red wig in a bag.",
+   "Wag tugs it up and hops on the bed.",
+   "\"He got the wig!\" said Ned.",
+   "Ned and Deb hop up.",
+   "Wag hid it in a hat.",
+   "\"We win,\" said Deb.",
+   "Deb pats him and Ned lets him hug it.",
+   "It is a fun dog.",
+   "Wag sits on the wig."
+  ]
+ },
+ "29": {
+  "skill": "j /j/",
+  "title": "Jam and Ham",
+  "kind": "passage",
+  "lines": [
+   "Mom and Raj sit on a mat.",
+   "Mom has jam, nuts, and a jug.",
+   "Raj has ham in a bag.",
+   "A dog naps on a log. Up it hops!",
+   "It ran to Raj.",
+   "\"Can it see the ham?\" said Raj.",
+   "Mom nods and Raj lets it get a bit.",
+   "The dog wags and wags.",
+   "\"It is a fun pet,\" said Raj. The dog naps in his lap."
+  ]
+ },
+ "30": {
+  "skill": "y /y/",
+  "title": "The Mud Pup",
+  "kind": "passage",
+  "lines": [
+   "Sal and the pup run to a log.",
+   "A bug hops on the log. The pup yaps at it.",
+   "\"It is a red bug,\" said Sal.",
+   "It hops in the mud and the pup digs.",
+   "Mud is on his legs!",
+   "Sal got a wet rag. She rubs and rubs.",
+   "Sal hugs the mud pup.",
+   "She lets it nap on the mat. It is a fun pup."
+  ]
+ },
+ "31": {
+  "skill": "x /ks/",
+  "title": "The Fog Ox",
+  "kind": "passage",
+  "lines": [
+   "Ben and Dad are in the fog.",
+   "A big ox is in the mud. \"Is it sad?\" said Ben.",
+   "Dad has a bag of buns. Ben taps the bag.",
+   "The ox hops up! It ran to Ben.",
+   "Ben pats it. \"It is not sad,\" said Dad.",
+   "Dad let it in the pen. The ox has a bun.",
+   "It naps in the sun.",
+   "\"It is a big pet,\" said Ben. Dad hugs him."
+  ]
+ },
+ "32": {
+  "skill": "qu /kw/",
+  "title": "Do Not Quit",
+  "kind": "passage",
+  "lines": [
+   "Max and Dad had a job at the hen pen.",
+   "A hen was up on the red hut and did not hop.",
+   "\"Do not quit,\" said Dad, and he got a log.",
+   "Max set the log at the hut and let the hen hop.",
+   "The hen ran to Max and he fed it a nut.",
+   "\"You did not quit,\" said Dad.",
+   "Max and Dad fed the hen.",
+   "It was fun."
+  ]
+ },
+ "33": {
+  "skill": "v /v/",
+  "title": "Pigs in Mud",
+  "kind": "passage",
+  "lines": [
+   "Mom and Gus hop in the van.",
+   "\"Can we see the pigs?\" said Gus. Mom nods.",
+   "The van hums as it runs.",
+   "Six pigs sit in the mud. A pig digs in it.",
+   "\"Look at him dig!\" said Gus.",
+   "Mom has buns in a box.",
+   "Gus lets a pig sip from a cup. It hops and hops.",
+   "\"Pigs are fun,\" said Gus.",
+   "Mom and Gus sit in the van. Gus hums as Mom runs the van."
+  ]
+ },
+ "34": {
+  "skill": "z /z/",
+  "title": "Mud Pit Zip",
+  "kind": "passage",
+  "lines": [
+   "Liz has a jet, and Zac has a bus.",
+   "Liz lets the jet hop from a log.",
+   "Zip! It got in the mud pit.",
+   "Zac lets the bus hop from the log.",
+   "Zip! It got in the mud pit.",
+   "Mud is on the jet. Mud is on the bus.",
+   "\"We had a mud win,\" said Liz.",
+   "Zac gets a wet mop.",
+   "Liz rubs the jet, and Zac mops. It is fun to run a jet."
+  ]
+ },
+ "35": {
+  "skill": "Short A Review (incl. Nasalized A)",
+  "title": "A Wet Pup",
+  "kind": "passage",
+  "lines": [
+   "Dan and Pam met a wet pup. It had mud on it.",
+   "\"Look at him,\" said Pam. She ran to Sal.",
+   "Sal had a rag. Dan rubs the pup.",
+   "The pup did hop and wag. \"He is fun,\" said Dan.",
+   "Pam had a box. Sal set a red rug in it.",
+   "The pup ran to the box. He had a nap in it.",
+   "\"We have a pet,\" said Sal. Dan hugs the pup."
+  ]
+ },
+ "36": {
+  "skill": "Short I Review",
+  "title": "Bug in a Tin",
+  "kind": "passage",
+  "lines": [
+   "Kim and Sid dig in the mud.",
+   "Sid digs up a big bug. \"Look at it run,\" said Kim.",
+   "She had a tin cup. Sid let the bug hop in.",
+   "Kim set a lid on top. The bug bats at the lid.",
+   "\"It is mad,\" said Sid. Kim tugs the lid up.",
+   "The bug ran to a log.",
+   "\"It is at its den,\" said Kim. Sid nods. It was fun."
+  ]
+ },
+ "37": {
+  "skill": "Short O Review",
+  "title": "The Tan Hat",
+  "kind": "passage",
+  "lines": [
+   "Tom and Mom sit on the mat.",
+   "The dog digs and digs in the mud.",
+   "\"Look at him dig,\" said Tom. He digs up a tan hat!",
+   "\"It is a hat, Mom,\" said Tom.",
+   "Tom pats the dog on his hip.",
+   "Mom gets a rag and rubs the hat.",
+   "The hat is wet but it fits. Mom has the hat on.",
+   "\"You are a fun dog,\" said Tom.",
+   "The dog wags and hops up at Mom."
+  ]
+ },
+ "38": {
+  "skill": "Short A, I, O Review",
+  "title": "Tim's Cat",
+  "kind": "passage",
+  "lines": [
+   "Tim did not see his cat. \"Cat, cat!\" said Tim.",
+   "Dad and Tim look in the box. It is not in it.",
+   "Dad digs in a bag.",
+   "\"Is it up on the bed?\" said Dad. Tim runs up.",
+   "The cat sits on his cap!",
+   "\"You hid, cat,\" said Tim. He hugs it a lot.",
+   "The cat hums and lets him. Dad pats its tan legs.",
+   "\"It is fun to see him,\" said Tim."
+  ]
+ },
+ "39": {
+  "skill": "Short U Review",
+  "title": "Buns and Jam",
+  "kind": "passage",
+  "lines": [
+   "Mom had a bag of buns.",
+   "\"Let us have a bit,\" said Gus.",
+   "Bud digs in the bag. He got a bun and a nut.",
+   "Gus had jam on his bun. \"It is hot,\" said Mom.",
+   "Bud and Gus sit on a log.",
+   "A pup runs up to Bud.",
+   "Bud lets him have a bit of bun.",
+   "The pup wags and hops. Gus and Bud hug the pup."
+  ]
+ },
+ "40": {
+  "skill": "Short E Review",
+  "title": "The Hen Hid",
+  "kind": "passage",
+  "lines": [
+   "Ben and Dad had a job to do.",
+   "The hen was not in the pen.",
+   "\"Look at the mud,\" said Dad.",
+   "Ben runs to the big log.",
+   "The hen hid in a hat! \"You got us,\" said Ben.",
+   "Ben gets the hen and hugs it.",
+   "It hops up on his lap.",
+   "Dad and Ben sit in the sun. \"The hen is fun,\" said Ben."
+  ]
+ },
+ "41": {
+  "skill": "Short Vowels Review (all)",
+  "title": "Sam and the Pig",
+  "kind": "passage",
+  "lines": [
+   "Sam let the pig dig in a pit.",
+   "The pig got a bug on its leg.",
+   "Sam ran and fed the pig a fig.",
+   "\"Bad pig!\" said Sam.",
+   "The pig hid in a bin of jam.",
+   "Sam had to tug and tug.",
+   "Sam did not win. Sam is sad.",
+   "\"Hop up, pig,\" said Sam."
+  ]
+ }
+};
+
+let currentLesson = 41;
+
+
+// Warm marks count against the child, cool ones do not. Self-corrections and
+// repetitions being error-free is the rule most often scored wrong on paper,
+// so the tool holds it instead of the teacher having to remember.
+const IS_ERROR = { sub:true, omit:true, told:true, sc:false, rep:false, appeal:false };
+const TAG   = { sub:'SUB', omit:'OM', told:'T', sc:'SC', rep:'R', appeal:'A' };
+const CODES = ['sub','omit','told','sc','rep','appeal'];
+
+let words = [], cursor = 0, stoppedAt = null, insertions = 0, history = [];
+
+// The clock is a plain four-state machine: idle -> running <-> paused -> done.
+// It matters that marking a word can only ever start it from IDLE. The first
+// version let any keypress restart a paused clock, so Pause never held.
+let clockState = 'idle';
+let elapsed = 0, runningSince = null;
+
+const passageEl = document.getElementById('passage');
+const pop = document.getElementById('pop');
+const saidbox = document.getElementById('saidbox');
+
+function addWord(lineEl, tok){
+  const i = words.length;
+  words.push({ text: tok, code: null, said: '' });
+  const s = document.createElement('span');
+  s.className = 'w'; s.dataset.i = i; s.textContent = tok;
+  s.addEventListener('click', e => { e.stopPropagation(); cursor = i; render(); openPop(i); });
+  lineEl.appendChild(s);
+  lineEl.appendChild(document.createTextNode(' '));
+}
+
+function build(){
+  words = []; passageEl.innerHTML = '';
+  const L = LESSONS[currentLesson];
+  passageEl.classList.toggle('wordlist', L.kind === 'wordlist');
+
+  if (L.kind === 'wordlist'){
+    L.groups.forEach(([label, list]) => {
+      const h = document.createElement('div');
+      h.className = 'wlhead'; h.textContent = label;
+      passageEl.appendChild(h);
+      const lineEl = document.createElement('div');
+      lineEl.className = 'line wlrow';
+      list.forEach(tok => addWord(lineEl, tok));
+      passageEl.appendChild(lineEl);
+    });
+    return;
+  }
+
+  L.lines.forEach(line => {
+    const lineEl = document.createElement('div');
+    lineEl.className = 'line';
+    line.split(' ').forEach(tok => {
+      addWord(lineEl, tok);
+    });
+    passageEl.appendChild(lineEl);
+  });
+}
+
+const isWord = t => /[a-z]/i.test(t);
+
+function snapshot(){
+  history.push({ words: words.map(w => ({...w})), cursor, stoppedAt, insertions });
+  if (history.length > 200) history.shift();
+}
+
+// --- clock -----------------------------------------------------------------
+// Starts by itself on the first mark so the teacher never has to remember it,
+// but ONLY from idle. Once paused or finished it stays put until you say so.
+function autoStart(){
+  if (clockState !== 'idle') return;
+  clockState = 'running';
+  runningSince = Date.now();
+}
+function bank(){                       // fold running time into the total
+  if (runningSince === null) return;
+  elapsed += Date.now() - runningSince;
+  runningSince = null;
+}
+function pauseClock(){
+  if (clockState !== 'running') return;
+  bank(); clockState = 'paused';
+}
+function resumeClock(){
+  if (clockState !== 'paused' && clockState !== 'done') return;
+  clockState = 'running'; runningSince = Date.now();
+}
+function finish(){
+  if (clockState === 'idle'){ clockState = 'done'; render(); save(); return; }
+  bank(); clockState = 'done'; render(); save();
+}
+function togglePause(){
+  if (clockState === 'running') pauseClock();
+  else if (clockState === 'paused') resumeClock();
+  render(); save();
+}
+function resetClock(){ clockState = 'idle'; elapsed = 0; runningSince = null; }
+function totalMs(){ return elapsed + (runningSince ? Date.now() - runningSince : 0); }
+function fmt(ms){
+  const s = Math.floor(ms / 1000);
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+function mark(i, code){
+  if (i < 0 || i >= words.length) return;
+  autoStart(); snapshot();
+  words[i].code = (code === 'correct') ? null : code;
+  if (code !== 'sub') words[i].said = '';
+  render(); save();
+}
+function advance(){ autoStart(); if (cursor < words.length - 1) cursor++; render(); }
+function retreat(){ if (cursor > 0) cursor--; render(); }
+
+// --- the numbers -----------------------------------------------------------
+function stats(){
+  const last = (stoppedAt === null) ? words.length - 1 : stoppedAt;
+  const by = { sub:0, omit:0, told:0, sc:0, rep:0, appeal:0 };
+  let read = 0, errors = 0;
+  words.forEach((w, i) => {
+    if (i > last) return;
+    if (isWord(w.text)) read++;
+    if (w.code){ by[w.code]++; if (IS_ERROR[w.code]) errors++; }
+  });
+  errors += insertions;
+  const acc = read ? Math.max(0, ((read - errors) / read) * 100) : 100;
+  const mins = totalMs() / 60000;
+  const wcpm = (mins > 0.02) ? Math.round((read - errors) / mins) : null;
+  return { read, errors, by, acc, wcpm };
+}
+
+function render(){
+  [...passageEl.querySelectorAll('.w')].forEach(el => {
+    const i = +el.dataset.i, w = words[i];
+    el.className = 'w';
+    if (i === cursor) el.classList.add('cursor');
+    if (stoppedAt !== null && i > stoppedAt) el.classList.add('past');
+    if (w.code) el.classList.add('m-' + w.code);
+    el.textContent = w.text;
+    if (w.code){
+      const t = document.createElement('span');
+      t.className = 'tag t-' + w.code; t.textContent = TAG[w.code];
+      el.appendChild(t);
+    }
+    if (w.said){
+      const s = document.createElement('span');
+      s.className = 'said'; s.textContent = '“' + w.said + '”';
+      el.appendChild(s);
+    }
+  });
+
+  passageEl.querySelectorAll('.stopmark').forEach(n => n.remove());
+  if (stoppedAt !== null){
+    const el = passageEl.querySelector('.w[data-i="' + stoppedAt + '"]');
+    if (el){
+      const m = document.createElement('span');
+      m.className = 'stopmark'; m.textContent = '‖';
+      el.after(m);
+    }
+  }
+
+  const s = stats();
+  CODES.forEach(c => {
+    document.getElementById('ct-' + c).textContent = s.by[c];
+    document.getElementById('row-' + c).classList.toggle('zero', s.by[c] === 0);
+  });
+  document.getElementById('ct-ins').textContent = insertions;
+  document.getElementById('row-ins').classList.toggle('zero', insertions === 0);
+  document.getElementById('ct-words').textContent = s.read;
+  document.getElementById('ct-err').textContent = s.errors;
+
+  document.getElementById('sAcc').textContent = s.acc.toFixed(0) + '%';
+  document.getElementById('sErrRatio').textContent =
+    s.errors ? '1:' + Math.round(s.read / s.errors) : '–';
+  document.getElementById('sSCRatio').textContent =
+    s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '–';
+  document.getElementById('sWcpm').textContent = s.wcpm === null ? '–' : s.wcpm;
+
+  const band = document.getElementById('band');
+  if (s.acc >= 95){ band.textContent = 'Independent'; band.className = 'b-ind'; }
+  else if (s.acc >= 90){ band.textContent = 'Instructional'; band.className = 'b-ins'; }
+  else { band.textContent = 'Frustration'; band.className = 'b-fru'; }
+
+  const clock = document.getElementById('clock');
+  const ms = totalMs();
+  clock.textContent = fmt(ms);
+  clock.classList.toggle('idle', clockState === 'idle');
+  const w = document.getElementById('wcpm');
+  if (clockState === 'idle')        w.textContent = 'starts when you begin';
+  else if (clockState === 'paused') w.textContent = 'paused';
+  else if (s.wcpm === null)         w.textContent = 'reading…';
+  else w.innerHTML = '<b>' + s.wcpm + '</b> words correct per minute'
+       + (clockState === 'done' ? '' : ' so far');
+  const pb = document.getElementById('pausebtn');
+  pb.textContent = (clockState === 'paused') ? 'Resume' : 'Pause';
+  pb.disabled = (clockState === 'idle' || clockState === 'done');
+  pb.style.opacity = pb.disabled ? .45 : 1;
+  document.getElementById('finishbtn').textContent =
+    (clockState === 'done') ? 'Reopen' : 'Finish';
+}
+
+// keeps the clock moving without touching any of the marks
+setInterval(() => { if (runningSince !== null) render(); }, 500);
+
+// --- popover ---------------------------------------------------------------
+let popFor = null;
+function openPop(i){
+  popFor = i;
+  const el = passageEl.querySelector('.w[data-i="' + i + '"]');
+  const r = el.getBoundingClientRect();
+  pop.style.display = 'block';
+  pop.style.left = Math.min(r.left + window.scrollX, window.innerWidth - 270) + 'px';
+  pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
+  saidbox.value = words[i].said || '';
+  pop.querySelectorAll('button[data-code]').forEach(b => {
+    const on = words[i].code === b.dataset.code;
+    b.classList.toggle('on', on);
+    b.style.background = on ? getComputedStyle(document.documentElement)
+      .getPropertyValue('--c-' + b.dataset.code) : '';
+  });
+}
+function closePop(){ pop.style.display = 'none'; popFor = null; }
+
+pop.querySelectorAll('button[data-code]').forEach(b => {
+  b.addEventListener('click', () => {
+    if (popFor === null) return;
+    mark(popFor, b.dataset.code); openPop(popFor);
+  });
+});
+saidbox.addEventListener('input', () => {
+  if (popFor === null) return;
+  words[popFor].said = saidbox.value;
+  if (saidbox.value && !words[popFor].code) words[popFor].code = 'sub';
+  render(); save();
+});
+saidbox.addEventListener('keydown', e => {
+  e.stopPropagation();
+  if (e.key === 'Enter' || e.key === 'Escape') closePop();
+});
+document.addEventListener('click', e => { if (!pop.contains(e.target)) closePop(); });
+
+// --- keyboard --------------------------------------------------------------
+document.addEventListener('keydown', e => {
+  const t = e.target.tagName;
+  if (t === 'INPUT' || t === 'TEXTAREA') return;
+  const k = e.key.toLowerCase();
+  if (k === ' ' || e.key === 'ArrowRight'){ e.preventDefault(); advance(); return; }
+  if (e.key === 'ArrowLeft'){ e.preventDefault(); retreat(); return; }
+  if (k === 'x'){ e.preventDefault(); mark(cursor, 'sub');  advance(); return; }
+  if (k === 'o'){ e.preventDefault(); mark(cursor, 'omit'); advance(); return; }
+  if (k === 't'){ e.preventDefault(); mark(cursor, 'told'); advance(); return; }
+  if (k === 's'){ e.preventDefault(); mark(prev(), 'sc');     return; }
+  if (k === 'r'){ e.preventDefault(); mark(prev(), 'rep');    return; }
+  if (k === 'a'){ e.preventDefault(); mark(prev(), 'appeal'); return; }
+  if (k === 'i'){ e.preventDefault(); autoStart(); snapshot(); insertions++; render(); save(); return; }
+  if (k === 'p'){ e.preventDefault(); togglePause(); return; }
+  if (k === 'e'){ e.preventDefault(); snapshot();
+                  stoppedAt = (stoppedAt === cursor) ? null : cursor;
+                  if (stoppedAt !== null) finish(); render(); save(); return; }
+  if (e.key === 'Enter'){ e.preventDefault(); openPop(prev()); saidbox.focus(); return; }
+  if (e.key === 'Backspace'){ e.preventDefault(); undo(); return; }
+  if (e.key === 'Escape'){ closePop(); return; }
+});
+
+// The word just dealt with — the cursor has usually already moved past it.
+function prev(){
+  if (words[cursor] && words[cursor].code) return cursor;
+  return Math.max(0, cursor - 1);
+}
+
+document.getElementById('pausebtn').addEventListener('click', togglePause);
+document.getElementById('finishbtn').addEventListener('click', () => {
+  if (clockState === 'done'){ resumeClock(); render(); save(); }   // reopen
+  else finish();
+});
+
+function undo(){
+  const h = history.pop(); if (!h) return;
+  words = h.words; cursor = h.cursor; stoppedAt = h.stoppedAt; insertions = h.insertions;
+  render(); save();
+}
+document.getElementById('undobtn').addEventListener('click', undo);
+
+// --- saved on this device only ---------------------------------------------
+// localStorage lives in this browser on this laptop. There are no network
+// calls anywhere in this file, on purpose.
+const keyFor = n => 'running-record-draft-L' + n;
+let KEY = keyFor(41);
+let saveTimer = null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    localStorage.setItem(KEY, JSON.stringify({
+      initials: document.getElementById('initials').value,
+      date: document.getElementById('rdate').value,
+      notes: document.getElementById('notes').value,
+      words, cursor, stoppedAt, insertions, elapsed: totalMs(), clockState
+    }));
+    const m = document.getElementById('savedmsg');
+    m.textContent = 'Saved on this laptop';
+    setTimeout(() => m.textContent = '', 1600);
+  }, 400);
+}
+['initials','rdate','notes'].forEach(id =>
+  document.getElementById(id).addEventListener('input', save));
+
+function load(){
+  const raw = localStorage.getItem(KEY);
+  if (!raw) return false;
+  try{
+    const d = JSON.parse(raw);
+    if (!d.words || d.words.length !== words.length) return false;
+    words = d.words; cursor = d.cursor || 0;
+    stoppedAt = (d.stoppedAt === undefined) ? null : d.stoppedAt;
+    insertions = d.insertions || 0;
+    elapsed = d.elapsed || 0; runningSince = null;
+    clockState = d.clockState || (elapsed > 0 ? 'paused' : 'idle');
+    document.getElementById('initials').value = d.initials || '';
+    document.getElementById('rdate').value = d.date || '';
+    document.getElementById('notes').value = d.notes || '';
+    return true;
+  }catch(err){ return false; }
+}
+
+// Same child, start the read again: wipe the marks and the clock, keep who
+// it is, the date, and anything already written in the notes.
+document.getElementById('clearmarksbtn').addEventListener('click', () => {
+  if (!confirm('Clear every mark and restart the clock?\n\nThe child, the date and your notes are kept.')) return;
+  snapshot();
+  words.forEach(w => { w.code = null; w.said = ''; });
+  cursor = 0; stoppedAt = null; insertions = 0;
+  resetClock(); closePop(); render(); save();
+});
+
+document.getElementById('clearbtn').addEventListener('click', () => {
+  if (!confirm('Clear this record and start a new one?')) return;
+  localStorage.removeItem(KEY);
+  build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
+  resetClock();
+  document.getElementById('initials').value = '';
+  document.getElementById('notes').value = '';
+  document.getElementById('rdate').valueAsDate = new Date();
+  render();
+});
+
+// --- lesson picker ---------------------------------------------------------
+function paintTitle(){
+  const L = LESSONS[currentLesson];
+  document.getElementById('ptitle').innerHTML =
+    'Lesson ' + currentLesson + ' &middot; ' + L.skill +
+    ' &nbsp;—&nbsp; <strong>' + L.title + '</strong>' +
+    ' &nbsp;<span style="font-size:13px">Form&nbsp;B</span>' +
+    '<span class="warnflag">Assessment text &middot; internal school use</span>';
+}
+
+function switchLesson(n){
+  currentLesson = n;
+  KEY = keyFor(n);
+  build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
+  resetClock();
+  if (!load()) document.getElementById('rdate').valueAsDate = new Date();
+  paintTitle(); render();
+}
+
+(function fillPicker(){
+  const sel = document.getElementById('lessonpick');
+  Object.keys(LESSONS).map(Number).sort((a, b) => a - b).forEach(n => {
+    const o = document.createElement('option');
+    o.value = n;
+    o.textContent = 'Lesson ' + n + ' — ' +
+      (LESSONS[n].kind === 'wordlist' ? 'word list' : LESSONS[n].title);
+    sel.appendChild(o);
+  });
+  sel.value = currentLesson;
+  sel.addEventListener('change', e => switchLesson(+e.target.value));
+})();
+
+paintTitle();
+build();
+if (!load()) document.getElementById('rdate').valueAsDate = new Date();
+render();
+</script>
+</body>
+</html>

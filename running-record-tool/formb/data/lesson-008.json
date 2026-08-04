@@ -1,0 +1,29 @@
+{
+  "lesson": 8,
+  "skill": "i /\u012d/",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "fit",
+    "pit",
+    "sip",
+    "sit",
+    "tip"
+  ],
+  "nonsense_words": [
+    "im",
+    "maf",
+    "ip",
+    "mif",
+    "mip"
+  ],
+  "high_frequency": [
+    "a",
+    "and",
+    "i",
+    "the"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}

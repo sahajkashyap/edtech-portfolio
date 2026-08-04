@@ -1,0 +1,30 @@
+{
+  "lesson": 11,
+  "skill": "Nasalized A (am, an)",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "fan",
+    "man",
+    "nap",
+    "pan",
+    "pin"
+  ],
+  "nonsense_words": [
+    "nis",
+    "af",
+    "ap",
+    "fif",
+    "fim"
+  ],
+  "high_frequency": [
+    "a",
+    "and",
+    "as",
+    "i",
+    "is"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}

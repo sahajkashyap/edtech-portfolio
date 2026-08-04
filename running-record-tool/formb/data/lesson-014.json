@@ -1,0 +1,30 @@
+{
+  "lesson": 14,
+  "skill": "c /k/",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "can",
+    "cap",
+    "cat",
+    "cot",
+    "dad"
+  ],
+  "nonsense_words": [
+    "mic",
+    "noc",
+    "paf",
+    "nic",
+    "nof"
+  ],
+  "high_frequency": [
+    "a",
+    "and",
+    "as",
+    "i",
+    "is"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}

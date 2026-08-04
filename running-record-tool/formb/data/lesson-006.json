@@ -1,0 +1,24 @@
+{
+  "lesson": 6,
+  "skill": "p /p/",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "map",
+    "pat",
+    "tap",
+    "mat",
+    "sat"
+  ],
+  "nonsense_words": [
+    "ap"
+  ],
+  "high_frequency": [
+    "and",
+    "i",
+    "the"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}

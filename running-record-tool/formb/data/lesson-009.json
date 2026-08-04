@@ -1,0 +1,30 @@
+{
+  "lesson": 9,
+  "skill": "n /n/",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "fan",
+    "man",
+    "nap",
+    "pan",
+    "pin"
+  ],
+  "nonsense_words": [
+    "maf",
+    "nif",
+    "mif",
+    "mip",
+    "mis"
+  ],
+  "high_frequency": [
+    "a",
+    "and",
+    "i",
+    "is",
+    "the"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}

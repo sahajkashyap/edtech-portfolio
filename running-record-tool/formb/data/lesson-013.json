@@ -1,0 +1,30 @@
+{
+  "lesson": 13,
+  "skill": "d /d/",
+  "form": "B",
+  "instrument": "word list",
+  "real_words": [
+    "dad",
+    "dim",
+    "dip",
+    "dot",
+    "mad"
+  ],
+  "nonsense_words": [
+    "fof",
+    "pid",
+    "af",
+    "fom",
+    "fos"
+  ],
+  "high_frequency": [
+    "a",
+    "and",
+    "as",
+    "i",
+    "is"
+  ],
+  "sentences": [],
+  "audit_clean": true,
+  "audit_problems": []
+}
