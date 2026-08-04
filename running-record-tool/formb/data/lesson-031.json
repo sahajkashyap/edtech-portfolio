@@ -3,16 +3,17 @@
   "skill": "x /ks/",
   "form": "B",
   "instrument": "passage",
-  "title": "The Fog Ox",
+  "title": "The Big Ox",
   "lines": [
-    "Ben and Dad are in the fog.",
-    "A big ox is in the mud. \"Is it sad?\" said Ben.",
-    "Dad has a bag of buns. Ben taps the bag.",
-    "The ox hops up! It ran to Ben.",
-    "Ben pats it. \"It is not sad,\" said Dad.",
-    "Dad let it in the pen. The ox has a bun.",
-    "It naps in the sun.",
-    "\"It is a big pet,\" said Ben. Dad hugs him."
+    "Dad has a big ox.",
+    "Ben has a job at the pen.",
+    "Dad lets him mix cobs in a tub.",
+    "The ox taps the tub. Cobs are in the mud!",
+    "Ben is mad. Ben has a lot to mix.",
+    "He sets the tub up on a log.",
+    "The ox tugs at it, but it is up.",
+    "The ox has its cobs. Ben pats it.",
+    "\"The ox is fed,\" said Dad."
   ],
   "gates_passed": true
 }

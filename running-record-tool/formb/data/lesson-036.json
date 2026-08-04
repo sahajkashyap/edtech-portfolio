@@ -3,15 +3,19 @@
   "skill": "Short I Review",
   "form": "B",
   "instrument": "passage",
-  "title": "Bug in a Tin",
+  "title": "Pins Fix It",
   "lines": [
-    "Kim and Sid dig in the mud.",
-    "Sid digs up a big bug. \"Look at it run,\" said Kim.",
-    "She had a tin cup. Sid let the bug hop in.",
-    "Kim set a lid on top. The bug bats at the lid.",
-    "\"It is mad,\" said Sid. Kim tugs the lid up.",
-    "The bug ran to a log.",
-    "\"It is at its den,\" said Kim. Sid nods. It was fun."
+    "Sid has a rip in his bag.",
+    "His bun and cap are on the mat.",
+    "\"I have to fix it,\" said Sid.",
+    "Tim runs up to him.",
+    "He has a box of pins.",
+    "\"Pins can fix a rip,\" said Tim.",
+    "Tim pins the rip up.",
+    "The bun and cap fit in the bag.",
+    "The pins do the job!",
+    "\"You did it, Tim,\" said Sid.",
+    "Sid and Tim run to the bus."
   ],
   "gates_passed": true
 }

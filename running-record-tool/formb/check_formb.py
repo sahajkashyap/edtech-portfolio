@@ -49,7 +49,7 @@ def cast_of(lesson: int):
     return {w.lower() for w in gates.character_names(form_a(lesson))}
 
 
-def run(lesson: int, text: str, verbose: bool = True):
+def run(lesson: int, text: str, verbose: bool = True, title: str = ''):
     fa = form_a(lesson)
     cast = cast_of(lesson)
     res = gates.check(fa, text, lesson, characters=cast)
@@ -57,6 +57,16 @@ def run(lesson: int, text: str, verbose: bool = True):
     a = age_gate.judge(text, lesson, characters=cast)
     res["results"] += [q, a]
     res["passed"] = res["passed"] and q["passed"] and a["passed"]
+    if title:
+        t1 = gates.gate1_decodable(title, lesson)
+        t5 = age_gate.judge(title + ".", lesson, characters=cast)
+        ok = t1["passed"] and t5["passed"] and "'" not in title
+        res["results"].append({
+            "gate": "6 title", "passed": ok,
+            "detail": "title is decodable and known" if ok else
+                      ("apostrophe not taught here" if "'" in title else
+                       (t1["detail"] if not t1["passed"] else t5["detail"]))})
+        res["passed"] = res["passed"] and ok
     if verbose:
         print("Lesson %d  |  Form A cast: %s" % (lesson, ", ".join(sorted(cast)) or "none"))
         print(gates.report(res))
@@ -68,11 +78,14 @@ def main(argv):
         print(__doc__)
         return 2
     lesson = int(argv[0])
+    title = ""
+    if "--title" in argv:
+        i = argv.index("--title"); title = argv[i + 1]; argv = argv[:i] + argv[i + 2:]
     if argv[1] == "--file":
         text = pathlib.Path(argv[2]).read_text()
     else:
         text = " ".join(argv[1:])
-    return 0 if run(lesson, text)["passed"] else 1
+    return 0 if run(lesson, text, title=title)["passed"] else 1
 
 
 if __name__ == "__main__":

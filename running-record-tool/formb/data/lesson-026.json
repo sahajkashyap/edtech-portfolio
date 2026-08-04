@@ -3,16 +3,19 @@
   "skill": "l /l/ Part 1",
   "form": "B",
   "instrument": "passage",
-  "title": "Pup on the Bed",
+  "title": "Let Ned Look",
   "lines": [
-    "Ned has a bed and a big rug.",
-    "The pup hops up on the bed.",
-    "\"It can nap on the rug,\" said Dad.",
-    "Ned pats the pup.",
-    "But it hops up on his lap. It taps at his leg.",
-    "It is a fun pup.",
-    "\"It can be on the bed,\" said Ned.",
-    "The pup is up on it. Ned is on the rug!"
+    "Ned can not see his cap.",
+    "It is not on the cot.",
+    "\"Let me look in the bin,\" said Ned.",
+    "Ned tips the bin up.",
+    "Lots of bags, but not his cap.",
+    "A hen sits on the mat.",
+    "Ned pats it and it hops up.",
+    "The cap is on the mat!",
+    "\"Hen, it is not a bed,\" said Ned.",
+    "He pops the cap on.",
+    "Ned lets the hen nap on his lap."
   ],
   "gates_passed": true
 }

@@ -3,16 +3,19 @@
   "skill": "y /y/",
   "form": "B",
   "instrument": "passage",
-  "title": "The Mud Pup",
+  "title": "In the Bag",
   "lines": [
-    "Sal and the pup run to a log.",
-    "A bug hops on the log. The pup yaps at it.",
-    "\"It is a red bug,\" said Sal.",
-    "It hops in the mud and the pup digs.",
-    "Mud is on his legs!",
-    "Sal got a wet rag. She rubs and rubs.",
-    "Sal hugs the mud pup.",
-    "She lets it nap on the mat. It is a fun pup."
+    "Sal has a red hat in a bag.",
+    "\"Is it big?\" said Tom.",
+    "\"Yes,\" said Sal.",
+    "\"Is it a cup?\" said Tom.",
+    "\"It is not a cup,\" said Sal. \"It fits a kid.\"",
+    "\"Is it a hat?\" said Tom.",
+    "\"Yes, Tom got it,\" said Sal.",
+    "Sal pops the hat on Tom.",
+    "Tom has a mug in the bag.",
+    "\"Is it a cup?\" said Sal.",
+    "\"Yup,\" said Tom, and Sal hugs him."
   ],
   "gates_passed": true
 }

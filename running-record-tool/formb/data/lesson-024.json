@@ -3,16 +3,18 @@
   "skill": "r /r/ Part 1",
   "form": "B",
   "instrument": "passage",
-  "title": "Cat in the Tub",
+  "title": "Pet Rats",
   "lines": [
-    "Reg has a pup and a rag.",
-    "\"The pup can nap on it,\" said Mom.",
-    "Reg set the rag in a tin tub.",
-    "The pup hops in. It naps and naps.",
-    "But a cat hid in the tub!",
-    "The pup did not nip it.",
-    "The pup and the cat nap in the tub.",
-    "\"Mom, the cat can nap!\" said Reg."
+    "Reg has pet rats.",
+    "A rat is not in its pen.",
+    "Reg digs in a bin.",
+    "Mom taps at a bag on the mat.",
+    "The bag has a rip in it.",
+    "The rat rips at the nuts!",
+    "Nuts sit on the mat and in the bag.",
+    "\"It fed on the nuts,\" said Mom.",
+    "Reg pats the rat and sets it in the pen.",
+    "Mom and Reg fit the nuts in a tin."
   ],
   "gates_passed": true
 }

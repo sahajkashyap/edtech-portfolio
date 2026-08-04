@@ -3,16 +3,17 @@
   "skill": "-s /z/",
   "form": "B",
   "instrument": "passage",
-  "title": "Pups in Tubs",
+  "title": "Cobs and Pigs",
   "lines": [
-    "Ben and Meg set up tubs.",
-    "Meg tugs a pup to a tub.",
-    "Ben tugs a pup to a tub.",
-    "The pups sit in the tubs.",
-    "\"Do not tip the tubs,\" said Meg.",
-    "But a pup tips a tub!",
-    "The pups get up. The pups sit on Ben.",
-    "Meg pats the pups. \"It is fun,\" said Ben."
+    "Ben and Meg tug a tub of cobs to the pigs.",
+    "A big pig begs at the pen.",
+    "But it tips the tub!",
+    "The cobs sit in the pen.",
+    "\"Get the cobs, Ben!\" said Meg.",
+    "Ben sets the cobs in the tub.",
+    "Meg pats the big pig as it begs.",
+    "Meg tips the tub in the pen.",
+    "The pigs get the cobs."
   ],
   "gates_passed": true
 }

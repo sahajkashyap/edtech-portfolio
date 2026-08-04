@@ -3,17 +3,16 @@
   "skill": "e /ĕ/",
   "form": "B",
   "instrument": "passage",
-  "title": "A Pig Pen",
+  "title": "Cat in Bed",
   "lines": [
-    "Ben got a pig.",
-    "\"A pig can not sit in a bed,\" said Meg.",
-    "Ben and Meg dig a pen.",
-    "Meg got a peg. Ben can tap it in.",
-    "\"Can it fit?\" said Meg.",
-    "The pig did fit. It can nap in the pen.",
-    "Meg got it a nut.",
-    "The pig can dig in the pen.",
-    "\"It is fun,\" said Ben."
+    "It is ten, and Meg is in bed.",
+    "The cat did pop up on the bed.",
+    "\"Not on the bed, cat,\" said Meg.",
+    "Ben did pat a mat in the den.",
+    "The cat did not sit on it.",
+    "Meg did pat the cat. It did sit in the den.",
+    "\"It can nap,\" said Ben.",
+    "Meg and Ben did nap in bed."
   ],
   "gates_passed": true
 }
