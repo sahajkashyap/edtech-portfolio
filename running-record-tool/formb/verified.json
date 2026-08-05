@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T09:03:35",
+  "verified_at": "2026-08-05T09:16:50",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -11,17 +11,17 @@
     "corpus",
     "schema"
   ],
-  "audit_child_review": 33,
+  "audit_child_review": 25,
   "files": {
-    "lesson-006.json": "57dd4b9f821d26f123b220fe232d2170c803f347f0408a51e2e92c87567e21d2",
-    "lesson-007.json": "a74d8f2a0ea1b21fc55d467a5a58fcefbab2b22359e5f3ca7afe29e0634be18a",
-    "lesson-008.json": "524655fd61996ff580b776ef797f08be8500f25a1f628b7222a666daeb3c35e3",
-    "lesson-009.json": "77989e40245d0543c94a92a07db59ece089fa55429655008eb6dfbe257caad8d",
-    "lesson-010.json": "272ae95186a32351154a457e366de02ea69e81f6c199557a6cb7ff836a4153eb",
-    "lesson-011.json": "625625b49a290711ae9103e0111c28844264ca78b2e048cccb4b2be176c6e0a5",
-    "lesson-012.json": "6ca638114d649f5def77b2d6876ac9245176c5f675bb3b28211fe66c0624597b",
-    "lesson-013.json": "7d2aae1ebfcaaf02824bacf5b05a8e61ca0c9f6e624a6589cd7ce745bb635ee7",
-    "lesson-014.json": "3e5d2a01296c6e216c23c41e77dc16e8cc1ee41004de7ba15f6acbcb29d4deb8",
+    "lesson-006.json": "63cd07da6bbf1150ba34d9571af4108abcee30e8bac3ff06c27db55291992713",
+    "lesson-007.json": "56592628c13129994a2e6830221af4ad21a91b5f03e783cf6172a3033111d4f5",
+    "lesson-008.json": "ba100951e15499a39823aba70e4f7ae0dcc64751a4ec4548bc566bd7d08180ad",
+    "lesson-009.json": "efda4b851faa56e93040236711f5d791a42f71637d22781db430d36eda2963e2",
+    "lesson-010.json": "2b2c3a05a84084b879df20880b546a113936a5e7c9edac93e6b2303d6735c8d9",
+    "lesson-011.json": "21912b0c45ec99b97172a60d5d288b21ff3d7f6740fea5ffd44f83460a3d4a59",
+    "lesson-012.json": "b10c868211f1f9f4b0781fd0a3e4c83b86facc07906bf6868c5e74c0964e5db3",
+    "lesson-013.json": "843cf99d993b870646eb2ff205cc0aaaa86c2498fcbd57e452214bfddc559b6b",
+    "lesson-014.json": "87c09faa60cb917eca8d438e9cdbc19c8e3cb8803d75891eb4e94c941a617da5",
     "lesson-015.json": "9f4e104e4a757ce2dad72ac8015da41078e06bb4eadbf31f7e8c8bdd88b34075",
     "lesson-016.json": "bd1a289cedc240ca1adea64cf2731723889df0809cd0a60f1c12e3c4ad6a2a06",
     "lesson-017.json": "4b299f818c4068cebddc472b454170c78ec14540b7829b9bf49192539ece7a47",
@@ -49,6 +49,6 @@
     "lesson-039.json": "a3b6ee2c311525a7504bb1aeddaf443d967237b2991ded765e64e4ab48816b74",
     "lesson-040.json": "26b8fabb116292ecae76941fdb025df0a607502bb15509b1f0d82f60c24e5102",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
-    "../index.html": "7fbd3d1b632643f65cec6c49bdb2ca8ab9417ee52fdcee1dfaccdd36eb991a37"
+    "../index.html": "69a4997e57f8dbf7eda78de99d1e7fb38475b3b900ff554e5c6b529e2a7eecb9"
   }
 }

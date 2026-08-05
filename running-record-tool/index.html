@@ -432,7 +432,14 @@
 // gates — decodable at its lesson, same difficulty as the published Form A, no
 // reused content words, and reads as a story. Baked in rather than fetched so
 // the page still makes no network calls of any kind.
+//
+// WORDLIST_CLAIM is what a word-list score DOES and DOES NOT mean. It is the
+// same sentence on all nine word lists because it describes the instrument,
+// not the lesson, so it is stated once here rather than reprinted under every
+// lesson. Generated from formb/data/ by sync_index.py, which refuses to write
+// if the nine files stop agreeing on it.
 // ---------------------------------------------------------------------------
+const WORDLIST_CLAIM = "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13, Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not as an independent re-test.";
 const LESSONS = {
  "6": {
   "skill": "p /p/",
@@ -465,7 +472,7 @@ const LESSONS = {
     ]
    ]
   ],
-  "note": "No nonsense-word subtest: 0 legal pseudowords exist at this lesson. The 0 candidates examined, and why each fails, are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 0 legal pseudowords exist here. The 0 candidates, and why each fails: rejected_pseudowords."
  },
  "7": {
   "skill": "f /f/",
@@ -499,7 +506,7 @@ const LESSONS = {
     ]
    ]
   ],
-  "note": "No nonsense-word subtest: 0 legal pseudowords exist at this lesson. The 1 candidates examined, and why each fails, are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 0 legal pseudowords exist here. The 1 candidates, and why each fails: rejected_pseudowords.\n\nLesson 7 teaches f /f/ but no decodable f word exists: the only one in English is 'fat', which is BLOCKED. A curriculum supply limit. /f/ is first assessable at Lesson 8."
  },
  "8": {
   "skill": "i /ĭ/",
@@ -533,7 +540,7 @@ const LESSONS = {
     ]
    ]
   ],
-  "note": "No nonsense-word subtest: 2 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 5 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 2 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 5: rejected_pseudowords."
  },
  "9": {
   "skill": "n /n/",
@@ -568,7 +575,7 @@ const LESSONS = {
     ]
    ]
   ],
-  "note": "No nonsense-word subtest: 2 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 6 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 2 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 6: rejected_pseudowords."
  },
  "10": {
   "skill": "CVC Practice (a, i)",
@@ -603,7 +610,7 @@ const LESSONS = {
     ]
    ]
   ],
-  "note": "No nonsense-word subtest: 2 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 6 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 2 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 6: rejected_pseudowords."
  },
  "11": {
   "skill": "Nasalized A (am, an)",
@@ -633,12 +640,12 @@ const LESSONS = {
    [
     "Sentences",
     [
-     "I am Nan.",
-     "The man is at the fan."
+     "Nan is at the fan.",
+     "A tan pan is in it."
     ]
    ]
   ],
-  "note": "This word list says \"i am\". Decodability forbids apostrophes. A child who reads \"I'm\" is reading for meaning — do not score it an error.\n\nNo nonsense-word subtest: 2 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 6 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 2 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 6: rejected_pseudowords."
  },
  "12": {
   "skill": "o /ŏ/",
@@ -669,11 +676,11 @@ const LESSONS = {
     "Sentences",
     [
      "A man sat on the mat.",
-     "The map is not on top."
+     "The map is on top."
     ]
    ]
   ],
-  "note": "This word list says \"is not\". Decodability forbids apostrophes. A child who reads \"isn't\" is reading for meaning — do not score it an error.\n\nNo nonsense-word subtest: 5 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 12 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 5 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 12: rejected_pseudowords."
  },
  "13": {
   "skill": "d /d/",
@@ -704,11 +711,11 @@ const LESSONS = {
     "Sentences",
     [
      "Dad and I dip it.",
-     "\"It is a dot,\" said Dad."
+     "\"A dot!\" said Dad."
     ]
    ]
   ],
-  "note": "This word list says \"it is\". Decodability forbids apostrophes. A child who reads \"it's\" is reading for meaning — do not score it an error.\n\nNo nonsense-word subtest: 6 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 15 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 6 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 15: rejected_pseudowords."
  },
  "14": {
   "skill": "c /k/",
@@ -743,7 +750,7 @@ const LESSONS = {
     ]
    ]
   ],
-  "note": "No nonsense-word subtest: 6 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 16 candidates and their reasons are in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 6 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 16: rejected_pseudowords."
  },
  "15": {
   "skill": "u /ŭ/",
@@ -1765,12 +1772,23 @@ function paintNote(){
   // warning, then why the nonsense-word subtest is absent. Escape FIRST, then
   // turn the blank line into a real break — without this the two notes ran
   // together into one grey paragraph, which is how a note stops being read.
-  el.innerHTML = L.note
+  // What a word-list score means is the same on all nine, so it is stated once
+  // here rather than reprinted under every lesson. It goes LAST: the
+  // lesson-specific notes are the ones that change and have to be read afresh.
+  const esc = s => s.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))
+                    .replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+  const parts = [];
+  if (L.note) parts.push(esc(L.note));
+  if (L.kind === 'wordlist' && WORDLIST_CLAIM)
+    parts.push('<i>' + esc(WORDLIST_CLAIM) + '</i>');
+  el.innerHTML = parts.length
     ? '<b style="color:var(--deepblue)">For the teacher</b><br>' +
-      L.note.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))
-            .replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>')
+      parts.join('<br><br>')
     : '';
-  el.style.display = L.note ? 'block' : 'none';
+  // parts.length, not L.note: a word list whose per-lesson note ever goes away
+  // still has a claim to show, and keying the toggle off the old variable
+  // would build the panel and then hide it.
+  el.style.display = parts.length ? 'block' : 'none';
 }
 
 function paintTitle(){

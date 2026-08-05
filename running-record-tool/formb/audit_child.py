@@ -873,6 +873,23 @@ def note_fields_of(doc):
     return out
 
 
+# The fields sync_index.py renders UNDER THE LESSON, which is the reading the
+# length check is about. instrument_claim is excluded because it is not a
+# per-lesson note: it is one identical sentence on all nine word lists, and it
+# now renders once, as standing copy, from WORDLIST_CLAIM.
+#
+# This is a narrowing of what gets MEASURED FOR LENGTH, and nothing else. Every
+# note field, instrument_claim included, is still scanned below for blocked
+# words, pseudoword leaks and real-word leaks -- those are about what the text
+# says, not how much of it there is, and moving prose to standing copy does not
+# make a leaked answer safe.
+PER_LESSON_NOTE_FIELDS = ("scoring_note", "nwf_note", "supply_note")
+
+
+def per_lesson_notes(doc):
+    return [(k, doc[k]) for k in PER_LESSON_NOTE_FIELDS if doc.get(k)]
+
+
 def check_notes(doc, found):
     """One finding per lesson, not per word -- a writer moves the whole note,
     not each word out of it."""
@@ -913,16 +930,23 @@ def check_notes(doc, found):
               "every note out of the child-visible field and into an "
               "examiner-only one the renderer does not draw."
               % ", ".join(sorted(leaks)), first_label, first_text)
-    if chars > 200:
-        found("REVIEW", "notes", "%d chars" % chars,
-              "%d characters of adult prose in %d fields, in a 12.5px side "
+    # Length is measured against what renders UNDER THIS LESSON. See
+    # PER_LESSON_NOTE_FIELDS: the shared instrument_claim is standing copy now,
+    # read once rather than nine times, so counting it against every lesson
+    # measured a burden the examiner no longer carries.
+    per_lesson = per_lesson_notes(doc)
+    lesson_chars = sum(len(t) for _, t in per_lesson)
+    if lesson_chars > 200:
+        pl_label, pl_text = per_lesson[0]
+        found("REVIEW", "notes", "%d chars" % lesson_chars,
+              "%d characters of adult prose in %d field(s), in a 12.5px side "
               "panel the examiner is reading WHILE a child reads aloud to "
               "them. The old reason for this check -- that the child saw it -- "
               "no longer holds; this one is worse. A note this long does not "
               "get read at the moment it is needed, so a warning that is "
               "present is functionally absent. Say it in one sentence or the "
               "examiner will not have it."
-              % (chars, len(fields)), first_label, first_text)
+              % (lesson_chars, len(per_lesson)), pl_label, pl_text)
 
 
 def check_register(doc, found):

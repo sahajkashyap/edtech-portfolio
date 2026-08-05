@@ -22,7 +22,7 @@
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: 0 legal pseudowords exist at this lesson. The 0 candidates examined, and why each fails, are in rejected_pseudowords (examiner data).",
+  "nwf_note": "No nonsense-word subtest: 0 legal pseudowords exist here. The 0 candidates, and why each fails: rejected_pseudowords.",
   "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13, Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not as an independent re-test.",
   "rejected_pseudowords": {}
 }

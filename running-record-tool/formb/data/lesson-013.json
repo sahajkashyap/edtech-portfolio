@@ -20,11 +20,11 @@
   ],
   "sentences": [
     "Dad and I dip it.",
-    "\"It is a dot,\" said Dad."
+    "\"A dot!\" said Dad."
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: 6 legal pseudowords exist here and every one is rejected, each heard as a real word, a respelling or a letter name. All 15 candidates and their reasons are in rejected_pseudowords (examiner data).",
+  "nwf_note": "No nonsense-word subtest: 6 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 15: rejected_pseudowords.",
   "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13, Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not as an independent re-test.",
   "rejected_pseudowords": {
     "dat": "heard as a real word, a respelling or a letter name",
@@ -42,6 +42,5 @@
     "ot": "heard as a real word, a respelling or a letter name",
     "pid": "heard as a real word, a respelling or a letter name",
     "som": "heard as a real word, a respelling or a letter name"
-  },
-  "scoring_note": "This word list says \"it is\". Decodability forbids apostrophes. A child who reads \"it's\" is reading for meaning — do not score it an error."
+  }
 }

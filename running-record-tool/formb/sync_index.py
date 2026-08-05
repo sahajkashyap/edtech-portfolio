@@ -33,6 +33,8 @@ INDEX = HERE.parent / "index.html"
 
 OPEN = "const LESSONS = {"
 CLOSE = "\n};"
+CLAIM_OPEN = "const WORDLIST_CLAIM = "
+CLAIM_CLOSE = ";"
 
 
 def lesson_files():
@@ -67,9 +69,24 @@ def entry(d: dict) -> dict:
         # whichever came second. The scoring warning goes FIRST because it is
         # the one that is acted on while the child is reading — the subtest
         # note is read once, at the top of the lesson.
-        notes = [n for n in (d.get("scoring_note"), d.get("nwf_note")) if n]
+        # supply_note was the THIRD field with this same bug. Lesson 7 teaches
+        # f /f/ and ships no f word; supply_note is the only thing that explains
+        # why, and it reached nobody. An unexplained gap in an assessment reads
+        # as a broken tool, and the teacher's next move is to distrust the
+        # score rather than the curriculum that caused it.
+        #
+        # Ordered by when the examiner needs it: the scoring warning is acted on
+        # while the child reads, the other two are read once at the top.
+        notes = [n for n in (d.get("scoring_note"), d.get("nwf_note"),
+                             d.get("supply_note")) if n]
         if notes:
             out["note"] = "\n\n".join(notes)
+        # instrument_claim is deliberately NOT here. It is the same 261
+        # characters on all nine word lists, because it describes the
+        # INSTRUMENT, not the lesson. Repeating it per lesson is what pushed
+        # every word list over the note-length bar, and prose an examiner has
+        # already read eight times is prose they stop reading. It renders once,
+        # as standing copy, from WORDLIST_CLAIM below.
         return out
     out = {"skill": d["skill"], "title": d["title"],
            "kind": "passage", "lines": list(d["lines"])}
@@ -93,24 +110,72 @@ def build() -> str:
     return json.dumps(lessons, indent=1, ensure_ascii=False)
 
 
+def build_claim() -> str:
+    """The one instrument_claim shared by every word list, as a JS string.
+
+    Stating it once is only honest if the nine files actually agree. If they
+    ever diverge, printing one of them as though it spoke for all nine would
+    quietly attach the wrong claim to a score -- so this refuses instead.
+    """
+    claims = {}
+    for p in lesson_files():
+        d = json.loads(p.read_text())
+        if d["instrument"] == "word list" and d.get("instrument_claim"):
+            claims.setdefault(d["instrument_claim"].strip(), []).append(d["lesson"])
+    if not claims:
+        return '""'
+    if len(claims) > 1:
+        raise SystemExit(
+            "REFUSED: the word lists no longer share one instrument_claim, so "
+            "it cannot be stated once for all of them:\n" + "\n".join(
+                "  L%s: %.70s..." % (",".join(str(n) for n in sorted(ls)), c)
+                for c, ls in claims.items()))
+    return json.dumps(next(iter(claims)), ensure_ascii=False)
+
+
 def current(html: str) -> str:
     i = html.index(OPEN)
     j = html.index(CLOSE, i)
     return html[i + len("const LESSONS = "):j + 2]
 
 
+def current_claim(html: str) -> str:
+    i = html.index(CLAIM_OPEN)
+    j = html.index(CLAIM_CLOSE, i)
+    return html[i + len(CLAIM_OPEN):j]
+
+
+def write_claim(html: str, want: str) -> str:
+    i = html.index(CLAIM_OPEN)
+    j = html.index(CLAIM_CLOSE, i)
+    return html[:i + len(CLAIM_OPEN)] + want + html[j:]
+
+
 def main(argv):
     html = INDEX.read_text()
     have, want = current(html), build()
+    have_claim, want_claim = current_claim(html), build_claim()
     if "--write" in argv:
-        if have == want:
-            print("index.html LESSONS already matches data/ — nothing to write.")
+        if have == want and have_claim == want_claim:
+            print("index.html already matches data/ — nothing to write.")
             return 0
-        i = html.index(OPEN)
-        j = html.index(CLOSE, i)
-        INDEX.write_text(html[:i + len("const LESSONS = ")] + want + html[j + 2:])
-        print("index.html LESSONS regenerated from formb/data/.")
+        if have_claim != want_claim:
+            html = write_claim(html, want_claim)
+        if have != want:
+            i = html.index(OPEN)
+            j = html.index(CLOSE, i)
+            html = html[:i + len("const LESSONS = ")] + want + html[j + 2:]
+        INDEX.write_text(html)
+        print("index.html regenerated from formb/data/ (LESSONS%s)."
+              % ("" if have_claim == want_claim else " and WORDLIST_CLAIM"))
         return 0
+
+    if have_claim != want_claim:
+        print("DRIFT: index.html's WORDLIST_CLAIM no longer matches formb/data/.")
+        print("  index.html: %s" % have_claim[:90])
+        print("  data/     : %s" % want_claim[:90])
+        print("\nFix with:  python3 sync_index.py --write")
+        return 1
 
     if have == want:
         print("index.html LESSONS matches formb/data/ exactly.")
