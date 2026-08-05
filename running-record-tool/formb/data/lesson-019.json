@@ -3,16 +3,18 @@
   "skill": "VC & CVC Practice (all)",
   "form": "B",
   "instrument": "passage",
-  "title": "A Mug in the Mud",
+  "title": "A Bit of Bun",
   "lines": [
-    "Tim and Dan dug in the mud.",
-    "Dan dug up a mug!",
-    "\"Mud is in it,\" said Tim.",
-    "Mom met Tim and Dan.",
-    "\"A mug is a pot,\" said Mom.",
-    "Tim and Dan set mud in the mug.",
-    "Mom set a bud in the mug.",
-    "\"It is a fun pot,\" said Dan."
+    "Nan met a pup in a dog pen.",
+    "A dot is on top of the pup.",
+    "\"I see a tan dot!\" said Nan.",
+    "The pup dug in the mud.",
+    "The pup did not sit.",
+    "Nan fed a bit of bun to the pup.",
+    "It bit the bun in a pot.",
+    "\"Pat the pup,\" said Mom.",
+    "A tag fit on it."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

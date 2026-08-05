@@ -6,14 +6,15 @@
   "title": "The Cap",
   "lines": [
     "Dan and a dog sit on a mat.",
-    "A tan cap is on Dan.",
+    "A tan cap is on Dan. A bat is in a bin.",
     "The dog and Dan tug at the cap.",
     "\"Dog! Not the cap!\" said Dan.",
-    "The dog can tug it to a bin.",
+    "The dog can tug it to the bin.",
     "Mud is on the dog and the cap!",
-    "Dan can not dip it, but Pam can.",
-    "Dan and Pam dip the cap in a tub.",
-    "The cap is on Dan. Dan and Pam pat the dog."
+    "Pam can tip the cap in a tub of mud.",
+    "The mud is in the tub!",
+    "Dan and Pam pat the dog."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

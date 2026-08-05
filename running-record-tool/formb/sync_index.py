@@ -59,6 +59,7 @@ def entry(d: dict) -> dict:
         # The teacher has to be told WHY a subtest is absent, or the omission
         # reads as a bug in the tool. This note lived only in the JSON and was
         # never carried to the screen.
+        # rejected_pseudowords is examiner-only and must NEVER reach the page.
         if d.get("nwf_note"):
             out["note"] = d["nwf_note"]
         return out

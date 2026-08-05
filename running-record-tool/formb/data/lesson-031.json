@@ -3,19 +3,20 @@
   "skill": "x /ks/",
   "form": "B",
   "instrument": "passage",
-  "title": "Ben and the Wax",
+  "title": "Jen and the Wax",
   "lines": [
-    "Dad has an ax and a log.",
-    "The ax is big. Ben tugs at it.",
-    "\"Do not tug at it,\" said Dad.",
-    "Ben sits. He is sad.",
-    "\"Ben, do the wax,\" said Dad.",
-    "Dad cuts the log.",
-    "Dad and Ben mix wax.",
-    "Ben rubs wax on the log.",
-    "Dad sets the log up. Ben is not sad.",
-    "Dad and Ben sit on the log.",
-    "\"Ben did the wax,\" said Dad."
+    "Mom has an ax and a log.",
+    "The ax is big. Jen tugs at it.",
+    "\"Do not tug at it,\" said Mom.",
+    "Jen is sad. She sits.",
+    "\"Jen, do the wax,\" said Mom.",
+    "Mom cuts the log.",
+    "Mom and Jen mix wax.",
+    "Jen rubs wax on the log.",
+    "Mom sets the log up. Jen is not sad.",
+    "Mom and Jen sit on the log.",
+    "\"Jen did the wax,\" said Mom."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

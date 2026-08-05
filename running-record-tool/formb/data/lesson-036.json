@@ -5,14 +5,15 @@
   "instrument": "passage",
   "title": "The Box Is Big",
   "lines": [
-    "Tim and Pip have a big box.",
+    "Tim and Val have a big box.",
     "\"Can it be in the bin?\" said Val.",
     "Tim tips the box in. It can not fit.",
-    "\"A lot of bags are in the bin,\" said Pip.",
+    "\"A lot of bags are in the bin,\" said Val.",
     "Tim digs in the bin and tips a bag up.",
-    "\"Tip the box up,\" said Pip.",
+    "\"Tip the box up,\" said Val.",
     "Tim tips the box up. It fits in the bin!",
-    "\"It fits!\" said Tim, and Pip nods."
+    "\"It fits!\" said Tim, and Val nods."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

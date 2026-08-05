@@ -9,10 +9,11 @@
     "A dog tugs at the bag.",
     "\"Not the buns, dog!\" said Bob.",
     "The dog tugs and tugs.",
-    "The buns pop up on the mat!",
+    "The buns pop up in a pen!",
     "Bob and Sid pop the buns in a tub.",
     "Meg fits a cap on the tub. Bob nods.",
     "Sid pats the dog, and it sits."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

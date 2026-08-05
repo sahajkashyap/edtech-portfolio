@@ -5,8 +5,8 @@
   "instrument": "passage",
   "title": "Deb and Ned Look at Bugs",
   "lines": [
-    "Deb and Ned sit in the sun.",
-    "\"Let us look at bugs,\" said Ned.",
+    "Deb and Ned are in a bin.",
+    "\"Look at the bugs,\" said Ned.",
     "Ned has ten bugs in a tub.",
     "Deb has a bug in a bin.",
     "Deb tips a log up.",
@@ -15,5 +15,6 @@
     "\"Deb wins,\" said Ned.",
     "Deb and Ned look at the web. \"We win,\" said Deb."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

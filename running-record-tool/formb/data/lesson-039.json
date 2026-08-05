@@ -5,15 +5,16 @@
   "instrument": "passage",
   "title": "The Big Log",
   "lines": [
-    "Gus and Jen run in the sun.",
+    "Gus and Jen run in a pen.",
     "A pup digs in the mud at a log.",
     "\"Bugs are in the mud,\" said Jen.",
     "Gus and Jen tug at the log.",
     "\"We can not tug it up,\" said Gus.",
-    "Dad tugs at the log. It is up!",
-    "Six bugs run in the mud.",
-    "\"Look at the bugs!\" said Jen.",
-    "Dad sets the log on the mud. The bugs dig in."
+    "\"We can dig,\" said Jen. She digs and digs.",
+    "The log is up! Six bugs run in the mud.",
+    "\"Look at the bugs!\" said Gus.",
+    "Jen sets the log on the mud."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

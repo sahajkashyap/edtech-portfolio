@@ -116,22 +116,61 @@ hand will recur. An audit finding converted into an executable check cannot.
 
 ---
 
-## The four specialists
+## The team: four specialists, one integrator
 
-Run all four in parallel. Each gets ONE dimension and must deliver executable
-checks, not just findings.
+Run the four in parallel, then the integrator. Each specialist gets ONE dimension
+and must deliver **executable checks, not findings**. The integrator's job is the
+seams — the defects that live between two dimensions and that no specialist owns.
 
-| Specialist | Dimension | Delivers |
+| Role | Dimension | Delivers |
 |---|---|---|
-| **1 Curriculum** | Does every item match what the lesson teaches? Does it exercise the skill it is named for? Independently derived from the curriculum data — never by running the project's own gates | `audit_curriculum.py` |
-| **2 Language** | Does every sentence parse, track its pronouns, hold its tense, tell a story, and say true things? | `WRITING-RULES.md` |
-| **3 The child** | Is every word one they KNOW (age of acquisition, not just decodable)? Is every idea one they should meet? Names, pseudowords, feelings, family assumptions | `audit_child.py` |
-| **4 The system** | Do the gates actually refuse? What is unchecked? Schema, formatting, corpus patterns, data drift, regression coverage | `verify_all.py` |
+| **1 Curriculum** | Does every item match what the lesson teaches, and exercise the skill it is named for? Derive the rules independently from the source data — never by running the project's own gates | `audit_curriculum.py` |
+| **2 Language** | Does every sentence parse, track its pronouns, hold its tense, tell a story, sound right read aloud, and say true things? | `WRITING-RULES.md` + checks |
+| **3 The audience** | Is every word one they KNOW (age of acquisition, not just decodability)? Is every idea one they should meet? Names, feelings, assumptions, and the set seen over a year | `audit_child.py` |
+| **4 The system** | Can you make the suite PASS something it should refuse? Attack it with 20+ injections. What is unchecked? Schema, drift, corpus, coverage | `verify_all.py` |
+| **5 The integrator** | Everything that falls between the four (below) | one command, green |
 
-Brief each one: *"Previous audits each found different defects, which means each
-was sampling. You must ENUMERATE."*
+Brief every specialist with: *"Previous audits each found different defects,
+which means each was sampling. You must ENUMERATE — every item, every field, a
+per-item verdict table, and an explicit 'this category is clean' only after
+enumerating."*
+
+### The integrator, and why it is a separate role
+
+Four specialists produce four green lights and a broken whole. These are the
+failures that only appear at the seams, every one of them observed:
+
+1. **Rule collisions.** One specialist demanded the note account for every
+   rejected item; another forbade naming those items on the page. Both were
+   right. The integrator finds the third option — full accounting in an
+   examiner-only field the renderer never draws.
+2. **Fix-induced regressions.** Removing an over-used word introduced a word
+   above the age line, which introduced a new failure, three times running. Only
+   someone watching all four dashboards sees the oscillation.
+3. **Severity drift.** Each specialist grades its own findings, so "HIGH" means
+   four different things. The integrator sets one scale and one exit policy.
+4. **Sign-off honesty.** Accepted limits must be re-derived, not trusted. One
+   silenced six unrelated checks; another guarded a branch that could never run.
+5. **Coupled constraints.** When gates fight each other, the integrator decides
+   between optimising and recording a signed baseline — and records the
+   measurement either way.
+6. **Concurrency.** Parallel fixers overwrite each other's derived artefacts.
+   The integrator regenerates them last, once.
+
+**The integrator's deliverable is not a report. It is a green run of one command,
+plus a written list of every limit that was accepted and why.**
 
 ---
+
+## The defect class catalogue
+
+`DEFECT-CLASS-CATALOGUE.md` in this repo lists every KIND of defect found across
+six passes, grouped as: the checker itself, curriculum correspondence, language
+and sense, the audience, and the set as a whole. Most are marked mechanically
+checkable and are already implemented.
+
+**Start the next project from that catalogue.** Anything on it should be caught
+by a machine on pass one, so human attention goes to whatever is genuinely new.
 
 ## Checklist before calling generated content done
 

@@ -5,13 +5,14 @@
   "instrument": "passage",
   "title": "Tom Hid a Cap",
   "lines": [
-    "The sun is hot.",
+    "It is a hot sun.",
     "\"I hid a cap,\" said Tom.",
-    "Sam digs in a bin, but the cap is not in it.",
+    "Pam digs in a bin, but the cap is not in it.",
     "\"The cap is up,\" said Tom.",
-    "Sam tips a pot up. The cap is in the pot!",
-    "Sam pops the cap on.",
-    "\"The sun is hot!\" said Tom. Sam nods."
+    "Pam tips a pot up. The cap is in the pot!",
+    "Pam pops the cap on.",
+    "\"The sun is hot!\" said Tom. She nods."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

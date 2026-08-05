@@ -6,15 +6,16 @@
   "title": "Do You See Ten Vans?",
   "lines": [
     "Gus and Mom sit in a bus.",
-    "\"Gus, see a jet, a hat, a bin, ten vans,\" said Mom.",
+    "\"What do you see?\" said Mom.",
     "The bus hums. \"A jet!\" said Gus.",
     "Gus sits up. \"A hat! A bin!\" he said.",
     "Mom nods. \"We see six vans,\" she said.",
-    "\"I do not see ten,\" said Gus. He is sad.",
+    "\"I do not see ten,\" said Gus. His lip dips.",
     "\"Sit up, Gus. Look!\" said Mom.",
-    "A lot of red vans are in the hot sun!",
-    "\"Ten! We win!\" said Gus, and he hops up.",
+    "A lot of red vans are in the hot fog!",
+    "\"Ten! We have ten!\" said Gus, and he hops up.",
     "Mom hugs Gus and pats him."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

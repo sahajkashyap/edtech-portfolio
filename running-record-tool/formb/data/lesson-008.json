@@ -23,6 +23,13 @@
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: fewer than five legal pseudowords exist at this lesson.",
-  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test."
+  "nwf_note": "No nonsense-word subtest at this lesson. 5 candidate spellings are legal here; every one of them is rejected because it is heard as a real word, a respelling or a letter name. The candidates and the reason for each are in rejected_pseudowords, which is examiner data and is never shown on the child's page.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test. Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error.",
+  "rejected_pseudowords": {
+    "fap": "heard as a real word, a respelling or a letter name",
+    "fim": "heard as a real word, a respelling or a letter name",
+    "im": "heard as a real word, a respelling or a letter name",
+    "ip": "heard as a real word, a respelling or a letter name",
+    "mip": "heard as a real word, a respelling or a letter name"
+  }
 }

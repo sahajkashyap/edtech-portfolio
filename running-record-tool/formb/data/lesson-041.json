@@ -3,17 +3,18 @@
   "skill": "Short Vowels Review (all)",
   "form": "B",
   "instrument": "passage",
-  "title": "The Bug Hops Up",
+  "title": "Ten Buds and a Pup",
   "lines": [
-    "A bug hops on a rug.",
-    "\"Look! It has six legs,\" said Nan.",
-    "The bug hops up on a bag.",
-    "\"Let the bug hop in a pot,\" said Dev.",
-    "Dev has a pot. The bug hops in!",
-    "Nan sets a lid on top.",
-    "\"The bug has to be on a log,\" said Nan.",
-    "Dev tips the pot on the log.",
-    "The bug hops on the log. Nan and Dev look."
+    "Val has ten buds in a box.",
+    "A tan pup digs in the box!",
+    "Six buds are on a mat!",
+    "Val tugs at the pup. She pets it.",
+    "\"You have to dig at a log, pup,\" said Val.",
+    "Val digs at the log.",
+    "The pup digs and wags a lot.",
+    "Val fits the six buds in the box.",
+    "Val lets the pup have the log."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

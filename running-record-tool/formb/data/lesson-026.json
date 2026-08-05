@@ -3,18 +3,19 @@
   "skill": "l /l/ Part 1",
   "form": "B",
   "instrument": "passage",
-  "title": "Ned Can Not See His Cap",
+  "title": "Nan Can Not See the Cap",
   "lines": [
-    "Ned can not see his cap.",
+    "Nan can not see the tan cap.",
     "\"Look on the bed,\" said Gus.",
-    "Ned tips a bin up.",
-    "He can see lots of bags, but not his cap.",
-    "A dog sits on the mat.",
-    "Ned can see the cap!",
+    "Nan tips a bin up.",
+    "She can see lots of bags, but not the cap.",
+    "A dog sits at the pit.",
+    "Nan can see the cap!",
     "The dog sits on it!",
-    "\"A cap is not a bed,\" said Ned.",
-    "Ned taps the dog. The dog hops up.",
-    "Ned pops the cap on and the dog sits on his lap."
+    "\"A cap is not a bed,\" said Nan.",
+    "Nan taps the dog. The dog hops up.",
+    "Nan pops the cap on and lets the dog up at the pit."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

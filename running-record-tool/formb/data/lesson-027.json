@@ -3,16 +3,17 @@
   "skill": "l /l/ Part 2",
   "form": "B",
   "instrument": "passage",
-  "title": "Hal Hops and Hops",
+  "title": "A Lot of Buns",
   "lines": [
-    "Hal has a red mug, but it is up on a peg.",
-    "He is not big. He can not tap it.",
-    "He hops and hops.",
-    "\"Dad, the mug is up on the peg,\" said Hal.",
-    "Hal can see a big tub.",
-    "Dad lets Hal tug the tub to the peg.",
-    "He is up on the tub. He has the mug!",
-    "Hal sits on the mat. The mug is on his lap."
+    "Sal has a lot of buns in a tub.",
+    "A cat hops up. It naps in the tub!",
+    "The legs of the cat are in the buns.",
+    "\"A lid can be on top,\" said Sal.",
+    "She has the lid. The lid is on the tub.",
+    "The cat taps at the lid.",
+    "\"Let the cat sit on top,\" said Mom.",
+    "The cat naps on the lid on a bed."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }

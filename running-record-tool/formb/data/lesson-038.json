@@ -3,17 +3,19 @@
   "skill": "Short A, I, O Review",
   "form": "B",
   "instrument": "passage",
-  "title": "The Rip in the Bag",
+  "title": "The Dog Has to Be in the Van",
   "lines": [
-    "Tim has a bag of buns on his bed.",
-    "Tim tugs at the bag. It has a rip!",
-    "Ten buns tip on the bed and his lap.",
-    "Tim is sad. He runs to Dad.",
-    "Dad digs in a bin of pins and pegs.",
-    "\"I have a pin. Let me fix the rip,\" said Dad.",
-    "He pins up the rip.",
-    "Tim tips ten buns in the bag and zips it.",
-    "Tim hugs Dad. \"You fix a lot,\" said Tim."
+    "Mom tips pots and bags in a van.",
+    "Liz has a dog.",
+    "The dog sits on its mat a lot.",
+    "\"Do we have the dog?\" said Mom.",
+    "Liz tugs at the dog. But it sits and sits.",
+    "\"The dog has to have its mat,\" said Liz.",
+    "She fits its mat in the van.",
+    "The dog runs to its mat and wags.",
+    "\"Look at the dog, Mom!\" said Liz.",
+    "Mom zips the bags. The van runs."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
 }
