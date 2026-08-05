@@ -781,6 +781,9 @@ def manifest_hashes(items):
     h = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p, _ in items}
     if INDEX.exists():
         h["../index.html"] = hashlib.sha256(INDEX.read_bytes()).hexdigest()
+    page = HERE.parent / "all-lessons.html"
+    if page.exists():
+        h["../all-lessons.html"] = hashlib.sha256(page.read_bytes()).hexdigest()
     # The CHECKERS were outside the manifest, so "these bytes were proven" was
     # true only of the content and never of the thing that judged it. A day
     # spent editing audit_child.py could not make this file say anything had
@@ -858,6 +861,22 @@ def check_index(R):
                 R.fail(line.strip())
     else:
         R.ok("index.html LESSONS is exactly what formb/data/ generates")
+
+    # all-lessons.html is the page a reviewer reads to CHECK the content, and it
+    # was built by hand once and then left behind when eight passages were
+    # reverted -- still showing text the tool no longer serves, while claiming
+    # on its face that it could not drift. Defect class A12, committed on the
+    # same day the catalogue entry for A12 was written.
+    import build_all_lessons
+    buf2 = io.StringIO()
+    with contextlib.redirect_stdout(buf2):
+        rc2 = build_all_lessons.main([])
+    if rc2:
+        R.fail("all-lessons.html has drifted from formb/data/. The review page "
+               "would show a reader text the tool does not serve. Fix with: "
+               "python3 build_all_lessons.py --write")
+    else:
+        R.ok("all-lessons.html is exactly what formb/data/ generates")
 
     # sync_index compares the FIRST `const LESSONS = {` block and nothing else, so
     # anything that edits the object after that block wins on the screen and is

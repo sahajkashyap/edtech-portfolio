@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T11:36:00",
+  "verified_at": "2026-08-05T11:43:47",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -12,7 +12,7 @@
     "schema"
   ],
   "audit_child_review": 56,
-  "audit_child_review_raised": "56, up from 55. Four BLOCK-level WRITING-RULES.md violations were fixed (a Form A sentence shipped verbatim at L10 and L36, a Sid/sit one-phoneme collision at L16, and a plot turn riding on 'not' alone at L18), and fixing them changed four passages. The one net new REVIEW is the cost of those repairs, not new damage. L22's missing /k/ is now a recorded sign-off in audit_writing.ACCEPTED with its arithmetic.",
+  "audit_child_review_raised": "",
   "audit_writing_high": 102,
   "files": {
     "lesson-006.json": "83bc04d6fcc1a4bca91f8623cab4a3a5fea7dea240d674802264fd16f594220c",
@@ -52,11 +52,12 @@
     "lesson-040.json": "26b8fabb116292ecae76941fdb025df0a607502bb15509b1f0d82f60c24e5102",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
     "../index.html": "7f61a64690207d3c70dd3e5ae5db55255d1a0a846688ec4c1b49a60b08b2c398",
+    "../all-lessons.html": "da50d63f0139ef3ea59c3978f2534e19ce300d48262a027de93d032b6fe43b2c",
     "audit_child.py": "6572e9ef9131c31a15cb184cf3653ab9c37553f3fb358104ca6965fa0f087e72",
     "audit_curriculum.py": "08fe7d7ab82354bc9b8370ea61d34f490685fdb3b59628327be36d604de6fb89",
     "gates.py": "94cadb426bf1275e4a8d8a90d726d1e61a89c4bb23e6f396310f198a72b54c23",
     "quality.py": "5ab88cb43c6427952afe83297b0e84b6a00f741391da18cd5fc1468aefe1bcf8",
     "sync_index.py": "806a919c995d1c7a7a076b39a624de8bf43d5e3a23e6b6c53923fc51dbeecf3a",
-    "verify_all.py": "30ca72eb375cfb6a707d742efdbfe15df2a02802e366425b946b59f41855e84a"
+    "verify_all.py": "1799355d9dcc971629896c0c245de91c1f244d5533f96545b29a71b0730e109e"
   }
 }
