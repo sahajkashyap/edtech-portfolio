@@ -10,11 +10,11 @@
     "\"Bugs are in the mud,\" said Jen.",
     "Gus and Jen tug at the log.",
     "\"We can not tug it up,\" said Gus.",
-    "Jen is sad. \"We can dig,\" said Jen.",
-    "She digs and digs. The log is up!",
+    "\"We can dig,\" said Jen. She digs and digs.",
+    "The log is up! Six bugs run in the mud.",
     "\"Look at the bugs!\" said Gus.",
-    "Jen is not sad. The log is on the mud."
+    "Jen sets the log on the mud."
   ],
   "gates_passed": true,
-  "scoring_note": "This passage says \"can not\", \"is not\". Decodability forbids apostrophes. A child who reads \"can't\" or \"isn't\" is reading for meaning — do not score it an error."
+  "scoring_note": "This passage says \"can not\". Decodability forbids apostrophes. A child who reads \"can't\" is reading for meaning — do not score it an error."
 }

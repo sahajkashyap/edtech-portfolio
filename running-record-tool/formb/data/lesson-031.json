@@ -5,16 +5,18 @@
   "instrument": "passage",
   "title": "Jen and the Wax",
   "lines": [
-    "Jen has a tub of wax.",
-    "Mom has the ax. Mom digs up a big log.",
-    "Jen and Mom mix the wax.",
-    "Jen dips a cup in it.",
-    "Jen rubs the wax on the log.",
-    "The log is hot and wet.",
-    "\"You did it,\" said Mom.",
-    "Jen pats the log and hums.",
-    "Jen sits on the log.",
-    "\"The log is fun,\" said Jen."
+    "Mom has an ax and a log.",
+    "The ax is big. Jen tugs at it.",
+    "\"Do not tug at it,\" said Mom.",
+    "Jen is sad. She sits.",
+    "\"Jen, do the wax,\" said Mom.",
+    "Mom cuts the log.",
+    "Mom and Jen mix wax.",
+    "Jen rubs wax on the log.",
+    "Mom sets the log up. Jen is not sad.",
+    "Mom and Jen sit on the log.",
+    "\"Jen did the wax,\" said Mom."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "This passage says \"do not\", \"is not\". Decodability forbids apostrophes. A child who reads \"don't\" or \"isn't\" is reading for meaning — do not score it an error."
 }

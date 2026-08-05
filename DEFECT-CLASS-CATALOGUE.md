@@ -168,21 +168,40 @@ Run these as **separate** agents. One agent doing all of it does none of it.
    collisions, severity drift, sign-off honesty. *Four specialists produce four
    green lights and a broken whole without this role.*
 
-### The checks that should exist and do not
-`WRITING-RULES.md` is unenforced. These five are mechanical and would have
-caught most of section F at zero cost:
+### The checks that did not exist — now `formb/audit_writing.py`
+`WRITING-RULES.md` carried **53 rules, 18 marked [MECHANICAL], each shipping the
+check that would enforce it**, and even naming the file it belonged in. It was
+enforced by nothing for a day, which is how twelve passages were rewritten
+straight through it. An independent sweep then held all 36 lessons against it
+and found **337 problems, most older than that session** — the standard had been
+a diagnosis of this corpus since the day it was written, and the diagnosis was
+never acted on.
 
-- **3.1 verb–noun pairs** — a blocklist of the collocations the document already
-  names (`tug the tub`, `tip a bun`, `mop the pot`, `set jam`). ~20 lines.
-- **4.1 first mention takes `a`, later mentions `the`** — scan determiners per
-  noun in document order.
-- **9.2 one-phoneme collisions** — Hamming distance 1 between any name and any
-  other word in the same sentence. The document specifies the algorithm.
-- **10.2 plot turns riding on `not`** — a resolution line differing from the
-  problem line only by `not`.
-- **target sound present in the passage** — `target_letters()` exists but runs
-  only on word lists, so lessons 15–41 have never been checked. Lesson 22 is
-  named `k /k/` and contains no `k`.
+`audit_writing.py` now executes the mechanical ones (1.2, 1.5, 3.2, 4.1, 7.6,
+8.2, 9.1, 9.2, 9.3, 10.1, 10.2, 10.3, plus target-sound-present), each with a
+self-test proving it fires on its own example and stays quiet on a clean
+passage. It is wired into `verify_all` section 9, and its HIGH backlog is
+recorded in `verified.json` so it **can only shrink** — a fresh violation fails
+the run, proved by injection.
+
+Three things that only showed up once the rules were executable:
+
+- **A checker's own examples can be wrong.** Rule 7.6 flagged the "clean"
+  control case in the self-test, and it was right — the title really did contain
+  every content word of line 1. The self-test earns its keep by catching the
+  test author, not just the content.
+- **Stripping names hid the real difference.** The 10.2 check compared content
+  words with character names removed, so *"Pip can not tip it up"* and *"Nan and
+  Pip tip it up"* looked like the same line turned by `not`. Nan joining in is
+  the whole resolution. Never normalise away the thing the rule is about.
+- **Some violations are arithmetically forced.** Lesson 22 is named `k /k/`; the
+  decodable vocabulary there holds exactly two k-words; Form A spends both. Put
+  either back and gate 3 refuses at 9% overlap against a 5% ceiling. Recorded as
+  a sign-off with the measurement, not "fixed" — and the sign-off states plainly
+  that Lesson 22's score measures short-vowel decoding, **not** /k/.
+
+**The judgement rules stay human** and are printed at the end of every run, so a
+green mechanical pass is never mistaken for a green page.
 
 ## The three rules that matter most
 

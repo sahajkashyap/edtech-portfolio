@@ -12,9 +12,8 @@
     "\"Not on the rug, pup!\" said Jon. Bev nods.",
     "Bev pats the pup, and it hops up.",
     "The pup is on a rug.",
-    "Jon and Bev tug the rug up.",
-    "The mud is not on the rug. Bev has the bun."
+    "Jon and Bev pop the rug in a tub.",
+    "Bev and Jon have the bun on a rug."
   ],
-  "gates_passed": true,
-  "scoring_note": "This passage says \"is not\". Decodability forbids apostrophes. A child who reads \"isn't\" is reading for meaning — do not score it an error."
+  "gates_passed": true
 }

@@ -20,7 +20,7 @@
   ],
   "sentences": [
     "A man sat on the mat.",
-    "The map is on top."
+    "The map is not on top."
   ],
   "audit_clean": true,
   "audit_problems": [],
@@ -39,5 +39,6 @@
     "op": "heard as a real word, a respelling or a letter name",
     "ot": "heard as a real word, a respelling or a letter name",
     "som": "heard as a real word, a respelling or a letter name"
-  }
+  },
+  "scoring_note": "This word list says \"is not\". Decodability forbids apostrophes. A child who reads \"isn't\" is reading for meaning — do not score it an error."
 }

@@ -20,7 +20,7 @@
   ],
   "sentences": [
     "Dad and I dip it.",
-    "\"A dot!\" said Dad."
+    "\"It is a dot,\" said Dad."
   ],
   "audit_clean": true,
   "audit_problems": [],
@@ -42,5 +42,6 @@
     "ot": "heard as a real word, a respelling or a letter name",
     "pid": "heard as a real word, a respelling or a letter name",
     "som": "heard as a real word, a respelling or a letter name"
-  }
+  },
+  "scoring_note": "This word list says \"it is\". Decodability forbids apostrophes. A child who reads \"it's\" is reading for meaning — do not score it an error."
 }

@@ -3,11 +3,11 @@
   "skill": "e /ĕ/",
   "form": "B",
   "instrument": "passage",
-  "title": "Peg Can Not Nap",
+  "title": "Peg, Ted and the Cap",
   "lines": [
     "Peg got in bed at ten.",
     "\"Ted! A tan cap is not in the bed,\" said Peg.",
-    "\"I can not nap,\" said Peg.",
+    "\"I am up at ten,\" said Peg.",
     "Ted met Min at the bin.",
     "Min and Ted got the bin up.",
     "Min got the cap in the bin!",
@@ -15,5 +15,5 @@
     "\"I can nap,\" said Peg."
   ],
   "gates_passed": true,
-  "scoring_note": "This passage says \"is not\", \"can not\". Decodability forbids apostrophes. A child who reads \"isn't\" or \"can't\" is reading for meaning — do not score it an error."
+  "scoring_note": "This passage says \"is not\", \"I am\". Decodability forbids apostrophes. A child who reads \"isn't\" or \"I'm\" is reading for meaning — do not score it an error."
 }

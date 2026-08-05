@@ -794,6 +794,14 @@ def manifest_hashes(items):
     return h
 
 
+def writing_high():
+    """How many HIGH writing-rule findings the corpus has right now."""
+    p = subprocess.run([sys.executable, str(HERE / "audit_writing.py")],
+                       capture_output=True, text=True, cwd=str(HERE))
+    m = re.search(r"HIGH (\d+)", p.stdout or "")
+    return int(m.group(1)) if m else 0
+
+
 def baseline_reason(argv):
     """The reason given for ACCEPTING a higher REVIEW baseline, or None.
 
@@ -827,6 +835,8 @@ def write_manifest(items, review_baseline=None):
         # is the sentence a later reader needs in order to tell "we let the
         # content get worse" from "the checker started telling the truth".
         "audit_child_review_raised": baseline_reason(sys.argv[1:]) or "",
+        # The WRITING-RULES.md HIGH backlog. Recorded so it can only shrink.
+        "audit_writing_high": writing_high(),
         "files": manifest_hashes(items),
     }
     MANIFEST.write_text(json.dumps(payload, indent=2) + "\n")
@@ -1312,7 +1322,11 @@ def check_siblings(R):
     """
     R.start("9  sibling audits")
     review = None
-    for name in ("audit_curriculum", "audit_child"):
+    # audit_writing joins them. WRITING-RULES.md carried 18 rules marked
+    # [MECHANICAL], each with the check that would enforce it, and for a day it
+    # was enforced by nothing at all — which is how twelve passages were
+    # rewritten straight through it. A standard no runner executes is a wish.
+    for name in ("audit_curriculum", "audit_child", "audit_writing"):
         path = HERE / (name + ".py")
         if not path.exists():
             R.fail("%s.py is missing. It is not an optional extra: the checks that "
@@ -1368,6 +1382,29 @@ def check_siblings(R):
         if raised:
             R.info("baseline of %s was RAISED, with this reason on record:\n      %s"
                    % (base, raised))
+
+        # The writing-rule HIGH backlog gets the same treatment as audit_child's
+        # REVIEW count: measured, recorded, and unable to grow unnoticed. It is
+        # ~100 findings that predate the checker existing, so failing on them
+        # today would only teach the next person to stop running it -- but a
+        # NEW one is a defect somebody just wrote.
+        wp = subprocess.run([sys.executable, str(HERE / "audit_writing.py")],
+                            capture_output=True, text=True, cwd=str(HERE))
+        wm = re.search(r"HIGH (\d+)", wp.stdout or "")
+        whigh = int(wm.group(1)) if wm else 0
+        wbase = json.loads(MANIFEST.read_text()).get("audit_writing_high") if MANIFEST.exists() else None
+        if wbase is None:
+            R.info("audit_writing HIGH backlog: %d, not yet recorded. Stamp it."
+                   % whigh)
+        elif whigh > wbase:
+            R.fail("audit_writing reports %d HIGH writing-rule findings, %d MORE "
+                   "than the %d recorded. Those are WRITING-RULES.md violations "
+                   "somebody just introduced." % (whigh, whigh - wbase, wbase))
+        elif whigh < wbase:
+            R.info("audit_writing HIGH backlog down to %d from %d — re-stamp."
+                   % (whigh, wbase))
+        else:
+            R.ok("audit_writing: %d HIGH, matching the recorded backlog" % whigh)
         if base is None:
             R.fail("MANIFEST no signed-off audit_child REVIEW baseline. --strict "
                    "reports %d judgement-call findings and nothing records how many "
