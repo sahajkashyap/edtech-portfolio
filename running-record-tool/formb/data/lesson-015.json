@@ -3,17 +3,17 @@
   "skill": "u /ŭ/",
   "form": "B",
   "instrument": "passage",
-  "title": "A Nut in the Pot",
+  "title": "A Tan Pot and a Nut",
   "lines": [
-    "Nan and Pip sit on a mat.",
+    "Nan and Tom sit on a mat.",
     "A nut is in a pot.",
     "The pot is tan.",
-    "Pip can not tip it up.",
-    "\"Nan, tip it,\" said Pip.",
-    "\"Do it,\" said Nan. Nan and Pip tip it up.",
+    "Tom can not tip it up.",
+    "\"Nan, tip it,\" said Tom.",
+    "\"Do it,\" said Nan. Nan and Tom tip it up.",
     "The nut is up! It is at the pot.",
     "Min can cut it up.",
-    "Pip can pop it in to a cup."
+    "Tom can pop it in to a cup."
   ],
   "gates_passed": true,
   "scoring_note": "This passage says \"can not\", \"it is\". Decodability forbids apostrophes. A child who reads \"can't\" or \"it's\" is reading for meaning — do not score it an error."

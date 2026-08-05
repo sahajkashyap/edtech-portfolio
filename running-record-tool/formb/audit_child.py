@@ -133,6 +133,12 @@ BLOCKED = {w.lower() for w in cv.BLOCKED}
 # The cast, declared. NOT inferred from capitalisation -- that is the bug this
 # file exists to close. A name is exempt from the age gate; nothing else is.
 # ---------------------------------------------------------------------------
+FEMALE_CAST_SEED = {"nan", "pam", "peg", "meg", "deb", "liz", "jan", "sal",
+                    "jen", "bev", "val", "kim", "mom", "min", "lin"}
+MALE_CAST_SEED = {"sam", "tim", "sid", "dan", "ted", "bob", "gus", "tom", "ron",
+                  "ned", "hal", "ben", "max", "raj", "zeb", "jon", "pip", "dev",
+                  "zac", "reg", "dad", "kip", "jin"}
+
 # pam, meg, deb, ned and raj were retired: each reverses into a word the child
 # already knows (map, gem, bed, den, jar), which turns the classic b/d reversal
 # into a miscue an examiner cannot score. Their replacements are in the second
@@ -145,6 +151,12 @@ CAST = {
     "max", "liz", "zac", "dan", "jen", "mom", "dad", "i",
     "min", "lin", "kip", "jin",
 }
+# CAST was maintained by hand beside FEMALE_CAST and MALE_CAST and had drifted
+# out of step with both: peg, jan, val, bev, zeb, jon, pip and dev were listed
+# as characters for the agency checks and as ordinary words everywhere else. A
+# name counted as a content word inflates every "does this line share words
+# with that one" comparison in the suite. One source of truth.
+CAST |= FEMALE_CAST_SEED | MALE_CAST_SEED
 
 # ---------------------------------------------------------------------------
 # CHECK 3 -- the hole in the age gate.
@@ -580,11 +592,8 @@ REPAIR_VERBS = r"\b(fix|fixes|fixed|cuts?|pins? up|mix wax|sets? .{0,12}up|" \
 # min, lin replace pam/meg/deb; kip, jin replace ned/raj. Gender is preserved
 # name for name so the agency balance this check measures is not quietly moved
 # by a rename that was made for a different reason.
-FEMALE_CAST = {"nan", "pam", "peg", "meg", "deb", "liz", "jan", "sal", "jen",
-               "bev", "val", "kim", "mom", "min", "lin"}
-MALE_CAST = {"sam", "tim", "sid", "dan", "ted", "bob", "gus", "tom", "ron",
-             "ned", "hal", "ben", "max", "raj", "zeb", "jon", "pip", "dev",
-             "zac", "reg", "dad", "kip", "jin"}
+FEMALE_CAST = FEMALE_CAST_SEED
+MALE_CAST = MALE_CAST_SEED
 
 # ---------------------------------------------------------------------------
 # CHECK 17 -- every word known, the event unknown.

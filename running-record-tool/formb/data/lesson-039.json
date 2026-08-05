@@ -5,15 +5,15 @@
   "instrument": "passage",
   "title": "The Big Log",
   "lines": [
-    "Gus and Jen run in a pen.",
+    "Gus and Min run in a pen.",
     "A pup digs in the mud at a log.",
-    "\"Bugs are in the mud,\" said Jen.",
-    "Gus and Jen tug at the log.",
+    "\"Bugs are in the mud,\" said Min.",
+    "Gus and Min tug at the log.",
     "\"We can not tug it up,\" said Gus.",
-    "\"We can dig,\" said Jen. She digs and digs.",
+    "\"We can dig,\" said Min. She digs and digs.",
     "The log is up! Six bugs run in the mud.",
     "\"Look at the bugs!\" said Gus.",
-    "Jen sets the log on the mud."
+    "Min sets the log on the mud."
   ],
   "gates_passed": true,
   "scoring_note": "This passage says \"can not\". Decodability forbids apostrophes. A child who reads \"can't\" is reading for meaning — do not score it an error."

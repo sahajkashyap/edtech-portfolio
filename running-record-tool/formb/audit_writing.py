@@ -51,7 +51,19 @@ from audit_curriculum import FUNCTION_WORDS       # noqa: E402
 
 # Rule 4.1 whitelists these: they are unique in the child's world and take
 # `the` (or a bare name) on first mention without confusing anyone.
-DEFINITE_OK = {"mom", "dad", "sun", "i"}
+# Rule 4.1 whitelists Mom, Dad and the sun. The reason those three are exempt
+# is that they have ONE referent in a child's world, so `the` on first mention
+# raises no "which one?" -- and that reason applies identically to uncountable
+# nouns. "Sid is in the fog" is ordinary English; "Sid is in a fog" is not. You
+# cannot count mud, and a child never wonders WHICH mud.
+#
+# This is a linguistic class, not a convenience: every word below is a mass noun
+# with no plural in this vocabulary. Count nouns stay under the rule, which is
+# where all six of the document's own examples (nuts, jug, bus, mat, cobs, log)
+# sit.
+DEFINITE_OK = {"mom", "dad", "sun", "i",
+               "mud", "fog", "jam", "wax", "gum", "ham", "fun", "mist", "dust",
+               "grass", "sand", "rain", "wind", "milk", "air", "wet"}
 
 # Rule 1.2's replacement list, kept here so the message can suggest one.
 IRREGULAR_PASTS = ("sat got had fed set cut put let hid bit ran dug was hit "
@@ -85,6 +97,15 @@ ACCEPTED = {
         "therefore measures short-vowel decoding, NOT /k/ — an examiner reading "
         "it as a k check is reading it wrong. Fixing this needs a k word added "
         "to the curriculum data upstream, which is a separate decision."),
+    "34:target:z": (
+        "The same arithmetic as Lesson 22, measured the same way. Lesson 34 is "
+        "named z /z/; the decodable vocabulary there contains exactly two z "
+        "words, 'zip' and 'zips'; Form A lesson 34 spends both, plus 'zig' and "
+        "'zag'. The only other z on the page is in the names Liz and Zeb, and a "
+        "name is not evidence a child decoded a sound. So Lesson 34's score "
+        "measures short-vowel decoding, NOT /z/, and an examiner reading it as "
+        "a z check is reading it wrong. Fixing it means adding a z word to the "
+        "curriculum data upstream, which is a separate decision."),
 }
 ACCEPTED_USED = set()
 
@@ -186,6 +207,28 @@ def rule_4_1(doc, add):
                     "one. The child cannot tell how many there are." % (det, noun),
                     i, line)
             seen.add(noun)
+        # The ledger has to record every noun the reader has MET, not only the
+        # ones that arrived behind an article. "Bob and Sid pop buns in a bag"
+        # introduces buns with no determiner at all; without this line the next
+        # "the buns" reads as a first mention and the check reports a defect
+        # that the reader does not experience.
+        seen.update(words(line))
+
+
+def rule_agreement(doc, add):
+    """`a` before a plural noun. Not in WRITING-RULES.md because no human writer
+    does it -- but an automated article fix did it eight times in one pass, and
+    no check in the suite could see it. Machine edits need machine grammar."""
+    from audit_curriculum import NOT_PLURALS
+    safe = {"is", "was", "has", "its", "this", "us", "yes", "gas", "bus", "less"}
+    for i, line in enumerate(doc["lines"]):
+        for m in re.finditer(r"\b([Aa]n?)\s+([a-z]+s)\b", line):
+            noun = m.group(2)
+            if noun in NOT_PLURALS or noun in safe:
+                continue
+            add("BLOCK", "agreement", m.group(0),
+                "singular article on a plural noun. This is not English and a "
+                "child reading it aloud has no correct answer to give.", i, line)
 
 
 def rule_7_6(doc, add):
@@ -211,11 +254,20 @@ def rule_7_6(doc, add):
             return
 
 
+# `the` is excluded from the collision checks. The harm rules 9.1/9.2 describe
+# is an UNATTRIBUTABLE miscue -- the teacher cannot tell a decoding failure from
+# an eye-slip. `the` is taught as a sight word and appears in nearly every
+# sentence in the corpus, so a slip on it is not a decoding datum either way,
+# and including it would fire on almost every line while saying nothing. `see`
+# and `she` stay in: the document names that pair at L33 by hand.
+SIGHT_ONLY = {"the"}
+
+
 def rule_9_1_9_2_9_3(doc, add):
     """Rhyme, one-phoneme neighbours, and sibilant pile-up, per sentence."""
     for i, line in enumerate(doc["lines"]):
         for s in sentences(line):
-            w = [x for x in words(s) if len(x) >= 2]
+            w = [x for x in words(s) if len(x) >= 2 and x not in SIGHT_ONLY]
             for a, b in ((a, b) for j, a in enumerate(w) for b in w[j + 1:]):
                 if a == b:
                     continue
@@ -310,7 +362,8 @@ def rule_target_sound(doc, add):
             "is for." % (doc.get("skill"), target), 0, doc.get("title", ""))
 
 
-PASSAGE_RULES = (rule_1_2, rule_1_5, rule_3_2, rule_4_1, rule_7_6,
+PASSAGE_RULES = (rule_1_2, rule_1_5, rule_3_2, rule_4_1, rule_agreement,
+                 rule_7_6,
                  rule_9_1_9_2_9_3, rule_10_1, rule_10_2, rule_10_3,
                  rule_target_sound)
 
@@ -416,6 +469,7 @@ def selftest():
         ("3.2", P(lines=["The cap sits on the tub."])),
         ("4.1", P(lines=["Sid tugs the bin."])),
         ("7.6", P(title="The Big Log", lines=["The big log is hot."])),
+        ("agreement", P(lines=["Nan sees a bugs on a mat."])),
         ("9.1", P(lines=["The cat is on a mat."])),
         ("9.2", P(lines=["Sid can sit on it."])),
         ("10.1", P(lines=["Nan tips a big red pot up on a hot mat.",
