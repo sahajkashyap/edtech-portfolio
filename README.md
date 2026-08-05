@@ -7,14 +7,65 @@ pedagogy is written down as rules a machine can enforce and a second component
 can verify.
 
 **▶ Try the tools in your browser — nothing to install:**
+[**One child's reading, start to finish**](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html) ·
+[The marking tool](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/) ·
 [Phonics Assessment Tracker](https://sahajkashyap.github.io/edtech-portfolio/phonics-assessment-tool/) ·
 [Factor Field](https://sahajkashyap.github.io/edtech-portfolio/factor-field/) ·
-[Math Tracker](https://sahajkashyap.github.io/edtech-portfolio/math-assessment-tool/) ·
 [A finished decodable sheet](https://sahajkashyap.github.io/edtech-portfolio/decodable-passage-generator/example-lesson-41.html)
 
 ---
 
-## Start here: the Decodable Passage Engine
+## Start here: the Running Record Tool
+
+**[`running-record-tool/`](running-record-tool/)** —
+[what it decides and what it does not](running-record-tool/DESIGN.md)
+
+A teacher sits beside a child, the child reads aloud, and the teacher marks every
+word. Doing that on paper takes about as long again to score, which is why running
+records get done twice a year and grouping decisions sit on data from months ago.
+
+**[▶ See a finished one](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html)**
+— a child called Maya reading Lesson 20. She is invented; the numbers are not.
+Every figure on that page was produced by marking the real passage through the
+real interface, click by click.
+
+It also shows the point. Maya reads at 93%, which the tool bands *Instructional*
+— carry on at about this level. That does not tell a teacher what to teach. The
+pattern does: she dropped the **–s** three times, on the lesson named for the
+**–s**, and got every base word right.
+
+**The line this tool holds:** the teacher supplies every judgement, the tool
+supplies speed and arithmetic. Miscues are coded Meaning / Structure / Visual by
+the person in the room; the tool tallies what they entered and says so in those
+words. No suggested reading level, no recommended next lesson, no risk flag. If
+those ever appear it has stopped being a record and started being an opinion.
+
+**Where it refuses to compute.** Word lists are not banded, because the same
+child with the same three errors came out Independent on one sheet and
+Frustration on another. Two lessons state on their own sheet that they do not
+measure the sound they are named for, because the practice form already spends
+every word that carries it. Both are written down with the arithmetic rather than
+smoothed over.
+
+**36 assessment items** across lessons 6–41 —
+[read every one](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/all-lessons.html)
+— each through six content gates, an age-of-acquisition gate, and a writing
+standard of 53 rules that is now executable rather than aspirational.
+
+| | Writing-rule violations |
+|---|---|
+| Before the standard was enforced by anything | 102 |
+| After | **14**, each remaining one measured and recorded |
+
+The test suite falsifies its own checks: every gate must prove it can still
+refuse before a run is allowed to pass. That caught a checker that could never
+flag the commonest error it was written for, a sign-off that had silenced nothing
+since the day it was written, and eleven bugs in the tool itself — two of which
+were producing wrong scores about a child.
+
+---
+
+## The Decodable Passage Engine
 
 **[`decodable-passage-generator/`](decodable-passage-generator/)** —
 [engineering notes](decodable-passage-generator/ENGINEERING.md)
@@ -60,10 +111,11 @@ object to; what it found is in the git history.
 
 ---
 
-## Also here
+## Also in this repo
 
 | Project | What it is |
 |---|---|
+| [`running-record-tool/`](running-record-tool/) | Running record marking tool, 36 assessment items, MSV cue analysis. [Worked example](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html) · [design note](running-record-tool/DESIGN.md) |
 | `phonics-assessment-tool` | UFLI Foundations tracker with a worksheet generator. All 128 skills produce printable practice sheets across six sheet types. |
 | [`factor-field/`](factor-field/) | Times-tables practice tool. |
 | [`weekly-family-newsletter/`](weekly-family-newsletter/) | Family communication template. |
