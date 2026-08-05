@@ -167,24 +167,73 @@ would object to, with no knowledge of who wrote them.
 
 ## Also in this repo
 
-**Try these in your browser too:**
-[Phonics tracker](https://sahajkashyap.github.io/edtech-portfolio/phonics-assessment-tool/) &middot;
-[Times tables](https://sahajkashyap.github.io/edtech-portfolio/factor-field/) &middot;
-[A finished reading sheet](https://sahajkashyap.github.io/edtech-portfolio/decodable-passage-generator/example-lesson-41.html)
+Eleven tools, all of them ordinary browser pages. Nothing to install, no account
+to make, and nothing leaves the laptop they are opened on.
 
+The six subject trackers below work the same way, because a teacher should not
+have to learn a new tool for each subject. Every skill is marked **Emerging,
+Developing or Mastered**, the chart redraws as you go, there is a box for
+strengths and one for next steps in the teacher's own words, and the whole thing
+prints as a report for a conference.
 
-| Project | What it is |
+### Reading and writing
+
+| Tool | What it is |
 |---|---|
-| [`running-record-tool/`](running-record-tool/) | Running record marking tool, 36 assessment items, MSV cue analysis. [Worked example](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html) · [design note](running-record-tool/DESIGN.md) |
-| `phonics-assessment-tool` | UFLI Foundations tracker with a worksheet generator. All 128 skills produce printable practice sheets across six sheet types. |
+| [`running-record-tool/`](running-record-tool/) | The marking screen: tap each misread word, pick what the child did, and the accuracy, rate and error rate are counted for you. 36 assessment items, MSV cue analysis. [Worked example](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html) · [design note](running-record-tool/DESIGN.md) |
+| [`decodable-passage-generator/`](decodable-passage-generator/) | The index of all 128 lessons, 123 of them with a printable four-page packet. [A finished sheet](https://sahajkashyap.github.io/edtech-portfolio/decodable-passage-generator/example-lesson-41.html) |
+| [`phonics-assessment-tool/`](phonics-assessment-tool/) | UFLI Foundations tracker with a worksheet generator. All 128 skills produce printable practice sheets across six sheet types. |
+| [`reading-assessment-tool/`](reading-assessment-tool/) | Six reading skills, from decoding two-syllable words to retelling a story and finding the main topic of an informational text. |
+| [`writing-assessment-tool/`](writing-assessment-tool/) | Seven writing skills, from printing upper and lower case letters to revising and editing with guidance. |
+
+### Across the other subjects
+
+| Tool | What it is |
+|---|---|
+| [`math-assessment-tool/`](math-assessment-tool/) | Five units and 57 lessons, marked one lesson at a time: place value, addition, subtraction and money, geometry, graphing. Choose a single unit or see the whole year. Exports as PDF, CSV or JSON. |
+| [`science-assessment-tool/`](science-assessment-tool/) | Six skills, including describing the properties of materials and living things, and planning, building and testing a design. |
+| [`social-studies-assessment-tool/`](social-studies-assessment-tool/) | Six categories, including using maps and globes, identifying roles in a community, and taking part in shared research. Exports as PDF, CSV or JSON. |
+| [`social-emotional-assessment-tool/`](social-emotional-assessment-tool/) | Six skills: routines and directions, self-regulation, empathy, persistence, conflict resolution, and asking questions. |
 | [`factor-field/`](factor-field/) | Times-tables practice tool. |
-| [`weekly-family-newsletter/`](weekly-family-newsletter/) | Family communication template. |
+
+### For families
+
+| Tool | What it is |
+|---|---|
+| [`weekly-family-newsletter/`](weekly-family-newsletter/) | Family communication template: what the class did this week, in a page a parent will read. |
+
+---
+
+## Three more, in their own repos
+
+Same idea, three separate repositories. All of them run in a browser, and each
+one opens on real content rather than an empty screen.
+
+**[Bathysphere](https://sahajkashyap.github.io/bathysphere/)** builds
+reading-comprehension question sets at four levels of demand: literal,
+inferential, analytical, evaluative. Open-ended with answer keys, or multiple
+choice, 5, 8 or 10 questions at a time. Eight public-domain books are loaded,
+from Aesop and *Peter Rabbit* through *Tom Sawyer* to *Frankenstein* and *Pride
+and Prejudice*, covering grade bands K&ndash;1 to 11&ndash;12, and every
+question carries a CCSS ELA standard. It runs with no login and no API key.
+
+In the **[Class-Aware Unit Generator](https://sahajkashyap.github.io/unit-generator/)**,
+a book title and a grade band become a full ELA unit: a three-week arc,
+day-by-day scripted lessons that say what the teacher says and does, passages
+and questions at three levels, vocabulary, graphic organizers, and support for
+English learners. There is a live demo and a complete 15-lesson sample unit to
+read.
+
+The **[Whole-Child Assessment Suite](https://sahajkashyap.github.io/whole-child-profile/)**
+takes the subject trackers and the social-emotional one, fall and spring across
+seven areas, and gathers them into a single page for a parent. The demo is
+populated with a sample second-grader.
 
 ---
 
 ## How this repo is built
 
-**Skills** in [`.claude/skills/`](.claude/skills/) hold the rules that must not
+**Skills** in [`.claude/skills/`](https://github.com/sahajkashyap/edtech-portfolio/tree/main/.claude/skills) hold the rules that must not
 drift: copyright constraints, fine-motor sizing for K–2 hands, the
 generate → audit → fix → re-audit loop. They are procedure cards: written once,
 followed the same way every time.
