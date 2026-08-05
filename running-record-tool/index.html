@@ -139,6 +139,7 @@
   }
   .clock{font-size:27px; font-weight:bold; letter-spacing:1px; line-height:1.1}
   .clock.idle{color:#b9ad97}
+  .b-none{background:var(--soft); color:var(--muted); border:1px solid var(--rule)}
   .wcpm{font-size:14px; color:var(--muted); margin-top:3px}
   .wcpm b{color:var(--ink); font-size:18px}
   .tbtns{display:flex; gap:6px; margin-top:9px}
@@ -807,7 +808,7 @@ const LESSONS = {
   "kind": "passage",
   "lines": [
    "Peg got in bed at ten.",
-   "\"The tan cap is not in the bed,\" said Peg.",
+   "\"Ted! A tan cap is not in the bed,\" said Peg.",
    "\"I am up at ten,\" said Peg.",
    "Ted met Nan at a bin.",
    "Nan and Ted got the bin up.",
@@ -937,7 +938,7 @@ const LESSONS = {
   "title": "A Dog on a Tan Hat",
   "kind": "passage",
   "lines": [
-   "Peg can not see the tan hat.",
+   "Peg can not see a tan hat.",
    "\"Look on a bed,\" said Gus.",
    "Peg tips a bin up.",
    "She can see lots of bags, but not a hat.",
@@ -1402,8 +1403,29 @@ function render(){
     s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '–';
   document.getElementById('sWcpm').textContent = s.wcpm === null ? '–' : s.wcpm;
 
+  // The 95/90 bands are a PASSAGE measure and they do not transfer to a word
+  // list. A word list is 17-22 scored items against a Form A passage of 31-61
+  // words, so the same child making the same three errors lands two bands
+  // apart depending only on which sheet they sat: at Lesson 14, 95.1% and
+  // Independent on Form A, 86.4% and Frustration on Form B. All nine word
+  // lists flip; at Lessons 10 and 12 it takes only two errors. Nearly half the
+  // scored items are heart words, taught by sight, so the percentage is not a
+  // decoding percentage either — Lesson 8 scores the word "I" four times.
+  //
+  // Reporting a band here would tell a teacher to reteach a child who is
+  // reading fine. So word lists report the count and nothing that implies a
+  // placement.
   const band = document.getElementById('band');
-  if (accShown >= 95){ band.textContent = 'Independent'; band.className = 'b-ind'; }
+  const isList = LESSONS[currentLesson].kind === 'wordlist';
+  if (isList){
+    band.textContent = 'Word list — no band';
+    band.className = 'b-none';
+    band.title = 'Independent / Instructional / Frustration are passage bands. '
+               + 'A word list is too short, and too much of it is sight words, '
+               + 'for those cut-offs to mean the same thing. Read the score as '
+               + 'items correct out of items given.';
+  }
+  else if (accShown >= 95){ band.textContent = 'Independent'; band.className = 'b-ind'; }
   else if (accShown >= 90){ band.textContent = 'Instructional'; band.className = 'b-ins'; }
   else { band.textContent = 'Frustration'; band.className = 'b-fru'; }
 
@@ -1415,6 +1437,9 @@ function render(){
   if (clockState === 'idle')        w.textContent = 'starts when you begin';
   else if (clockState === 'paused') w.textContent = 'paused';
   else if (s.wcpm === null)         w.textContent = 'reading…';
+  else if (isList) w.innerHTML = '<b>' + fmt(ms) + '</b> to read the list'
+       + '<br><span style="font-size:12px">rate is not reported for a word '
+       + 'list — it is not comparable to a passage</span>';
   else w.innerHTML = '<b>' + s.wcpm + '</b> words correct per minute'
        + (clockState === 'done' ? '' : ' so far');
   const pb = document.getElementById('pausebtn');

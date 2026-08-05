@@ -281,6 +281,44 @@ the real page found eleven bugs, two of which produced wrong scores about a
 child — including every word-list lesson scoring a whole sentence as one word.
 Six content audits could not have found any of them.
 
+## I. What is left, measured — the running record set, 2026-08-05
+
+Recorded rather than fixed, each with the number beside it. A limit written down
+with its measurement is finished work; an unexplained number is not.
+
+### Fixed because it produced a wrong decision about a child
+**Word lists were banded on the passage scale.** A word list is 17–22 scored
+items; the Form A passage it is compared against is 31–61 words. Same child,
+same three errors: Lesson 14 gave **95.1% Independent** on Form A and **86.4%
+Frustration** on Form B. All nine flipped; at Lessons 10 and 12 two errors were
+enough. And 41–48% of the scored items are heart words — taught by sight — so
+the percentage was never a decoding percentage: Lesson 8 scores the word "I"
+four times, 21% of the sheet. Word lists now report no band and no rate.
+
+### Left, and why
+
+| What | Measurement | Why not fixed |
+|---|---|---|
+| **Target checks match LETTERS, not sounds** | `the` satisfies h, `we` satisfies w, `have` satisfies v, `look` satisfies l. Six lessons (23, 26, 28, 30, 32, 33) test their named sound 1–2 words deep | Needs a phoneme map, not a substring test. Real work, not a patch |
+| **Cross-lesson independence** | Within a lesson: clean. Against ALL earlier Form A lessons: 82–100% of tokens already read. L34 and L39 have **zero** new content words | Arithmetic. A few hundred CVC words cannot produce 27 disjoint passages |
+| **Titles are outside gate 3** | 17 titles changed in one day; L29's uses `job`, which Form A L29 spends twice | Gate 3 is passed `" ".join(lines)`. Fixing it means re-gating every title |
+| **`nwf_note` boilerplate** | Identical string on all 16 entries; false for `fim`, `mip`, `pid`. L6 points at an empty list | The counts are right; the *reason* is over-general |
+| **14 writing-rule HIGH** | From 102. Mostly rhyme and one-phoneme pairs inside a ~250-word CVC vocabulary | Some have no legal alternative; see the L6 and L22/L34 sign-offs |
+| **54 audit_child REVIEW** | Mostly "what the passage assumes the child has at home" — `cat, dog, pig, bun, jam` are nearly the whole decodable noun set | A design question about the instrument, not a defect |
+| **6 passages read poorly** | L22, L27, L29, L33 and two others carry defects the standard names by lesson number | Needs a writer, not a checker |
+
+### Not defects — missing capability, and the teacher's call
+- **No MSV cueing analysis.** Clay's running record is *defined* by coding each
+  miscue Meaning / Structure / Visual. Without it this is an accuracy-and-rate
+  recorder. The tool already collects the raw material (`What they said`) and
+  discards it unanalysed.
+- **No comprehension or retell**, and **no written administration protocol** —
+  what the examiner says, the stopping rule, when "told" is used.
+- **Lessons 6–41 of a 128-lesson sequence.** It stops at short vowels.
+- **No evidence a child has ever sat it.** Everything here is a closed loop: the
+  system verifies itself against rules the same person wrote. Nothing proves the
+  instrument measures a child.
+
 ## The three rules that matter most
 
 1. **Every gate must be proven to REFUSE.** Keep a self-test that hands each

@@ -197,14 +197,22 @@ def rule_4_1(doc, add):
     """A noun ledger in reading order. `the X` before X exists; `a X` after."""
     seen = set()
     for i, line in enumerate(doc["lines"]):
-        for m in re.finditer(r"\b(a|an|the)\s+((?:[a-z]+\s+){0,2}?[a-z]+)\b",
+        # Capture the determiner and up to three following words GREEDILY, then
+        # walk past the adjectives to the head noun. The previous non-greedy
+        # form matched one word, so any adjective hid the noun entirely.
+        for m in re.finditer(r"\b(a|an|the)\s+((?:[a-z]+\s+){0,3}[a-z]+)\b",
                              line, re.I):
             det = m.group(1).lower()
-            phrase = [w for w in m.group(2).lower().split()
-                      if w not in ADJECTIVES]
-            if not phrase:
+            phrase = m.group(2).lower().split()
+            head = None
+            for w in phrase:
+                if w in ADJECTIVES:
+                    continue
+                head = w
+                break
+            if not head:
                 continue
-            noun = phrase[0]
+            noun = head
             if noun in DEFINITE_OK or noun in CAST:
                 continue
             if det == "the" and noun not in seen:
@@ -232,8 +240,10 @@ def rule_agreement(doc, add):
     from audit_curriculum import NOT_PLURALS
     safe = {"is", "was", "has", "its", "this", "us", "yes", "gas", "bus", "less"}
     for i, line in enumerate(doc["lines"]):
-        for m in re.finditer(r"\b([Aa]n?)\s+([a-z]+s)\b", line):
-            noun = m.group(2)
+        for m in re.finditer(r"\b([Aa]n?)\s+((?:[a-z]+\s+){0,2}[a-z]+s)\b", line):
+            noun = m.group(2).split()[-1]
+            if any(w not in ADJECTIVES for w in m.group(2).split()[:-1]):
+                continue          # only adjectives may sit between them
             if noun in NOT_PLURALS or noun in safe:
                 continue
             add("BLOCK", "agreement", m.group(0),
@@ -260,7 +270,6 @@ def rule_7_6(doc, add):
                         "as their first scored line." % (i + 1), i, line)
                     return
         return
-    if False:
         # A single-content-word title ("The Pot") is a subset of nearly every
         # line by arithmetic, not by spoiling anything. Rule 7.6 is about a
         # title that hands the child a whole line before they read it.

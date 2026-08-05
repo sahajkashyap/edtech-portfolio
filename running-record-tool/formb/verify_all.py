@@ -789,8 +789,9 @@ def manifest_hashes(items):
     # spent editing audit_child.py could not make this file say anything had
     # changed — the exact hole that let a bent measurement ship under a green
     # run. A stamp has to cover the ruler as well as the thing measured.
-    for name in ("audit_child.py", "audit_curriculum.py", "gates.py",
-                 "quality.py", "sync_index.py", "verify_all.py"):
+    for name in ("audit_child.py", "audit_curriculum.py", "audit_writing.py",
+                 "gates.py", "quality.py", "sync_index.py", "verify_all.py",
+                 "build_all_lessons.py"):
         p = HERE / name
         if p.exists():
             h[name] = hashlib.sha256(p.read_bytes()).hexdigest()
@@ -803,6 +804,28 @@ def writing_high():
                        capture_output=True, text=True, cwd=str(HERE))
     m = re.search(r"HIGH (\d+)", p.stdout or "")
     return int(m.group(1)) if m else 0
+
+
+def _carry_reason(new_baseline):
+    """The reason a raised baseline was accepted, preserved across re-stamps.
+
+    This used to be `baseline_reason(argv) or ""`, written unconditionally on
+    every stamp -- so the next plain --update-manifest silently erased the
+    sentence somebody had been required to write. A sign-off that evaporates is
+    the dead-sign-off defect (catalogue A16) with extra steps.
+    """
+    given = baseline_reason(sys.argv[1:])
+    if given:
+        return given
+    if not MANIFEST.exists():
+        return ""
+    old = json.loads(MANIFEST.read_text())
+    # Keep the recorded reason as long as the baseline has not FALLEN below the
+    # level it was written about; a fall means the debt was paid off.
+    if old.get("audit_child_review") is not None and \
+       new_baseline >= old["audit_child_review"]:
+        return old.get("audit_child_review_raised", "") or ""
+    return ""
 
 
 def baseline_reason(argv):
@@ -837,7 +860,7 @@ def write_manifest(items, review_baseline=None):
         # Why the baseline ROSE, when it rose. Empty for a fall or a hold. This
         # is the sentence a later reader needs in order to tell "we let the
         # content get worse" from "the checker started telling the truth".
-        "audit_child_review_raised": baseline_reason(sys.argv[1:]) or "",
+        "audit_child_review_raised": _carry_reason(review_baseline),
         # The WRITING-RULES.md HIGH backlog. Recorded so it can only shrink.
         "audit_writing_high": writing_high(),
         "files": manifest_hashes(items),
