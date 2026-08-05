@@ -5,18 +5,16 @@
   "instrument": "passage",
   "title": "Jen and the Wax",
   "lines": [
-    "Mom has an ax and a log.",
-    "The ax is big. Jen tugs at it.",
-    "\"Do not tug at it,\" said Mom.",
-    "Jen is sad. She sits.",
-    "\"Jen, do the wax,\" said Mom.",
-    "Mom cuts the log.",
-    "Mom and Jen mix wax.",
-    "Jen rubs wax on the log.",
-    "Mom sets the log up. Jen is not sad.",
-    "Mom and Jen sit on the log.",
-    "\"Jen did the wax,\" said Mom."
+    "Jen has a tub of wax.",
+    "Mom has the ax. Mom digs up a big log.",
+    "Jen and Mom mix the wax.",
+    "Jen dips a cup in it.",
+    "Jen rubs the wax on the log.",
+    "The log is hot and wet.",
+    "\"You did it,\" said Mom.",
+    "Jen pats the log and hums.",
+    "Jen sits on the log.",
+    "\"The log is fun,\" said Jen."
   ],
-  "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "gates_passed": true
 }

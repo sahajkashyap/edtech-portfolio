@@ -5,16 +5,16 @@
   "instrument": "passage",
   "title": "A Job in the Sun",
   "lines": [
-    "Raj and Mom are in the hot fog.",
+    "Jin and Mom are in the hot fog.",
     "A jet is up in the sun.",
     "\"I am hot,\" said Mom.",
-    "Raj has a jug and a mug.",
-    "Raj tugs and tugs. The jug is in the fog.",
+    "Jin has a jug and a mug.",
+    "Jin tugs and tugs. The jug is in the fog.",
     "\"Do not tug at the jug,\" said Mom.",
-    "Raj dips the mug in the jug.",
-    "Mom sips. Raj sips.",
-    "Raj and Mom sit and look at the jet."
+    "Jin dips the mug in the jug.",
+    "Mom sips. Jin sips.",
+    "Jin and Mom sit and look at the jet."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"i am\", \"do not\". Decodability forbids apostrophes. A child who reads \"I'm\" or \"don't\" is reading for meaning — do not score it an error."
 }

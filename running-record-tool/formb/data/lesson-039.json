@@ -10,11 +10,11 @@
     "\"Bugs are in the mud,\" said Jen.",
     "Gus and Jen tug at the log.",
     "\"We can not tug it up,\" said Gus.",
-    "\"We can dig,\" said Jen. She digs and digs.",
-    "The log is up! Six bugs run in the mud.",
+    "Jen is sad. \"We can dig,\" said Jen.",
+    "She digs and digs. The log is up!",
     "\"Look at the bugs!\" said Gus.",
-    "Jen sets the log on the mud."
+    "Jen is not sad. The log is on the mud."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"can not\", \"is not\". Decodability forbids apostrophes. A child who reads \"can't\" or \"isn't\" is reading for meaning — do not score it an error."
 }

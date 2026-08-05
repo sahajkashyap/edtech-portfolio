@@ -8,12 +8,12 @@
     "Peg got in bed at ten.",
     "\"Ted! A tan cap is not in the bed,\" said Peg.",
     "\"I can not nap,\" said Peg.",
-    "Ted met Meg at the bin.",
-    "Meg and Ted got the bin up.",
-    "Meg got the cap in the bin!",
+    "Ted met Min at the bin.",
+    "Min and Ted got the bin up.",
+    "Min got the cap in the bin!",
     "Ted got the cap to Peg.",
     "\"I can nap,\" said Peg."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"is not\", \"can not\". Decodability forbids apostrophes. A child who reads \"isn't\" or \"can't\" is reading for meaning — do not score it an error."
 }

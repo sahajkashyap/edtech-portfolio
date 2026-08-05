@@ -133,10 +133,17 @@ BLOCKED = {w.lower() for w in cv.BLOCKED}
 # The cast, declared. NOT inferred from capitalisation -- that is the bug this
 # file exists to close. A name is exempt from the age gate; nothing else is.
 # ---------------------------------------------------------------------------
+# pam, meg, deb, ned and raj were retired: each reverses into a word the child
+# already knows (map, gem, bed, den, jar), which turns the classic b/d reversal
+# into a miscue an examiner cannot score. Their replacements are in the second
+# row. They stay listed here — a name this instrument USED still has to be
+# recognised as a name if it ever reappears, or the reversal check goes quiet
+# on exactly the words it was written for.
 CAST = {
     "sam", "pam", "tim", "nan", "dot", "gus", "bob", "meg", "ben", "sid",
     "ted", "kim", "deb", "reg", "ron", "ned", "hal", "raj", "sal", "tom",
     "max", "liz", "zac", "dan", "jen", "mom", "dad", "i",
+    "min", "lin", "kip", "jin",
 }
 
 # ---------------------------------------------------------------------------
@@ -216,9 +223,19 @@ CONTEXT_RULES = [
     (r"\bpit\b",
      "REVIEW", "'pit' meaning a hole. A child's word is 'hole'; 'pit' also "
                "conjures somewhere you fall into."),
-    (r"\bden\b",
-     "REVIEW", "'den' is a fox's home in one lesson and a room in the house in "
-               "another. One instrument should not teach two senses."),
+    # The hand-written `den` rule was removed here. It fired on ANY use of the
+    # word, and gave as its reason "a fox's home in one lesson and a room in
+    # the house in another" -- a statement about the corpus that stopped being
+    # true. 'den' now appears at Lesson 40 only, in the fox sense only, so the
+    # rule was reporting a collision that no longer existed, three times, on
+    # the one lesson that uses the word correctly.
+    #
+    # Check 13 (SENSE_KEYS) is the generalised form of exactly this rule and
+    # already carries 'den' with both senses and the narrow one first. It fires
+    # only when two senses are genuinely present, which is what the hand rule
+    # was trying to say. Deleting a blanket rule in favour of a conditional one
+    # is only safe if the conditional one can still refuse -- test_gates.py
+    # now proves it does.
     (r"\brag\b",
      "REVIEW", "a rag is an adult cleaning prop; 'cloth' is the child's word."),
     (r"\bbegs?\b",
@@ -343,7 +360,12 @@ TOPICS = [
 # CHECK 9 -- what the passage assumes is at home.
 # ---------------------------------------------------------------------------
 CONTEXT_ASSUMPTIONS = {
-    "a pet": r"\b(cat|dog|pet|pets|rat|rats|hen)\b",
+    # 'pets' was matching the VERB. "She pets it" is a child touching an
+    # animal, not a household that owns one, and it fired this check on a
+    # lesson with no pet in it at all. The noun senses still match; the bare
+    # verb no longer does.
+    "a pet": r"\b(cat|cats|dog|dogs|rat|rats|hen|hens)\b"
+             r"|\b(a|the|my|his|her|its|our|their|no) pets?\b",
     "a farm": r"\b(pig|pigs|hog|hogs|ox|hen|pen|cob|cobs|barn)\b",
     "food that is always there": r"\b(bun|buns|ham|jam|nut|nuts|cob|cobs)\b",
 }
@@ -353,14 +375,31 @@ CONTEXT_ASSUMPTIONS = {
 # reason written down next to it. Key is "lesson:check:item".
 # ---------------------------------------------------------------------------
 ACCEPTED = {
-    "17:feelings:sad":
-        "Bob's sadness is answered by the plot -- the bat is found, the dog is "
-        "forgiven, Bob pats the dog. Teacher-approved as resolved without the "
-        "word 'glad' appearing.",
-    "40:topics:a child handling a farm or wild animal.":
-        "Lesson 40 is the model, not the problem: the fox is watched from a "
-        "log, with a grown-up, and Dad says 'do not run'. Nobody touches it.",
+    "31:topics:sharps":
+        "The ax is in the lesson because arithmetic put it there, not because "
+        "the scene wanted one: Lesson 31 is named for x /ks/, the whole legal "
+        "vocabulary offers exactly four x words (ax, mix, ox, wax), Form A "
+        "already spends box, fix, fox and six, and three distinct non-name "
+        "words must carry the target. Drop the ax and the lesson stops "
+        "assessing its own sound; use 'ox' instead and audit_child raises a "
+        "HIGH, because a draft animal is further outside a five-year-old's "
+        "world than an ax is. So the question this rule asks -- is a CHILD "
+        "handling it? -- is answered in the passage itself: Mom has the ax, "
+        "Jen has the wax, and the job the story is about is the child's.",
 }
+
+# Two sign-offs were removed here rather than carried forward, both dead:
+#
+#   "17:feelings:sad"  -- written for a passage that was later rewritten. With
+#       ACCEPTED emptied, Lesson 17 raises no feelings finding at all.
+#   "40:topics:a child handling a farm or wild animal."  -- keyed on the rule's
+#       REASON. found() builds its key from the rule's NAME ('handling an
+#       animal'), so this string could never have matched anything, on any run,
+#       since the day it was written.
+#
+# Neither was doing what it appeared to. A sign-off is a promise that a person
+# looked; leaving a dead one in place spends that promise on nothing.
+# dead_signoffs() now fails --strict so this cannot recur silently.
 
 # ---------------------------------------------------------------------------
 # CHECK 10 -- the fields nobody scanned.
@@ -526,11 +565,14 @@ FAILURE_RULES = [
 # ---------------------------------------------------------------------------
 REPAIR_VERBS = r"\b(fix|fixes|fixed|cuts?|pins? up|mix wax|sets? .{0,12}up|" \
                r"tugs? (at )?the log|has an ax|have a pin)\b"
+# min, lin replace pam/meg/deb; kip, jin replace ned/raj. Gender is preserved
+# name for name so the agency balance this check measures is not quietly moved
+# by a rename that was made for a different reason.
 FEMALE_CAST = {"nan", "pam", "peg", "meg", "deb", "liz", "jan", "sal", "jen",
-               "bev", "val", "kim", "mom"}
+               "bev", "val", "kim", "mom", "min", "lin"}
 MALE_CAST = {"sam", "tim", "sid", "dan", "ted", "bob", "gus", "tom", "ron",
              "ned", "hal", "ben", "max", "raj", "zeb", "jon", "pip", "dev",
-             "zac", "reg", "dad"}
+             "zac", "reg", "dad", "kip", "jin"}
 
 # ---------------------------------------------------------------------------
 # CHECK 17 -- every word known, the event unknown.
@@ -565,7 +607,14 @@ UNFAMILIAR_EVENTS = [
 # Corpus-level. Decodable CVC does not mean Anglo: Jin, Rin, Min, Han, Tam,
 # Nam, Lin, Bo, Kip, Kim, Raj, Dev, Zeb all fit the same letter budget.
 # ---------------------------------------------------------------------------
-NON_ANGLO_CAST = {"raj", "dev", "zeb"}
+NON_ANGLO_CAST = {"raj", "dev", "zeb",
+                  # The names this check's own comment lists as fitting the
+                  # letter budget are now IN the instrument, not just cited as
+                  # proof that they could be. Leaving them out understated the
+                  # cast: retiring 'raj' for its reversal (raj/jar) and
+                  # replacing it with 'jin' read as the cast getting less
+                  # diverse, because the measure only knew the old name.
+                  "min", "lin", "kip", "jin"}
 DECODABLE_ALTERNATIVES = ("Jin, Rin, Min, Han, Tam, Nam, Lin, Bo, Kip, Kim, "
                           "Ravi (later), Nia")
 
@@ -804,8 +853,16 @@ def check_context(doc, found):
 
 # --- checks 10-18 ----------------------------------------------------------
 def note_fields_of(doc):
-    """The fields fields_of() deliberately skips. index.html prints these onto
-    the same element as the items, so the child sees them."""
+    """The fields fields_of() deliberately skips.
+
+    These used to be appended straight into #passage, so the child read them.
+    They now render into #lessonnote, in the examiner's tally panel beside
+    'Words read' and the timer. That is a real improvement and the severities
+    below no longer rest on the old claim -- but it is a SIDE PANEL ON THE SAME
+    SCREEN, in 12.5px muted text, not a separate examiner's copy. A child
+    sitting next to the examiner can still read it. For a subtest whose whole
+    premise is that the items are unfamiliar, that is still a leak.
+    """
     out = []
     for key in NOTE_FIELDS:
         if doc.get(key):
@@ -836,11 +893,12 @@ def check_notes(doc, found):
     first_label, first_text = fields[0]
     if blocked:
         found("BLOCK", "notes", ", ".join(sorted(blocked))[:24],
-              "BLOCKED words printed on the page. index.html does "
-              "`nt.textContent = L.note; passageEl.appendChild(nt)`, so the "
-              "note lands in #passage -- the same element the child's items "
-              "are in. 'Examiner-only' was an assumption about these fields; "
-              "the renderer does not honour it.", first_label, first_text)
+              "BLOCKED words rendered on the assessment screen. These no "
+              "longer land in #passage -- paintNote() puts them in "
+              "#lessonnote, the examiner's tally panel -- but that panel is on "
+              "the same screen, an arm's length from the child. A word this "
+              "instrument refuses to print for the child does not become safe "
+              "by moving four inches right.", first_label, first_text)
     if banned:
         found("BLOCK", "notes", ", ".join(sorted(banned))[:24],
               "this same file refuses these as test items -- %s -- and then "
@@ -857,9 +915,13 @@ def check_notes(doc, found):
               % ", ".join(sorted(leaks)), first_label, first_text)
     if chars > 200:
         found("REVIEW", "notes", "%d chars" % chars,
-              "%d characters of adult prose in %d fields, on a five-year-old's "
-              "page. Even unread it says: this page is not for you. It is also "
-              "longer than everything the child is asked to read."
+              "%d characters of adult prose in %d fields, in a 12.5px side "
+              "panel the examiner is reading WHILE a child reads aloud to "
+              "them. The old reason for this check -- that the child saw it -- "
+              "no longer holds; this one is worse. A note this long does not "
+              "get read at the moment it is needed, so a warning that is "
+              "present is functionally absent. Say it in one sentence or the "
+              "examiner will not have it."
               % (chars, len(fields)), first_label, first_text)
 
 
@@ -885,15 +947,32 @@ def check_register(doc, found):
         found("HIGH", "register", hit, why, label, text)
     plain = {k: v for k, v in hits.items()
              if not any(k == u[0] for u in unspoken)}
-    if plain:
-        found("REVIEW", "register", ", ".join(sorted(plain))[:24],
+    if not plain:
+        return
+
+    # This check used to assert that "no field anywhere in these files tells
+    # the examiner otherwise". That is no longer true and must not be assumed:
+    # scoring_note now carries the warning, and sync_index.py renders it in the
+    # examiner's panel. So ASK, rather than assume. The finding fires when the
+    # mitigation is absent or incomplete -- which is a stronger check than the
+    # blanket one it replaces, because a note that silently stops naming a form
+    # the passage still contains now gets caught.
+    note = (doc.get("scoring_note") or "").lower()
+    unnamed = sorted(k for k in plain if k not in note)
+    if unnamed:
+        found("HIGH" if note else "REVIEW", "register",
+              ", ".join(unnamed)[:24],
               "uncontracted forms a fluent child will not say aloud: %s. A "
               "running record scores each spoken contraction as a "
               "substitution, so this instrument marks down the child who is "
-              "reading for meaning -- and no field anywhere in these files "
-              "tells the examiner otherwise."
-              % "; ".join("'%s' -> \"%s\"" % (k, v)
-                          for k, v in sorted(plain.items())),
+              "reading for meaning. %s"
+              % ("; ".join("'%s' -> \"%s\"" % (k, plain[k]) for k in unnamed),
+                 "scoring_note exists but does not name %s, so the examiner is "
+                 "warned about the other forms and not this one -- the most "
+                 "dangerous state, because the note reads as complete."
+                 % ", ".join("'%s'" % k for k in unnamed) if note else
+                 "No scoring_note on this lesson, so nothing tells the "
+                 "examiner otherwise."),
               example[0], example[1])
 
 
@@ -1133,10 +1212,26 @@ def corpus_index(docs):
     return words, {k: sorted(v) for k, v in lessons.items()}
 
 
+# Which sign-offs actually silenced something on the last run. A sign-off that
+# matches NO finding is not harmless: it reads as "a person reviewed this and
+# kept it" forever, while silencing nothing. Both original entries were dead --
+# one keyed on the rule's REASON where the code keys on its NAME, so it never
+# could have matched, and one written for a passage that was later rewritten.
+# Neither would ever have been noticed, because a sign-off that suppresses
+# nothing looks exactly like a sign-off that is working.
+ACCEPTED_USED = set()
+
+
+def dead_signoffs():
+    """ACCEPTED keys that matched no finding on the last audit() run."""
+    return sorted(set(ACCEPTED) - ACCEPTED_USED)
+
+
 def audit(paths, whole_set=True):
     docs = [json.loads(p.read_text()) for p in paths]
     corpus_words, corpus_lessons = corpus_index(docs)
     all_findings = []
+    ACCEPTED_USED.clear()
 
     for doc in docs:
         lesson = doc["lesson"]
@@ -1145,6 +1240,7 @@ def audit(paths, whole_set=True):
         def found(severity, check, item, why, label, text):
             key = "%d:%s:%s" % (lesson, check, item)
             if key in ACCEPTED:
+                ACCEPTED_USED.add(key)
                 return
             rows.append({"lesson": lesson, "severity": severity,
                          "check": check, "item": item, "why": why,
@@ -1187,6 +1283,7 @@ def audit(paths, whole_set=True):
     def found_corpus(severity, check, item, why, label, text):
         key = "0:%s:%s" % (check, item)
         if key in ACCEPTED:
+            ACCEPTED_USED.add(key)
             return
         corpus_rows.append({"lesson": 0, "severity": severity, "check": check,
                             "item": item, "why": why, "field": label,
@@ -1266,7 +1363,19 @@ def main(argv=None):
     fails = [f for f in findings
              if f["severity"] in ("BLOCK", "HIGH")
              or (args.strict and f["severity"] == "REVIEW")]
-    return 1 if fails else 0
+
+    # A sign-off that silences nothing is a claim nobody is checking. This runs
+    # on the whole set only: auditing a single lesson naturally leaves the
+    # other lessons' sign-offs unused, and failing on that would be noise.
+    dead = dead_signoffs() if not args.lessons else []
+    if dead:
+        print("\nDEAD SIGN-OFFS -- listed in ACCEPTED, matched no finding:")
+        for k in dead:
+            print("  %s" % k)
+        print("Either the content was fixed and the entry should go, or the "
+              "key is wrong and a real finding is NOT being suppressed.\n"
+              "found() builds its key as 'lesson:check:item'.")
+    return 1 if (fails or dead) else 0
 
 
 if __name__ == "__main__":

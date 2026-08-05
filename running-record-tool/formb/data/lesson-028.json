@@ -3,18 +3,17 @@
   "skill": "w /w/",
   "form": "B",
   "instrument": "passage",
-  "title": "Deb and Ned Look at Bugs",
+  "title": "Lin and Kip Look at Bugs",
   "lines": [
-    "Deb and Ned are in a bin.",
-    "\"Look at the bugs,\" said Ned.",
-    "Ned has ten bugs in a tub.",
-    "Deb has a bug in a bin.",
-    "Deb tips a log up.",
+    "Lin and Kip are in a bin.",
+    "\"Look at the bugs,\" said Kip.",
+    "Kip has ten bugs in a tub.",
+    "Lin has a bug in a bin.",
+    "Lin tips a log up.",
     "A web is on the log!",
     "A lot of bugs are in the web!",
-    "\"Deb wins,\" said Ned.",
-    "Deb and Ned look at the web. \"We win,\" said Deb."
+    "\"Lin wins,\" said Kip.",
+    "Lin and Kip look at the web. \"We win,\" said Lin."
   ],
-  "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "gates_passed": true
 }

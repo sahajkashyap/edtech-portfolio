@@ -12,9 +12,9 @@
     "\"Not on the rug, pup!\" said Jon. Bev nods.",
     "Bev pats the pup, and it hops up.",
     "The pup is on a rug.",
-    "Jon and Bev pop the rug in a tub.",
-    "Bev and Jon have the bun on a rug."
+    "Jon and Bev tug the rug up.",
+    "The mud is not on the rug. Bev has the bun."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"is not\". Decodability forbids apostrophes. A child who reads \"isn't\" is reading for meaning — do not score it an error."
 }

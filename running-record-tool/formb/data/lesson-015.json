@@ -11,10 +11,10 @@
     "Pip can not tip it up.",
     "\"Nan, tip it,\" said Pip.",
     "\"Do it,\" said Nan. Nan and Pip tip it up.",
-    "The nut is up! It is at the pit.",
-    "Pam can cut it up.",
-    "Pip can pop it in to a cup."
+    "The nut is up! It is at the pot.",
+    "Min can cut it up.",
+    "Pip can tip it in to a cup."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"can not\", \"it is\". Decodability forbids apostrophes. A child who reads \"can't\" or \"it's\" is reading for meaning — do not score it an error."
 }

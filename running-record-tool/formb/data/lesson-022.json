@@ -7,14 +7,14 @@
   "lines": [
     "A bug is on a bag.",
     "\"A bug!\" said Gus. \"Do not tap it.\"",
-    "Ted pops a pot on it.",
-    "Gus pops a cap on the pot.",
+    "Ted taps a pot on it.",
+    "Gus digs up a cap. It is on the pot.",
     "A bud is up in a tub.",
-    "Gus and Ted pop the pot on the tub.",
-    "Ted pops the cap up.",
+    "Gus and Ted tug the pot to the tub.",
+    "Ted tugs the cap up.",
     "The bug is on the bud!",
     "\"Bug, not the bag!\" said Gus."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"do not\", \"it is\". Decodability forbids apostrophes. A child who reads \"don't\" or \"it's\" is reading for meaning — do not score it an error."
 }

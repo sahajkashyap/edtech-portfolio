@@ -73,6 +73,12 @@ CHARACTER_NAMES = {
     "sal", "tom", "max", "liz", "zac", "dan", "jen", "tam", "nat", "pip",
     "peg", "kip", "bud", "wag",
     "zeb", "jan", "val", "jon", "bev", "dev",
+    # Replacements for pam, meg, deb, ned and raj, each of which reversed into
+    # a word the child knows. kip was already listed. A name missing from this
+    # set is silently counted as a CURRICULUM word, so it can be scored as
+    # evidence that a lesson exercised its target sound — which is how a
+    # rename made for one reason quietly falsifies a different check.
+    "min", "lin", "jin",
 }
 
 # Words that carry no lesson content: they cannot show a skill was practised.

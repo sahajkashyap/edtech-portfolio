@@ -23,9 +23,9 @@
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest at this lesson. 1 candidate spellings are legal here; every one of them is rejected because it is heard as a real word, a respelling or a letter name. The candidates and the reason for each are in rejected_pseudowords, which is examiner data and is never shown on the child's page.",
-  "supply_note": "Lesson 7 teaches f /f/ and no real word containing f is legal here. The taught letters are a f m p s t; the only decodable f word in English is 'fat', which is on core_vocabulary.BLOCKED. The word bank therefore stocks zero f words at this lesson. This is a supply limit in the curriculum, not a writing failure — recorded rather than worked around. The /f/ sound is first assessable at Lesson 8.",
-  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13 the published Form A already spends every on-target word that exists, so some overlap is unavoidable and a child who practised at home may have met these words. Read the score as 'can they decode these taught patterns', not as an independent re-test. Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error.",
+  "nwf_note": "No nonsense-word subtest: 0 legal pseudowords exist at this lesson. The 1 candidates examined, and why each fails, are in rejected_pseudowords (examiner data).",
+  "supply_note": "Lesson 7 teaches f /f/, but no decodable real f word exists yet: the only one in English is 'fat', which is BLOCKED. A supply limit in the curriculum, not a writing failure. /f/ is first assessable at Lesson 8.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13, Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not as an independent re-test.",
   "rejected_pseudowords": {
     "fap": "heard as a real word, a respelling or a letter name"
   }

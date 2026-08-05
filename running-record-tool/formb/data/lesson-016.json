@@ -5,15 +5,15 @@
   "instrument": "passage",
   "title": "Tag in the Fog",
   "lines": [
-    "Sid, Pam and a dog sit at a mat.",
-    "Sid and the dog tag in the fog.",
+    "Sid, Min and a dog sit at a mat.",
+    "Tag is fun in the fog.",
     "\"Tag, dog!\" said Sid.",
     "The dog is not at the mat. It is not at the pot.",
-    "\"Dog!\" said Pam.",
-    "Pam and Sid tap a pan in the fog.",
+    "\"Dog!\" said Min.",
+    "Min and Sid tap a pan in the fog.",
     "The dog is at the mat!",
-    "Sid and it nap at the pit."
+    "Sid and it nap at the mat."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"is not\", \"it is\". Decodability forbids apostrophes. A child who reads \"isn't\" or \"it's\" is reading for meaning — do not score it an error."
 }

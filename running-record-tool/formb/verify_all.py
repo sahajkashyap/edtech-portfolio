@@ -215,8 +215,13 @@ WORDLIST_FIELDS = {"lesson", "skill", "form", "instrument", "real_words",
                    "nonsense_words", "high_frequency", "sentences",
                    "audit_clean", "audit_problems"}
 WORDLIST_OPTIONAL = {"nwf_note", "supply_note", "instrument_claim",
-                     "rejected_pseudowords"}
+                     "rejected_pseudowords", "scoring_note"}
 PASSAGE_OPTIONAL = {"scoring_note"}
+# scoring_note is optional on BOTH instruments and carries a lesson-specific
+# contraction warning. It is present exactly where a contractible form is, and
+# audit_child's register check is what enforces that correspondence: a passage
+# or word list containing "do not" whose note does not name it now fails HIGH.
+# Optional here means "not every lesson needs one", never "nobody checks".
 
 # Measured, not assumed, and the same set audit_curriculum uses: at these lessons
 # Form A spends every on-target word that exists, so "exercise the sound" and

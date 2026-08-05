@@ -7,12 +7,12 @@
   "lines": [
     "It is a hot sun.",
     "\"I hid a cap,\" said Tom.",
-    "Pam digs in a bin, but the cap is not in it.",
+    "Min digs in a bin, but the cap is not in it.",
     "\"The cap is up,\" said Tom.",
-    "Pam tips a pot up. The cap is in the pot!",
-    "Pam pops the cap on.",
+    "Min tips a pot up. The cap is in the pot!",
+    "Min taps the cap on.",
     "\"The sun is hot!\" said Tom. She nods."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"it is\", \"is not\". Decodability forbids apostrophes. A child who reads \"it's\" or \"isn't\" is reading for meaning — do not score it an error."
 }

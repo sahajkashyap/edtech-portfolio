@@ -17,7 +17,11 @@ real Form A — lives in verify_all.py section 8. Run that:
     python3 verify_all.py
 """
 
+import pathlib
+
 import gates
+
+HERE = pathlib.Path(__file__).resolve().parent
 
 LESSON = 41
 
@@ -72,9 +76,56 @@ CASES = [
 ]
 
 
+def sense_and_signoff_checks():
+    """Two rules that replaced blanket ones, proved able to refuse.
+
+    A conditional check is only a safe replacement for a blanket check if it
+    still says no to the thing the blanket one existed for. Both of these
+    replaced a rule that fired on everything, so both are tested here against
+    a corpus built to violate them.
+    """
+    import audit_child as A
+    out = []
+
+    fox = {"lesson": 40, "instrument": "passage", "title": "The Fox Den",
+           "lines": ["\"A fox has cubs in a den,\" said Dad."]}
+    room = {"lesson": 22, "instrument": "passage", "title": "In the Den",
+            "lines": ["Mom naps in the den."]}
+    clean = {"lesson": 22, "instrument": "passage", "title": "Bugs",
+             "lines": ["Mom naps in the sun."]}
+
+    def senses(docs):
+        hits = []
+        A.corpus_checks(docs, lambda s, c, i, w, l, t: hits.append((c, i)))
+        return [h for h in hits if h == ("polysemy", "den")]
+
+    if not senses([fox, room]):
+        out.append("SENSE_KEYS no longer catches 'den' in two senses — the "
+                   "hand-written blanket rule must not have been removed")
+    if senses([fox, clean]):
+        out.append("SENSE_KEYS flags 'den' when only the fox sense is present")
+
+    saved = dict(A.ACCEPTED)
+    try:
+        A.ACCEPTED["99:topics:nothing"] = "signs off a finding that cannot occur"
+        A.audit(sorted((HERE / "data").glob("lesson-*.json")))
+        if "99:topics:nothing" not in A.dead_signoffs():
+            out.append("dead_signoffs() did not notice a sign-off that "
+                       "matched nothing")
+    finally:
+        A.ACCEPTED.clear()
+        A.ACCEPTED.update(saved)
+    return out
+
+
 def main():
     print("Form A: %d words\n" % gates.profile(FORM_A, LESSON)["total_words"])
-    failures = []
+    failures = sense_and_signoff_checks()
+    for f in failures:
+        print("  FAIL  %s" % f)
+    if not failures:
+        print("  ok    SENSE_KEYS refuses two senses of 'den' and passes one")
+        print("  ok    dead_signoffs() catches a sign-off that silences nothing\n")
     for title, text, should_pass, should_trip in CASES:
         res = gates.check(FORM_A, text, LESSON, characters=CAST)
         print(gates.report(res, title))

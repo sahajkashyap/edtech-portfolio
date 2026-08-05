@@ -60,11 +60,29 @@ def entry(d: dict) -> dict:
         # reads as a bug in the tool. This note lived only in the JSON and was
         # never carried to the screen.
         # rejected_pseudowords is examiner-only and must NEVER reach the page.
-        if d.get("nwf_note"):
-            out["note"] = d["nwf_note"]
+        #
+        # scoring_note joins it here. A word list's sentences carry the same
+        # uncontracted forms the passages do, so the examiner needs the same
+        # warning; carrying only ONE of the two notes would silently drop
+        # whichever came second. The scoring warning goes FIRST because it is
+        # the one that is acted on while the child is reading — the subtest
+        # note is read once, at the top of the lesson.
+        notes = [n for n in (d.get("scoring_note"), d.get("nwf_note")) if n]
+        if notes:
+            out["note"] = "\n\n".join(notes)
         return out
-    return {"skill": d["skill"], "title": d["title"],
-            "kind": "passage", "lines": list(d["lines"])}
+    out = {"skill": d["skill"], "title": d["title"],
+           "kind": "passage", "lines": list(d["lines"])}
+    # Same failure as nwf_note above, one field over: scoring_note lived only
+    # in the JSON and never reached the screen, so on every passage lesson the
+    # teacher panel was empty. That note is the ONLY thing telling the examiner
+    # not to score "don't" for "do not" as a substitution -- without it the
+    # instrument marks down the child who is reading for meaning. It is carried
+    # only on the passages that actually contain a contractible form; the other
+    # ten carried it as boilerplate and now carry nothing.
+    if d.get("scoring_note"):
+        out["note"] = d["scoring_note"]
+    return out
 
 
 def build() -> str:

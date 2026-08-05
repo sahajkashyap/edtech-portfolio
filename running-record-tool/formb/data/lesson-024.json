@@ -3,19 +3,17 @@
   "skill": "r /r/ Part 1",
   "form": "B",
   "instrument": "passage",
-  "title": "A Rat in the Bin",
+  "title": "The Rip in the Bin",
   "lines": [
-    "Mom and Sid tip mud and buds in a bin.",
-    "The mud and buds rot in a pen.",
-    "\"Buds rot in a hot bin,\" said Mom.",
+    "Mom and Sid sit at a bin.",
+    "Mud can rot in a hot bin.",
     "A rip is in the bin.",
-    "A rat hops in the rip!",
-    "\"Not in the bin, rat!\" said Sid.",
-    "Mom and Sid fit a cap on the rip.",
+    "\"A rat can hop in,\" said Mom.",
+    "Sid taps a mat on the rip.",
     "The rat can not hop in the bin.",
-    "The rat hops up on a pot and naps.",
-    "Sid nods at Mom."
+    "The rat naps on a pot.",
+    "\"The rat is not in the bin,\" said Sid."
   ],
   "gates_passed": true,
-  "scoring_note": "Decodability forbids apostrophes, so this text is written in uncontracted forms. A child who reads \"can't\" for \"can not\", \"don't\" for \"do not\" or \"let's\" for \"let us\" is reading for meaning and MUST NOT be scored an error."
+  "scoring_note": "This passage says \"can not\", \"is not\". Decodability forbids apostrophes. A child who reads \"can't\" or \"isn't\" is reading for meaning — do not score it an error."
 }
