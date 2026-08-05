@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T14:46:24",
+  "verified_at": "2026-08-05T14:57:22",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -51,7 +51,7 @@
     "lesson-039.json": "cc09f9a8ce894650ee1417f8087060beaa4471bbddd51c38938e72934eeb961b",
     "lesson-040.json": "d854d5fbed0dc4cb2255c6845db3e488afa98619b10afcc7550628e5c8affb9d",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
-    "../index.html": "7ffda12909173f410752e0fe42e454fd311e0fa8738069cd6c7cec8f4c51ca1f",
+    "../index.html": "973e117ed7072d2a93456f0039390082df476e970dbb5fe8b077ec139e7aad71",
     "../all-lessons.html": "00d1d9e1e95a97cd49ec6c0cb6f54b95e1bed8f04743eea4274d9e640d47c9d0",
     "audit_child.py": "e73ec3db4fe504373273308e7f5439e80c5887c79c62be4dbaf0e1cd2d0ca7ab",
     "audit_curriculum.py": "08fe7d7ab82354bc9b8370ea61d34f490685fdb3b59628327be36d604de6fb89",
