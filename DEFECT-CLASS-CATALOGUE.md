@@ -203,6 +203,84 @@ Three things that only showed up once the rules were executable:
 **The judgement rules stay human** and are printed at the end of every run, so a
 green mechanical pass is never mistaken for a green page.
 
+## H. Why a review does not converge — read this before starting one
+
+*Written 2026-08-05, at the end of a day where six review passes each found new
+defect classes and the teacher rightly asked why scanning kept producing new
+problems. The answer is structural, and it is the most useful thing in this file.*
+
+**A review that finds new problems every time is not thorough. It is badly
+ordered.** Two causes, both avoidable:
+
+### H1. Serial lenses. Six firsts, not six repeats.
+Each pass applied a DIFFERENT lens — decodability, curriculum, child-facing
+content, checker integrity, prose, tool behaviour — and each found its own class
+of defect exactly once, because each was **the first time that lens had ever been
+applied**. The dimensions were already named in this file before that day began.
+
+> **Run every lens at once, before fixing anything.** Six parallel reviewers on
+> a frozen artifact converge. Six serial reviewers on a moving one cannot.
+
+### H2. Fixing between scans. The target moved while people aimed at it.
+Roughly ten defects that later passes "found" had been introduced by earlier
+passes *that same day*: a singular article on a plural noun (×8), nuts placed
+into a lesson where nut allergy is the commonest food protocol, two taught heart
+words deleted, an object made to `sit`, a walk-on character promoted to the one
+who resolves three stories, and a true sentence replaced by a false one.
+
+Section F is that class. It means **fixing is itself a defect source**, so a
+scan-fix-scan-fix loop diverges by construction.
+
+### The order that converges
+
+```
+1  FREEZE the artifact. No edits from here until step 4.
+2  RUN every lens in parallel — the six roles in section G.
+3  TRIAGE into ONE list. Adversarially verify each finding before acting.
+4  FIX once, as a single pass, re-running the mechanical checks after each edit.
+5  VERIFY once, all lenses again, on the frozen result.
+6  SHIP, or record what is left with its measurement.
+```
+
+Step 5 is where convergence gets proved. If it finds a new *class* — not a new
+instance — the lens set in section G is incomplete, and the fix is to add a
+reviewer, not to run the same ones again.
+
+### What "done" honestly means
+
+Not "no scan finds anything" — that is unachievable and chasing it is how a
+project never ships. It means:
+
+- **Every KIND in this catalogue has an executable check**, so instances are
+  found by machine on pass one and never by a human twice.
+- **Every rule that cannot be mechanised has a named reviewer** (section G) who
+  ran, on the final frozen artifact.
+- **What is left is measured, recorded, and guarded against growing** — a
+  baseline that can only shrink, with a written reason required to raise it.
+
+By that definition the count of remaining findings is not the measure. **The
+measure is whether a NEW KIND can still appear.** If one can, the instrument is
+under-instrumented, however green the run.
+
+### The specific hole that cost the most here
+
+For six audit passes nothing in this project could read PROSE. Every gate
+checked decodability, curriculum correspondence and data integrity, and every
+run was green — while the text contained a sentence saying mud rots, a child
+told not to tap a bug and then hitting it with a pot, and a resolution where
+tugging a rug upward removes mud from it.
+
+A 28KB `WRITING-RULES.md` had been sitting in the repo the whole time, with 18
+rules marked **[MECHANICAL]**, each shipping the check that would enforce it. It
+was a specification nobody had built. **A standard that no runner executes is a
+wish**, and a green suite that cannot see the standard is worse than no suite,
+because it says "checked".
+
+Second-largest hole: **nothing had ever opened the tool.** One QA pass driving
+the real page found eleven bugs, two of which produced wrong scores about a
+child — including every word-list lesson scoring a whole sentence as one word.
+Six content audits could not have found any of them.
+
 ## The three rules that matter most
 
 1. **Every gate must be proven to REFUSE.** Keep a self-test that hands each
