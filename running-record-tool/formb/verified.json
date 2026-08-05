@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T14:34:18",
+  "verified_at": "2026-08-05T14:39:16",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -51,8 +51,8 @@
     "lesson-039.json": "cc09f9a8ce894650ee1417f8087060beaa4471bbddd51c38938e72934eeb961b",
     "lesson-040.json": "d854d5fbed0dc4cb2255c6845db3e488afa98619b10afcc7550628e5c8affb9d",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
-    "../index.html": "979b810cb85d56b4331b309e749e45786888a5201fde6f16c389318f19e0bcc6",
-    "../all-lessons.html": "9e6702f7f408f8076662a8c2d4516dccf8182052ec8e98f16e093c66bc711b21",
+    "../index.html": "0523af8497b099745c08095b9cfc664d3c6fdad6e8c85724a9dfb4dc7285ccdb",
+    "../all-lessons.html": "c49edec858e7df6d0bdc64b9249fc93098e5cf00be3b5b15c54622f075e51d14",
     "audit_child.py": "e73ec3db4fe504373273308e7f5439e80c5887c79c62be4dbaf0e1cd2d0ca7ab",
     "audit_curriculum.py": "08fe7d7ab82354bc9b8370ea61d34f490685fdb3b59628327be36d604de6fb89",
     "audit_writing.py": "a79ba65dd6088aca0f9cf639184c0f8d7d2003fbd56423041528c9f3dc951c19",
@@ -60,6 +60,6 @@
     "quality.py": "5ab88cb43c6427952afe83297b0e84b6a00f741391da18cd5fc1468aefe1bcf8",
     "sync_index.py": "806a919c995d1c7a7a076b39a624de8bf43d5e3a23e6b6c53923fc51dbeecf3a",
     "verify_all.py": "f546a87ed37481d753b7967286155a7be12f3a78430bb329edf33ec2b9686a43",
-    "build_all_lessons.py": "64bb769255d3c6954c92284dca67f7eadfb2d963e48420ee8956868b69592a43"
+    "build_all_lessons.py": "1217ae00107b31a9cddb1c2691fdfdf84e055c6136a96877cee9b492422d1227"
   }
 }

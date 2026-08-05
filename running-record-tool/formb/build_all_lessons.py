@@ -150,6 +150,9 @@ what the tool serves. Word lists come first (word-level measures), then passages
   <div><b>%(total)d</b>words a child reads</div>
   <div><b>6&ndash;41</b>lesson range</div>
 </div>
+<p class="sub" style="margin-top:-.6rem"><a href="worked-example.html">See a finished
+record</a> &middot; <a href="index.html">the marking tool</a> &middot;
+<a href="https://github.com/sahajkashyap/edtech-portfolio">source</a></p>
 <nav class="jump">%(jump)s</nav>
 %(rows)s
 </div></body></html>

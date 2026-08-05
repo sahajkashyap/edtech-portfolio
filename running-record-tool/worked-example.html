@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One child, one reading &mdash; a worked example</title>
+<style>
+ :root{--ink:#1a1a1a;--cream:#faf6ee;--paper:#fffdf8;--rule:#d9c7a8;--blue:#378ADD;
+       --deepblue:#2966bb;--muted:#8a6d3b;--sub:#b23b00;--sc:#639922}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--cream);color:var(--ink);
+   font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+ .wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+ h1{font-size:1.7rem;margin:0 0 .4rem;line-height:1.25}
+ h2{font-size:1.15rem;margin:2.4rem 0 .6rem}
+ .lede{color:var(--muted);margin:0 0 1.6rem;font-size:1.02rem}
+ .note{background:var(--paper);border:1px solid var(--rule);border-left:4px solid var(--blue);
+   border-radius:8px;padding:.9rem 1.1rem;font-size:.92rem;margin:0 0 2rem}
+ .passage{background:var(--paper);border:1px solid var(--rule);border-radius:10px;
+   padding:1.3rem 1.5rem;font-size:1.12rem;line-height:2.6}
+ .passage p{margin:.2rem 0}
+ .mk{position:relative;padding-bottom:1px;border-bottom:2px solid var(--sub)}
+ .mk.sc{border-bottom-color:var(--sc)}
+ .said{position:absolute;left:0;top:1.3em;white-space:nowrap;font-size:.6em;
+   color:var(--sub);line-height:1.2}
+ .mk.sc .said{color:var(--sc)}
+ .cue{position:absolute;right:-1.7em;top:-.6em;font-size:.55em;font-weight:700;
+   color:var(--deepblue);letter-spacing:.05em}
+ .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:.7rem;margin:1.2rem 0}
+ .num{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:.7rem .5rem;text-align:center}
+ .num b{display:block;font-size:1.45rem;color:var(--deepblue)}
+ .num span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+ table{border-collapse:collapse;width:100%;font-size:.94rem;margin:.8rem 0}
+ th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--rule)}
+ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+ .btn{display:inline-block;background:var(--deepblue);color:#fff;border:0;border-radius:8px;
+   padding:.7rem 1.1rem;font-size:.95rem;cursor:pointer;text-decoration:none;margin:.3rem .4rem .3rem 0}
+ .btn.ghost{background:var(--paper);color:var(--deepblue);border:1px solid var(--rule)}
+ .pull{font-size:1.06rem;border-left:3px solid var(--rule);padding-left:1rem;margin:1.4rem 0}
+ footer{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--rule);
+   font-size:.86rem;color:var(--muted)}
+ a{color:var(--deepblue)}
+ @media print{.btn{display:none}}
+</style></head><body><div class="wrap">
+
+<h1>One child, one reading</h1>
+<p class="lede">What a running record looks like when it is finished, and what a teacher
+does with it on Monday.</p>
+
+<div class="note"><b>Maya is invented.</b> No child has sat this assessment. Every number
+below was produced by the tool itself from the marks shown, not written by hand, so the
+arithmetic is real even though the reader is not. This page shows the shape of the output.
+It does not claim a result.</div>
+
+<h2>The reading</h2>
+<p>Lesson 20. Fifty-five words. The lesson teaches the <b>&ndash;s</b> ending, the one that
+turns <i>nap</i> into <i>naps</i>. Maya read it aloud in one minute and twenty-two seconds
+while her teacher marked along.</p>
+
+<div class="passage"><p>Sam and Dan <span class="mk sub">sit<span class="said">read as &ldquo;sat&rdquo;</span><span class="cue">SV</span></span> in the sun.</p>
+<p>A cat <span class="mk sub">naps<span class="said">read as &ldquo;nap&rdquo;</span><span class="cue">V</span></span> in a pot.</p>
+<p>Mud is in the pot.</p>
+<p>&quot;Cat! Get up!&quot; said Sam.</p>
+<p>Sam <span class="mk sub">pats<span class="said">read as &ldquo;pat&rdquo;</span><span class="cue">V</span></span> the cat.</p>
+<p>Mud is on it! Mud is on Sam.</p>
+<p>Dan <span class="mk sc">dips<span class="said">self-corrected &ldquo;dip&rdquo;</span></span> a mop in a tub.</p>
+<p>Dan <span class="mk sub">mops<span class="said">read as &ldquo;mop&rdquo;</span><span class="cue">V</span></span> up the mud.</p>
+<p>The cat naps. Sam naps in the sun.</p></div>
+<p style="font-size:.86rem;color:var(--muted);margin-top:1.8rem">Orange: counted as an
+error. Green: she fixed it herself, which does not count against her. The letters above are
+what her teacher judged she was using.</p>
+
+<h2>What the tool worked out</h2>
+<div class="nums">
+  <div class="num"><b>93%</b><span>Accuracy</span></div>
+  <div class="num"><b>Instructional</b><span>Level</span></div>
+  <div class="num"><b>1:14</b><span>Error rate</span></div>
+  <div class="num"><b>1:5</b><span>Self-correction</span></div>
+  <div class="num"><b>37</b><span>Words correct / min</span></div>
+  <div class="num"><b>1:22</b><span>Time</span></div>
+</div>
+
+<h2>The part the percentage hides</h2>
+<p>Ninety-three per cent and <i>Instructional</i> is a fair summary, and on its own it tells
+a teacher to keep going at roughly this level. It does not tell them what to teach.</p>
+<p>The pattern does. Three of Maya&rsquo;s four errors are the same error.</p>
+
+<table>
+<tr><th>Word</th><th>She read</th><th>What she was using</th></tr>
+<tr><td><b>naps</b></td><td>nap</td><td>Visual</td></tr>
+<tr><td><b>pats</b></td><td>pat</td><td>Visual</td></tr>
+<tr><td><b>mops</b></td><td>mop</td><td>Visual</td></tr>
+<tr><td><b>sit</b></td><td>sat</td><td>Structure, Visual</td></tr>
+</table>
+
+<p class="pull">She dropped the <b>&ndash;s</b> three times, on the lesson named for it. She got
+the base word right every time. She is reading the front of the word and letting the end
+go.</p>
+
+<p>The cue tally says the same thing from the other side: <b>Meaning 0, Structure 1,
+Visual 4</b>. Every miscue was driven by what the word looked like. None were caught by
+whether the sentence still made sense, which is how <i>A cat nap in a pot</i> went past her
+without a flicker.</p>
+
+<p>Her retell was marked <i>Some of it</i>: <i>&ldquo;A cat got in the pot. It got muddy. Then
+they cleaned it.&rdquo;</i> She has the story. She is not using it while she reads.</p>
+
+<h2>What you do on Monday</h2>
+<p>Not a repeat of Lesson 20. She can read every base word in it. The teaching point is the
+ending she is dropping, and the habit of checking that a sentence still means something.
+That is a five-minute small-group focus, not a re-test.</p>
+<p>Then read her again in two weeks and see whether the &ndash;s is sticking. That is the whole
+argument for this tool. The marking takes about as long as the reading, so you can afford
+to do it often enough for the second reading to tell you something.</p>
+
+<h2>See it yourself</h2>
+<p>This loads Maya&rsquo;s record into the tool, exactly as her teacher left it. Nothing is sent
+anywhere. It is written to your own browser, and you can clear it again.</p>
+<p>
+  <button class="btn" id="load">Open Maya&rsquo;s record in the tool</button>
+  <a class="btn ghost" href="index.html">Start a blank one</a>
+  <a class="btn ghost" href="all-lessons.html">See all 36 lessons</a>
+</p>
+
+<footer>
+A phonics assessment set: 36 items, lessons 6 to 41.
+<a href="all-lessons.html">Every lesson</a> &middot;
+<a href="index.html">The marking tool</a> &middot;
+<a href="https://github.com/sahajkashyap/edtech-portfolio">Source and test suite</a>
+</footer>
+</div>
+<script>
+const REC = {"id": "example-maya", "lesson": 20, "initials": "M.R.", "date": "2026-03-04", "notes": "Read steadily, no finger. Slowed on the last two lines. Asked me what a mop was, then carried on.", "retellText": "A cat got in the pot. It got muddy. Then they cleaned it.", "retell": "some", "words": [{"text": "Sam", "code": null, "said": ""}, {"text": "and", "code": null, "said": ""}, {"text": "Dan", "code": null, "said": ""}, {"text": "sit", "code": "sub", "said": "sat", "cues": {"s": true, "v": true}}, {"text": "in", "code": null, "said": ""}, {"text": "the", "code": null, "said": ""}, {"text": "sun.", "code": null, "said": ""}, {"text": "A", "code": null, "said": ""}, {"text": "cat", "code": null, "said": ""}, {"text": "naps", "code": "sub", "said": "nap", "cues": {"v": true}}, {"text": "in", "code": null, "said": ""}, {"text": "a", "code": null, "said": ""}, {"text": "pot.", "code": null, "said": ""}, {"text": "Mud", "code": null, "said": ""}, {"text": "is", "code": null, "said": ""}, {"text": "in", "code": null, "said": ""}, {"text": "the", "code": null, "said": ""}, {"text": "pot.", "code": null, "said": ""}, {"text": "\"Cat!", "code": null, "said": ""}, {"text": "Get", "code": null, "said": ""}, {"text": "up!\"", "code": null, "said": ""}, {"text": "said", "code": null, "said": ""}, {"text": "Sam.", "code": null, "said": ""}, {"text": "Sam", "code": null, "said": ""}, {"text": "pats", "code": "sub", "said": "pat", "cues": {"v": true}}, {"text": "the", "code": null, "said": ""}, {"text": "cat.", "code": null, "said": ""}, {"text": "Mud", "code": null, "said": ""}, {"text": "is", "code": null, "said": ""}, {"text": "on", "code": null, "said": ""}, {"text": "it!", "code": null, "said": ""}, {"text": "Mud", "code": null, "said": ""}, {"text": "is", "code": null, "said": ""}, {"text": "on", "code": null, "said": ""}, {"text": "Sam.", "code": null, "said": ""}, {"text": "Dan", "code": null, "said": ""}, {"text": "dips", "code": "sc", "said": "dip"}, {"text": "a", "code": null, "said": ""}, {"text": "mop", "code": null, "said": ""}, {"text": "in", "code": null, "said": ""}, {"text": "a", "code": null, "said": ""}, {"text": "tub.", "code": null, "said": ""}, {"text": "Dan", "code": null, "said": ""}, {"text": "mops", "code": "sub", "said": "mop", "cues": {"v": true}}, {"text": "up", "code": null, "said": ""}, {"text": "the", "code": null, "said": ""}, {"text": "mud.", "code": null, "said": ""}, {"text": "The", "code": null, "said": ""}, {"text": "cat", "code": null, "said": ""}, {"text": "naps.", "code": null, "said": ""}, {"text": "Sam", "code": null, "said": ""}, {"text": "naps", "code": null, "said": ""}, {"text": "in", "code": null, "said": ""}, {"text": "the", "code": null, "said": ""}, {"text": "sun.", "code": null, "said": ""}], "cursor": 43, "stoppedAt": null, "insertions": 0, "elapsed": 82000, "clockState": "done", "updated": "2026-08-05T21:35:33.532Z", "accuracy": 93, "errors": 4, "read": 55};
+document.getElementById('load').addEventListener('click', () => {
+  try {
+    localStorage.setItem('running-record-rec-' + REC.id, JSON.stringify(REC));
+    const raw = localStorage.getItem('running-record-index');
+    const list = raw ? JSON.parse(raw) : [];
+    const rest = list.filter(e => e.id !== REC.id);
+    rest.unshift({ id: REC.id, lesson: REC.lesson, initials: REC.initials,
+                   date: REC.date, updated: REC.updated, accuracy: REC.accuracy,
+                   errors: REC.errors, read: REC.read });
+    localStorage.setItem('running-record-index', JSON.stringify(rest));
+    location.href = 'index.html#L' + REC.lesson;
+  } catch (e) {
+    alert('This browser would not let the page save the example (private window, '
+        + 'or storage is full). The tool itself will have the same trouble.');
+  }
+});
+</script>
+</body></html>

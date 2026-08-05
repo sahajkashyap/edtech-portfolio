@@ -31,6 +31,7 @@ DEFAULT_STARTS = [
     # A new page joins this list in the same commit that creates it, or the
     # standing rule verifies everything except the thing that just changed.
     "running-record-tool/all-lessons.html",
+    "running-record-tool/worked-example.html",
 ]
 MIN_VISIBLE_WORDS = 20  # fewer than this and a page counts as blank
 
