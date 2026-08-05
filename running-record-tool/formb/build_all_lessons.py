@@ -78,8 +78,21 @@ def build() -> str:
                     for d in items)
     n_pass = sum(1 for d in items if d["instrument"] == "passage")
     n_wl = len(items) - n_pass
-    total = sum(len(" ".join(d["lines"]).split())
-                for d in items if d["instrument"] == "passage")
+    # Must mirror index.html's tokenList(): every clickable item, passages AND
+    # word lists, with sentences split into words. The old sum counted passages
+    # only and under-reported the set by more than a hundred words.
+    def tokens(d):
+        if d["instrument"] == "passage":
+            return sum(len(l.split()) for l in d["lines"])
+        n = 0
+        for label, key in (("Real words", "real_words"),
+                           ("Nonsense words", "nonsense_words"),
+                           ("Heart words", "high_frequency"),
+                           ("Sentences", "sentences")):
+            for v in d.get(key) or []:
+                n += len(v.split()) if label == "Sentences" else 1
+        return n
+    total = sum(tokens(d) for d in items)
 
     return TEMPLATE % {
         "rows": "".join(rows), "jump": jump, "n": len(items),

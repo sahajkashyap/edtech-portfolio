@@ -867,6 +867,35 @@ def check_index(R):
     # reverted -- still showing text the tool no longer serves, while claiming
     # on its face that it could not drift. Defect class A12, committed on the
     # same day the catalogue entry for A12 was written.
+    # index.html's tokenList() and build_all_lessons' tokens() must agree about
+    # what a lesson makes clickable, or the review page reports a different
+    # number of words than the tool scores. They are two implementations of one
+    # rule, in two languages, which is exactly how they drift.
+    import re as _re
+    html_src = INDEX.read_text()
+    m = _re.search(r"const LESSONS = (\{.*?\n\});", html_src, _re.S)
+    if m:
+        L = json.loads(m.group(1))
+        def _toks(v):
+            if v.get("kind") == "passage":
+                return sum(len(x.split()) for x in v["lines"])
+            n = 0
+            for label, lst in v["groups"]:
+                n += sum(len(x.split()) for x in lst) if label == "Sentences" else len(lst)
+            return n
+        tool_total = sum(_toks(v) for v in L.values())
+        page = (HERE.parent / "all-lessons.html")
+        pm = _re.search(r"<b>(\d+)</b>words a child reads",
+                        page.read_text()) if page.exists() else None
+        if pm and int(pm.group(1)) != tool_total:
+            R.fail("the tool makes %d clickable words but all-lessons.html says "
+                   "%s. One of tokenList() in index.html and tokens() in "
+                   "build_all_lessons.py is wrong, and a teacher reading the "
+                   "review page is being told the wrong size of the instrument."
+                   % (tool_total, pm.group(1)))
+        else:
+            R.ok("tool and review page agree: %d clickable words" % tool_total)
+
     import build_all_lessons
     buf2 = io.StringIO()
     with contextlib.redirect_stdout(buf2):
@@ -1415,10 +1444,20 @@ def check_siblings(R):
         if wbase is None:
             R.info("audit_writing HIGH backlog: %d, not yet recorded. Stamp it."
                    % whigh)
+        elif whigh > wbase and baseline_reason(sys.argv[1:]):
+            # Same contract as the audit_child baseline: a writing-rule count
+            # can rise because content got worse OR because the CHECKER started
+            # covering material it had been silently skipping. Only the second
+            # is acceptable, and only with the reason written down and stored.
+            R.info("audit_writing reports %d HIGH, %d MORE than the %d recorded. "
+                   "Accepted with a recorded reason:\n      %s"
+                   % (whigh, whigh - wbase, wbase, baseline_reason(sys.argv[1:])))
         elif whigh > wbase:
             R.fail("audit_writing reports %d HIGH writing-rule findings, %d MORE "
                    "than the %d recorded. Those are WRITING-RULES.md violations "
-                   "somebody just introduced." % (whigh, whigh - wbase, wbase))
+                   "somebody just introduced. If the checker's COVERAGE grew "
+                   "rather than the content getting worse, say so with "
+                   "--accept-baseline \"why\"." % (whigh, whigh - wbase, wbase))
         elif whigh < wbase:
             R.info("audit_writing HIGH backlog down to %d from %d — re-stamp."
                    % (whigh, wbase))

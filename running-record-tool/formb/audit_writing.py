@@ -97,6 +97,16 @@ ACCEPTED = {
         "therefore measures short-vowel decoding, NOT /k/ — an examiner reading "
         "it as a k check is reading it wrong. Fixing this needs a k word added "
         "to the curriculum data upstream, which is a separate decision."),
+    "6:4.1:the map": (
+        "Forced by the curriculum, not by the writing. Rule 4.1 says a first "
+        "mention takes 'a' -- but 'a' is not a taught word at Lesson 6. The "
+        "heart words are 'and', 'I' and 'the'; 'a' arrives at Lesson 7. So at "
+        "this one lesson every first mention must take 'the' or take no article "
+        "at all, and the legal vocabulary (am at map mat pat sat tap) offers no "
+        "article-free sentence that is not also a 9.1 rhyme. Resolved at L7 and "
+        "everywhere after."),
+    "6:4.1:the mat": (
+        "Same as 6:4.1:the map -- 'a' is not taught until Lesson 7."),
     "34:target:z": (
         "The same arithmetic as Lesson 22, measured the same way. Lesson 34 is "
         "named z /z/; the decodable vocabulary there contains exactly two z "
@@ -236,6 +246,21 @@ def rule_7_6(doc, add):
     title = doc.get("title") or ""
     tw = set(content(title))
     if len(tw) < 2:
+        # Too few content words for a subset test to be meaningful -- but a
+        # title can still be a line with the articles shuffled. Compare the
+        # full word sets instead of giving up.
+        twords = set(words(title))
+        if len(twords) >= 4:
+            for i, line in enumerate(doc["lines"]):
+                lw = set(words(line))
+                if twords <= lw:
+                    add("HIGH", "7.6", title,
+                        "every word of the title is in line %d, so the child "
+                        "decodes that sentence as a title and then RECALLS it "
+                        "as their first scored line." % (i + 1), i, line)
+                    return
+        return
+    if False:
         # A single-content-word title ("The Pot") is a subset of nearly every
         # line by arithmetic, not by spoiling anything. Rule 7.6 is about a
         # title that hands the child a whole line before they read it.
@@ -429,7 +454,30 @@ def audit(paths):
     found = []
     ACCEPTED_USED.clear()
     for doc in docs:
+        # Word lists were skipped entirely -- nine of 36 items, a quarter of the
+        # instrument, never met the writing rules. Their `sentences` are read
+        # aloud and scored exactly like a passage line, and running rule 9.1
+        # over them fires seven times. A checker that silently covers three
+        # quarters of the material is worse than none, because the green run
+        # says "checked".
         if doc["instrument"] != "passage":
+            probe = dict(doc, lines=list(doc.get("sentences") or []),
+                         title=doc.get("title") or "")
+            if not probe["lines"]:
+                continue
+
+            def add_wl(sev, rule, item, why, i, line, _d=doc):
+                key = "%d:%s:%s" % (_d["lesson"], rule, item)
+                if key in ACCEPTED:
+                    ACCEPTED_USED.add(key)
+                    return
+                found.append({"lesson": _d["lesson"], "severity": sev,
+                              "rule": rule, "item": item,
+                              "why": "word-list sentence: " + why,
+                              "line": i + 1, "text": line})
+            for fn in (rule_1_2, rule_1_5, rule_3_2, rule_4_1, rule_agreement,
+                       rule_9_1_9_2_9_3, rule_10_3):
+                fn(probe, add_wl)
             continue
 
         def add(sev, rule, item, why, i, line, _d=doc):

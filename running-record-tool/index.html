@@ -501,8 +501,8 @@ const LESSONS = {
    [
     "Sentences",
     [
-     "Sam sat and I sat.",
-     "Sam and I pat a mat."
+     "Sam and I pat a map.",
+     "I sat."
     ]
    ]
   ],
@@ -536,7 +536,7 @@ const LESSONS = {
     "Sentences",
     [
      "Tim and I sit.",
-     "I tap the map and I sip."
+     "I sip and I pat it."
     ]
    ]
   ],
@@ -570,8 +570,8 @@ const LESSONS = {
    [
     "Sentences",
     [
-     "Nan and I nap.",
-     "The pan is tan."
+     "Nan and I sit.",
+     "A pan is in it."
     ]
    ]
   ],
@@ -605,8 +605,8 @@ const LESSONS = {
    [
     "Sentences",
     [
-     "The pin is in a pan.",
-     "Nan and I tip the pan."
+     "A pin is in it.",
+     "I tip a pan."
     ]
    ]
   ],
@@ -641,7 +641,7 @@ const LESSONS = {
     "Sentences",
     [
      "I am Nan.",
-     "The man is at the fan."
+     "A man sat as I sat."
     ]
    ]
   ],
@@ -675,12 +675,12 @@ const LESSONS = {
    [
     "Sentences",
     [
-     "A man sat on the mat.",
-     "The map is not on top."
+     "A man is on top.",
+     "I mop a pot."
     ]
    ]
   ],
-  "note": "This word list says \"is not\". Decodability forbids apostrophes. A child who reads \"isn't\" is reading for meaning — do not score it an error.\n\nNo nonsense-word subtest: 5 legal pseudowords exist here and each is ruled out, heard as a real word, a respelling or a letter name. 12 spellings were examined in all; reasons in rejected_pseudowords (examiner data)."
+  "note": "No nonsense-word subtest: 5 legal pseudowords exist here and each is ruled out, heard as a real word, a respelling or a letter name. 12 spellings were examined in all; reasons in rejected_pseudowords (examiner data)."
  },
  "13": {
   "skill": "d /d/",
@@ -745,8 +745,8 @@ const LESSONS = {
    [
     "Sentences",
     [
-     "The cat is on the mat.",
-     "Dad and I can mop."
+     "Dad and I can mop it.",
+     "A pot is on a mat."
     ]
    ]
   ],
@@ -764,7 +764,7 @@ const LESSONS = {
    "\"Nan, tip it,\" said Tom.",
    "\"Do it,\" said Nan. Nan and Tom tip it up.",
    "The nut is up! It is at the pot.",
-   "Min can cut it up.",
+   "Tom can cut it up.",
    "Tom can tip it to a cup."
   ],
   "note": "This passage says \"can not\", \"it is\". Decodability forbids apostrophes. A child who reads \"can't\" or \"it's\" is reading for meaning — do not score it an error."
@@ -796,9 +796,9 @@ const LESSONS = {
    "\"Dog! Not the cap!\" said Gus.",
    "The dog can tug it to the bin.",
    "Mud is on the dog and the cap!",
-   "Min can tip the cap in a tub of mud.",
-   "The mud is in the tub!",
-   "Gus and Min pat the dog."
+   "Gus can dip the cap in a tub.",
+   "Mud is on top of the tub!",
+   "Gus can pat the dog."
   ]
  },
  "18": {
@@ -807,7 +807,7 @@ const LESSONS = {
   "kind": "passage",
   "lines": [
    "Peg got in bed at ten.",
-   "\"Ted! A tan cap is not in a bed,\" said Peg.",
+   "\"The tan cap is not in the bed,\" said Peg.",
    "\"I am up at ten,\" said Peg.",
    "Ted met Nan at a bin.",
    "Nan and Ted got the bin up.",
@@ -819,7 +819,7 @@ const LESSONS = {
  },
  "19": {
   "skill": "VC & CVC Practice (all)",
-  "title": "A Pup, a Bun and a Tag",
+  "title": "Nan and a Tan Pup",
   "kind": "passage",
   "lines": [
    "Nan met a pup in a dog pen.",
@@ -861,7 +861,7 @@ const LESSONS = {
    "The dog tugs and tugs.",
    "The buns pop up in a pen!",
    "Bob and Sid pop the buns in a tub.",
-   "Min fits a cap on the tub. Bob nods.",
+   "Bob fits a cap on the tub. Sid nods.",
    "Sid pats the dog, and it sits."
   ]
  },
@@ -934,7 +934,7 @@ const LESSONS = {
  },
  "26": {
   "skill": "l /l/ Part 1",
-  "title": "Peg Can Not See the Hat",
+  "title": "A Dog on a Tan Hat",
   "kind": "passage",
   "lines": [
    "Peg can not see the tan hat.",
@@ -1037,7 +1037,7 @@ const LESSONS = {
  },
  "32": {
   "skill": "qu /kw/",
-  "title": "A Fan, a Jug and a Mug",
+  "title": "A Fan, a Cup and a Nap",
   "kind": "passage",
   "lines": [
    "Max is in bed and a big fan hums.",
@@ -1089,7 +1089,7 @@ const LESSONS = {
  },
  "35": {
   "skill": "Short A Review (incl. Nasalized A)",
-  "title": "Jam on a Rug",
+  "title": "A Pup Gets a Bun",
   "kind": "passage",
   "lines": [
    "Bev, Dan and Sal are on a rug.",
@@ -1250,6 +1250,21 @@ function build(){
       passageEl.appendChild(h);
       const lineEl = document.createElement('div');
       lineEl.className = 'line wlrow';
+      // A "Sentences" item is a whole SENTENCE, and it was being added as one
+      // clickable token — so a child who read "Sam and I tap the mat." was
+      // scored as having read ONE word, and a single misread word cost the
+      // whole sentence. Accuracy, error ratio and words-per-minute were wrong
+      // on all nine word lists, and the teacher had no way to record WHICH
+      // word was missed. Word groups stay one-chip-per-word; sentences split.
+      if (label === 'Sentences'){
+        list.forEach(sentence => {
+          const row = document.createElement('div');
+          row.className = 'line wlsent';
+          sentence.split(' ').forEach(tok => addWord(row, tok));
+          passageEl.appendChild(row);
+        });
+        return;
+      }
       list.forEach(tok => addWord(lineEl, tok));
       passageEl.appendChild(lineEl);
     });
@@ -1416,6 +1431,9 @@ function render(){
 const MARKNAME = { sub:'Wrong word', omit:'Skipped', told:'Told',
                    sc:'Self-corrected', rep:'Repeated', appeal:'Appealed' };
 
+const esc = t => String(t).replace(/[<>&]/g,
+  c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+
 function paintPrint(){
   const s = stats(), L = LESSONS[currentLesson];
   const initials = (document.getElementById('initials').value || '\u2014').toUpperCase();
@@ -1440,7 +1458,7 @@ function paintPrint(){
   words.forEach(w => {
     if (!w.code) return;
     rows.push('<tr><td><b>' + w.text + '</b></td><td>' + MARKNAME[w.code] +
-              '</td><td>' + (w.said ? 'read as \u201c' + w.said + '\u201d' : '') + '</td></tr>');
+              '</td><td>' + (w.said ? 'read as \u201c' + esc(w.said) + '\u201d' : '') + '</td></tr>');
   });
   if (insertions) rows.push('<tr><td colspan="3">' + insertions + ' added word(s)</td></tr>');
   document.getElementById('prmarks').innerHTML = rows.length
@@ -1460,6 +1478,10 @@ let popFor = null;
 function openPop(i){
   popFor = i;
   const el = passageEl.querySelector('.w[data-i="' + i + '"]');
+  // The word this popover was opened on can vanish under it — switching lesson
+  // with the keyboard fires no document click, so closePop() never ran and the
+  // next code button threw on a null span.
+  if (!el){ closePop(); return; }
   const r = el.getBoundingClientRect();
   pop.style.display = 'block';
   pop.style.left = Math.min(r.left + window.scrollX, window.innerWidth - 270) + 'px';
@@ -1503,6 +1525,12 @@ document.addEventListener('click', e => { if (!pop.contains(e.target)) closePop(
 document.addEventListener('keydown', e => {
   const t = e.target.tagName;
   if (t === 'INPUT' || t === 'TEXTAREA') return;
+  // Every browser shortcut was being swallowed and re-read as a marking key:
+  // Cmd+S marked a self-correction AND started the clock, Cmd+X a
+  // substitution, Cmd+A an appeal, Cmd+T a Told. Worst of all Cmd+P toggled
+  // Pause instead of opening the print dialog — on a tool whose whole output
+  // is a printed record. A modified key is never a marking key.
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
   const k = e.key.toLowerCase();
   if (k === ' ' || e.key === 'ArrowRight'){ e.preventDefault(); advance(); return; }
   if (e.key === 'ArrowLeft'){ e.preventDefault(); retreat(); return; }
@@ -1577,12 +1605,19 @@ function hasContent(){
          document.getElementById('notes').value.trim() !== '';
 }
 
-function save(){
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    if (!hasContent()) return;
-    if (!recordId) recordId = newId();
-    const st = stats();
+// One place to talk to the teacher, so every path that gives up says why.
+function say(msg, ms){
+  const m = document.getElementById('savedmsg');
+  if (!m) return;
+  m.textContent = msg;
+  setTimeout(() => { if (m.textContent === msg) m.textContent = ''; },
+             ms || 9000);
+}
+
+function writeRecord(){
+  if (!hasContent()) return;
+  if (!recordId) recordId = newId();
+  const st = stats();
     const rec = {
       id: recordId, lesson: currentLesson,
       initials: document.getElementById('initials').value,
@@ -1593,29 +1628,81 @@ function save(){
       updated: new Date().toISOString(),
       accuracy: Math.round(st.acc), errors: st.errors, read: st.read
     };
+  // A full disk, or Safari's private window, makes setItem throw. With no
+  // catch the exception died inside the debounce timer: no message, no
+  // "Saved", and a teacher marking a whole record that was never stored.
+  try {
     localStorage.setItem(recKey(recordId), JSON.stringify(rec));
     const list = readIndex().filter(e => e.id !== recordId);
     list.unshift({ id: rec.id, lesson: rec.lesson, initials: rec.initials,
                    date: rec.date, updated: rec.updated,
                    accuracy: rec.accuracy, errors: rec.errors, read: rec.read });
     writeIndex(list);
-    paintRecords();
-    const m = document.getElementById('savedmsg');
-    m.textContent = 'Saved on this laptop';
-    setTimeout(() => m.textContent = '', 1600);
-  }, 400);
+  } catch (err) {
+    say('THIS RECORD IS NOT BEING SAVED — this browser refused to store it ' +
+        '(private window, or the disk is full). Print or export before you ' +
+        'close this tab.', 60000);
+    return;
+  }
+  paintRecords();
+  say('Saved on this laptop', 1600);
+}
+
+// The debounce exists so typing initials does not write on every keystroke.
+// It also meant the last 400ms of work was thrown away by every path that
+// called clearTimeout — switching lesson, opening another record, starting a
+// new one — so a whole record could vanish silently. Anything that abandons
+// the current record flushes it first.
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(writeRecord, 400);
+}
+
+function flushSave(){
+  if (saveTimer){
+    clearTimeout(saveTimer);
+    saveTimer = null;
+    writeRecord();
+  }
 }
 ['initials','rdate','notes'].forEach(id =>
   document.getElementById(id).addEventListener('input', save));
 
 // How many clickable items a lesson makes, WITHOUT touching any state. This
 // has to be answerable before openRecord() commits to anything — see below.
-function tokenCount(n){
+// The exact token list a lesson produces, WITHOUT touching any state. Must
+// stay in step with build().
+function tokenList(n){
   const L = LESSONS[n];
-  if (!L) return -1;
-  return L.kind === 'wordlist'
-    ? L.groups.reduce((t, [, list]) => t + list.length, 0)
-    : L.lines.reduce((t, line) => t + line.split(' ').length, 0);
+  if (!L) return null;
+  const out = [];
+  if (L.kind === 'wordlist'){
+    L.groups.forEach(([label, list]) => {
+      if (label === 'Sentences') list.forEach(s => s.split(' ').forEach(t => out.push(t)));
+      else list.forEach(t => out.push(t));
+    });
+  } else {
+    L.lines.forEach(line => line.split(' ').forEach(t => out.push(t)));
+  }
+  return out;
+}
+
+function tokenCount(n){
+  const t = tokenList(n);
+  return t ? t.length : -1;
+}
+
+// Does a saved record still match the lesson it was saved against?
+//
+// This compared COUNTS only, and that is not the same question. Of 21 lessons
+// edited in one day, 14 kept the same word count — so a record saved against
+// the old text opened silently, and render() painted the SAVED words over the
+// new spans: the heading said Lesson 25 while the passage on screen was the
+// deleted version, and it printed that way too. Compare the words themselves.
+function recordFits(d){
+  const want = tokenList(d.lesson);
+  if (!want || !d.words || d.words.length !== want.length) return false;
+  return d.words.every((w, i) => w.text === want[i]);
 }
 
 function openRecord(id){
@@ -1637,18 +1724,14 @@ function openRecord(id){
   // what turned a dormant path into a live way to destroy a real record.
   //
   // Nothing is mutated until the fit is known.
-  if (!d.words || d.words.length !== tokenCount(d.lesson)){
-    const m = document.getElementById('savedmsg');
-    if (m){
-      m.textContent = 'That record was saved before Lesson ' + d.lesson +
-        ' was edited, so its marks no longer line up with the words. It is ' +
-        'still saved on this laptop and nothing has been changed.';
-      setTimeout(() => { m.textContent = ''; }, 9000);
-    }
+  if (!recordFits(d)){
+    say('That record was saved before Lesson ' + d.lesson + ' was edited, so ' +
+        'its marks no longer line up with the words. It is still saved on this ' +
+        'laptop and nothing has been changed.');
     return false;
   }
 
-  clearTimeout(saveTimer);
+  flushSave();
   recordId = id;
   currentLesson = d.lesson;
   document.getElementById('lessonpick').value = d.lesson;
@@ -1657,7 +1740,12 @@ function openRecord(id){
   stoppedAt = (d.stoppedAt === undefined) ? null : d.stoppedAt;
   insertions = d.insertions || 0;
   elapsed = d.elapsed || 0; runningSince = null;
-  clockState = d.clockState || (elapsed > 0 ? 'paused' : 'idle');
+  // Never restore as 'running'. runningSince is deliberately null on reopen
+  // (you cannot resume a timing you were not present for), and 'running' with
+  // no start time is a clock that says it is counting and is not. Reopen
+  // paused; the teacher presses Resume if they mean to carry on.
+  clockState = (d.clockState === 'running') ? 'paused'
+             : (d.clockState || (elapsed > 0 ? 'paused' : 'idle'));
   history = [];
   document.getElementById('initials').value = d.initials || '';
   document.getElementById('rdate').value = d.date || '';
@@ -1668,7 +1756,7 @@ function openRecord(id){
 
 // Start a fresh record. The previous one is already saved and stays saved.
 function newRecord(){
-  clearTimeout(saveTimer);
+  flushSave();          // do not lose the last 400ms of the record we are leaving
   recordId = null;
   build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
   resetClock();
@@ -1724,8 +1812,13 @@ document.getElementById('clearmarksbtn').addEventListener('click', () => {
   if (!confirm('Clear every mark and restart the clock?\n\nThe child, the date and your notes are kept.')) return;
   snapshot();
   words.forEach(w => { w.code = null; w.said = ''; });
-  cursor = 0; stoppedAt = null; insertions = 0; history = [];
+  // `history = []` used to run two lines after snapshot(), throwing away the
+  // snapshot just taken — so the single most destructive button was the one
+  // action Undo could not reverse. The history is what makes this safe.
+  cursor = 0; stoppedAt = null; insertions = 0;
   resetClock(); closePop(); render(); save();
+  say('Marks cleared. Press Undo (or Backspace) if that was not what you meant.',
+      6000);
 });
 
 document.getElementById('clearbtn').addEventListener('click', newRecord);
@@ -1839,6 +1932,7 @@ function paintTitle(){
 }
 
 function switchLesson(n){
+  flushSave();          // the record we are leaving is finished, not abandoned
   currentLesson = n;
   newRecord();          // a fresh record; the previous one is already saved
 }

@@ -19,8 +19,8 @@
     "is"
   ],
   "sentences": [
-    "The cat is on the mat.",
-    "Dad and I can mop."
+    "Dad and I can mop it.",
+    "A pot is on a mat."
   ],
   "audit_clean": true,
   "audit_problems": [],
