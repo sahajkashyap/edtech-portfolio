@@ -139,6 +139,26 @@
   }
   .clock{font-size:27px; font-weight:bold; letter-spacing:1px; line-height:1.1}
   .clock.idle{color:#b9ad97}
+  .whatis{font-size:12.5px; line-height:1.5; color:var(--muted); margin:0 0 14px;
+          padding-bottom:12px; border-bottom:1px solid var(--rule)}
+  .whatis em{color:var(--ink); font-style:normal; font-weight:600}
+  .cuegrid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+  .cue{background:var(--soft); border:1px solid var(--rule); border-radius:8px;
+       padding:8px 4px; text-align:center}
+  .cn{display:block; font-size:22px; font-weight:700; color:var(--deepblue)}
+  .cl{display:block; font-size:10.5px; color:var(--muted); text-transform:uppercase;
+      letter-spacing:.04em}
+  .cuefoot{font-size:12px; color:var(--muted); margin-top:6px; line-height:1.4}
+  .fieldlab{display:block; font-size:12px; color:var(--muted); margin:10px 0 4px}
+  .retellrow{display:flex; gap:6px; margin:6px 0 2px; flex-wrap:wrap}
+  .retellrow button{flex:1 1 0; font-size:11.5px; padding:5px 2px; background:var(--paper);
+    border:1px solid var(--rule); border-radius:6px; cursor:pointer; color:var(--ink)}
+  .retellrow button.on{background:var(--deepblue); color:#fff; border-color:var(--deepblue)}
+  .msvrow{align-items:center; gap:6px}
+  .msvlab{font-size:11px; color:var(--muted); text-transform:uppercase;
+          letter-spacing:.05em; margin-right:2px}
+  .msvrow button{flex:0 0 34px; font-weight:700; padding:5px 0; border-left-width:1px}
+  .msvrow button.on{background:var(--deepblue); color:#fff; border-color:var(--deepblue)}
   .b-none{background:var(--soft); color:var(--muted); border:1px solid var(--rule)}
   .wcpm{font-size:14px; color:var(--muted); margin-top:3px}
   .wcpm b{color:var(--ink); font-size:18px}
@@ -294,6 +314,11 @@
 
     <aside class="panel">
       <h2>What's happening</h2>
+      <p class="whatis">You mark. This counts. Every number here is arithmetic on
+      what <em>you</em> marked &mdash; accuracy, error and self&#8209;correction rates,
+      rate per minute, and the M/S/V tally. Nothing here decides how well the
+      child is reading. That judgement is yours; this just puts every piece of it
+      in one place, fast enough to do often.</p>
 
       <h3>Counts against</h3>
       <div class="tallyrow" id="row-sub">
@@ -354,6 +379,8 @@
         <li><kbd>S</kbd> self&#8209;corrected &nbsp; <kbd>R</kbd> repeated &nbsp; <kbd>A</kbd> appealed</li>
         <li><kbd>T</kbd> you told them &nbsp; <kbd>O</kbd> skipped it entirely</li>
         <li><kbd>Enter</kbd> type what they actually said <em>(optional)</em></li>
+        <li>and tag <b>M</b>&thinsp;/&thinsp;<b>S</b>&thinsp;/&thinsp;<b>V</b> &mdash; what the child was
+            <em>using</em> when they went wrong <em>(optional)</em></li>
         <li class="grp">Getting around</li>
         <li><kbd>&larr;</kbd> back &nbsp; <kbd>&rarr;</kbd> forward &nbsp; <kbd>Backspace</kbd> undo</li>
         <li><kbd>E</kbd> stopped reading here &nbsp; <kbd>I</kbd> added a word</li>
@@ -363,6 +390,15 @@
 
     <div class="card">
       <h2>Notes</h2>
+      <label class="fieldlab" for="retell">After the read &mdash; what did they tell you back?</label>
+      <textarea id="retell" placeholder="What the child said when you asked them to tell you about it. Write what they said, not how good it was."></textarea>
+      <div class="retellrow">
+        <span class="msvlab">Retell</span>
+        <button data-retell="none">Nothing</button>
+        <button data-retell="some">Some of it</button>
+        <button data-retell="most">Most of it</button>
+        <button data-retell="all">All of it, in order</button>
+      </div>
       <textarea id="notes" placeholder="Anything the marks can't hold. Ran out of breath at line 4. Kept checking the picture. Voice dropped on every question."></textarea>
       <div class="saved" id="savedmsg"></div>
       <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
@@ -382,6 +418,7 @@
   </div>
 
   <div class="printonly prmarks" id="prmarks"></div>
+  <div class="printonly prnotes" id="prretell"></div>
   <div class="printonly prnotes" id="prnotes"></div>
   <div class="printonly prfoot">
     Repetitions and self-corrections are not counted as errors.
@@ -410,8 +447,17 @@
   <div class="row">
     <input type="text" id="saidbox" placeholder="What they said (optional)" autocomplete="off">
   </div>
+  <!-- What the child was USING when they went wrong. The teacher decides this;
+       the tool only counts it. M, S and V are not exclusive — a miscue can use
+       two cues or none, which is why these are toggles and not a radio group. -->
+  <div class="row msvrow" id="msvrow">
+    <span class="msvlab">Cue used</span>
+    <button data-cue="m" title="Meaning — the miscue makes sense in the story so far">M</button>
+    <button data-cue="s" title="Structure — the miscue sounds like English in that slot">S</button>
+    <button data-cue="v" title="Visual — the miscue looks like the printed word">V</button>
+  </div>
   <div class="row"><button data-code="correct">Clear this mark</button></div>
-  <div class="hint">Esc closes. Nothing here is required.</div>
+  <div class="hint">Esc closes. Nothing here is required &mdash; M/S/V only if you want the analysis.</div>
 </div>
 
 <div id="stats">
@@ -420,6 +466,17 @@
   <div class="stat"><div class="n" id="sErrRatio">&ndash;</div><div class="l">Error rate</div></div>
   <div class="stat"><div class="n" id="sSCRatio">&ndash;</div><div class="l">Self&#8209;correction rate</div></div>
   <div class="stat"><div class="n" id="sWcpm">&ndash;</div><div class="l">Words correct / min</div></div>
+
+  <div id="cuebox" style="display:none">
+    <h2 style="margin-bottom:6px">What they were using</h2>
+    <div class="cuegrid">
+      <div class="cue"><span class="cn" id="cM">0</span><span class="cl">Meaning</span></div>
+      <div class="cue"><span class="cn" id="cS">0</span><span class="cl">Structure</span></div>
+      <div class="cue"><span class="cn" id="cV">0</span><span class="cl">Visual</span></div>
+    </div>
+    <div class="cuefoot" id="cueFoot"></div>
+  </div>
+
   <div class="spacer"></div>
   <button class="btn" id="undobtn">Undo last mark</button>
 </div>
@@ -1218,6 +1275,7 @@ const TAG   = { sub:'SUB', omit:'OM', told:'T', sc:'SC', rep:'R', appeal:'A' };
 const CODES = ['sub','omit','told','sc','rep','appeal'];
 
 let words = [], cursor = 0, stoppedAt = null, insertions = 0, history = [];
+let retellLevel = null;   // NOT `retell`: an element already has that id
 
 // The clock is a plain four-state machine: idle -> running <-> paused -> done.
 // It matters that marking a word can only ever start it from IDLE. The first
@@ -1285,7 +1343,10 @@ function build(){
 const isWord = t => /[a-z]/i.test(t);
 
 function snapshot(){
-  history.push({ words: words.map(w => ({...w})), cursor, stoppedAt, insertions });
+  // {...w} is shallow, so w.cues would be shared between the snapshot and the
+  // live word and Undo would not undo a cue toggle. Copy it.
+  history.push({ words: words.map(w => ({...w, cues: w.cues ? {...w.cues} : undefined})),
+                 cursor, stoppedAt, insertions });
   if (history.length > 200) history.shift();
 }
 
@@ -1340,17 +1401,30 @@ function retreat(){ if (cursor > 0) cursor--; render(); }
 function stats(){
   const last = (stoppedAt === null) ? words.length - 1 : stoppedAt;
   const by = { sub:0, omit:0, told:0, sc:0, rep:0, appeal:0 };
+  // Cue analysis. The TEACHER decides whether a miscue used meaning, structure
+  // or visual information; this only counts what they marked. `coded` is how
+  // many miscues have at least one cue on it, so the percentages below are
+  // always out of a number the teacher can see, never out of all miscues.
+  const cue = { m:0, s:0, v:0, coded:0, miscues:0 };
   let read = 0, errors = 0;
   words.forEach((w, i) => {
     if (i > last) return;
     if (isWord(w.text)) read++;
     if (w.code){ by[w.code]++; if (IS_ERROR[w.code]) errors++; }
+    if (['sub','omit','told'].includes(w.code)){
+      cue.miscues++;
+      const c = w.cues || {};
+      if (c.m || c.s || c.v) cue.coded++;
+      if (c.m) cue.m++;
+      if (c.s) cue.s++;
+      if (c.v) cue.v++;
+    }
   });
   errors += insertions;
   const acc = read ? Math.max(0, ((read - errors) / read) * 100) : 100;
   const mins = totalMs() / 60000;
   const wcpm = (mins > 0.02) ? Math.round((read - errors) / mins) : null;
-  return { read, errors, by, acc, wcpm };
+  return { read, errors, by, acc, wcpm, cue };
 }
 
 function render(){
@@ -1429,6 +1503,22 @@ function render(){
   else if (accShown >= 90){ band.textContent = 'Instructional'; band.className = 'b-ins'; }
   else { band.textContent = 'Frustration'; band.className = 'b-fru'; }
 
+  // The cue tally. Blank until the teacher has coded at least one miscue: an
+  // analysis of nothing is not a finding, and showing 0/0/0 invites reading it
+  // as "used no cues".
+  const cb = document.getElementById('cuebox');
+  cb.style.display = s.cue.coded ? 'block' : 'none';
+  if (s.cue.coded){
+    document.getElementById('cM').textContent = s.cue.m;
+    document.getElementById('cS').textContent = s.cue.s;
+    document.getElementById('cV').textContent = s.cue.v;
+    const un = s.cue.miscues - s.cue.coded;
+    document.getElementById('cueFoot').textContent =
+      s.cue.coded + ' of ' + s.cue.miscues + ' miscues coded'
+      + (un ? ' \u2014 ' + un + ' not yet coded' : '')
+      + '. These are counts of what you marked, not a judgement.';
+  }
+
   const clock = document.getElementById('clock');
   const ms = totalMs();
   clock.textContent = fmt(ms);
@@ -1482,15 +1572,32 @@ function paintPrint(){
   const rows = [];
   words.forEach(w => {
     if (!w.code) return;
-    rows.push('<tr><td><b>' + w.text + '</b></td><td>' + MARKNAME[w.code] +
+    const cl = w.cues ? ['m','s','v'].filter(k => w.cues[k]).join('').toUpperCase() : '';
+    rows.push('<tr><td><b>' + w.text + '</b>' + (cl ? ' <i>[' + cl + ']</i>' : '') +
+              '</td><td>' + MARKNAME[w.code] +
               '</td><td>' + (w.said ? 'read as \u201c' + esc(w.said) + '\u201d' : '') + '</td></tr>');
   });
   if (insertions) rows.push('<tr><td colspan="3">' + insertions + ' added word(s)</td></tr>');
+  const cu = stats().cue;
+  if (cu.coded){
+    rows.push('<tr><td colspan="3"><b>Cue analysis</b> &mdash; M ' + cu.m +
+              ' &nbsp; S ' + cu.s + ' &nbsp; V ' + cu.v + ' &nbsp;(' + cu.coded +
+              ' of ' + cu.miscues + ' miscues coded by the examiner)</td></tr>');
+  }
   document.getElementById('prmarks').innerHTML = rows.length
     ? '<h3>Every mark</h3><table>' + rows.join('') + '</table>'
     : '<h3>Every mark</h3><p>No miscues recorded.</p>';
 
   const n = document.getElementById('notes').value.trim();
+  const rt = document.getElementById('retell').value.trim();
+  const RETELL = { none:'Nothing', some:'Some of it', most:'Most of it',
+                   all:'All of it, in order' };
+  const pr = document.getElementById('prretell');
+  if (pr) pr.innerHTML = (rt || retellLevel)
+    ? '<h3>Retell</h3>' + (retellLevel ? '<p><b>' + RETELL[retellLevel] + '</b></p>' : '')
+      + (rt ? '<p>' + esc(rt) + '</p>' : '')
+    : '';
+
   document.getElementById('prnotes').innerHTML =
     '<h3>Teacher notes</h3>' + (n ? n.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) : '\u2014');
 }
@@ -1513,6 +1620,13 @@ function openPop(i){
   pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
   saidbox.value = words[i].said || '';
   saidWasBlank = !saidbox.value.trim();
+  // M/S/V only applies to a miscue. Showing it on an unmarked word invites a
+  // cue analysis of a word the child read correctly.
+  const isMiscue = ['sub','omit','told'].includes(words[i].code);
+  document.getElementById('msvrow').style.display = isMiscue ? 'flex' : 'none';
+  pop.querySelectorAll('button[data-cue]').forEach(b => {
+    b.classList.toggle('on', !!(words[i].cues || {})[b.dataset.cue]);
+  });
   pop.querySelectorAll('button[data-code]').forEach(b => {
     const on = words[i].code === b.dataset.code;
     b.classList.toggle('on', on);
@@ -1528,6 +1642,28 @@ pop.querySelectorAll('button[data-code]').forEach(b => {
     mark(popFor, b.dataset.code); openPop(popFor);
   });
 });
+pop.querySelectorAll('button[data-cue]').forEach(b => {
+  b.addEventListener('click', () => {
+    if (popFor === null) return;
+    snapshot();                       // undoable like every other mark
+    const w = words[popFor];
+    w.cues = w.cues || {};
+    w.cues[b.dataset.cue] = !w.cues[b.dataset.cue];
+    render(); save(); openPop(popFor);
+  });
+});
+
+document.querySelectorAll('.retellrow button').forEach(b => {
+  b.addEventListener('click', () => {
+    retellLevel = (retellLevel === b.dataset.retell) ? null : b.dataset.retell;
+    paintRetell(); save();
+  });
+});
+function paintRetell(){
+  document.querySelectorAll('.retellrow button').forEach(b =>
+    b.classList.toggle('on', retellLevel === b.dataset.retell));
+}
+
 let saidWasBlank = true;
 saidbox.addEventListener('input', () => {
   if (popFor === null) return;
@@ -1648,6 +1784,8 @@ function writeRecord(){
       initials: document.getElementById('initials').value,
       date: document.getElementById('rdate').value,
       notes: document.getElementById('notes').value,
+      retellText: document.getElementById('retell').value,
+      retell: retellLevel,
       words, cursor, stoppedAt, insertions,
       elapsed: totalMs(), clockState,
       updated: new Date().toISOString(),
@@ -1690,7 +1828,7 @@ function flushSave(){
     writeRecord();
   }
 }
-['initials','rdate','notes'].forEach(id =>
+['initials','rdate','notes','retell'].forEach(id =>
   document.getElementById(id).addEventListener('input', save));
 
 // How many clickable items a lesson makes, WITHOUT touching any state. This
@@ -1775,6 +1913,8 @@ function openRecord(id){
   document.getElementById('initials').value = d.initials || '';
   document.getElementById('rdate').value = d.date || '';
   document.getElementById('notes').value = d.notes || '';
+  document.getElementById('retell').value = d.retellText || '';
+  retellLevel = d.retell || null; paintRetell();
   paintTitle(); paintNote(); render(); paintRecords();
   return true;
 }
@@ -1787,6 +1927,8 @@ function newRecord(){
   resetClock();
   document.getElementById('initials').value = '';
   document.getElementById('notes').value = '';
+  document.getElementById('retell').value = '';
+  retellLevel = null; paintRetell();
   document.getElementById('rdate').valueAsDate = new Date();
   paintTitle(); paintNote(); render(); paintRecords();
 }
@@ -1836,7 +1978,7 @@ function paintRecords(){
 document.getElementById('clearmarksbtn').addEventListener('click', () => {
   if (!confirm('Clear every mark and restart the clock?\n\nThe child, the date and your notes are kept.')) return;
   snapshot();
-  words.forEach(w => { w.code = null; w.said = ''; });
+  words.forEach(w => { w.code = null; w.said = ''; delete w.cues; });
   // `history = []` used to run two lines after snapshot(), throwing away the
   // snapshot just taken — so the single most destructive button was the one
   // action Undo could not reverse. The history is what makes this safe.
@@ -1871,7 +2013,8 @@ function exportCsv(){
                 'Accuracy %','Level','Error rate','Self-correction rate',
                 'Words correct per min','Time','Wrong word','Skipped','Told',
                 'Self-corrected','Repeated','Appealed','Added words',
-                'Miscues','Teacher notes'];
+                'Miscues','Cue M','Cue S','Cue V','Miscues coded',
+                'Retell','Retell notes','Teacher notes'];
   const rows = [head.map(csvCell).join(',')];
 
   list.forEach(e => {
@@ -1899,14 +2042,31 @@ function exportCsv(){
     const accShown = Math.round(acc);
     const mins = (d.elapsed || 0) / 60000;
     const wcpm = (mins > 0.02) ? Math.round((read - errors) / mins) : '';
+    // Cue counts, recomputed from the saved words so an exported row always
+    // agrees with the record it came from.
+    let cm = 0, cs = 0, cv = 0, ccoded = 0;
+    (d.words || []).forEach(w => {
+      if (!['sub','omit','told'].includes(w.code)) return;
+      const c = w.cues || {};
+      if (c.m || c.s || c.v) ccoded++;
+      if (c.m) cm++; if (c.s) cs++; if (c.v) cv++;
+    });
+    const RT = { none:'Nothing', some:'Some of it', most:'Most of it',
+                 all:'All of it, in order' };
+    // A word list is not banded — see the note in render(). Exporting a band
+    // here would put back exactly what the screen was fixed to stop saying.
+    const band = (L.kind === 'wordlist') ? 'n/a (word list)'
+      : accShown >= 95 ? 'Independent' : accShown >= 90 ? 'Instructional' : 'Frustration';
     rows.push([
       e.initials, d.lesson, L.skill, L.title, d.date, read, errors, accShown,
-      accShown >= 95 ? 'Independent' : accShown >= 90 ? 'Instructional' : 'Frustration',
+      band,
       errors ? '1:' + Math.round(read / errors) : '',
       by.sc ? '1:' + Math.round((errors + by.sc) / by.sc) : '',
-      wcpm, fmt(d.elapsed || 0),
+      (L.kind === 'wordlist') ? '' : wcpm, fmt(d.elapsed || 0),
       by.sub, by.omit, by.told, by.sc, by.rep, by.appeal, d.insertions || 0,
-      miscues.join('; '), d.notes || ''
+      miscues.join('; '),
+      ccoded ? cm : '', ccoded ? cs : '', ccoded ? cv : '', ccoded || '',
+      d.retell ? RT[d.retell] : '', d.retellText || '', d.notes || ''
     ].map(csvCell).join(','));
   });
 
