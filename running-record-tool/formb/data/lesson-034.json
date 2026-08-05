@@ -16,5 +16,6 @@
     "\"The pup can have the rug,\" said Zeb."
   ],
   "gates_passed": true,
-  "scoring_note": "This passage says \"do not\". Decodability forbids apostrophes. A child who reads \"don't\" is reading for meaning — do not score it an error."
+  "scoring_note": "This passage says \"do not\". Decodability forbids apostrophes. A child who reads \"don't\" is reading for meaning — do not score it an error.",
+  "limit_note": "This lesson is named for z /z/, and the only z on this page is in the names Liz and Zeb. A name is not evidence a child decoded a sound, so the score here measures short-vowel decoding, NOT /z/. Read it that way."
 }

@@ -16,5 +16,6 @@
     "\"Bug, not the bag!\" said Gus."
   ],
   "gates_passed": true,
-  "scoring_note": "This passage says \"do not\". Decodability forbids apostrophes. A child who reads \"don't\" is reading for meaning — do not score it an error."
+  "scoring_note": "This passage says \"do not\". Decodability forbids apostrophes. A child who reads \"don't\" is reading for meaning — do not score it an error.",
+  "limit_note": "This lesson is named for k /k/, and no word on this page carries that sound. Every k word that exists at this lesson is already used by the practice sheet, so the score here measures short-vowel decoding, NOT /k/. Read it that way."
 }

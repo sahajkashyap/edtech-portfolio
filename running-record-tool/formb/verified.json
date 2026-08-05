@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T14:57:22",
+  "verified_at": "2026-08-05T15:19:20",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -31,7 +31,7 @@
     "lesson-019.json": "0225bc053c692702fbe72649800dcaa14c781cacdcd07b8f3625ae7d5b889d58",
     "lesson-020.json": "f2a31e31796a86a165b127aaff5abfdb99d35cb147199e573626070d99459e15",
     "lesson-021.json": "fd936faa5bc386d9f56dda537c41395f7b5c8a646f9a7d47e074b952dbc4d064",
-    "lesson-022.json": "63add40612d49c1d39078c65a4ce6cc5ee18dac7b4926a02a4623c7d6453b03d",
+    "lesson-022.json": "16faf40a47c8c1a911e3b57bafc04cae9d0eed8b8f90ab16408832027ff766fe",
     "lesson-023.json": "da841d2aa2c9b541c55c7081f1560f61b3c22d799e5fffbf9f8bb82adf561f50",
     "lesson-024.json": "013df7a7743e907f761c6ec9e1682bd79461b1db27ba62edd17ed181a2dab486",
     "lesson-025.json": "23386f3949464177a09406fbf5e8ff6ec664c564febd1ac3b64d0c5a01ea7d1e",
@@ -43,7 +43,7 @@
     "lesson-031.json": "04c5253aa23a5310c7ff369fda781b718af56531e2f2ce16803b6f23d66eb400",
     "lesson-032.json": "d171493286dc492d46706e32ee8e26e95a950b2d00f197ccb6e1c324182e37bc",
     "lesson-033.json": "69bb1c770e04c1b4d3402fff156707271352da9019169fdaa8643df45f75d88e",
-    "lesson-034.json": "2aba742f1b1e47aa00adde948021537873c8742300d496cb8e3d0e09716d7b66",
+    "lesson-034.json": "862acd6db67138a7ce01a7089fb5cf73043dcdcb471fad92488ee52d987df417",
     "lesson-035.json": "2859b7574af392b03edd019e16101c36dcdd2c2ddf83cff046dd65b36b1a49c2",
     "lesson-036.json": "f0f8326a314a454549bcc46430014ae69e435b4fe7e6ce68179f972fdb89de41",
     "lesson-037.json": "5130ed5bc1124a265b40542650ee77f48c728376d866496f6a499336e56f6c3f",
@@ -51,15 +51,15 @@
     "lesson-039.json": "cc09f9a8ce894650ee1417f8087060beaa4471bbddd51c38938e72934eeb961b",
     "lesson-040.json": "d854d5fbed0dc4cb2255c6845db3e488afa98619b10afcc7550628e5c8affb9d",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
-    "../index.html": "973e117ed7072d2a93456f0039390082df476e970dbb5fe8b077ec139e7aad71",
+    "../index.html": "90356cca823fda6a068331996a9db9561ffd3bd1bb36414ec97f4a2b3019d0c3",
     "../all-lessons.html": "00d1d9e1e95a97cd49ec6c0cb6f54b95e1bed8f04743eea4274d9e640d47c9d0",
     "audit_child.py": "e73ec3db4fe504373273308e7f5439e80c5887c79c62be4dbaf0e1cd2d0ca7ab",
     "audit_curriculum.py": "08fe7d7ab82354bc9b8370ea61d34f490685fdb3b59628327be36d604de6fb89",
     "audit_writing.py": "a79ba65dd6088aca0f9cf639184c0f8d7d2003fbd56423041528c9f3dc951c19",
     "gates.py": "94cadb426bf1275e4a8d8a90d726d1e61a89c4bb23e6f396310f198a72b54c23",
     "quality.py": "5ab88cb43c6427952afe83297b0e84b6a00f741391da18cd5fc1468aefe1bcf8",
-    "sync_index.py": "806a919c995d1c7a7a076b39a624de8bf43d5e3a23e6b6c53923fc51dbeecf3a",
-    "verify_all.py": "f546a87ed37481d753b7967286155a7be12f3a78430bb329edf33ec2b9686a43",
+    "sync_index.py": "981721801ee58f07c9c77e009d3a8ae2a0bac0f1525b90eac6f8aca127a91ad6",
+    "verify_all.py": "de0a42d20de1079ab47eda3934497f4c72125df93dfa8cc508f36f999474b7e7",
     "build_all_lessons.py": "1217ae00107b31a9cddb1c2691fdfdf84e055c6136a96877cee9b492422d1227"
   }
 }

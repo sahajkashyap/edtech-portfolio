@@ -216,7 +216,7 @@ WORDLIST_FIELDS = {"lesson", "skill", "form", "instrument", "real_words",
                    "audit_clean", "audit_problems"}
 WORDLIST_OPTIONAL = {"nwf_note", "supply_note", "instrument_claim",
                      "rejected_pseudowords", "scoring_note"}
-PASSAGE_OPTIONAL = {"scoring_note"}
+PASSAGE_OPTIONAL = {"scoring_note", "limit_note"}
 # scoring_note is optional on BOTH instruments and carries a lesson-specific
 # contraction warning. It is present exactly where a contractible form is, and
 # audit_child's register check is what enforces that correspondence: a passage

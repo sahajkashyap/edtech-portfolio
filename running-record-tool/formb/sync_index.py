@@ -105,8 +105,12 @@ def entry(d: dict) -> dict:
     # instrument marks down the child who is reading for meaning. It is carried
     # only on the passages that actually contain a contractible form; the other
     # ten carried it as boilerplate and now carry nothing.
-    if d.get("scoring_note"):
-        out["note"] = d["scoring_note"]
+    # limit_note goes FIRST: it says the score does not measure what the lesson
+    # is named for, which changes how everything else on the panel is read. It
+    # lived only in audit_writing.ACCEPTED, where the examiner never saw it.
+    notes = [n for n in (d.get("limit_note"), d.get("scoring_note")) if n]
+    if notes:
+        out["note"] = "\n\n".join(notes)
     return out
 
 
