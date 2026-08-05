@@ -305,7 +305,8 @@ four times, 21% of the sheet. Word lists now report no band and no rate.
 | **`nwf_note` boilerplate** | Identical string on all 16 entries; false for `fim`, `mip`, `pid`. L6 points at an empty list | The counts are right; the *reason* is over-general |
 | **14 writing-rule HIGH** | From 102. Mostly rhyme and one-phoneme pairs inside a ~250-word CVC vocabulary | Some have no legal alternative; see the L6 and L22/L34 sign-offs |
 | **54 audit_child REVIEW** | Mostly "what the passage assumes the child has at home" — `cat, dog, pig, bun, jam` are nearly the whole decodable noun set | A design question about the instrument, not a defect |
-| **6 passages read poorly** | L22, L27, L29, L33 and two others carry defects the standard names by lesson number | Needs a writer, not a checker |
+| **Passages that read poorly** | L27's trapped cat is FIXED (the cat is lifted out before the lid goes on). L22, L29 and L33 resist rewriting for the reason below | Attempted and measured, not skipped |
+| **L22, L29, L33 cannot be rewritten within their own vocabulary** | Every draft that fixed the prose broke gate 3. L29 has exactly TWO unspent /j/ stems (`jet`, `jug`) and needs three; the shipped version only clears the target check because `job` sits in its TITLE, and titles are outside gate 3. L33's only /v/ word is `van`, which Form A spends, so any version sits at the 5% overlap ceiling. L22's plot needs a destination noun and every candidate collides with `bug` | The prose fix and the curriculum rule are arithmetically incompatible at these three lessons. Fixing them means adding words to the curriculum data upstream |
 
 ### Not defects — missing capability, and the teacher's call
 - **No MSV cueing analysis.** Clay's running record is *defined* by coding each
