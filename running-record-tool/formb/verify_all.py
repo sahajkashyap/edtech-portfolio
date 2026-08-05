@@ -781,6 +781,16 @@ def manifest_hashes(items):
     h = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p, _ in items}
     if INDEX.exists():
         h["../index.html"] = hashlib.sha256(INDEX.read_bytes()).hexdigest()
+    # The CHECKERS were outside the manifest, so "these bytes were proven" was
+    # true only of the content and never of the thing that judged it. A day
+    # spent editing audit_child.py could not make this file say anything had
+    # changed — the exact hole that let a bent measurement ship under a green
+    # run. A stamp has to cover the ruler as well as the thing measured.
+    for name in ("audit_child.py", "audit_curriculum.py", "gates.py",
+                 "quality.py", "sync_index.py", "verify_all.py"):
+        p = HERE / name
+        if p.exists():
+            h[name] = hashlib.sha256(p.read_bytes()).hexdigest()
     return h
 
 
@@ -1346,8 +1356,18 @@ def check_siblings(R):
         m = re.search(r"REVIEW (\d+)", p.stdout or "")
         review = int(m.group(1)) if m else 0
         base = None
+        raised = ""
         if MANIFEST.exists():
-            base = json.loads(MANIFEST.read_text()).get("audit_child_review")
+            mf = json.loads(MANIFEST.read_text())
+            base = mf.get("audit_child_review")
+            raised = (mf.get("audit_child_review_raised") or "").strip()
+        # The reason was written into the manifest and then read by NOTHING,
+        # while the commit that added it said it would be "printed on every run
+        # afterwards". A sign-off nobody ever sees again is the same defect as
+        # the dead ACCEPTED entries this file already fails on.
+        if raised:
+            R.info("baseline of %s was RAISED, with this reason on record:\n      %s"
+                   % (base, raised))
         if base is None:
             R.fail("MANIFEST no signed-off audit_child REVIEW baseline. --strict "
                    "reports %d judgement-call findings and nothing records how many "

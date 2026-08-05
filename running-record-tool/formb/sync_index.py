@@ -86,8 +86,15 @@ def entry(d: dict) -> dict:
         # characters on all nine word lists, because it describes the
         # INSTRUMENT, not the lesson. Repeating it per lesson is what pushed
         # every word list over the note-length bar, and prose an examiner has
-        # already read eight times is prose they stop reading. It renders once,
-        # as standing copy, from WORDLIST_CLAIM below.
+        # already read eight times is prose they stop reading. It is STORED
+        # once, as WORDLIST_CLAIM, instead of nine times in nine files.
+        #
+        # It is NOT read once. paintNote() draws it on every word-list lesson,
+        # so the examiner still meets those characters nine times. Only the
+        # duplication in the data went away. Saying otherwise here is what led
+        # audit_child to stop counting it and let eight findings vanish without
+        # a character leaving the screen — so this comment states the narrower
+        # thing that is actually true.
         return out
     out = {"skill": d["skill"], "title": d["title"],
            "kind": "passage", "lines": list(d["lines"])}

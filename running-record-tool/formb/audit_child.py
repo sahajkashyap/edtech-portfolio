@@ -626,7 +626,12 @@ NON_ANGLO_CAST = {"raj", "dev", "zeb",
                   # cast: retiring 'raj' for its reversal (raj/jar) and
                   # replacing it with 'jin' read as the cast getting less
                   # diverse, because the measure only knew the old name.
-                  "min", "lin", "kip", "jin"}
+                  # 'kip' is NOT here. Kip is an English name, and adding it
+                  # was load-bearing: with it the corpus diversity check passes
+                  # at 5 of 26, without it the check fires. Padding the list
+                  # that a metric counts, with a name that does not belong in
+                  # it, is how a metric stops measuring anything.
+                  "min", "lin", "jin"}
 DECODABLE_ALTERNATIVES = ("Jin, Rin, Min, Han, Tam, Nam, Lin, Bo, Kip, Kim, "
                           "Ravi (later), Nia")
 
@@ -950,10 +955,12 @@ def check_notes(doc, found):
               "every note out of the child-visible field and into an "
               "examiner-only one the renderer does not draw."
               % ", ".join(sorted(leaks)), first_label, first_text)
-    # Length is measured against what renders UNDER THIS LESSON. See
-    # PER_LESSON_NOTE_FIELDS: the shared instrument_claim is standing copy now,
-    # read once rather than nine times, so counting it against every lesson
-    # measured a burden the examiner no longer carries.
+    # Length is measured against what renders UNDER THIS LESSON — which on a
+    # word list INCLUDES instrument_claim, because paintNote() draws it there.
+    # (This comment previously said the opposite, forty lines from the block
+    # above it that corrected the record. Two live comments disagreeing about
+    # the same fact is worse than either being wrong alone: whichever a reader
+    # finds first, they have no way to know there is another.)
     per_lesson = per_lesson_notes(doc)
     lesson_chars = sum(len(t) for _, t in per_lesson)
     if lesson_chars > 200:
