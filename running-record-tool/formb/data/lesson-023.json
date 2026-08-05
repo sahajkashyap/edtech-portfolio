@@ -10,8 +10,8 @@
     "Peg digs in a bin, but the cap is not in it.",
     "\"The cap is up,\" said Tom.",
     "Peg tips a pot up. The cap is in the pot!",
-    "Peg taps the cap on.",
-    "\"The sun is hot!\" said Tom. She nods."
+    "She taps the cap on.",
+    "\"The sun is hot!\" said Tom. Peg nods."
   ],
   "gates_passed": true,
   "scoring_note": "This passage says \"it is\", \"is not\". Decodability forbids apostrophes. A child who reads \"it's\" or \"isn't\" is reading for meaning — do not score it an error."

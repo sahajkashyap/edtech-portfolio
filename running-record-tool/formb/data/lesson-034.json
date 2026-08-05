@@ -3,17 +3,17 @@
   "skill": "z /z/",
   "form": "B",
   "instrument": "passage",
-  "title": "A Cat on a Sun Hat",
+  "title": "A Pup on a Sun Hat",
   "lines": [
-    "Liz has a sun hat on a rug.",
-    "A tan cat hops up and naps on a hat.",
-    "\"A cat is on the hat!\" said Liz.",
-    "\"Do not tap the cat,\" said Zeb.",
+    "A sun hat is on a rug.",
+    "A tan pup hops up and naps on the hat.",
+    "\"A pup is on the hat!\" said Liz.",
+    "\"Do not tap the pup,\" said Zeb.",
     "Zeb gets a pan and taps on it.",
-    "The cat hops up and runs to a tub.",
-    "Liz has the hat. A mud dot is on top.",
+    "The pup hops up and runs to a tub.",
+    "Liz gets the hat. A mud dot is on top.",
     "Liz rubs at the mud dot.",
-    "\"The cat can have the rug,\" said Zeb."
+    "\"The pup can have the rug,\" said Zeb."
   ],
   "gates_passed": true,
   "scoring_note": "This passage says \"do not\". Decodability forbids apostrophes. A child who reads \"don't\" is reading for meaning — do not score it an error."

@@ -3,18 +3,18 @@
   "skill": "l /l/ Part 1",
   "form": "B",
   "instrument": "passage",
-  "title": "Peg Can Not See the Cap",
+  "title": "Peg Can Not See the Hat",
   "lines": [
-    "Peg can not see the tan cap.",
+    "Peg can not see the tan hat.",
     "\"Look on a bed,\" said Gus.",
     "Peg tips a bin up.",
-    "She can see lots of bags, but not a cap.",
+    "She can see lots of bags, but not a hat.",
     "A dog sits at the bin.",
-    "Peg can see the cap!",
+    "Peg can see the hat!",
     "The dog sits on it!",
-    "\"A cap is not a bed,\" said Peg.",
+    "\"A hat is not a bed,\" said Peg.",
     "Peg taps the dog. The dog hops up.",
-    "Peg pops the cap on and lets the dog up at the bin."
+    "Peg pops the hat on and lets the dog up at the bin."
   ],
   "gates_passed": true,
   "scoring_note": "This passage says \"can not\", \"is not\". Decodability forbids apostrophes. A child who reads \"can't\" or \"isn't\" is reading for meaning — do not score it an error."
