@@ -31,6 +31,14 @@ Legend: **[M]** mechanically checkable and implemented · **[H]** needs a human.
 | A11 [M] | **A stale claim** | `"gates_passed": true` with no timestamp or content hash. Hand-edit the file and the claim survives. |
 | A12 [M] | **Duplicated data with no build step** | Content lived in JSON and in the page. Nothing compared them. **Derive, never duplicate.** |
 | A13 [M] | **Severity that never blocks** | Judgement-call findings graded so they never fail a run, and nothing ran the strict mode. |
+| A14 [M] | **A substring test where a token test was meant** | `if form not in note` — every note ended with "do not score it an error", which *contains* "do not", so the commonest contractible form could never be flagged. The check guaranteed the opposite of its docstring. **Match tokens, not substrings.** |
+| A15 [M] | **A sign-off keyed on the wrong field** | `ACCEPTED["40:topics:a child handling a farm or wild animal."]` — keyed on the rule's *reason* where the code keys on its *name*. It could never have matched on any run since it was written. |
+| A16 [M] | **A dead sign-off** | An exemption for content that was later fixed. It silences nothing and still reads as "a person reviewed this". Fix: fail when an `ACCEPTED` entry matches no finding. |
+| A17 [M] | **A measure narrowed until the finding vanished** | Note length stopped counting the one field that made it long, justified by "it renders once now" — but the renderer still drew it on all nine lessons. Eight findings disappeared and not one character left the screen. **Measure what renders, and put the measure next to the renderer.** |
+| A18 [M] | **A generalised rule that does not cover the blanket rule it replaced** | A hand-written `den` rule was deleted for a "generalised" one that only recognises the animal sense when `fox|cub` is in the *same sentence*. A pup in a den went silent. The test written to prove the swap exercised only the case that worked. |
+| A19 [M] | **A delimiter that appears in the data** | Slicing a generated JS constant to the first `;` — a semicolon inside the value truncated it, produced permanent false "drift", and on the next write emitted a syntax error that killed the tool's only `<script>`. |
+| A20 [M] | **An incomplete list used to GENERATE, not just to check** | `CONTRACTIBLE` lacked `he is`/`she is`. Regenerating notes from it therefore *deleted* the warning from the one passage saying "He is mad." A list that drives generation silently un-warns where it is short. |
+| A21 [H] | **A baseline that can only fall** | A rising REVIEW count failed unconditionally, so making a checker more honest was unstampable — the harness rewarded leaving it broken. Fix: allow a rise *with a written reason stored in the manifest*, and keep failing an unexplained one. |
 
 ## B. Curriculum correspondence
 | # | Kind | Example |
@@ -101,6 +109,80 @@ Legend: **[M]** mechanically checkable and implemented · **[H]** needs a human.
 | E8 [H] | **The dominant speech act** | 19 of 72 quoted lines were prohibitions. Over a year the instrument's main word is *no*. |
 
 ---
+
+## F. The fix as a source of defects
+*Added 2026-08-05, after a session where every one of these happened in a day.
+This class is invisible at the moment of the edit and only a diff finds it.*
+
+| # | Kind | How it showed up here |
+|---|---|---|
+| F1 [M] | **A fix that removes the only instance of something else** | Rewriting L31 removed the only girl in the set with a named feeling. |
+| F2 [M] | **A rename the checker does not know about** | `raj` → `jin` made the cast-diversity metric read *worse*, because the "non-Anglo" list was hardcoded and had never heard of `jin`. |
+| F3 [H] | **A fix that reverts an earlier hand-correction** | Regenerating L11's sentences put back "The man is tan" — a skin-colour word describing a person — removed by an earlier pass. |
+| F4 [H] | **A fix that trades one collision for a worse one** | `Pam` → `Min` fixed `pam`/`map` and created `Min`/`in`/`bin`. `in` is the commonest word in the corpus, so the confusable moved from one line to nearly every line. |
+| F5 [H] | **A true sentence made false to silence a rule** | "Buds rot in a hot bin" → "Mud can rot in a hot bin". Mud does not rot. |
+| F6 [H] | **A correct verb replaced by an impossible one** | "sets a bun" → "tips a bun". You tip a container, not a bun. |
+| F7 [H] | **A causal step deleted, leaving the outcome asserted** | "pop the rug in a tub" (washing) → "tug the rug up", then "the mud is not on the rug". Nothing cleans it now. |
+| F8 [H] | **A content beat inserted purely to satisfy a check** | "Jen is sad." … "Jen is not sad." added to clear a corpus finding about girls having feelings, resolving nothing in between. |
+| F9 [M] | **Edited content invalidates saved user data** | Changing five passages changed their word counts. Saved records keyed on word count then failed to open, left the tool half-switched, and the next click overwrote a *different* child's record. **When content is versioned and user data references it, check the open path.** |
+
+## G. The review itself
+*The kinds that no single reviewer can see, and the roles that see them.*
+
+**The headline lesson of 2026-08-05: a 28KB `WRITING-RULES.md` sat in this repo,
+enforced by no checker, and twelve passages were rewritten without it being
+opened. Rule 3.1 named the exact defect that got reintroduced, at the exact
+lesson number.** If a standard exists and nothing enforces it, it is *more*
+important to read, not less — nothing else will catch you.
+
+| # | Kind | Guard |
+|---|---|---|
+| G1 [H] | **Optimising the number instead of the thing** | A falling finding count is evidence about the *checker*, not the content. Always report what the count measures. Here 117→25 was 63 content fixes and 29 checker edits, presented as one number. |
+| G2 [H] | **An unread standard** | Read every `*-RULES.md` / `*-SKILL.md` / `*-CATALOGUE.md` **before** touching content. |
+| G3 [H] | **Content and tooling changed in one pass** | A green harness then vouches for prose nobody read. Do them separately. |
+| G4 [H] | **Findings acted on without verification** | Reviewer output is not fact. Refute each finding independently before it drives an edit or reaches a teacher. |
+
+### What each reviewer must do
+Run these as **separate** agents. One agent doing all of it does none of it.
+
+1. **Standards reviewer** — reads `WRITING-RULES.md` in full *first*, then holds
+   every item against it, citing rule numbers and quoting the offending text.
+   Also: does each lesson contain the sound it is named for? *This is the only
+   reviewer that can catch prose defects, because no gate encodes any of it.*
+2. **Checker auditor** — for every checker change asks "did this get weaker
+   while claiming to get stronger?" Constructs an input that *should* flag and
+   confirms it still does. Separates content fixes from checker edits by running
+   the **old checker against the new data**.
+3. **Child reviewer** — reads all items end to end, in order. Dangling
+   references, unresolved feelings, actions with no motivation, walk-on
+   characters who do the pivotal thing and vanish. Judges new vs. old **on the
+   merits**, not on whether findings fell.
+4. **Assessment-validity reviewer** — does each item still measure what its
+   `skill` claims? Is Form B still independent of Form A? Has difficulty drifted
+   across the score bands the tool reports in? Are the `*_note` claims *true of
+   the data as it now stands*?
+5. **Software reviewer** — drives the real page. Escaping, stale state,
+   save/open/print/export paths, and anything that touches **user data written
+   before the change**.
+6. **Integrator** — owns the seams: fix-induced regressions (section F), rule
+   collisions, severity drift, sign-off honesty. *Four specialists produce four
+   green lights and a broken whole without this role.*
+
+### The checks that should exist and do not
+`WRITING-RULES.md` is unenforced. These five are mechanical and would have
+caught most of section F at zero cost:
+
+- **3.1 verb–noun pairs** — a blocklist of the collocations the document already
+  names (`tug the tub`, `tip a bun`, `mop the pot`, `set jam`). ~20 lines.
+- **4.1 first mention takes `a`, later mentions `the`** — scan determiners per
+  noun in document order.
+- **9.2 one-phoneme collisions** — Hamming distance 1 between any name and any
+  other word in the same sentence. The document specifies the algorithm.
+- **10.2 plot turns riding on `not`** — a resolution line differing from the
+  problem line only by `not`.
+- **target sound present in the passage** — `target_letters()` exists but runs
+  only on word lists, so lessons 15–41 have never been checked. Lesson 22 is
+  named `k /k/` and contains no `k`.
 
 ## The three rules that matter most
 

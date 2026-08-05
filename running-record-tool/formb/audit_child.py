@@ -434,6 +434,18 @@ CONTRACTIBLE = {
     r"\bit is\b": "it's",
     r"\bwe are\b": "we're",
     r"\blet me\b": "lemme",
+    # Third-person forms were missing, and their absence had a victim: Lesson 32
+    # says "He is mad." Regenerating the notes from this list therefore found no
+    # contractible form there and DELETED that lesson's scoring_note, so the one
+    # passage naming a feeling ships with an empty examiner panel and a child who
+    # says "He's mad" is marked wrong. A list used to generate a warning has to
+    # be complete, or it silently un-warns.
+    r"\bhe is\b": "he's",
+    r"\bshe is\b": "she's",
+    r"\bthey are\b": "they're",
+    r"\byou are\b": "you're",
+    r"\bthat is\b": "that's",
+    r"\bthere is\b": "there's",
 }
 # The forms above that no six-year-old says aloud at all, contraction or not.
 UNSPOKEN_REGISTER = {
@@ -873,21 +885,29 @@ def note_fields_of(doc):
     return out
 
 
-# The fields sync_index.py renders UNDER THE LESSON, which is the reading the
-# length check is about. instrument_claim is excluded because it is not a
-# per-lesson note: it is one identical sentence on all nine word lists, and it
-# now renders once, as standing copy, from WORDLIST_CLAIM.
+# What the examiner ACTUALLY READS in #lessonnote for this lesson.
 #
-# This is a narrowing of what gets MEASURED FOR LENGTH, and nothing else. Every
-# note field, instrument_claim included, is still scanned below for blocked
-# words, pseudoword leaks and real-word leaks -- those are about what the text
-# says, not how much of it there is, and moving prose to standing copy does not
-# make a leaked answer safe.
+# This was briefly narrowed to exclude instrument_claim, on the reasoning that
+# the claim is "standing copy, read once rather than nine times". That reasoning
+# was wrong, and checkably so: paintNote() pushes the claim onto EVERY word-list
+# lesson, so all nine still render it. Only the JSON storage was deduplicated,
+# not the reading. The effect was to drop eight lessons rendering 378-424
+# characters below a 200-character bar without a single character leaving the
+# screen -- a measure quietly narrowed until the finding disappeared, which is
+# the exact failure this file exists to catch.
+#
+# So the rule is now: measure what paintNote() draws. If the claim ever stops
+# being drawn per lesson, delete it from here in the same commit and the number
+# will fall honestly.
 PER_LESSON_NOTE_FIELDS = ("scoring_note", "nwf_note", "supply_note")
 
 
 def per_lesson_notes(doc):
-    return [(k, doc[k]) for k in PER_LESSON_NOTE_FIELDS if doc.get(k)]
+    """Mirrors sync_index.entry() + paintNote(). Keep the three in step."""
+    out = [(k, doc[k]) for k in PER_LESSON_NOTE_FIELDS if doc.get(k)]
+    if doc.get("instrument") == "word list" and doc.get("instrument_claim"):
+        out.append(("instrument_claim", doc["instrument_claim"]))
+    return out
 
 
 def check_notes(doc, found):
@@ -981,8 +1001,21 @@ def check_register(doc, found):
     # mitigation is absent or incomplete -- which is a stronger check than the
     # blanket one it replaces, because a note that silently stops naming a form
     # the passage still contains now gets caught.
-    note = (doc.get("scoring_note") or "").lower()
-    unnamed = sorted(k for k in plain if k not in note)
+    # Match against the forms the note NAMES, not against the note as a string.
+    #
+    # `k not in note` was a bare substring test, and every scoring_note ends
+    # with "— do not score it an error." That contains the literal text
+    # "do not" — the commonest contractible form in CONTRACTIBLE — so this
+    # check could never fire on it, on any lesson, ever. Any note containing
+    # the phrase for an unrelated reason ("Do not stop the child mid-line")
+    # suppressed it too. The check was written to guarantee that a note failing
+    # to name a form gets caught, and for the single most likely form it
+    # guaranteed the opposite.
+    #
+    # The notes state their forms in double quotes, so read those.
+    note = (doc.get("scoring_note") or "")
+    named = {m.group(1).lower() for m in re.finditer(r'"([a-z][a-z ]*)"', note.lower())}
+    unnamed = sorted(k for k in plain if k not in named)
     if unnamed:
         found("HIGH" if note else "REVIEW", "register",
               ", ".join(unnamed)[:24],

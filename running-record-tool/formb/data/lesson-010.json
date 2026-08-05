@@ -24,8 +24,8 @@
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: 2 legal pseudowords exist, all rejected as heard-as-a-real-word, a respelling or a letter name. Reasons for all 6: rejected_pseudowords.",
-  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13, Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not as an independent re-test.",
+  "nwf_note": "No nonsense-word subtest: 2 legal pseudowords exist here and each is ruled out, heard as a real word, a respelling or a letter name. 6 spellings were examined in all; reasons in rejected_pseudowords (examiner data).",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: at several of these lessons Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not an independent re-test.",
   "rejected_pseudowords": {
     "fap": "heard as a real word, a respelling or a letter name",
     "fim": "heard as a real word, a respelling or a letter name",

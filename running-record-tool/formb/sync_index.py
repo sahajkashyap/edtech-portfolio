@@ -25,6 +25,7 @@ churn — only real content changes show up in a diff.
 
 import json
 import pathlib
+import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -139,16 +140,27 @@ def current(html: str) -> str:
     return html[i + len("const LESSONS = "):j + 2]
 
 
+# Slicing to the first ';' after the assignment was wrong: a semicolon INSIDE
+# the claim truncated the value on read, produced permanent false "DRIFT", and
+# on the next --write emitted
+#     const WORDLIST_CLAIM = "Decoding check; NOT a clean alternate form.";...";
+# which is a syntax error in the ONLY <script> in index.html — the whole tool
+# stops running. json.dumps() always emits the value on one line (newlines are
+# escaped), so the line itself is the safe delimiter.
+CLAIM_LINE = re.compile(r"^const WORDLIST_CLAIM = (.*);[ \t]*$", re.M)
+
+
 def current_claim(html: str) -> str:
-    i = html.index(CLAIM_OPEN)
-    j = html.index(CLAIM_CLOSE, i)
-    return html[i + len(CLAIM_OPEN):j]
+    m = CLAIM_LINE.search(html)
+    if not m:
+        raise SystemExit("REFUSED: index.html has no 'const WORDLIST_CLAIM = ...;' line")
+    return m.group(1)
 
 
 def write_claim(html: str, want: str) -> str:
-    i = html.index(CLAIM_OPEN)
-    j = html.index(CLAIM_CLOSE, i)
-    return html[:i + len(CLAIM_OPEN)] + want + html[j:]
+    if "\n" in want:
+        raise SystemExit("REFUSED: the claim would span lines and break the delimiter")
+    return CLAIM_LINE.sub(lambda m: "const WORDLIST_CLAIM = %s;" % want, html, count=1)
 
 
 def main(argv):

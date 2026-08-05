@@ -23,9 +23,9 @@
   ],
   "audit_clean": true,
   "audit_problems": [],
-  "nwf_note": "No nonsense-word subtest: 0 legal pseudowords exist here. The 1 candidates, and why each fails: rejected_pseudowords.",
+  "nwf_note": "No nonsense-word subtest: 0 legal pseudowords exist here. 1 spellings were examined and each is ruled out; reasons in rejected_pseudowords (examiner data).",
   "supply_note": "Lesson 7 teaches f /f/ but no decodable f word exists: the only one in English is 'fat', which is BLOCKED. A curriculum supply limit. /f/ is first assessable at Lesson 8.",
-  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: below Lesson 13, Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not as an independent re-test.",
+  "instrument_claim": "Decoding check on this lesson's taught sound. NOT a clean alternate form: at several of these lessons Form A already spends every on-target word that exists, so some overlap is unavoidable. Read the score as 'can they decode these patterns', not an independent re-test.",
   "rejected_pseudowords": {
     "fap": "heard as a real word, a respelling or a letter name"
   }

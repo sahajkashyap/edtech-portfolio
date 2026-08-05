@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T09:16:50",
+  "verified_at": "2026-08-05T09:36:18",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -11,17 +11,18 @@
     "corpus",
     "schema"
   ],
-  "audit_child_review": 25,
+  "audit_child_review": 33,
+  "audit_child_review_raised": "The 8 'new' findings are not new content. They are the nine word-list note-length findings that were always true: a previous pass excluded instrument_claim from the length measurement on the false ground that it renders once as standing copy, when paintNote() in fact draws it on all nine word lists. Restoring the measurement to what actually renders un-hid them. No note grew; the ruler was corrected.",
   "files": {
-    "lesson-006.json": "63cd07da6bbf1150ba34d9571af4108abcee30e8bac3ff06c27db55291992713",
-    "lesson-007.json": "56592628c13129994a2e6830221af4ad21a91b5f03e783cf6172a3033111d4f5",
-    "lesson-008.json": "ba100951e15499a39823aba70e4f7ae0dcc64751a4ec4548bc566bd7d08180ad",
-    "lesson-009.json": "efda4b851faa56e93040236711f5d791a42f71637d22781db430d36eda2963e2",
-    "lesson-010.json": "2b2c3a05a84084b879df20880b546a113936a5e7c9edac93e6b2303d6735c8d9",
-    "lesson-011.json": "21912b0c45ec99b97172a60d5d288b21ff3d7f6740fea5ffd44f83460a3d4a59",
-    "lesson-012.json": "b10c868211f1f9f4b0781fd0a3e4c83b86facc07906bf6868c5e74c0964e5db3",
-    "lesson-013.json": "843cf99d993b870646eb2ff205cc0aaaa86c2498fcbd57e452214bfddc559b6b",
-    "lesson-014.json": "87c09faa60cb917eca8d438e9cdbc19c8e3cb8803d75891eb4e94c941a617da5",
+    "lesson-006.json": "83bc04d6fcc1a4bca91f8623cab4a3a5fea7dea240d674802264fd16f594220c",
+    "lesson-007.json": "b058a8615b9cec1edb18d9d691b76e80099e944eb74f56e7da20a43fa9748eff",
+    "lesson-008.json": "d1f252bb4d51a06b02045d8dc4bd7fbde9fd96cd300d43d7ddf59c077f8766bb",
+    "lesson-009.json": "00f8a8f283dd7faddbae4571dd68212a3310d940d68aaab79414c9ef6a1ea07b",
+    "lesson-010.json": "95a5dcbee9edddf303925df5a7a88783590e818dbda9f9d5ffcfd690186c1f21",
+    "lesson-011.json": "caf0c490e538136aef969947b5972923d7fb355581a87a63af6c3913ffe3742b",
+    "lesson-012.json": "8f9801e2007f9326812b60f91487c0f7f194e6eaebc334dfedd8ac917017f4b3",
+    "lesson-013.json": "ee2f1b77c04fc8903933253ab90ae565cccf3137fd040ccabb690e3b51541a69",
+    "lesson-014.json": "a220ac36ccadb757feb013fe528702737b6870d9f020ccde530dd8c088cae197",
     "lesson-015.json": "9f4e104e4a757ce2dad72ac8015da41078e06bb4eadbf31f7e8c8bdd88b34075",
     "lesson-016.json": "bd1a289cedc240ca1adea64cf2731723889df0809cd0a60f1c12e3c4ad6a2a06",
     "lesson-017.json": "4b299f818c4068cebddc472b454170c78ec14540b7829b9bf49192539ece7a47",
@@ -36,10 +37,10 @@
     "lesson-026.json": "bafe50db1eb96c2f72c2b2f1dd905b3fab81b1eea03e9a939dfedacfd8ae027c",
     "lesson-027.json": "b7d838e98ddb6baf425dfcbd4aa451f78432c58a4f556dae9f974fcd045da943",
     "lesson-028.json": "1c22f989b37911083c9efb3c4bdb76ae6f473a8f9cbc200aefd61c3fda9aebe4",
-    "lesson-029.json": "14bb4d533003b3200471d081d37787103bfc077674c826cfaf3fd2b3b83a084d",
+    "lesson-029.json": "8d4e0121d80aa85d63dfad8afde1eb1cdff9b216b44a746a9a118a89453f5644",
     "lesson-030.json": "3073f4ae0eaf4966b21ac36ecc34a0df352ff6f47a66f811741eb8ec2d10c7b6",
     "lesson-031.json": "0f807e4d726086ce1ea2b6ebe423637e25b086643b46aea96b4d4de6fa8524b6",
-    "lesson-032.json": "8af48eed9a5876cc5a2a6b865bc111300811936fe98d7b286057071c02a9b5fc",
+    "lesson-032.json": "54bbd7531a9bd8f93fb98d4cecd1c6b2c8be353b6211fa8a614ee3301c425af6",
     "lesson-033.json": "ed4af58a27481620c947ea8ca44333f5750b16ef272e66a03b29aa2c735f3fa2",
     "lesson-034.json": "84aa08813fc14a564c65b997cbfc9f55b2d0bfdf207a8502f397e6139572a626",
     "lesson-035.json": "fa0bcbce2dbc9c6a63452cc5e5f893dd6c8d298487effa599473ab58ee5ca2a7",
@@ -49,6 +50,6 @@
     "lesson-039.json": "a3b6ee2c311525a7504bb1aeddaf443d967237b2991ded765e64e4ab48816b74",
     "lesson-040.json": "26b8fabb116292ecae76941fdb025df0a607502bb15509b1f0d82f60c24e5102",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
-    "../index.html": "69a4997e57f8dbf7eda78de99d1e7fb38475b3b900ff554e5c6b529e2a7eecb9"
+    "../index.html": "624d308caa24cd53cbbed2f74843b41e24f42db4c51522deaf615ad7bb019a5b"
   }
 }

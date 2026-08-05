@@ -15,5 +15,6 @@
     "\"I fan you,\" said Dad.",
     "Dad fans him, and Max hugs him and naps."
   ],
-  "gates_passed": true
+  "gates_passed": true,
+  "scoring_note": "This passage says \"he is\". Decodability forbids apostrophes. A child who reads \"he's\" is reading for meaning — do not score it an error."
 }

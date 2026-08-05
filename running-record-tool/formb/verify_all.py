@@ -784,6 +784,24 @@ def manifest_hashes(items):
     return h
 
 
+def baseline_reason(argv):
+    """The reason given for ACCEPTING a higher REVIEW baseline, or None.
+
+        python3 verify_all.py --update-manifest --accept-baseline "why"
+
+    A rise with no reason still fails. The flag alone is not enough; it must
+    carry a sentence, because the whole point is that somebody had to write
+    down what they were signing.
+    """
+    if "--accept-baseline" not in argv:
+        return None
+    i = argv.index("--accept-baseline")
+    if i + 1 >= len(argv):
+        return None
+    reason = argv[i + 1].strip()
+    return reason or None
+
+
 def write_manifest(items, review_baseline=None):
     payload = {
         "verified_at": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
@@ -795,6 +813,10 @@ def write_manifest(items, review_baseline=None):
         # recorded number, new ones are indistinguishable from the old ones and
         # content that only ever draws a REVIEW is invisible to this file.
         "audit_child_review": review_baseline,
+        # Why the baseline ROSE, when it rose. Empty for a fall or a hold. This
+        # is the sentence a later reader needs in order to tell "we let the
+        # content get worse" from "the checker started telling the truth".
+        "audit_child_review_raised": baseline_reason(sys.argv[1:]) or "",
         "files": manifest_hashes(items),
     }
     MANIFEST.write_text(json.dumps(payload, indent=2) + "\n")
@@ -1331,6 +1353,17 @@ def check_siblings(R):
                    "reports %d judgement-call findings and nothing records how many "
                    "were accepted, so a new one cannot be told from an old one. "
                    "Stamp it with --update-manifest." % review)
+        elif review > base and baseline_reason(sys.argv[1:]):
+            # A REVIEW count can rise for two opposite reasons: content got
+            # worse, or a CHECKER GOT MORE HONEST. Without this path they are
+            # indistinguishable and only one of them is stampable — which
+            # quietly punishes fixing a checker that was under-reporting, and
+            # rewards leaving it broken. So a rise may be accepted, but only
+            # with a written reason that is stored in the manifest and printed
+            # on every run afterwards. An unexplained rise still fails.
+            R.info("audit_child --strict reports %d REVIEW findings, %d MORE than "
+                   "the %d signed off. Accepted with a recorded reason:\n      %s"
+                   % (review, review - base, base, baseline_reason(sys.argv[1:])))
         elif review > base:
             R.fail("audit_child --strict reports %d REVIEW findings, %d more than the "
                    "%d signed off in verified.json. A REVIEW finding does not fail on "
