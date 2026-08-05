@@ -1849,8 +1849,20 @@ function switchLesson(n){
       (LESSONS[n].kind === 'wordlist' ? 'word list' : LESSONS[n].title);
     sel.appendChild(o);
   });
+  // all-lessons.html links here as index.html#L24, so honour that: without it
+  // every one of those 36 links silently lands on Lesson 6 and the teacher has
+  // to hunt the dropdown for the lesson they just clicked.
+  const asked = /^#L(\d+)$/.exec(location.hash);
+  if (asked && LESSONS[asked[1]]) currentLesson = +asked[1];
   sel.value = currentLesson;
   sel.addEventListener('change', e => switchLesson(+e.target.value));
+  window.addEventListener('hashchange', () => {
+    const h = /^#L(\d+)$/.exec(location.hash);
+    if (h && LESSONS[h[1]] && +h[1] !== currentLesson) {
+      sel.value = h[1];
+      switchLesson(+h[1]);
+    }
+  });
 })();
 
 paintTitle();

@@ -28,6 +28,9 @@ DEFAULT_STARTS = [
     "decodable-passage-generator/index.html",
     "phonics-assessment-tool/index.html",
     "running-record-tool/index.html",
+    # A new page joins this list in the same commit that creates it, or the
+    # standing rule verifies everything except the thing that just changed.
+    "running-record-tool/all-lessons.html",
 ]
 MIN_VISIBLE_WORDS = 20  # fewer than this and a page counts as blank
 
@@ -76,7 +79,12 @@ def check_page(start_rel: str, live: bool):
             checked += 1
             continue
 
-        target_rel = (Path(start_rel).parent / href).as_posix()
+        # A link may carry BOTH a file and a fragment: index.html#L24. The
+        # fragment was being left on the path, so every deep link was reported
+        # as "file does not exist" — the checker failing a link that works.
+        path_part, _, fragment = href.partition("#")
+
+        target_rel = (Path(start_rel).parent / path_part).as_posix()
         target_rel = re.sub(r"[^/]+/\.\./", "", target_rel)  # resolve ../
 
         if live:
@@ -103,6 +111,15 @@ def check_page(start_rel: str, live: bool):
         m = re.search(r"lesson-0*(\d+)\.html", href)
         if m and f"Lesson {int(m.group(1))}" not in text:
             failures.append(f"{start_rel} -> {href}: WRONG CONTENT (page never says 'Lesson {int(m.group(1))}')")
+            continue
+
+        # The fragment has to land somewhere. Either the target has that id, or
+        # it routes on the hash in script. A page with neither silently drops
+        # the reader at the top and the link reads as broken to a teacher who
+        # clicked "Lesson 24" and got Lesson 6.
+        if fragment and f'id="{fragment}"' not in html and "location.hash" not in html:
+            failures.append(f"{start_rel} -> {href}: fragment #{fragment} lands nowhere "
+                            f"(no id and no hash routing on the target page)")
             continue
 
         checked += 1

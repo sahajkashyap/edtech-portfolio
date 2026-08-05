@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-08-05T09:36:18",
+  "verified_at": "2026-08-05T09:40:28",
   "verifier": "verify_all.py",
   "gates": [
     "1 decodable",
@@ -12,7 +12,7 @@
     "schema"
   ],
   "audit_child_review": 33,
-  "audit_child_review_raised": "The 8 'new' findings are not new content. They are the nine word-list note-length findings that were always true: a previous pass excluded instrument_claim from the length measurement on the false ground that it renders once as standing copy, when paintNote() in fact draws it on all nine word lists. Restoring the measurement to what actually renders un-hid them. No note grew; the ruler was corrected.",
+  "audit_child_review_raised": "",
   "files": {
     "lesson-006.json": "83bc04d6fcc1a4bca91f8623cab4a3a5fea7dea240d674802264fd16f594220c",
     "lesson-007.json": "b058a8615b9cec1edb18d9d691b76e80099e944eb74f56e7da20a43fa9748eff",
@@ -50,6 +50,6 @@
     "lesson-039.json": "a3b6ee2c311525a7504bb1aeddaf443d967237b2991ded765e64e4ab48816b74",
     "lesson-040.json": "26b8fabb116292ecae76941fdb025df0a607502bb15509b1f0d82f60c24e5102",
     "lesson-041.json": "c72dde16bd0caef3b8bb82897acd867f3ba2d9e936d2f6a7238de1c35e7a7ab1",
-    "../index.html": "624d308caa24cd53cbbed2f74843b41e24f42db4c51522deaf615ad7bb019a5b"
+    "../index.html": "9fc18c56f8e6d82f584286df7c8dba3d6c50a07a229b3c28b4bbd79230fdeb62"
   }
 }
