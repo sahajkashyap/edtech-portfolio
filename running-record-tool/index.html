@@ -1566,7 +1566,14 @@ function paintPrint(){
     '<b>' + initials + '</b><br>Lesson ' + currentLesson + ' &middot; ' + L.skill +
     '<br>' + L.title + (date ? ' &middot; ' + date : '');
 
-  const band = (s.acc >= 95) ? 'Independent' : (s.acc >= 90) ? 'Instructional' : 'Frustration';
+  // The screen and the CSV both refuse to band a word list; this path did not,
+  // so the PRINTED record — the thing that actually reaches the learning
+  // specialist — still stamped Independent or Frustration on all nine. Fixing
+  // two of the three surfaces is worse than fixing none, because the paper
+  // outlives the screen and nobody re-checks it.
+  const band = (L.kind === 'wordlist')
+    ? 'not banded (word list)'
+    : (s.acc >= 95) ? 'Independent' : (s.acc >= 90) ? 'Instructional' : 'Frustration';
   const cell = (v, k) => '<div><div class="v">' + v + '</div><div class="k">' + k + '</div></div>';
   document.getElementById('prnums').innerHTML =
     cell(Math.round(s.acc) + '%', 'Accuracy') +
@@ -1575,7 +1582,8 @@ function paintPrint(){
     cell(s.errors, 'Errors') +
     cell(s.errors ? '1:' + Math.round(s.read / s.errors) : '\u2013', 'Error rate') +
     cell(s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '\u2013', 'Self-correction rate') +
-    cell(s.wcpm === null ? '\u2013' : s.wcpm, 'Words correct/min') +
+    cell((L.kind === 'wordlist' || s.wcpm === null) ? '\u2013' : s.wcpm,
+         'Words correct/min') +
     cell(fmt(totalMs()), 'Time');
 
   const rows = [];
