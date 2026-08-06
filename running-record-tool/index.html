@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Running Record — Marking Screen</title>
+<title>Word by Word &mdash; a running record tool</title>
 <style>
   :root{
     --ink:#1a1a1a; --cream:#faf6ee; --paper:#fffdf8; --rule:#d9c7a8;
@@ -28,7 +28,12 @@
     background:var(--paper); border-bottom:2px solid var(--rule);
     padding:14px 22px; display:flex; flex-wrap:wrap; gap:18px; align-items:center;
   }
-  h1{font-size:19px; margin:0 18px 0 0; letter-spacing:.2px}
+  h1{font-size:19px; margin:0; letter-spacing:.2px}
+  /* The name is distinctive; the descriptor is what a specialist searches for.
+     Both, stacked, so neither has to do the other's job. */
+  .brand{margin:0 18px 0 0; line-height:1.25}
+  .brand .what{display:block; font-size:11.5px; color:var(--muted);
+               letter-spacing:.3px; margin-top:2px}
   .who{display:flex; gap:8px; align-items:center; font-size:14px}
   .who label{color:var(--muted)}
   select{
@@ -287,7 +292,10 @@
 <body>
 
 <header>
-  <h1>Running Record</h1>
+  <div class="brand">
+    <h1>Word by Word</h1>
+    <span class="what">A running record tool for K&#8209;2 teachers</span>
+  </div>
   <div class="who">
     <label for="initials">Child</label>
     <input type="text" id="initials" maxlength="4" placeholder="J.M." autocomplete="off">
@@ -305,7 +313,8 @@
 
 <main>
   <div class="printonly prhead">
-    <h1>Running Record <span style="font-weight:normal; font-size:11pt">&middot; Form B</span></h1>
+    <h1>Word by Word <span style="font-weight:normal; font-size:11pt">&middot;
+        running record &middot; Form B</span></h1>
     <div class="prwho" id="prwho"></div>
   </div>
   <div class="printonly prnums" id="prnums"></div>
@@ -411,17 +420,20 @@
       <textarea id="notes" placeholder="Anything the marks can't hold. Ran out of breath at line 4. Kept checking the picture. Voice dropped on every question."></textarea>
       <div class="saved" id="savedmsg"></div>
       <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn" id="childcopybtn">Print the child's copy</button>
         <button class="btn" id="printbtn">Print this record</button>
         <button class="btn" id="exportbtn">Export all records</button>
         <button class="btn" id="clearmarksbtn">Clear all marks</button>
         <button class="btn" id="clearbtn">Start a new record</button>
       </div>
       <div style="font-size:12px; color:var(--muted); margin-top:8px">
-        Print gives you one page for the learning specialist: the marked passage,
-        every miscue listed, the numbers and your notes. Export writes a
-        spreadsheet of every saved record. Clear all marks keeps this child and
-        starts the read over; Start a new record moves on to the next child and
-        leaves this one saved.
+        The child's copy is the sheet you hand across the table before the read:
+        this lesson's text in large type, with nothing marked on it. Print gives
+        you one page for the learning specialist: the marked passage, every
+        miscue listed, the numbers and your notes. Export writes a spreadsheet of
+        every saved record. Clear all marks keeps this child and starts the read
+        over; Start a new record moves on to the next child and leaves this one
+        saved.
       </div>
     </div>
   </div>
@@ -2006,6 +2018,122 @@ document.getElementById('clearmarksbtn').addEventListener('click', () => {
 });
 
 document.getElementById('clearbtn').addEventListener('click', newRecord);
+
+// --- the child's copy --------------------------------------------------------
+// The teacher marks on the screen; the child reads from paper. The tool printed
+// only the finished record, so the sheet the child actually holds had to be
+// pulled out of all-lessons.html and trimmed by hand. This prints the one thing
+// that was missing: this lesson's text, large, with nothing marked on it.
+//
+// It opens its own window rather than adding a second @media print mode. The
+// record print is this tool's whole output and is wired through paintPrint();
+// a second mode layered over the same page would have to hide and unhide the
+// same elements from two directions, and the failure would be a specialist
+// receiving a sheet with no marks on it. A separate document cannot do that.
+//
+// Type is deliberately large and the sheet is allowed to run onto a second page.
+// Shrinking a child's reading text to save paper is not a saving.
+const CHILD_ESC = s => String(s).replace(/[<>&]/g,
+  c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+
+// The printable width of the narrower of the two papers this will meet: A4 is
+// 210mm, Letter is 216mm, so A4 sets the limit. Minus the 18mm page margins,
+// at the 96dpi CSS reference. Sized to A4 so the same sheet is safe on both.
+const CHILD_PRINT_PX = (210 - 36) / 25.4 * 96;
+const CHILD_MAX_PT = 26;                       // no bigger, however short the text
+
+// A sentence that wraps is read as two lines, and a child who loses the return
+// sweep is then recorded as having made an error the sheet caused. So the type
+// is as large as the LONGEST line of THIS lesson allows, measured in the real
+// font rather than estimated. Short lessons get the full 26pt; Lesson 26, whose
+// longest line is 51 characters, comes out near 19pt. Every lesson gets the
+// biggest type it can hold, which is not the same as one size for all of them.
+function childCopyPt(strings, titleText){
+  const ctx = document.createElement('canvas').getContext('2d');
+  ctx.font = '100px "Century Gothic","Verdana",sans-serif';
+  let widest = 0;
+  strings.forEach(s => { widest = Math.max(widest, ctx.measureText(s).width); });
+  // The title prints at 1.25x, so it needs 1.25x the room.
+  if (titleText) widest = Math.max(widest, ctx.measureText(titleText).width * 1.25);
+  if (!widest) return CHILD_MAX_PT;
+  const px = CHILD_PRINT_PX / (widest / 100);
+  return Math.max(12, Math.min(CHILD_MAX_PT, Math.floor(px * 0.75)));
+}
+
+function childCopyHtml(){
+  const L = LESSONS[currentLesson];
+  let body;
+
+  let pt;
+
+  if (L.kind === 'wordlist'){
+    // Only the sentences are measured. A row of single words that wraps is
+    // still a row of single words; there is no line to lose your place in.
+    const sentences = L.groups
+      .filter(([label]) => label === 'Sentences')
+      .flatMap(([, list]) => list);
+    pt = childCopyPt(sentences, null);
+    body = L.groups.map(([label, list]) => {
+      // Sentences get their own line each, the way they are read. Word groups
+      // wrap as a block, the way they are scanned.
+      const items = (label === 'Sentences')
+        ? list.map(s => '<p class="sent">' + CHILD_ESC(s) + '</p>').join('')
+        : '<p class="wl">' + list.map(w =>
+            '<span>' + CHILD_ESC(w) + '</span>').join('') + '</p>';
+      return '<h2>' + CHILD_ESC(label) + '</h2>' + items;
+    }).join('');
+  } else {
+    pt = childCopyPt(L.lines, L.title);
+    body = '<h1>' + CHILD_ESC(L.title) + '</h1>' +
+           L.lines.map(l => '<p>' + CHILD_ESC(l) + '</p>').join('');
+  }
+
+  // The lesson number and the taught sound are the teacher's business, and a
+  // child should not read the name of the thing being measured off the top of
+  // their own sheet. They go in small grey type at the foot, where a teacher
+  // can still tell two printed sheets apart.
+  const foot = 'Lesson ' + currentLesson + ' · ' + CHILD_ESC(L.skill) +
+               ' · Form B · child’s copy, nothing marked here' +
+               ' · assessment text, internal school use';
+
+  return '<!doctype html><html><head><meta charset="utf-8">' +
+    '<title>' + CHILD_ESC(L.title) + ' — child’s copy</title>' +
+    '<style>' +
+    '@page{margin:18mm}' +
+    'body{font-family:"Century Gothic","Verdana",sans-serif; color:#000;' +
+    '     background:#fff; margin:0; padding:18mm; font-size:' + pt + 'pt}' +
+    'h1{font-size:1.25em; line-height:1.35; margin:0 0 1.1em; font-weight:bold}' +
+    'h2{font-size:.6em; letter-spacing:.5px; text-transform:uppercase;' +
+    '   color:#444; margin:1.5em 0 .5em; font-weight:bold}' +
+    'h2:first-of-type{margin-top:0}' +
+    'p{font-size:1em; line-height:2.0; margin:0 0 .35em}' +
+    'p.sent{margin-bottom:.6em}' +
+    'p.wl{margin-bottom:.6em}' +
+    'p.wl span{display:inline-block; margin:0 1.1em .3em 0}' +
+    '.foot{font-size:8.5pt; color:#777; margin-top:2em;' +
+    '      border-top:1px solid #ccc; padding-top:6px; line-height:1.5}' +
+    '@media print{body{padding:0}}' +
+    '</style></head><body>' + body +
+    '<p class="foot">' + foot + '</p>' +
+    '</body></html>';
+}
+
+document.getElementById('childcopybtn').addEventListener('click', () => {
+  const w = window.open('', '_blank');
+  if (!w){
+    say('Your browser blocked the new window. Allow pop-ups for this page, ' +
+        'then press Print the child’s copy again.', 9000);
+    return;
+  }
+  w.document.write(childCopyHtml());
+  w.document.close();
+  // Safari and Chrome differ on whether a written document is ready to print
+  // synchronously. Waiting for the new window's own load event is the one
+  // signal both honour; without it Safari prints a blank sheet.
+  const go = () => { w.focus(); w.print(); };
+  if (w.document.readyState === 'complete') go();
+  else w.addEventListener('load', go);
+});
 
 // --- print ------------------------------------------------------------------
 document.getElementById('printbtn').addEventListener('click', () => {

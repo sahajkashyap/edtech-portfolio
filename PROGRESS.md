@@ -94,7 +94,8 @@ ax, Jen has the wax, and the job the story is about is the child's.
 
 ## 2026-08-03 to 08-04
 
-**Done — the running record tool** (`running-record-tool/`)
+**Done — the running record tool** (`running-record-tool/`, named **Word by
+Word** on 6 Aug 2026; the folder path stays as it is because the site is live)
 
 This is the third piece of the set, and it is where a child's reading is
 actually measured. It has two halves that answer different questions:

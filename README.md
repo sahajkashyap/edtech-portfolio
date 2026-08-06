@@ -6,7 +6,7 @@ the counting does not.
 
 ---
 
-## The one to look at first: a running record
+## The one to look at first: Word by Word, a running record tool
 
 **If you have never seen one done:** a child reads a short passage out loud
 while the teacher sits beside them with their own copy and marks every word. The ones the
@@ -27,10 +27,14 @@ decide which children work together, and on what, the reading is months old.
 
 It is the paper form, on a screen, with the arithmetic already done.
 
-The teacher taps each word the child misreads and picks what happened. The
-running total, the accuracy, the reading rate and the error rate are all correct
-the moment they look up. One record per child, printable for whoever asked for
-it, exportable as a spreadsheet for the whole class.
+The passage is on the teacher's screen and the child reads from paper. The
+teacher taps each word the child misreads and picks what happened. The running
+total, the accuracy, the reading rate and the error rate are all correct the
+moment they look up. One record per child, printable for whoever asked for it,
+exportable as a spreadsheet for the whole class.
+
+It prints the child's sheet too: the passage on its own, in large type, nothing
+marked on it, sized so that no sentence wraps onto a second line.
 
 **Marking takes about as long as the reading, and then you are finished.** That is
 the entire point. Fast enough to run every few weeks instead of twice a year, so a

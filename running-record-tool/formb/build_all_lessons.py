@@ -136,8 +136,12 @@ TEMPLATE = """<!DOCTYPE html>
  .note{margin:.75rem 0 0;font-size:.8rem;color:var(--muted);border-left:3px solid var(--rule);padding-left:.7rem}
  .mark{display:inline-block;margin-top:.8rem;font-size:.82rem;color:var(--blue);text-decoration:none}
  .mark:hover{text-decoration:underline}
+ .kicker{margin:0 0 .3rem;font-size:.8rem;color:var(--muted);letter-spacing:.03em}
+ .kicker a{color:var(--blue);text-decoration:none;font-weight:bold}
+ .kicker a:hover{text-decoration:underline}
  @media print{.jump,.mark{display:none} .item{break-inside:avoid}}
 </style></head><body><div class="wrap">
+<p class="kicker"><a href="index.html">Word by Word</a> &middot; a running record tool</p>
 <h1>Form B &mdash; every lesson we built</h1>
 <p class="sub">All %(n)d assessment items, exactly as the child sees them. This page is
 GENERATED from <code>formb/data/</code> by <code>formb/build_all_lessons.py</code>, and

@@ -100,10 +100,59 @@ Benchmark Assessment takes **20 to 30 minutes per student**, and 30 to 40 at
 upper levels. Per child, one on one, out of class. It is the strongest single
 fact available for this post, and it is publisher-sourced rather than ours.
 
-**Recommended framing:** call it a **reading assessment** in the post, and say
-*running record* once so a literacy specialist recognises it immediately. Do not
-lead with "informal reading inventory" — accurate, and it means nothing to a
-recruiter.
+### The five options, and what each one costs
+
+Sahaj asked on 6 Aug for the options laid out rather than a single
+recommendation. These are they, in order of how narrow the name is.
+
+| Name | What it actually names | Who hears it and knows | What it costs |
+|---|---|---|---|
+| **Running record** | The marking technique: every word marked as the child reads | K–2 teachers, literacy specialists, reading interventionists. Immediate. | Slightly narrow. A true running record is usually taken on a *familiar* book; these are unseen passages. |
+| **Miscue analysis** | Reading the *pattern* in the mistakes rather than counting them | Specialists and reading professors | Ties the tool to the three-cueing argument, which much of the structured-literacy field treats as discredited. The repo deliberately takes no side. |
+| **Informal Reading Inventory (IRI)** | The shape of the instrument: graded word lists plus graded passages | Reading researchers, some specialists | The most *technically* accurate name for what this is, and it means nothing to a recruiter or a hiring manager. |
+| **Benchmark assessment** | The commercial category: F&P's BAS, the DRA | Administrators and most classroom teachers | Names commercial products. The repo's own rule is never to name a publisher as having done badly, and this name invites the comparison. |
+| **Reading assessment** | Plain English for the whole activity | Everyone | No precision at all. Buys recognition, tells a specialist nothing. |
+
+**Recommended framing, unchanged:** call it a **reading assessment** in the post,
+and say *running record* once so a literacy specialist recognises it immediately.
+The post now does this in the opening paragraph: *"Teachers call it a running
+record."* Keep **informal reading inventory** for an interview, when someone asks
+what it technically is. Do not lead with it.
+
+### SETTLED, 6 August 2026: the tool is called **Word by Word**
+
+Sahaj chose it, on the grounds that "Running Record" is the category rather than
+a name: it tells a literacy specialist what the thing is and tells a recruiter
+nothing at all.
+
+**Word by Word** is literally what the teacher does. It carries no jargon, it
+says the method out loud, and it survives a cold reading: *"Word by Word, a
+running record tool I built for K–2 teachers."*
+
+The lockup everywhere is **the distinctive name, with the plain descriptor
+underneath**, so neither has to do the other's job:
+
+> **Word by Word**
+> A running record tool for K‑2 teachers
+
+Applied to: the tool header, the page title, the printed record's header (which
+reads *Word by Word · running record · Form B*, because the person receiving that
+page is a specialist who needs the category), `DESIGN.md`, the root `README.md`,
+`PROGRESS.md`, and a kicker line on `all-lessons.html` and `worked-example.html`
+linking back to the tool.
+
+**The folder stays `running-record-tool/`.** The site is live at that path, every
+link in the repo points at it, `check_links.py` starts from it, and the URL
+saying *running record* is an accurate description rather than a stale name.
+Renaming the folder would break the live links to buy nothing.
+
+The other six candidates, kept in case the name is ever revisited: **Beside**
+(the posture, most memorable, needs the descriptor to carry it), **Aloud** (one
+word for oral reading), **Bricks** (from Sahaj's own ending, uniquely his,
+opaque without the story), **Twenty Minutes** (the cost argument, meaningless
+cold), **Return Sweep** (a striking phrase, but it names what the child's eyes do
+rather than what the teacher does), and **Miscue** (precise, and it ties the tool
+to the three-cueing argument the repo takes no side in).
 
 Sources:
 - https://www.readingrockets.org/topics/assessment-and-evaluation/articles/critical-analysis-eight-informal-reading-inventories
@@ -115,9 +164,14 @@ Sources:
 
 ## THE POST
 
+*Version of 6 Aug 2026, afternoon. Sahaj's own tweaks kept; see the revision
+record below for what changed and why. Paste-ready copy lives at
+`~/Desktop/linkedin-posts/POST-2026-10-20-running-record.txt`.*
+
 It is customary to do a reading assessment on every child twice a year. One
 child at a time, out of class, fifteen to twenty-five minutes each depending on
-the reader. A teacher sits beside them and listens to them read.
+the reader. A teacher sits beside them and listens to them read. Teachers call it
+a running record.
 
 You mark every word as they go. At the end you know how accurately they read and
 how quickly, and that tells you which books are a good fit next. Not so easy that
@@ -125,12 +179,18 @@ nothing is learned. Not so hard that a child gives up. What teachers call a just
 right book: challenging enough that they have to use the skills they have.
 
 It is the most useful reading data a school collects. It also costs the one thing
-a teacher never has, which is another twenty minutes.
+a teacher never has, which is twenty uninterrupted minutes. You need a quiet
+space and one child, while the rest of the class works on something independent
+or is at art, P.E. or Spanish.
 
-So I built the paper form as a web page.
+Twice a year was never the right number. It was the affordable one.
 
-The passage sits on screen. When a child misreads a word, you click it and choose
-what happened:
+So I built the paper form as a web page, and added a few things paper cannot do.
+I called it Word by Word, because that is what the marking is.
+
+The passage sits on the screen for the teacher, and the child has the paper copy
+in front of them. When a child misreads a word, you click it and choose what
+happened:
 
 Wrong word. Skipped it. You told them. Self-corrected. Repeated it. Asked for
 help.
@@ -142,39 +202,139 @@ actually said, because a child who reads "house" for "horse" and a child who
 reads "pony" for "horse" need different lessons on Monday.
 
 The timer runs on its own. The scores build in the corner while you work, so when
-the child stands up, you are finished. The notes you would have scribbled on the
-back of the sheet get typed into a box that stays with the record.
+the child stands up, you are finished. The notes you would have hurriedly
+scribbled on the back of the sheet get typed into a box that stays with the
+record.
 
-Nothing then needs writing up. It prints as one page for the learning specialist,
-and the whole class comes out as a spreadsheet, so a grade team can see where
-every child is and who has not been assessed yet.
+Nothing then needs writing up. It prints as one page for the student support
+team, and the whole class comes out as a spreadsheet, so everyone caring for a
+child is reading the same thing, and you can see at a glance who has not been
+assessed yet.
 
-Same information, and more of it. Same judgement calls, which stay with the
-teacher, because the tool counts and it does not decide.
+None of that is a judgement. Words read, errors, self-corrections, the time, what
+the child said instead of the word on the page: those are bricks. A teacher lays
+them into the decisions that actually matter. Which book to hand this child next.
+Which phonics group fits them now. What to say to the family.
 
-Twice a year was never the right number. It was the affordable one.
+Here is the part I am still building. Once every child in a class has been
+assessed, the bricks for the whole room are sitting in one place, and an A.I.
+could read across them and describe the class back to you: how many children are
+secure, how many are close, how many need help now. An experienced teacher
+already knows. Having it counted, next to what you already believed, is worth
+something on the morning you are making five groups out of twenty-four children.
+
+The teacher still builds the house.
+
+---
+
+## REVISION RECORD — 6 August 2026, afternoon
+
+Sahaj edited the Google Doc directly. Five changes. What was kept, what was
+fixed, and why.
+
+### Kept as written
+
+**"The passage sits on the screen for the teacher, and the child has the paper
+copy in front of them."** The best edit of the five. The old line implied the
+child read off the laptop, which was never the practice, and this is Sahaj's own
+thesis showing up: the digital part serves the paper part.
+
+*It also had a consequence.* The tool did not print a child's copy; the only
+print was the finished record. Rather than soften the sentence, the button was
+built (see `index.html`, "the child's copy"). The post now describes something
+the tool does.
+
+**"hurriedly scribbled."** The real texture of the moment. Kept.
+
+**"and added a few things paper cannot do."** Sahaj's softened version of a flat
+claim. The softening is his and it belongs; only the noun changed, from "a few
+tools" (vague, and the paragraph that follows is otherwise concrete) to "a few
+things paper cannot do," which sets up the list.
+
+### Kept, with the number put back
+
+**The quiet space.** Sahaj added: *"This requires a quiet space, one-on-one, with
+a student while the rest of the class is working on an independent assignment or
+in a specialist class like art, P.E. or Spanish."* Only a teacher knows that this
+assessment is scheduled around a specialist block, and *art, P.E. or Spanish* is
+a triad in his own voice.
+
+But the same edit replaced *"another twenty minutes"* with *"time,"* and the
+number was the thing doing the work. Both are now in: **"the one thing a teacher
+never has, which is twenty uninterrupted minutes."**
+
+### Fixed
+
+**"stays with the school's internal records and shared with the student support
+team."** Two problems in one sentence. It does not agree (*stays … and shared*),
+and it drifts back toward the vision: **the tool does not do live sharing** (see
+the gap section below), and the very next sentence already states correctly what
+sharing is. Reverted to *"stays with the record,"* with *student support team*
+moved into the printout sentence where it is true.
+
+### Rewritten — the ending
+
+Sahaj's spoken intent, recorded 6 Aug: *"these bricks allow us to put the house
+together… as teachers we can look at this information and decide what is in the
+best interest. It also provides an opportunity to have artificial intelligence,
+which now has data on all the kids in the classroom, to figure out what does this
+class really look like… but an experienced teacher will already be able to figure
+that out. To have both those pieces is a huge advantage."*
+
+That idea is now the ending. Three things were repaired on the way:
+
+1. **"Twice a year was never the right number. It was the affordable one."** had
+   been deleted. It is the strongest line in the piece and the one this file is
+   named around. It was not restored to the end; it now sits directly after the
+   cost paragraph it argues about, and pivots into *"So I built the paper form as
+   a web page."* The ending is free for the bricks.
+2. **The image was mixed and it was doing three jobs.** Bricks, then a house,
+   then A.I. informing thinking, inside four sentences. The bricks now appear
+   once, name a specific list of real numbers, and the house is the last three
+   words of the post.
+3. **The A.I. paragraph claimed a feature that is not built.** Whole-class
+   grouping analysis is gap 2 in `VISION-AND-NEXT.md`. It now opens *"Here is the
+   part I am still building,"* which is both true and, per Sahaj's own standard,
+   the stronger register. The concession *"An experienced teacher already knows"*
+   is his, and it is what keeps the paragraph from reading as a tool that decides.
+
+Also fixed: a semicolon before *but*, and a doubled space.
 
 ---
 
 ## Length and voice check
 
-- **279 words.** The previous draft was 433 and Sahaj could not tell it was about
-  this project. This one names the classroom practice in the first sentence.
+- **546 words.** Longer than the 279-word version, and longer than the 360 in the
+  Google Doc header, because the ending Sahaj asked for is a new argument rather
+  than a closing line. LinkedIn shows about three lines before *see more*, so the
+  cost is real but it is paid at the end, not the top. Cut further only on
+  Sahaj's say-so; the material added is the material he asked to land.
 - No arithmetic, no percentages, no test suite, no word-list banding. That
   material is real and it belongs in the repo, not in a post.
-- Triads intact: *missed / skipped / went back and fixed*; *not too easy, not too
-  hard, hard enough to be worth their time*; *skipped it / said something else /
-  fixed it themselves*.
-- Landing sentences are complete: *So I built the paper form as a web page.* ·
-  *Twice a year was never the right number. It was the affordable one.*
-- No em dashes. No named publisher in the post itself. No group of teachers put
-  at fault: the closing frames twice-a-year as a cost, not a failure.
-- The one concrete object is **the back of the sheet**, which is where the notes
-  used to go.
-- Sahaj's own phrase for the coordination point is *"all the heads are behind the
-  same steering wheel."* It is in the background section, not the post: his
-  writing stays literal and one image per piece, and the true image here is
-  already the back of the sheet.
+- **No em dashes** (checked mechanically, 0 in the file).
+- Triads intact: *art, P.E. or Spanish*; *Wrong word / Skipped it / You told
+  them*; *which book / which phonics group / what to say to the family*; *secure
+  / close / need help now*.
+- Landing sentence is short and **complete**: *The teacher still builds the
+  house.* Nothing explains past it.
+- One image per piece, used once: **the bricks**. Sahaj's other figure, *"all the
+  heads are behind the same steering wheel,"* stays in the background section.
+  Two images would compete and the ending is where this one has to land.
+- Nothing claims a child has used the tool, that the marking has been timed, or
+  that a child has been grouped because of it. The A.I. paragraph is explicitly
+  future tense.
+- No named publisher. No group of teachers put at fault: twice-a-year is framed
+  as a cost, not a failure.
+
+### An alternative Sahaj raised: put the bricks at the top
+
+He asked whether this idea belongs at the beginning instead. It does not, and the
+reason is structural rather than stylistic: the bricks are only meaningful once
+the reader knows *what the tool collects*, and that list is the middle of the
+post. Opening with the image would spend it before it means anything. The
+opening's job is to make a teacher recognise their own Tuesday, which the current
+first paragraph does. **Worth revisiting only if the post is ever cut in half**,
+in which case the bricks become the whole post and the marking detail goes.
 
 ## One gap between the vision and the build — worth knowing before posting
 
@@ -195,6 +355,20 @@ learning specialist, and the whole class comes out as a spreadsheet."* True toda
 A live shared view is the obvious next feature and would deliver exactly what the
 description asks for. Worth saying out loud in an interview as the next thing,
 rather than implying it already exists.
+
+**The second gap is now in the post, on purpose.** The whole-class A.I. analysis
+is gap 2 in `VISION-AND-NEXT.md` and is not built. The closing paragraph names it
+as *"the part I am still building,"* which is the honest form of the claim and
+the one Sahaj's own standard asks for. If anyone asks in an interview: the data
+that analysis would need is already exported, and nothing reads across it yet.
+
+**One gap closed the same afternoon.** The post says the child has the paper copy
+in front of them. Before 6 Aug the tool printed only the finished record, so that
+sheet had to be pulled out of `all-lessons.html` and trimmed by hand. There is
+now a **Print the child's copy** button: this lesson's text alone, nothing
+marked, sized per lesson so that no sentence wraps onto a second line. A wrapped
+line costs a young reader the return sweep, and the tool would then have scored
+an error its own sheet caused.
 
 ## Before posting
 

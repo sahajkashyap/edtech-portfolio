@@ -1,4 +1,7 @@
-# What this tool decides, and what it does not
+# Word by Word — what this tool decides, and what it does not
+
+*A running record tool for K–2 teachers. Named 6 August 2026; the folder stays
+`running-record-tool/` because that path is live and every link points at it.*
 
 ## The short version
 
