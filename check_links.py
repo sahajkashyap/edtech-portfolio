@@ -68,8 +68,10 @@ def check_page(start_rel: str, live: bool):
     checked = 0
 
     for href in hrefs:
-        if href in seen or href.startswith(("http", "mailto:")):
+        if href in seen or href.startswith(("http", "mailto:", "tel:")):
             continue  # external links are out of scope for this checker
+        if href.startswith("data:"):
+            continue  # an inline image or icon carried in the page itself, not a link out
         if "${" in href:
             continue  # a JavaScript template that builds links at runtime, not a link itself
         seen.add(href)
@@ -93,10 +95,30 @@ def check_page(start_rel: str, live: bool):
             if status != 200:
                 failures.append(f"{start_rel} -> {href}: live site says {status}")
                 continue
+            # A .md target returns 200 and reads fine here, but the browser
+            # DOWNLOADS it instead of opening it, because GitHub serves it as
+            # text/markdown. This checker used to pass such a link — status 200,
+            # plenty of words — while a real visitor got a file in their
+            # Downloads folder. Link to the .html Jekyll renders instead.
+            if target_rel.endswith(".md"):
+                failures.append(f"{start_rel} -> {href}: DOWNLOADS instead of opening "
+                                f"(served as markdown; link to {href[:-3]}.html)")
+                continue
         else:
             p = ROOT / target_rel
+            # GitHub Pages runs Jekyll, which renders every .md file to a
+            # matching .html page. So DESIGN.html is a real page live even
+            # though only DESIGN.md exists on this computer. Without this, the
+            # checker fails the CORRECT link and tempts somebody to change it
+            # back to the .md one that downloads.
+            if not p.exists() and p.suffix == ".html" and p.with_suffix(".md").exists():
+                p = p.with_suffix(".md")
             if not p.exists():
                 failures.append(f"{start_rel} -> {href}: file does not exist")
+                continue
+            if target_rel.endswith(".md"):
+                failures.append(f"{start_rel} -> {href}: DOWNLOADS instead of opening "
+                                f"(served as markdown; link to {href[:-3]}.html)")
                 continue
             html = p.read_text()
 

@@ -121,6 +121,67 @@ Done — all 128 skills generate printable worksheets across six sheet types
 syllables). Browser-verified, backed up on `main`. The full build spec lives in
 the `phonics-worksheet` skill in `.claude/skills/`.
 
+## Standing rule — tests and coverage, not review passes
+
+Established Aug 7, 2026, after ten-plus agent reviews of the running record tool
+each found new bugs and never converged.
+
+Reviewing a file by reading it is SAMPLING, not covering. "Find the bugs" has no
+finish line, so a reviewer stops where it runs out of ideas, and that is a
+different place every time. More agents with more specialised roles does not fix
+this — each slice is still unbounded.
+
+So every tool in this repo with real logic in it gets:
+
+1. **A regression test file** that drives a real browser with real clicks and
+   keypresses — not an agent reasoning about the code. One check per bug ever
+   found, named for what a person would notice.
+2. **A code-coverage number in the same file**, so coverage measures the tests
+   that actually exist and the two cannot drift apart.
+
+    cd running-record-tool/tests
+    npm test            # does everything still work?
+    npm run coverage    # is every line actually being checked?
+
+**The bar is 100% of executable lines.** Every line the coverage report lists as
+never executed is either given a test that asserts on its result, or deleted
+because nothing can reach it. That list is the completion criterion — it is what
+makes "did you check everything?" answerable without taking anyone's word for it.
+
+Rules that come with it:
+- A flaky check is worse than no check; it teaches you to ignore red. Run the
+  suite several times before calling it done.
+- Fix a bug, add its check the same day.
+- Say the honest limit out loud: coverage proves every line ran and something
+  asserted on its output. It does not prove the teaching decisions are right.
+  That judgement stays with me.
+
+The working example to copy is `running-record-tool/tests/run-tests.js`.
+
+## The command: `ultracode verify <folder>`
+
+Example: **`ultracode verify running-record-tool`**
+
+That runs the saved workflow at `.claude/workflows/verify-everything.js`. The
+word "ultracode" is the switch that turns on multi-agent orchestration for that
+turn; "verify" names the workflow. Both words are needed.
+
+Four phases, run by the machine rather than steered by hand:
+
+| Phase | What happens |
+|---|---|
+| **1. Hunt** | Four agents at once, on four *different* lenses — timing and state, cross-surface consistency, saved data and corruption, a stranger's first two minutes. Different lenses on purpose: redundant hunters find redundant bugs. |
+| **2. Refute** | Every claimed finding goes to three skeptics whose job is to KILL it — one checks the behaviour is real, one checks a teacher can actually reach it, one checks the severity is honest. Majority rules. |
+| **3. Tests** | Each survivor is written up as test code in `run-tests.js` style, ready to paste. |
+| **4. Verdict** | Plain language: what is broken, what to fix first, and **whether it converged**. |
+
+**The loop is the point.** It does not stop after a set number of passes. It
+repeats until **two consecutive rounds find nothing new**, then says plainly
+whether it went quiet or hit the ceiling still finding things. Nobody has to sit
+there judging whether we are done yet.
+
+Options: `ultracode verify <folder>, 3 quiet rounds` or `..., up to 6 rounds`.
+
 ## Standing rule — verify every link before calling anything "done"
 
 Established Aug 1, 2026, after a lesson link was reported opening a blank or

@@ -1,0 +1,14 @@
+{
+  "name": "word-by-word-tests",
+  "version": "1.0.0",
+  "description": "Regression tests for the Word by Word running record tool.",
+  "scripts": {
+    "test": "node run-tests.js",
+    "coverage": "node run-tests.js --coverage"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^25.5.0"
+  },
+  "private": true
+}

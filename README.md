@@ -97,7 +97,7 @@ passage in the tool itself.*
 ## How the reading passages are checked
 
 **[`running-record-tool/`](running-record-tool/)** &middot;
-[what it decides and what it does not](running-record-tool/DESIGN.md) &middot;
+[what it decides and what it does not](running-record-tool/DESIGN.html) &middot;
 [the writing standard](running-record-tool/formb/WRITING-RULES.md)
 
 The 36 items are 27 passages and 9 word lists, and none of them is written
@@ -184,7 +184,7 @@ prints as a report for a conference.
 
 | Tool | What it is |
 |---|---|
-| [`running-record-tool/`](running-record-tool/) | The marking screen: tap each misread word, pick what the child did, and the accuracy, rate and error rate are counted for you. 36 assessment items, MSV cue analysis. [Worked example](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html) · [design note](running-record-tool/DESIGN.md) |
+| [`running-record-tool/`](running-record-tool/) | The marking screen: tap each misread word, pick what the child did, and the accuracy, rate and error rate are counted for you. 36 assessment items, MSV cue analysis. [Worked example](https://sahajkashyap.github.io/edtech-portfolio/running-record-tool/worked-example.html) · [design note](running-record-tool/DESIGN.html) |
 | [`decodable-passage-generator/`](decodable-passage-generator/) | The index of all 128 lessons, 123 of them with a printable four-page packet. [A finished sheet](https://sahajkashyap.github.io/edtech-portfolio/decodable-passage-generator/example-lesson-41.html) |
 | [`phonics-assessment-tool/`](phonics-assessment-tool/) | UFLI Foundations tracker with a worksheet generator. All 128 skills produce printable practice sheets across six sheet types. |
 | [`reading-assessment-tool/`](reading-assessment-tool/) | Six reading skills, from decoding two-syllable words to retelling a story and finding the main topic of an informational text. |

@@ -3,3 +3,7 @@
 # Claude Code's scratch worktrees. These are temporary copies of the repo used
 # while work is in progress; the finished work lands on main, not here.
 .claude/worktrees/
+
+# Test dependencies. Reinstall with "cd running-record-tool/tests && npm install".
+# The tests themselves are committed; the downloaded libraries are not.
+node_modules/

@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Word by Word &mdash; a running record tool</title>
+<!-- An inline icon, so the browser stops asking for a favicon.ico that has
+     never existed. That request was a silent 404 on every single page load,
+     live and local. Harmless in itself, but real errors hide in a console
+     that always has something red in it. Inline keeps the tool one file. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231d4e89'/%3E%3Cpath d='M3 5h10M3 8h7M3 11h4' stroke='white' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   :root{
     --ink:#1a1a1a; --cream:#faf6ee; --paper:#fffdf8; --rule:#d9c7a8;
@@ -245,7 +250,7 @@
     @page{margin:14mm}
     body{background:#fff; font-size:12pt}
     header, .cols, #stats, #pop, #recordscard, .tbtns,
-    #undobtn, .privacy, .warnflag{display:none !important}
+    #undobtn, .privacy, .warnflag, .sitenav{display:none !important}
     main{max-width:none; padding:0; margin:0}
     .work{display:block}
     .panel{display:none}
@@ -319,18 +324,25 @@
   </div>
   <div class="printonly prnums" id="prnums"></div>
 
+  <!-- These four links used to live inside the side panel. Below 1000px the
+       panel stacks UNDER the passage, so on an iPad in portrait — which is
+       what a teacher actually holds — the only route to the worked example and
+       to all 36 lessons was off the bottom of the screen on arrival. Here they
+       sit above the passage at every width. Hidden in print with the rest of
+       the interface chrome. -->
+  <div class="sitenav">
+    <a href="worked-example.html">A worked example</a> &middot;
+    <a href="DESIGN.html">What it decides</a> &middot;
+    <a href="all-lessons.html">All 36 lessons</a> &middot;
+    <a href="https://github.com/sahajkashyap/edtech-portfolio">Source</a>
+  </div>
+
   <p class="passage-title" id="ptitle"></p>
 
   <div class="work">
     <div id="passage"></div>
 
     <aside class="panel">
-      <div class="sitenav">
-        <a href="worked-example.html">A worked example</a> &middot;
-        <a href="DESIGN.md">What it decides</a> &middot;
-        <a href="all-lessons.html">All 36 lessons</a> &middot;
-        <a href="https://github.com/sahajkashyap/edtech-portfolio">Source</a>
-      </div>
       <h2>What's happening</h2>
       <p class="whatis">You mark. This counts. Every number here is arithmetic on
       what <em>you</em> marked &mdash; accuracy, error and self&#8209;correction rates,
@@ -1285,7 +1297,13 @@ const LESSONS = {
  }
 };
 
-let currentLesson = 41;
+// A stranger with no #L link in hand used to land on Lesson 41 — Short Vowels
+// Review (all), the last and hardest item in the set — which is a strange
+// first thing to show someone who has never seen the tool. 15 is the first
+// PASSAGE: a word list would open on the one kind of item that gets no reading
+// level and cannot show cue analysis, which is the tool at its least
+// explanatory. Change this number to move the front door.
+let currentLesson = 15;
 
 
 // Warm marks count against the child, cool ones do not. Self-corrections and
@@ -1295,7 +1313,10 @@ const IS_ERROR = { sub:true, omit:true, told:true, sc:false, rep:false, appeal:f
 const TAG   = { sub:'SUB', omit:'OM', told:'T', sc:'SC', rep:'R', appeal:'A' };
 const CODES = ['sub','omit','told','sc','rep','appeal'];
 
-let words = [], cursor = 0, stoppedAt = null, insertions = 0, history = [];
+// insertAt holds the cursor position each insertion was made at, so the stop
+// mark can exclude the ones the child never reached. `insertions` stays the
+// authoritative count — insertAt is only ever used to split it.
+let words = [], cursor = 0, stoppedAt = null, insertions = 0, insertAt = [], history = [];
 let retellLevel = null;   // NOT `retell`: an element already has that id
 
 // The clock is a plain four-state machine: idle -> running <-> paused -> done.
@@ -1319,6 +1340,16 @@ function addWord(lineEl, tok){
 }
 
 function build(){
+  // Every rebuild throws away the spans the popover is anchored to, so the
+  // popover must go with them. It used to survive a lesson change: open the
+  // popover on word 7, move to the dropdown WITHOUT clicking the page (which
+  // fires no document click, so the outside-click closer at the bottom of the
+  // popover section never ran), switch lesson, and the still-visible popover
+  // marked word 7 of the NEW lesson — starting the clock and writing a phantom
+  // error into a child's record 400ms later. closePop() belongs here, in the
+  // one function every path (switchLesson, newRecord, openRecord, #L hash)
+  // goes through, rather than in each of them.
+  closePop();
   words = []; passageEl.innerHTML = '';
   const L = LESSONS[currentLesson];
   passageEl.classList.toggle('wordlist', L.kind === 'wordlist');
@@ -1363,11 +1394,16 @@ function build(){
 
 const isWord = t => /[a-z]/i.test(t);
 
-function snapshot(){
+// `withClock` is for the two actions that change the CLOCK as well as the
+// marks — Clear all marks, and setting or lifting the stop mark. Ordinary
+// marks must NOT carry the clock, or every Undo would rewind the reading time
+// as well, which is not what undoing a mark means.
+function snapshot(withClock){
   // {...w} is shallow, so w.cues would be shared between the snapshot and the
   // live word and Undo would not undo a cue toggle. Copy it.
   history.push({ words: words.map(w => ({...w, cues: w.cues ? {...w.cues} : undefined})),
-                 cursor, stoppedAt, insertions });
+                 cursor, stoppedAt, insertions, insertAt: insertAt.slice(),
+                 clock: withClock ? { elapsed: totalMs(), state: clockState } : undefined });
   if (history.length > 200) history.shift();
 }
 
@@ -1410,7 +1446,12 @@ function fmt(ms){
 
 function mark(i, code){
   if (i < 0 || i >= words.length) return;
-  autoStart(); snapshot();
+  // 'correct' is the popover's "Clear this mark" — it takes a mark AWAY. It is
+  // not the child starting to read, so it must not start the assessment clock.
+  // A teacher opening the popover to look before the read began was starting
+  // the timing without knowing.
+  if (code !== 'correct') autoStart();
+  snapshot();
   words[i].code = (code === 'correct') ? null : code;
   if (code !== 'sub') words[i].said = '';
   render(); save();
@@ -1441,11 +1482,24 @@ function stats(){
       if (c.v) cue.v++;
     }
   });
-  errors += insertions;
+  // Every coded miscue past the stop mark is excluded above, but insertions
+  // were added in full regardless — so a reading stopped at word 5 could carry
+  // four added words the child never reached, and land at 0% / Frustration.
+  // insertAt says where each one happened. A record saved before insertAt
+  // existed has none, and falls back to the whole count rather than quietly
+  // dropping errors out of somebody's finished assessment.
+  const ins = (insertAt.length === insertions)
+    ? insertAt.filter(p => p <= last).length
+    : insertions;
+  errors += ins;
   const acc = read ? Math.max(0, ((read - errors) / read) * 100) : 100;
   const mins = totalMs() / 60000;
-  const wcpm = (mins > 0.02) ? Math.round((read - errors) / mins) : null;
-  return { read, errors, by, acc, wcpm, cue };
+  // Floored at 0. Errors can exceed words read (insertions, or a stop mark set
+  // early), and the panel then reported "-944 words correct per minute", which
+  // it also printed. A child cannot read a negative number of words correctly;
+  // the honest floor is none of them.
+  const wcpm = (mins > 0.02) ? Math.max(0, Math.round((read - errors) / mins)) : null;
+  return { read, errors, by, acc, wcpm, cue, ins };
 }
 
 function render(){
@@ -1483,8 +1537,11 @@ function render(){
     document.getElementById('ct-' + c).textContent = s.by[c];
     document.getElementById('row-' + c).classList.toggle('zero', s.by[c] === 0);
   });
-  document.getElementById('ct-ins').textContent = insertions;
-  document.getElementById('row-ins').classList.toggle('zero', insertions === 0);
+  // s.ins, not insertions: the tally must show what was COUNTED, the same way
+  // the omit and sub rows already do. Otherwise the added-words row and the
+  // error total disagree in front of the teacher.
+  document.getElementById('ct-ins').textContent = s.ins;
+  document.getElementById('row-ins').classList.toggle('zero', s.ins === 0);
   document.getElementById('ct-words').textContent = s.read;
   document.getElementById('ct-err').textContent = s.errors;
 
@@ -1492,11 +1549,20 @@ function render(){
   // displaying the rounded one printed "95%" beside "Instructional".
   const accShown = Math.round(s.acc);
   document.getElementById('sAcc').textContent = accShown + '%';
+  // Math.max(1, …): with more errors than words the ratio rounded to zero and
+  // the panel read "1:0" — one error in no words, which is not a statement
+  // anybody can act on. One error per word is the true floor.
   document.getElementById('sErrRatio').textContent =
-    s.errors ? '1:' + Math.round(s.read / s.errors) : '–';
+    s.errors ? '1:' + Math.max(1, Math.round(s.read / s.errors)) : '–';
   document.getElementById('sSCRatio').textContent =
     s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '–';
-  document.getElementById('sWcpm').textContent = s.wcpm === null ? '–' : s.wcpm;
+  // A word list gets no rate, on this surface too. The printed record and the
+  // CSV both refused it already; this tile did not — so Lesson 6 showed "18
+  // words correct per minute" directly beside the banner saying a rate is not
+  // reported for a word list. Two surfaces fixed out of three is how the
+  // wrong number stays in circulation.
+  document.getElementById('sWcpm').textContent =
+    (LESSONS[currentLesson].kind === 'wordlist' || s.wcpm === null) ? '–' : s.wcpm;
 
   // The 95/90 bands are a PASSAGE measure and they do not transfer to a word
   // list. A word list is 17-22 scored items against a Form A passage of 31-61
@@ -1574,8 +1640,12 @@ function paintPrint(){
   const s = stats(), L = LESSONS[currentLesson];
   const initials = (document.getElementById('initials').value || '\u2014').toUpperCase();
   const date = document.getElementById('rdate').value || '';
+  // esc(): initials was the one free-text field going into innerHTML raw, so a
+  // name typed with < or > in it became live HTML on the printed header — the
+  // page that actually reaches the learning specialist. Notes, retell and the
+  // "read as" text were already escaped; this was the gap.
   document.getElementById('prwho').innerHTML =
-    '<b>' + initials + '</b><br>Lesson ' + currentLesson + ' &middot; ' + L.skill +
+    '<b>' + esc(initials) + '</b><br>Lesson ' + currentLesson + ' &middot; ' + L.skill +
     '<br>' + L.title + (date ? ' &middot; ' + date : '');
 
   // The screen and the CSV both refuse to band a word list; this path did not,
@@ -1585,14 +1655,21 @@ function paintPrint(){
   // outlives the screen and nobody re-checks it.
   const band = (L.kind === 'wordlist')
     ? 'not banded (word list)'
-    : (s.acc >= 95) ? 'Independent' : (s.acc >= 90) ? 'Instructional' : 'Frustration';
+    // Math.round, like the screen and the CSV. render() was fixed to band the
+    // SAME number the teacher sees, and this surface never got the fix — so a
+    // child at 94.74% showed "95%" and "Independent" on screen, and "95%" and
+    // INSTRUCTIONAL on the printed page. All 27 passages disagreed in that
+    // window. The paper is the copy that reaches the learning specialist and
+    // outlives the screen, so it was the worst of the three to have wrong.
+    : (Math.round(s.acc) >= 95) ? 'Independent'
+    : (Math.round(s.acc) >= 90) ? 'Instructional' : 'Frustration';
   const cell = (v, k) => '<div><div class="v">' + v + '</div><div class="k">' + k + '</div></div>';
   document.getElementById('prnums').innerHTML =
     cell(Math.round(s.acc) + '%', 'Accuracy') +
     cell(band, 'Level') +
     cell(s.read, 'Words read') +
     cell(s.errors, 'Errors') +
-    cell(s.errors ? '1:' + Math.round(s.read / s.errors) : '\u2013', 'Error rate') +
+    cell(s.errors ? '1:' + Math.max(1, Math.round(s.read / s.errors)) : '\u2013', 'Error rate') +
     cell(s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '\u2013', 'Self-correction rate') +
     cell((L.kind === 'wordlist' || s.wcpm === null) ? '\u2013' : s.wcpm,
          'Words correct/min') +
@@ -1606,7 +1683,7 @@ function paintPrint(){
               '</td><td>' + MARKNAME[w.code] +
               '</td><td>' + (w.said ? 'read as \u201c' + esc(w.said) + '\u201d' : '') + '</td></tr>');
   });
-  if (insertions) rows.push('<tr><td colspan="3">' + insertions + ' added word(s)</td></tr>');
+  if (s.ins) rows.push('<tr><td colspan="3">' + s.ins + ' added word(s)</td></tr>');
   const cu = stats().cue;
   if (cu.coded){
     rows.push('<tr><td colspan="3"><b>Cue analysis</b> &mdash; M ' + cu.m +
@@ -1714,7 +1791,17 @@ document.addEventListener('click', e => { if (!pop.contains(e.target)) closePop(
 // --- keyboard --------------------------------------------------------------
 document.addEventListener('keydown', e => {
   const t = e.target.tagName;
-  if (t === 'INPUT' || t === 'TEXTAREA') return;
+  // A marking key is only a marking key when the teacher is marking. This used
+  // to exempt text fields alone, so anything else that can hold focus fell
+  // straight through to the marks below: tab to the lesson dropdown and press
+  // X and word 1 took a substitution AND started the clock; click Pause or
+  // Undo and keep marking with the keyboard and every key landed on the
+  // passage from a button that had no business receiving it. Nothing on screen
+  // said so. A select also runs its own type-ahead on those keys, which walked
+  // the picker to a different lesson than the passage being marked.
+  if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' ||
+      t === 'BUTTON' || t === 'OPTION' || t === 'A' ||
+      e.target.isContentEditable) return;
   // Every browser shortcut was being swallowed and re-read as a marking key:
   // Cmd+S marked a self-correction AND started the clock, Cmd+X a
   // substitution, Cmd+A an appeal, Cmd+T a Told. Worst of all Cmd+P toggled
@@ -1730,14 +1817,34 @@ document.addEventListener('keydown', e => {
   if (k === 's'){ e.preventDefault(); mark(prev(), 'sc');     return; }
   if (k === 'r'){ e.preventDefault(); mark(prev(), 'rep');    return; }
   if (k === 'a'){ e.preventDefault(); mark(prev(), 'appeal'); return; }
-  if (k === 'i'){ e.preventDefault(); autoStart(); snapshot(); insertions++; render(); save(); return; }
+  if (k === 'i'){ e.preventDefault(); autoStart(); snapshot();
+                  insertions++; insertAt.push(cursor); render(); save(); return; }
   if (k === 'p'){ e.preventDefault(); togglePause(); return; }
-  if (k === 'e'){ e.preventDefault(); snapshot();
+  if (k === 'e'){ e.preventDefault(); snapshot(true);
                   stoppedAt = (stoppedAt === cursor) ? null : cursor;
-                  if (stoppedAt !== null) finish(); render(); save(); return; }
+                  // Setting the stop mark ends the reading. LIFTING it has to
+                  // start the clock again — pressing E by mistake mid-read used
+                  // to leave clockState 'done' with the stop mark gone, so
+                  // every further mark recorded no time at all, Pause did
+                  // nothing, and nothing on screen said the clock had stopped.
+                  // The words-per-minute at the end was silently inflated.
+                  if (stoppedAt !== null) finish();
+                  else if (clockState === 'done') resumeClock();
+                  render(); save(); return; }
   if (e.key === 'Enter'){ e.preventDefault(); openPop(prev()); saidbox.focus(); return; }
   if (e.key === 'Backspace'){ e.preventDefault(); undo(); return; }
   if (e.key === 'Escape'){ closePop(); return; }
+});
+
+// The guard above has a cost: a button that holds focus now swallows the
+// marking keys, so clicking Pause with the mouse would leave the keyboard
+// silently dead until the teacher clicked the passage again. Stopping a MOUSE
+// press from moving focus onto a button costs nothing and fixes that — the
+// click still fires, it just never parks focus somewhere that eats the keys.
+// Deliberately mousedown and not click: a keyboard user tabbing to a button
+// still focuses it normally, so this takes nothing away from them.
+document.addEventListener('mousedown', e => {
+  if (e.target.closest('button')) e.preventDefault();
 });
 
 // The word just dealt with — the cursor has usually already moved past it.
@@ -1760,6 +1867,16 @@ document.getElementById('finishbtn').addEventListener('click', () => {
 function undo(){
   const h = history.pop(); if (!h) return;
   words = h.words; cursor = h.cursor; stoppedAt = h.stoppedAt; insertions = h.insertions;
+  insertAt = (h.insertAt || []).slice();
+  // Clear all marks tells the teacher "Press Undo if that was not what you
+  // meant" — and Undo used to bring the marks back but not the reading time,
+  // which the same button had reset to zero. A minute of a child's reading,
+  // destroyed by the button that promised it was reversible.
+  if (h.clock){
+    elapsed = h.clock.elapsed;
+    clockState = h.clock.state;
+    runningSince = (clockState === 'running') ? Date.now() : null;
+  }
   render(); save();
 }
 document.getElementById('undobtn').addEventListener('click', undo);
@@ -1789,10 +1906,15 @@ function readIndex(){
 function writeIndex(list){ localStorage.setItem(INDEX_KEY, JSON.stringify(list)); }
 
 // Don't litter storage with blank records nobody started.
+// The retell fields are wired to save() like every other input, but they were
+// missing from this list — so a teacher who typed a retell and nothing else
+// watched the write silently do nothing, with no record and no message.
 function hasContent(){
   return words.some(w => w.code) || insertions > 0 || totalMs() > 0 ||
          document.getElementById('initials').value.trim() !== '' ||
-         document.getElementById('notes').value.trim() !== '';
+         document.getElementById('notes').value.trim() !== '' ||
+         document.getElementById('retell').value.trim() !== '' ||
+         retellLevel !== null;
 }
 
 // One place to talk to the teacher, so every path that gives up says why.
@@ -1804,7 +1926,9 @@ function say(msg, ms){
              ms || 9000);
 }
 
-function writeRecord(){
+// `quiet` is for the heartbeat below: it keeps the stored reading time honest
+// without flashing "Saved on this laptop" at the teacher every few seconds.
+function writeRecord(quiet){
   if (!hasContent()) return;
   if (!recordId) recordId = newId();
   const st = stats();
@@ -1815,7 +1939,7 @@ function writeRecord(){
       notes: document.getElementById('notes').value,
       retellText: document.getElementById('retell').value,
       retell: retellLevel,
-      words, cursor, stoppedAt, insertions,
+      words, cursor, stoppedAt, insertions, insertAt,
       elapsed: totalMs(), clockState,
       updated: new Date().toISOString(),
       accuracy: Math.round(st.acc), errors: st.errors, read: st.read
@@ -1837,8 +1961,19 @@ function writeRecord(){
     return;
   }
   paintRecords();
-  say('Saved on this laptop', 1600);
+  if (!quiet) say('Saved on this laptop', 1600);
 }
+
+// The clock ticks every 500ms but only ever redrew the screen; nothing wrote
+// the growing reading time to storage until the next mark, Finish, or a lesson
+// change. Close the tab mid-read and the record kept a time from whenever the
+// last mark happened — too short, which inflates words-per-minute. This writes
+// the time every 5 seconds while the clock is genuinely running. It only ever
+// UPDATES a record that already exists (recordId), so it cannot bring a blank
+// one into being, and it is quiet so the save message does not strobe.
+setInterval(() => {
+  if (runningSince !== null && recordId) writeRecord(true);
+}, 5000);
 
 // The debounce exists so typing initials does not write on every keystroke.
 // It also meant the last 400ms of work was thrown away by every path that
@@ -1850,12 +1985,15 @@ function save(){
   saveTimer = setTimeout(writeRecord, 400);
 }
 
+// Unconditionally, not `if (saveTimer)`. A flush that had already run left
+// saveTimer null, so a SECOND flush — after time had passed on a running clock
+// but before any new mark set another timer — quietly declined to write, and
+// that stretch of reading time was dropped from the record. writeRecord() has
+// its own hasContent() guard, so calling it every time is free and safe.
 function flushSave(){
-  if (saveTimer){
-    clearTimeout(saveTimer);
-    saveTimer = null;
-    writeRecord();
-  }
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  writeRecord();
 }
 ['initials','rdate','notes','retell'].forEach(id =>
   document.getElementById(id).addEventListener('input', save));
@@ -1899,9 +2037,22 @@ function recordFits(d){
 
 function openRecord(id){
   const raw = localStorage.getItem(recKey(id));
-  if (!raw) return false;
+  // Both of these used to return false in silence, so a row in Saved records
+  // whose body had been evicted did NOTHING when clicked — no message, no
+  // change on screen, nothing to tell the teacher whether they had missed the
+  // button or lost the record.
+  if (!raw){
+    say('That record is listed but its contents are no longer on this laptop. '
+      + 'The browser may have cleared storage. Nothing else has been changed.');
+    return false;
+  }
   let d;
-  try { d = JSON.parse(raw); } catch (e) { return false; }
+  try { d = JSON.parse(raw); }
+  catch (e) {
+    say('That record is stored in a form this tool cannot read, so it has not '
+      + 'been opened. Nothing has been changed.');
+    return false;
+  }
 
   // Check the record FITS before changing anything at all.
   //
@@ -1929,9 +2080,21 @@ function openRecord(id){
   document.getElementById('lessonpick').value = d.lesson;
   build();
   words = d.words; cursor = d.cursor || 0;
-  stoppedAt = (d.stoppedAt === undefined) ? null : d.stoppedAt;
+  // A stop mark outside the passage made stats() count from a negative index:
+  // a record with a real substitution in it reported "0 words read, 100%,
+  // Independent" with every word greyed out. Keep it inside the passage or
+  // treat it as absent.
+  stoppedAt = (d.stoppedAt === undefined || d.stoppedAt === null) ? null
+            : Math.max(0, Math.min(words.length - 1, Number(d.stoppedAt)));
+  if (stoppedAt !== null && !isFinite(stoppedAt)) stoppedAt = null;
   insertions = d.insertions || 0;
-  elapsed = d.elapsed || 0; runningSince = null;
+  insertAt = Array.isArray(d.insertAt) ? d.insertAt.slice() : [];
+  // Number(), not `|| 0`. A stored time that had become TEXT survived the old
+  // check and read plausibly — until Resume, where `elapsed += Date.now() - …`
+  // concatenated instead of adding and the clock jumped to 833 hours.
+  elapsed = Number(d.elapsed);
+  if (!isFinite(elapsed) || elapsed < 0) elapsed = 0;
+  runningSince = null;
   // Never restore as 'running'. runningSince is deliberately null on reopen
   // (you cannot resume a timing you were not present for), and 'running' with
   // no start time is a clock that says it is counting and is not. Reopen
@@ -1949,10 +2112,13 @@ function openRecord(id){
 }
 
 // Start a fresh record. The previous one is already saved and stays saved.
-function newRecord(){
-  flushSave();          // do not lose the last 400ms of the record we are leaving
+// `skipFlush` exists for one caller: deleteRecord. Flushing on the way out of a
+// record that has just been DELETED writes it straight back to storage, which
+// is how Delete could appear to do nothing at all.
+function newRecord(skipFlush){
+  if (!skipFlush) flushSave();   // do not lose the last 400ms of the record we are leaving
   recordId = null;
-  build(); cursor = 0; stoppedAt = null; insertions = 0; history = [];
+  build(); cursor = 0; stoppedAt = null; insertions = 0; insertAt = []; history = [];
   resetClock();
   document.getElementById('initials').value = '';
   document.getElementById('notes').value = '';
@@ -1968,7 +2134,16 @@ function deleteRecord(id){
   if (!confirm('Delete the record for ' + who + '?\n\nThis cannot be undone.')) return;
   localStorage.removeItem(recKey(id));
   writeIndex(readIndex().filter(x => x.id !== id));
-  if (recordId === id) newRecord(); else paintRecords();
+  if (recordId === id){
+    // Deleting the record that is currently OPEN used to bring it back. The
+    // row vanished from the list, then newRecord() flushed on its way out and
+    // wrote the whole thing to storage again under the same id — so the record
+    // reappeared, and a teacher who deleted a child's assessment still had it.
+    // Forget which record we are in FIRST, and tell newRecord not to flush.
+    clearTimeout(saveTimer); saveTimer = null;
+    recordId = null;
+    newRecord(true);
+  } else paintRecords();
 }
 
 function paintRecords(){
@@ -1984,7 +2159,7 @@ function paintRecords(){
     const row = document.createElement('div');
     row.className = 'recrow' + (e.id === recordId ? ' open' : '');
     row.innerHTML =
-      '<span class="who2">' + ((e.initials || '\u2014').toUpperCase()) + '</span>' +
+      '<span class="who2">' + esc((e.initials || '\u2014').toUpperCase()) + '</span>' +
       '<span class="les">Lesson ' + e.lesson + '</span>' +
       '<span class="dt">' + (e.date || '') + '</span>' +
       '<span class="acc">' + (e.read ? e.accuracy + '%' : '') + '</span>';
@@ -2006,12 +2181,12 @@ function paintRecords(){
 // is, the date, and anything already written in the notes.
 document.getElementById('clearmarksbtn').addEventListener('click', () => {
   if (!confirm('Clear every mark and restart the clock?\n\nThe child, the date and your notes are kept.')) return;
-  snapshot();
+  snapshot(true);   // the clock too — this button resets it, so Undo must restore it
   words.forEach(w => { w.code = null; w.said = ''; delete w.cues; });
   // `history = []` used to run two lines after snapshot(), throwing away the
   // snapshot just taken — so the single most destructive button was the one
   // action Undo could not reverse. The history is what makes this safe.
-  cursor = 0; stoppedAt = null; insertions = 0;
+  cursor = 0; stoppedAt = null; insertions = 0; insertAt = [];
   resetClock(); closePop(); render(); save();
   say('Marks cleared. Press Undo (or Backspace) if that was not what you meant.',
       6000);
@@ -2152,6 +2327,12 @@ function csvCell(v){
 }
 
 function exportCsv(){
+  // Write the record on screen down BEFORE reading storage. Export used to read
+  // straight past the 400ms save debounce, so clicking it just after a mark
+  // said "There are no saved records to export yet" with a marked-up record
+  // sitting in plain view — and a note typed just before Export was missing
+  // from the spreadsheet. Every other path that leaves a record flushes first.
+  flushSave();
   const list = readIndex();
   if (!list.length){ alert('There are no saved records to export yet.'); return; }
   const head = ['Child','Lesson','Skill','Text','Date','Words read','Errors',
@@ -2182,15 +2363,28 @@ function exportCsv(){
                      (x.said ? ', read as "' + x.said + '"' : '') + ')');
       }
     });
-    errors += (d.insertions || 0);
+    // Same stop-mark split as stats(), so an exported row cannot disagree with
+    // the screen it was read off. Older records have no insertAt and keep the
+    // whole count, exactly as stats() does for them.
+    const dIns = d.insertions || 0;
+    const dAt = Array.isArray(d.insertAt) ? d.insertAt : [];
+    const insCounted = (dAt.length === dIns) ? dAt.filter(p => p <= last).length : dIns;
+    errors += insCounted;
     const acc = read ? Math.max(0, ((read - errors) / read) * 100) : 100;
     const accShown = Math.round(acc);
     const mins = (d.elapsed || 0) / 60000;
-    const wcpm = (mins > 0.02) ? Math.round((read - errors) / mins) : '';
+    // Floored like the screen — the spreadsheet must not disagree with the
+    // panel the number was read off.
+    const wcpm = (mins > 0.02) ? Math.max(0, Math.round((read - errors) / mins)) : '';
     // Cue counts, recomputed from the saved words so an exported row always
     // agrees with the record it came from.
     let cm = 0, cs = 0, cv = 0, ccoded = 0;
-    (d.words || []).forEach(w => {
+    (d.words || []).forEach((w, i) => {
+      // `i > last` — the stop-mark guard every other tally already had. Without
+      // it the spreadsheet counted cues on miscues past the point the child
+      // stopped reading, so a row could say three miscues were coded while the
+      // screen and the printed record both said two.
+      if (i > last) return;
       if (!['sub','omit','told'].includes(w.code)) return;
       const c = w.cues || {};
       if (c.m || c.s || c.v) ccoded++;
@@ -2205,10 +2399,10 @@ function exportCsv(){
     rows.push([
       e.initials, d.lesson, L.skill, L.title, d.date, read, errors, accShown,
       band,
-      errors ? '1:' + Math.round(read / errors) : '',
+      errors ? '1:' + Math.max(1, Math.round(read / errors)) : '',
       by.sc ? '1:' + Math.round((errors + by.sc) / by.sc) : '',
       (L.kind === 'wordlist') ? '' : wcpm, fmt(d.elapsed || 0),
-      by.sub, by.omit, by.told, by.sc, by.rep, by.appeal, d.insertions || 0,
+      by.sub, by.omit, by.told, by.sc, by.rep, by.appeal, insCounted,
       miscues.join('; '),
       ccoded ? cm : '', ccoded ? cs : '', ccoded ? cv : '', ccoded || '',
       d.retell ? RT[d.retell] : '', d.retellText || '', d.notes || ''
@@ -2262,19 +2456,52 @@ function paintTitle(){
 }
 
 function switchLesson(n){
-  flushSave();          // the record we are leaving is finished, not abandoned
+  flushSave();          // the record we are finished with is saved, under ITS lesson
+  // Then let go of it. Without this, newRecord() flushes a second time on its
+  // way out — after currentLesson has already moved on but before the marks
+  // are cleared — and rewrites the record just saved with the NEW lesson
+  // number against the OLD lesson's words. The saved-records row then named a
+  // lesson the child never read, and re-opening it was refused outright with
+  // "saved before Lesson 26 was edited", because the words no longer matched.
+  // A finished assessment, lost by the ordinary gesture of moving to the next
+  // lesson.
+  recordId = null;
   currentLesson = n;
-  newRecord();          // a fresh record; the previous one is already saved
+  // The picker is a display of currentLesson, so re-assert it here rather than
+  // trusting whatever the browser left it on. Every route in — the dropdown, a
+  // #L link, all-lessons.html — then lands the menu and the passage on the
+  // same lesson, and they cannot drift apart.
+  const sel = document.getElementById('lessonpick');
+  if (sel) sel.value = n;
+  newRecord(true);      // already flushed above; a second flush is what did the damage
 }
 
 (function fillPicker(){
   const sel = document.getElementById('lessonpick');
-  Object.keys(LESSONS).map(Number).sort((a, b) => a - b).forEach(n => {
-    const o = document.createElement('option');
-    o.value = n;
-    o.textContent = 'Lesson ' + n + ' — ' +
-      (LESSONS[n].kind === 'wordlist' ? 'word list' : LESSONS[n].title);
-    sel.appendChild(o);
+  // Every option used to read "Lesson 6 — word list", which made all nine word
+  // lists identical on the menu, and the passages showed a story title but
+  // never the skill — so a teacher looking for the lesson that tests /r/ could
+  // not find it from the picker at all. The skill is on every lesson object
+  // and was simply never read here. Grouping by kind also answers "is this a
+  // passage or a word list" BEFORE the choice, which is when it matters: they
+  // are different measures and only one of them gets a reading level.
+  const nums = Object.keys(LESSONS).map(Number).sort((a, b) => a - b);
+  [['wordlist', 'Word lists — decoding in isolation, no reading level'],
+   ['passage',  'Passages — the full running record']].forEach(([kind, label]) => {
+    const inGroup = nums.filter(n =>
+      (LESSONS[n].kind === 'wordlist') === (kind === 'wordlist'));
+    if (!inGroup.length) return;
+    const g = document.createElement('optgroup');
+    g.label = label + ' (' + inGroup.length + ')';
+    inGroup.forEach(n => {
+      const L = LESSONS[n];
+      const o = document.createElement('option');
+      o.value = n;
+      o.textContent = 'Lesson ' + n + ' · ' + L.skill +
+                      (L.kind === 'wordlist' ? '' : ' · ' + L.title);
+      g.appendChild(o);
+    });
+    sel.appendChild(g);
   });
   // all-lessons.html links here as index.html#L24, so honour that: without it
   // every one of those 36 links silently lands on Lesson 6 and the teacher has
@@ -2282,7 +2509,19 @@ function switchLesson(n){
   const asked = /^#L(\d+)$/.exec(location.hash);
   if (asked && LESSONS[asked[1]]) currentLesson = +asked[1];
   sel.value = currentLesson;
-  sel.addEventListener('change', e => switchLesson(+e.target.value));
+  // Both events, and both guarded. The picker once walked to a different
+  // lesson than the passage on screen and stayed there — the heading said one
+  // lesson while the words were another, which is the exact class of bug
+  // openRecord() was already hardened against, arriving instead through the
+  // dropdown. 'input' catches keyboard selection in browsers that delay
+  // 'change'; the equality guard makes the double binding harmless.
+  const onPick = e => {
+    const n = +e.target.value;
+    if (!LESSONS[n] || n === currentLesson) return;
+    switchLesson(n);
+  };
+  sel.addEventListener('change', onPick);
+  sel.addEventListener('input', onPick);
   window.addEventListener('hashchange', () => {
     const h = /^#L(\d+)$/.exec(location.hash);
     if (h && LESSONS[h[1]] && +h[1] !== currentLesson) {
