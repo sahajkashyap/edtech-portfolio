@@ -1,4 +1,4 @@
-# Draft 07 — the reading assessment tool
+# Draft 07 — Word by Word, the running record tool
 
 **Type:** 🍽 Main course (project post)
 **Post:** Tuesday 20 October 2026, week 43. Calendar slot 11.
@@ -166,7 +166,7 @@ Sources:
 
 *Version of 6 Aug 2026, afternoon. Sahaj's own tweaks kept; see the revision
 record below for what changed and why. Paste-ready copy lives at
-`~/Desktop/linkedin-posts/POST-2026-10-20-running-record.txt`.*
+`~/Desktop/linkedin-posts/POST-2026-10-20-word-by-word.txt`.*
 
 It is customary to do a reading assessment on every child twice a year. One
 child at a time, out of class, fifteen to twenty-five minutes each depending on
@@ -182,8 +182,6 @@ It is the most useful reading data a school collects. It also costs the one thin
 a teacher never has, which is twenty uninterrupted minutes. You need a quiet
 space and one child, while the rest of the class works on something independent
 or is at art, P.E. or Spanish.
-
-Twice a year was never the right number. It was the affordable one.
 
 So I built the paper form as a web page, and added a few things paper cannot do.
 I called it Word by Word, because that is what the marking is.
@@ -223,7 +221,7 @@ secure, how many are close, how many need help now. An experienced teacher
 already knows. Having it counted, next to what you already believed, is worth
 something on the morning you are making five groups out of twenty-four children.
 
-The teacher still builds the house.
+It takes a village to raise a child. The teacher still builds the house.
 
 ---
 
@@ -284,10 +282,14 @@ that out. To have both those pieces is a huge advantage."*
 That idea is now the ending. Three things were repaired on the way:
 
 1. **"Twice a year was never the right number. It was the affordable one."** had
-   been deleted. It is the strongest line in the piece and the one this file is
-   named around. It was not restored to the end; it now sits directly after the
-   cost paragraph it argues about, and pivots into *"So I built the paper form as
-   a web page."* The ending is free for the bricks.
+   been deleted. I restored it, moved earlier in the post, on the grounds that it
+   was the strongest line in the piece. **Later the same evening Sahaj cut it
+   again, for good, and he was right.** It reads as a verdict on schools, and his
+   own standing rule is that nothing may imply a school or a teacher was failing
+   beforehand. The line was originally his, from `VISION-AND-NEXT.md`, and I
+   handed it back to him in a place where it did damage. The cost paragraph now
+   runs straight into *"So I built the paper form as a web page,"* which reads
+   cleanly with nothing between them. It also freed about 66 characters.
 2. **The image was mixed and it was doing three jobs.** Bricks, then a house,
    then A.I. informing thinking, inside four sentences. The bricks now appear
    once, name a specific list of real numbers, and the house is the last three
@@ -300,11 +302,27 @@ That idea is now the ending. Three things were repaired on the way:
 
 Also fixed: a semicolon before *but*, and a doubled space.
 
+### The closing line is Sahaj's
+
+Later on 6 August he asked for something at the end with a little of his humour
+in it, and proposed: *"Yes, it takes a village to raise a child, but the teacher
+still builds the house."*
+
+It is his instinct and it is a good one. Closing on a familiar phrase tilted
+slightly is a move he makes in his own writing, and it is not even a mixed image:
+a village is made of houses. **One change only, the joint.** *But* sets the
+village against the teacher, and the paragraph two above spends its whole length
+arguing the village is a good thing — the printout for the student support team,
+everyone caring for a child reading the same thing. A full stop lets both be
+true instead of one beating the other:
+
+> It takes a village to raise a child. The teacher still builds the house.
+
 ---
 
 ## Length and voice check
 
-- **546 words.** Longer than the 279-word version, and longer than the 360 in the
+- **2,959 characters, 552 words.** LinkedIn's hard cap is 3,000 characters, so this leaves 41 to spare. Longer than the 279-word version, and longer than the 360 in the
   Google Doc header, because the ending Sahaj asked for is a new argument rather
   than a closing line. LinkedIn shows about three lines before *see more*, so the
   cost is real but it is paid at the end, not the top. Cut further only on
