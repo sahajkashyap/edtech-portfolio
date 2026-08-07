@@ -5,6 +5,84 @@ where we left off. Newest updates go at the top.
 
 ---
 
+## 2026-08-07
+
+**Done — eleven bugs fixed in Word by Word, and the reason they kept appearing.**
+
+### What we learned, which matters more than the fixes
+
+Ten review passes had each found new bugs and never converged. That was NOT an
+agent-skill problem, and no amount of "be more thorough" was going to fix it:
+
+> **"Find the bugs" has no completion criterion.** A reviewer — person or agent
+> — stops when it runs out of ideas, and *where* it runs out is different every
+> pass. Reading 2,300 lines is SAMPLING, not covering. Nothing remembers what
+> the last pass concluded. Ten passes with no test suite is one pass, ten times,
+> on shuffled ground.
+
+Two things fixed it, and both are now standing rules:
+
+1. **A test file** (`running-record-tool/tests/`) — 182 checks driving real
+   Chrome with real clicks and keypresses. Every check exists because something
+   was genuinely broken once. A bug fixed in August cannot come back in November.
+2. **A coverage number in the same file** (`npm run coverage`) — Chrome records
+   which lines actually executed, and prints every line that never ran. **100%
+   of 1,375 executable lines.** "What percentage is really being checked" stops
+   being a guess and becomes a printed list of line numbers. Each one either
+   gets a test or gets deleted as unreachable.
+
+Driving coverage from 94.2% to 100% is what found the delete-resurrect bug that
+ten review passes had missed.
+
+Bounded instructions beat thorough ones. The agent told "prove these four
+surfaces agree across every lesson and report the case count" ran 620 cases and
+came back with three real defects. The agents told "find bugs" kept wandering.
+
+### The bugs
+
+**Records could be silently corrupted.** The popover survived a lesson change
+and marked a word on the new passage. Marking keys fired from the dropdown and
+from buttons. Moving to the next lesson relabelled the record just saved with
+the new lesson against the old lesson's words — and re-opening it was then
+refused outright. Deleting the open record wrote it straight back. (The last two
+were introduced by the `flushSave` fix earlier the same day, and caught by the
+tests and by an adversarial agent respectively.)
+
+**The four surfaces disagreed.** Print banded the unrounded accuracy while the
+screen banded the rounded one, so the same child came out Independent on screen
+and Instructional on the paper the specialist receives. The stats tile showed a
+rate for word lists beside the banner saying it would not. The CSV cue analysis
+ignored the stop mark. Insertions past the stop mark were counted; rate could go
+negative; error rate could read "1:0".
+
+**The clock lied.** Reading time went stale in storage until the next mark. Undo
+did not restore the reading time after "Clear all marks", whose own message
+promises it does. Taking back an accidental stop mark left the clock dead and
+silent, inflating the final rate.
+
+**Findability.** The picker showed nine identical "word list" entries and never
+named the skill; it now reads `Lesson 6 · p /p/`, grouped into word lists and
+passages. Navigation moved above the passage for iPad portrait. A stranger lands
+on Lesson 15, the first passage, not Lesson 41. `DESIGN.md` links pointed at a
+file browsers download — and `check_links.py` passed them, because it checked
+only for a 200 and a word count. Both fixed.
+
+### New: `verify <tool>`
+
+`.claude/workflows/verify-everything.js` — say **"verify running record tool"**.
+Four phases: **Hunt** (four agents, four different lenses) → **Refute** (three
+skeptics per finding, majority rules) → **Tests** (survivors become test code) →
+**Verdict**. It loops until two consecutive rounds find nothing new, then says
+whether it converged or hit the ceiling still finding things. Runs on Fable 5.
+
+### Next
+
+- Let `verify running-record-tool` run to convergence.
+- Same treatment for the other ten tools in this repo.
+- Retrofit tests + coverage onto the tools that don't have them.
+
+---
+
 ## 2026-08-05
 
 **Done — the seventh pass. Child-audit findings 117 → 33, zero HIGH anywhere.**

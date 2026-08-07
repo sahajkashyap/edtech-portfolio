@@ -158,13 +158,17 @@ Rules that come with it:
 
 The working example to copy is `running-record-tool/tests/run-tests.js`.
 
-## The command: `ultracode verify <folder>`
+## The command: `verify <tool>`
 
-Example: **`ultracode verify running-record-tool`**
+Say it however is natural: **`verify running record tool`**, `verify the phonics
+tool`, `verify all of them`. Naming this saved workflow is all it takes.
 
-That runs the saved workflow at `.claude/workflows/verify-everything.js`. The
-word "ultracode" is the switch that turns on multi-agent orchestration for that
-turn; "verify" names the workflow. Both words are needed.
+`ultracode` is a DIFFERENT switch, and it is not needed here. Use that word only
+when you want a fan-out of agents that is NOT already a saved workflow — an
+open-ended "throw everything at this". Saying `ultracode verify ...` also works
+and does no harm; it is just belt and braces.
+
+This runs `.claude/workflows/verify-everything.js`.
 
 Four phases, run by the machine rather than steered by hand:
 
