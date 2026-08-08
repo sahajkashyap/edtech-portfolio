@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Regression tests for the Reading Assessment Tool. node_modules here is a symlink to running-record-tool/tests/node_modules — nothing to install.",
   "scripts": {
-    "test": "node run-tests.js",
-    "coverage": "node run-tests.js --coverage"
+    "test": "NODE_PATH=/Users/sahajkashyap/Documents/GitHub/edtech-portfolio/running-record-tool/tests/node_modules node run-tests.js",
+    "coverage": "NODE_PATH=/Users/sahajkashyap/Documents/GitHub/edtech-portfolio/running-record-tool/tests/node_modules node run-tests.js --coverage"
   },
   "type": "commonjs",
   "dependencies": {

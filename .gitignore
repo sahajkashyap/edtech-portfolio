@@ -7,3 +7,10 @@
 # Test dependencies. Reinstall with "cd running-record-tool/tests && npm install".
 # The tests themselves are committed; the downloaded libraries are not.
 node_modules/
+
+# node_modules, with NO trailing slash so it also catches the SYMLINKS the
+# test agents created. With the slash, git ignored the directories but happily
+# committed ten symlinks pointing at an absolute path on one laptop — which
+# published that path and stalled the GitHub Pages build, because Jekyll cannot
+# follow a link out of the repo.
+node_modules

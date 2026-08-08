@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Regression tests for the decodable passage index and its 128 printable sheets.",
   "scripts": {
-    "test": "node run-tests.js"
+    "test": "NODE_PATH=/Users/sahajkashyap/Documents/GitHub/edtech-portfolio/running-record-tool/tests/node_modules node run-tests.js",
+    "coverage": "NODE_PATH=/Users/sahajkashyap/Documents/GitHub/edtech-portfolio/running-record-tool/tests/node_modules node run-tests.js --coverage"
   },
   "type": "commonjs",
   "dependencies": {
