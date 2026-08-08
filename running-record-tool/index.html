@@ -41,6 +41,9 @@
                letter-spacing:.3px; margin-top:2px}
   .who{display:flex; gap:8px; align-items:center; font-size:14px}
   .who label{color:var(--muted)}
+  /* What the Initials box holds, said before a letter is lost rather than after. */
+  .who .cap{font-size:12px; color:var(--muted); white-space:nowrap}
+  .who .cap.hit{color:var(--c-sub); font-weight:bold}
   select{
     font:inherit; font-size:15px; padding:5px 8px; background:#fff;
     border:1.5px solid var(--rule); border-radius:6px; max-width:290px;
@@ -108,6 +111,22 @@
   .w:hover{background:var(--soft)}
   .w.cursor{border-color:var(--blue); background:#E3F2FD}
   .w.past{color:#b3b3b3}
+  /* A mark placed past the stop mark counts for NOTHING — stats(), the printed
+     "Every mark" table and the spreadsheet all stop at the stop mark. It was
+     still drawn in full mark colour, with its coloured tag and its "read as"
+     label, on screen AND on paper: two words struck through in orange above a
+     printed "Errors 1", so counting the marks on the passage gave a different
+     answer from the tile beside it. .w.past said only `color`, and it was
+     declared BEFORE .w.m-sub and friends at the same specificity, so the mark
+     colours won on exactly the words that most needed the "not counted" look.
+     These rules name both classes, so they win however the file is reordered
+     later. Unmarked words past the stop already greyed out correctly. */
+  .w.past.m-sub, .w.past.m-omit, .w.past.m-told,
+  .w.past.m-sc, .w.past.m-rep, .w.past.m-appeal{
+    background:transparent; color:#b3b3b3; text-decoration-color:#b3b3b3;
+  }
+  .w.past .tag{background:#b3b3b3}
+  .w.past .said{color:#b3b3b3}
 
   .w.m-sub{background:var(--bg-sub); color:var(--c-sub);
            text-decoration:line-through; text-decoration-thickness:2px}
@@ -125,9 +144,20 @@
   .t-sub{background:var(--c-sub)} .t-omit{background:var(--c-omit)}
   .t-told{background:var(--c-told)} .t-sc{background:var(--c-sc)}
   .t-rep{background:var(--c-rep)} .t-appeal{background:var(--c-appeal)}
+  /* TWO LANES, not one. The said label used to sit at top:-19px carrying the
+     passage's own line-height (2.6, so a 36px-tall box for 14px of text),
+     which put it in exactly the same band as the tag chip at top:-11px. On any
+     word shorter than about nine characters the blue "what they said" text and
+     the coloured SUB / OM / TOLD chip were painted on top of each other —
+     25 of 28 sampled words, up to 100% covered — on screen AND on the printed
+     record, leaving neither one readable, which is the one thing the teacher
+     typed the word in for. The tag keeps the band immediately above the word;
+     the said label sits in its own lane above the tag, with a line-height of
+     its own so its box is as tall as its text and no taller. */
   .said{
-    display:block; position:absolute; top:-19px; left:0; white-space:nowrap;
-    font-size:14px; color:var(--deepblue); font-style:italic; font-weight:bold;
+    display:block; position:absolute; bottom:calc(100% + 12px); left:0;
+    white-space:nowrap; line-height:1.2;
+    font-size:13px; color:var(--deepblue); font-style:italic; font-weight:bold;
   }
   .stopmark{color:var(--c-sub); font-weight:bold; font-size:20px; padding:0 4px}
 
@@ -189,7 +219,7 @@
   .msvrow button{flex:0 0 34px; font-weight:700; padding:5px 0; border-left-width:1px}
   .msvrow button.on{background:var(--deepblue); color:#fff; border-color:var(--deepblue)}
   .b-none{background:var(--soft); color:var(--muted); border:1px solid var(--rule)}
-  .wcpm{font-size:14px; color:var(--muted); margin-top:3px}
+  .wcpm{font-size:14px; color:var(--muted); margin-top:8px}
   .wcpm b{color:var(--ink); font-size:18px}
   .tbtns{display:flex; gap:6px; margin-top:9px}
   .tbtns .btn{font-size:12.5px; padding:5px 10px}
@@ -241,51 +271,93 @@
   .keys li{margin-bottom:6px; font-size:14.5px; list-style:none}
   .keys .grp{margin-top:11px; font-size:11.5px; color:var(--muted);
              text-transform:uppercase; letter-spacing:.6px}
-  #notes{
+  /* Both boxes in the Notes card, not just the second one. WHAT WAS WRONG:
+     this rule named #notes alone, so the retell box directly above it was a
+     raw browser-default textarea — 183x36px of grey monospace beside a styled
+     550x150 one — and the teacher's own record of what the child said back
+     scrolled out of sight after about two short lines. */
+  #notes, #retell{
     width:100%; min-height:150px; font:inherit; font-size:15px; padding:11px;
     border:1.5px solid var(--rule); border-radius:8px; background:#fff; resize:vertical;
   }
   .recrow{
-    display:flex; align-items:center; gap:12px; padding:8px 4px;
+    /* wrap: the row carries the time of day and which reading it is now, and on
+       a phone-width screen a non-wrapping row ran off the side of the page. */
+    display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:8px 4px;
     border-bottom:1px solid #efe8da; font-size:14.5px;
   }
   .recrow:last-child{border-bottom:none}
   .recrow.open{background:var(--bg-rep); border-radius:6px}
   .recrow .who2{font-weight:bold; min-width:62px; letter-spacing:1px}
   .recrow .les{min-width:96px; color:var(--muted)}
-  .recrow .dt{min-width:104px; color:var(--muted)}
+  .recrow .dt{min-width:160px; color:var(--muted)}   /* date AND time of day */
+  .recrow .nth{color:var(--muted); font-style:italic}
   .recrow .acc{min-width:52px; font-weight:bold; margin-left:auto}
   .btn.tiny{font-size:12.5px; padding:4px 10px}
   .norecs{color:var(--muted); font-size:14px; margin:2px 0}
   /* --- Print: what the learning specialist actually receives ---------------
      Everything a teacher needs on screen is scaffolding on paper. Hide the
      controls, unpin the fixed bars, and print the record itself. Colours are
-     forced on so the mark types survive; the letter tags carry it in mono. */
+     forced on so the mark types survive; the letter tags carry it in mono.
+
+     ONE PAGE. The buttons card promises "Print gives you one page for the
+     learning specialist", and it was two sheets for all 36 lessons — even for
+     the lightest possible record. On a word list sheet 2 held nothing but the
+     disclaimer; on a passage the marked passage itself straddled the break and
+     the miscue table, the retell, the notes and the footer all landed on the
+     second sheet. Everything below is sized against the real Letter print box
+     (710 x 950 css px at 14mm margins) and A4 (688 x 1017), measured across
+     all 36 lessons both with two marks on them and with a quarter of the words
+     wrong plus a retell and a note. Three things bought the space:
+       1. The passage's annotations go INLINE on paper. On screen the tag and
+          the said label are stacked above each word, which costs about 28px of
+          leading on EVERY line — 300px+ on a passage, more than the miscue
+          table. On paper they read perfectly well as "cat SUB “cot”" in the
+          run of text, and the line can then be set at normal leading.
+       2. The miscue table runs in two columns. It is one short line per mark,
+          and a quarter-wrong reading of Lesson 33 is twenty of them.
+       3. #ptitle is dropped: it repeats Lesson, skill and title, all three of
+          which the header block beside the child's initials already prints.
+     Nothing here changes a number. If you loosen any of it, re-measure — the
+     check "the printed record still fits on one page" in tests/run-tests.js
+     drives Chrome's own print pipeline and counts the sheets. */
   .printonly{display:none}
   @media print{
     @page{margin:14mm}
     body{background:#fff; font-size:12pt}
     header, .cols, #stats, #pop, #recordscard, .tbtns,
-    #undobtn, .privacy, .warnflag, .sitenav{display:none !important}
+    #undobtn, .privacy, .warnflag, .sitenav,
+    .passage-title{display:none !important}
     main{max-width:none; padding:0; margin:0}
     .work{display:block}
     .panel{display:none}
     .printonly{display:block}
     #passage{
-      border:1px solid #999; border-radius:6px; padding:14px 16px;
-      font-size:19pt; line-height:2.4; background:#fff;
+      border:1px solid #999; border-radius:6px; padding:6px 8px;
+      font-size:12pt; line-height:1.55; background:#fff;
     }
-    #passage.wordlist{font-size:20pt; line-height:1.9}
-    .w{cursor:default}
+    #passage.wordlist{font-size:13pt; line-height:1.5}
+    .w{cursor:default; margin:0; padding:1px 3px}
+    /* The two stacked lanes are a screen affordance. Inline they cost the
+       paper no leading at all, and inline-block keeps the strike-through of a
+       substitution off the tag and off what the child actually said. */
+    .w .tag{
+      position:static; display:inline-block; margin-left:3px; font-size:7pt;
+      line-height:1.3; vertical-align:1px;
+    }
+    .w .said{
+      position:static; display:inline-block; margin-left:3px; font-size:9.5pt;
+      line-height:1.15;
+    }
     .w.cursor{border-color:transparent !important; background:transparent !important}
     *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
     .prhead{
       display:flex; justify-content:space-between; align-items:flex-end;
-      border-bottom:2px solid #333; padding-bottom:6px; margin-bottom:12px;
+      border-bottom:2px solid #333; padding-bottom:3px; margin-bottom:6px;
     }
-    .prhead h1{font-size:15pt; margin:0}
-    .prhead .prwho{font-size:12pt; text-align:right; line-height:1.5}
-    .prhead .prwho b{font-size:15pt; letter-spacing:1px}
+    .prhead h1{font-size:11pt; margin:0}
+    .prhead .prwho{font-size:9pt; text-align:right; line-height:1.25}
+    .prhead .prwho b{font-size:11.5pt; letter-spacing:1px}
     /* Four across, twice down — not eight across. These are eight tiles and
        the widest key on them is SELF-CORRECTION RATE; as a single flex row
        with overflow:hidden they could not shrink past their own text, so on
@@ -297,29 +369,66 @@
        The order of the eight is unchanged. */
     .prnums{
       display:grid; grid-template-columns:repeat(4, 1fr);
-      gap:0; margin:14px 0 10px; border:1px solid #999;
+      gap:0; margin:6px 0 5px; border:1px solid #999;
       border-radius:6px; overflow:hidden;
     }
     .prnums div{
-      padding:8px 10px; text-align:center;
+      padding:2px 4px; text-align:center;
       border-right:1px solid #ccc; border-bottom:1px solid #ccc;
     }
     .prnums div:nth-child(4n){border-right:none}
     .prnums div:nth-child(n+5){border-bottom:none}
-    .prnums .v{font-size:16pt; font-weight:bold; line-height:1.2}
-    .prnums .k{font-size:8pt; text-transform:uppercase; letter-spacing:.6px; color:#555}
-    .prmarks{margin-top:10px; font-size:10.5pt}
+    .prnums .v{font-size:10.5pt; font-weight:bold; line-height:1.2}
+    .prnums .k{font-size:6.5pt; text-transform:uppercase; letter-spacing:.6px; color:#555}
+    .prmarks{margin-top:5px; font-size:8pt}
     .prmarks h3{font-size:9pt; text-transform:uppercase; letter-spacing:.7px;
                 color:#555; margin:0 0 4px}
-    .prmarks td{padding:2px 12px 2px 0; vertical-align:top}
-    .prnotes{margin-top:12px; font-size:11pt; white-space:pre-wrap;
-             border-top:1px solid #999; padding-top:8px}
+    /* Two columns, by CSS only — the rows stay real <tr>/<td> so everything
+       that reads this table by cells still does. One mark is one short line;
+       twenty of them down a single column is half a sheet of white space. */
+    .prmarks table{display:block; column-count:2; column-gap:18px}
+    .prmarks tbody{display:block}
+    .prmarks tr{display:block; break-inside:avoid; page-break-inside:avoid}
+    .prmarks td{display:inline; padding:0 5px 0 0; vertical-align:top}
+    .prnotes{margin-top:5px; font-size:8.5pt; white-space:pre-wrap;
+             border-top:1px solid #999; padding-top:4px}
     .prnotes h3{font-size:9pt; text-transform:uppercase; letter-spacing:.7px;
                 color:#555; margin:0 0 4px}
-    .prfoot{margin-top:14px; font-size:8.5pt; color:#666;
-            border-top:1px solid #ccc; padding-top:6px}
+    .prnotes p{margin:0 0 2px}
+    .prfoot{margin-top:6px; font-size:6.5pt; color:#666;
+            border-top:1px solid #ccc; padding-top:3px}
+    /* Nothing on this sheet is worth splitting down the middle. */
+    .prhead, .prnums, .work, #passage, .prmarks, .prnotes, .prfoot{
+      break-inside:avoid; page-break-inside:avoid;
+    }
   }
-  .saved{font-size:12px; color:var(--c-sc); height:16px; margin-top:5px}
+  /* min-height, not height. WHAT WAS WRONG: this box was a fixed 16px tall, so
+     every message longer than one line overflowed it and was painted over by
+     the button row below — including "THIS RECORD IS NOT BEING SAVED", the
+     most urgent sentence in the tool, and the "allow pop-ups" instruction.
+     A warning also has to stop wearing the colour of the "Saved on this
+     laptop" confirmation, so .warn takes it out of the self-corrected green. */
+  .saved{font-size:12px; color:var(--c-sc); min-height:16px; margin-top:5px;
+         line-height:1.4}
+  .saved.warn{color:var(--c-sub); font-weight:bold}
+
+  /* ...and the same warning where the teacher is actually looking. WHAT WAS
+     WRONG: #savedmsg sits at the bottom of the Notes card, which is 450px
+     (desktop) to 1450px (iPad portrait) below the fold, so the one safety net
+     the tool has — "this browser refused to store it" — fired where nobody
+     could see it. This bar is pinned to the top of the screen at every width
+     and carries the same words. It lies over the header, so a tap anywhere on
+     it puts it away — a warning that cannot be dismissed is a warning that
+     blocks the Child box. Interface, so it never reaches paper. */
+  .alertbar{
+    position:fixed; top:0; left:0; right:0; z-index:80; display:none;
+    background:var(--c-sub); color:#fff; font-size:14px; font-weight:bold;
+    padding:10px 22px; line-height:1.4; box-shadow:0 2px 10px rgba(0,0,0,.25);
+    cursor:pointer;
+  }
+  .alertbar .dismiss{font-weight:normal; opacity:.85; margin-left:8px}
+  .alertbar.on{display:block}
+  @media print{ .alertbar{display:none !important} }
 </style>
 </head>
 <body>
@@ -330,8 +439,17 @@
     <span class="what">A running record tool for K&#8209;2 teachers</span>
   </div>
   <div class="who">
-    <label for="initials">Child</label>
-    <input type="text" id="initials" maxlength="4" placeholder="J.M." autocomplete="off">
+    <!-- "Child" invited a name, and maxlength="4" then ate the rest of it
+         without a word: a teacher who typed Jacob got "Jaco" on the saved row,
+         on the printed sheet and in the spreadsheet, with no message and no
+         counter. Only initials and a date identify a child in this tool — that
+         is what "Stays on this laptop" means — so the box now says what it
+         wants. The cap is enforced in script rather than by the attribute, so
+         the box can SAY a letter was not kept instead of silently dropping it.
+         Do NOT put maxlength back: it makes the drop invisible again. -->
+    <label for="initials">Initials</label>
+    <input type="text" id="initials" placeholder="J.M." autocomplete="off">
+    <span class="cap" id="initcap">up to 4</span>
   </div>
   <div class="who">
     <label for="lessonpick">Lesson</label>
@@ -422,11 +540,21 @@
       <div class="timer">
         <h2 style="margin-bottom:6px">Time</h2>
         <div class="clock idle" id="clock">0:00</div>
-        <div class="wcpm" id="wcpm">starts when you begin</div>
+        <!-- The buttons sit ABOVE the reading-rate line, not below it. WHAT WAS
+             WRONG: that line changes height as the reading goes on — "reading…"
+             to a two-line rate, a three-line word-list message, back to
+             "paused" — and every change moved the two buttons under it by 27px
+             on a passage and 48px on a word list. Pressing Pause and then
+             pressing the same spot again to resume (the natural gesture, and
+             the one a trackpad tap-to-click makes) landed on the panel
+             background and did nothing, so the clock stayed paused however many
+             times you pressed. Nothing above these buttons ever changes height,
+             so here they hold still. -->
         <div class="tbtns">
           <button class="btn" id="pausebtn">Pause</button>
           <button class="btn" id="finishbtn">Finish</button>
         </div>
+        <div class="wcpm" id="wcpm">starts when you begin</div>
       </div>
     </aside>
   </div>
@@ -441,8 +569,17 @@
         <li><kbd>S</kbd> self&#8209;corrected &nbsp; <kbd>R</kbd> repeated &nbsp; <kbd>A</kbd> appealed</li>
         <li><kbd>T</kbd> you told them &nbsp; <kbd>O</kbd> skipped it entirely</li>
         <li><kbd>Enter</kbd> type what they actually said <em>(optional)</em></li>
-        <li>and tag <b>M</b>&thinsp;/&thinsp;<b>S</b>&thinsp;/&thinsp;<b>V</b> &mdash; what the child was
-            <em>using</em> when they went wrong <em>(optional)</em></li>
+        <!-- WHAT WAS WRONG: this read "and tag M / S / V", in a list headed
+             Keys, so it read as three more keys. M and V are bound to nothing
+             at all — press them and the tool does not so much as blink. And S
+             was already published four lines above as self-corrected, so a
+             teacher following this line pressed it and turned the substitution
+             she had just recorded INTO a self-correction: the error vanished
+             and the accuracy went up. The M/S/V tags have only ever been
+             buttons on the mark menu. Say that, and say it here. -->
+        <li>and on that menu tag <b>M</b>&thinsp;/&thinsp;<b>S</b>&thinsp;/&thinsp;<b>V</b> &mdash; what the child was
+            <em>using</em> when they went wrong <em>(optional)</em>.
+            These three are buttons, not keys.</li>
         <li class="grp">Getting around</li>
         <li><kbd>&larr;</kbd> back &nbsp; <kbd>&rarr;</kbd> forward &nbsp; <kbd>Backspace</kbd> undo</li>
         <li><kbd>E</kbd> stopped reading here &nbsp; <kbd>I</kbd> added a word</li>
@@ -487,13 +624,23 @@
   <div class="printonly prnotes" id="prnotes"></div>
   <div class="printonly prfoot">
     Repetitions and self-corrections are not counted as errors.
-    Words correct per minute is measured over the whole passage, not a
-    one-minute timing, so it is not comparable to a DIBELS benchmark score.
+    <!-- WHAT WAS WRONG: this sentence was fixed text saying the rate is
+         measured over the whole passage, which stopped being true for a
+         reading that was never finished — so an unfinished sheet contradicted
+         its own footnote, and the specialist reading it could not tell which
+         numerator produced the number. paintPrint() writes it now. -->
+    <span id="prratefoot">Words correct per minute is measured over the whole
+    passage, not a one-minute timing, so it is not comparable to a DIBELS
+    benchmark score.</span>
     Kept on the teacher's laptop; not stored or sent anywhere.
   </div>
 
   <div class="card" id="recordscard" style="margin-top:20px">
-    <h2>Saved records &mdash; one per child, nothing is overwritten</h2>
+    <!-- "one per child" was not true and could not be: read the same child
+         again and you get a second record, which is the point. The heading now
+         says what the list actually holds, and each row carries the time of day
+         so two readings of one child on one day are told apart. -->
+    <h2>Saved records &mdash; one per reading, nothing is overwritten</h2>
     <div id="records"></div>
   </div>
 </main>
@@ -521,16 +668,34 @@
     <button data-cue="s" title="Structure — the miscue sounds like English in that slot">S</button>
     <button data-cue="v" title="Visual — the miscue looks like the printed word">V</button>
   </div>
+  <!-- The two marks that were keyboard-only. WHAT WAS WRONG: "added a word"
+       and "stopped reading here" existed nowhere but the keys I and E, while
+       the hint above the passage promises this menu "has every mark on it" and
+       the panel keeps a live "Added a word" tally. On a touch-only iPad — the
+       device this tool is written for — no gesture anywhere on the page could
+       make either mark, and that tally could never move off zero. These do
+       exactly what I and E do, on the word the menu is open on. -->
+  <div class="row">
+    <button data-extra="ins"  style="border-left-color:var(--c-sub)">Added a word</button>
+    <button data-extra="stop" style="border-left-color:var(--c-sub)">Stopped reading here</button>
+  </div>
   <div class="row"><button data-code="correct">Clear this mark</button></div>
   <div class="hint">Esc closes. Nothing here is required &mdash; M/S/V only if you want the analysis.</div>
 </div>
+
+<!-- Empty until something urgent happens; see .alertbar in the stylesheet. -->
+<div class="alertbar" id="alertbar"></div>
 
 <div id="stats">
   <div class="stat"><div class="n" id="sAcc">100%</div><div class="l">Accuracy</div></div>
   <div id="band" class="b-ind">Independent</div>
   <div class="stat"><div class="n" id="sErrRatio">&ndash;</div><div class="l">Error rate</div></div>
   <div class="stat"><div class="n" id="sSCRatio">&ndash;</div><div class="l">Self&#8209;correction rate</div></div>
-  <div class="stat"><div class="n" id="sWcpm">&ndash;</div><div class="l">Words correct / min</div></div>
+  <!-- The label is written by render(), not fixed here: while the reading is
+       still going the number under it is measured over the words the child has
+       got through so far, and a tile that says only "Words correct / min" does
+       not admit that. See paintPrint() and the printed footnote. -->
+  <div class="stat"><div class="n" id="sWcpm">&ndash;</div><div class="l" id="sWcpmLabel">Words correct / min</div></div>
 
   <div id="cuebox" style="display:none">
     <h2 style="margin-bottom:6px">What they were using</h2>
@@ -1432,8 +1597,11 @@ const isWord = t => /[a-z]/i.test(t);
 function snapshot(withClock){
   // {...w} is shallow, so w.cues would be shared between the snapshot and the
   // live word and Undo would not undo a cue toggle. Copy it.
+  // fromClick: the cursor alone does not say how it got where it is, and S / R
+  // / A ask that question through prev(). See undo().
   history.push({ words: words.map(w => ({...w, cues: w.cues ? {...w.cues} : undefined})),
                  cursor, stoppedAt, insertions, insertAt: insertAt.slice(),
+                 fromClick: cursorFromClick,
                  clock: withClock ? { elapsed: totalMs(), state: clockState } : undefined });
   if (history.length > 200) history.shift();
 }
@@ -1458,6 +1626,13 @@ function pauseClock(){
 // What the clock was doing before Finish (or a stop mark) stopped it, so that
 // undoing that gesture puts it back rather than always starting it.
 let stateBeforeFinish = 'idle';
+// Which gesture ended the reading. Lifting a stop mark restarts the clock —
+// but only when the stop mark is what stopped it. On a reading the teacher had
+// already ended with Finish, pressing E and taking it straight back used to
+// un-finish the reading: the clock started again on a finished assessment and
+// the heartbeat wrote the growing time into the child's saved record every
+// five seconds. 'done' alone cannot tell the two apart, so remember which.
+let finishedByStopMark = false;
 
 function resumeClock(){
   if (clockState !== 'paused' && clockState !== 'done') return;
@@ -1530,7 +1705,13 @@ function mark(i, code){
   // that word later, even on another day after a reload, arrived pre-coded
   // Meaning + Structure + Visual and the cue tally reported it as the
   // teacher's judgement. "Clear all marks" has always done this properly.
-  if (code === 'correct') delete words[i].cues;
+  // WHAT WAS ALSO WRONG: only "Clear this mark" wiped them. Changing a
+  // substitution to Self-corrected (or Repeated, or Appealed) hid the M/S/V
+  // row but kept the cues inside the record, through a save and a reload — so
+  // marking that word Wrong word again later brought the old cues back
+  // pre-lit and counted them as a fresh judgement. That is the very bug above
+  // by a different door. Cues belong to a miscue, and to nothing else.
+  if (!['sub','omit','told'].includes(words[i].code)) delete words[i].cues;
   render(); save();
   // If the popover is open on THIS word, redraw it. A teacher who clicked a
   // word and then reached for the keyboard was left with a popover showing no
@@ -1544,11 +1725,18 @@ function mark(i, code){
 // so ("← back → forward"). It was starting the assessment clock too, so a
 // teacher lining the cursor up on the first word before the child began was
 // timing the silence. Same trap the popover's "Clear this mark" already fixed.
+// save() on a SCORING move. Space was the one mutating path that redrew the
+// screen and wrote nothing: the 5-second heartbeat only ever updates a record
+// that already exists, so a child who began fluently — Space, Space, Space —
+// was held entirely in memory, and a reload threw away every second of it with
+// no warning. A word scored correct is as much of a record as a word scored
+// wrong.
 function advance(scoring){
   if (scoring) autoStart();
   cursorFromClick = false;
   if (cursor < words.length - 1) cursor++;
   render();
+  if (scoring) save();
 }
 // ArrowLeft is navigation exactly as ArrowRight is, so it has to forget the
 // click the same way. It did not: once any word had been tapped, prev() kept
@@ -1559,6 +1747,74 @@ function advance(scoring){
 function retreat(){ cursorFromClick = false; if (cursor > 0) cursor--; render(); }
 
 // --- the numbers -----------------------------------------------------------
+// The RATE's numerator, while the reading is still going on.
+//
+// Words read is the whole passage, because that is what accuracy is out of.
+// Dividing it by the seconds elapsed so far said "1628 words correct per
+// minute so far" two seconds into a reading in which one word had been dealt
+// with — on the fixed bar that is always in view, and on the printed record
+// too. The `mins > 0.02` guard only hid the first 1.2 seconds of it.
+//
+// So until the reading is FINISHED, the rate is out of the words the child has
+// actually got through: everything up to the cursor, or up to the furthest
+// word carrying a mark if the teacher has tapped back to an earlier one. Once
+// the reading is finished — Finish pressed, a stop mark set, or a saved record
+// being read back — the numerator is the whole passage exactly as before, so
+// no finished record's rate changes by a single word.
+//
+// Returns null to mean "use the whole-passage figure".
+function rateWords(ws, last, cur, ins, insAt, live){
+  if (!live) return null;
+  let far = cur - 1;
+  ws.forEach((w, i) => { if (w.code && i > far) far = i; });
+  if (far > last) far = last;
+  let read = 0, errors = 0;
+  ws.forEach((w, i) => {
+    if (i > far) return;
+    if (isWord(w.text)) read++;
+    if (w.code && IS_ERROR[w.code]) errors++;
+  });
+  // Same stop-mark split the totals use, against the point reached instead.
+  errors += (insAt.length === ins) ? insAt.filter(p => p <= far).length : ins;
+  return { read, errors };
+}
+// A reading is still going on only while the clock says so. 'idle' has no time
+// on it, 'done' is finished, a record saved before this existed has no state at
+// all — none of those get the live treatment, so nothing already saved moves.
+const readingLive = (cs, stop) =>
+  (cs === 'running' || cs === 'paused') && (stop === null || stop === undefined);
+
+// WHAT THE RATE WAS ACTUALLY DIVIDED BY. This is a different question from
+// readingLive(), and conflating the two put a false sentence on the paper that
+// goes to the learning specialist.
+//
+// readingLive() answers "trim the numerator to where the cursor has got to?".
+// It is false as soon as a stop mark exists — but a stop mark does NOT mean the
+// whole passage was read. stats() cuts the count at stoppedAt, so the rate is
+// over the words up to the mark. Labelling that "whole passage" is the worst
+// kind of wrong: a child who stopped after 13 words of 55 showed 24 words per
+// minute, described as a whole-passage rate, when the whole-passage figure
+// would have been 108. Twenty-four reads as well below benchmark and a hundred
+// and eight reads as fine. The arithmetic was right; the sentence beside it
+// was not.
+//
+// Three honest answers, and every surface must use this one function:
+//   'live'     — trimmed to the words got through so far; the reading goes on
+//   'stopmark' — trimmed to where the child stopped
+//   'whole'    — the whole passage, which is the only case that may say so
+const rateBasis = (cs, stop) =>
+  readingLive(cs, stop) ? 'live'
+  : (stop === null || stop === undefined) ? 'whole'
+  : 'stopmark';
+
+// One wording per basis, so the tile, the paper and the spreadsheet cannot
+// drift apart again.
+const RATE_OVER = {
+  live:     'words got through so far (reading not finished)',
+  stopmark: 'words read up to where the child stopped',
+  whole:    'whole passage',
+};
+
 function stats(){
   const last = (stoppedAt === null) ? words.length - 1 : stoppedAt;
   const by = { sub:0, omit:0, told:0, sc:0, rep:0, appeal:0 };
@@ -1597,8 +1853,42 @@ function stats(){
   // early), and the panel then reported "-944 words correct per minute", which
   // it also printed. A child cannot read a negative number of words correctly;
   // the honest floor is none of them.
-  const wcpm = (mins > 0.02) ? Math.max(0, Math.round((read - errors) / mins)) : null;
+  // `rate` is the whole passage once the reading is finished, and only the
+  // words got through while it is still going — see rateWords() above. No rate
+  // at all until there is one word to report, the same refusal as a zero-length
+  // reading: "reading…" is true, "0 words correct per minute" is not yet.
+  const rate = rateWords(words, last, cursor, insertions, insertAt,
+                         readingLive(clockState, stoppedAt)) || { read, errors };
+  const wcpm = (mins > 0.02 && rate.read > 0)
+    ? Math.max(0, Math.round((rate.read - rate.errors) / mins)) : null;
   return { read, errors, by, acc, wcpm, cue, ins };
+}
+
+// Keep the word being marked on the screen. WHAT WAS WRONG: this page had no
+// scrolling code of any kind. Marking with the two keys the hint above the
+// passage teaches — Space and X — walks the cursor down the passage, and after
+// a dozen words it slid behind the fixed stats bar and then off the bottom of
+// the window while the page sat at the top. At a 13" laptop's 1280x650, all 36
+// lessons put marked words out of sight; on the portrait iPad this tool is
+// written for, 25 of them do. The teacher marked the rest of the reading blind.
+//
+// Only when the cursor MOVES. render() runs twice a second while the clock
+// ticks, and a page that scrolls itself while the teacher is reading something
+// else would be its own bug.
+let lastScrolledTo = null;
+function keepCursorVisible(){
+  if (cursor === lastScrolledTo) return;
+  lastScrolledTo = cursor;
+  const el = passageEl.querySelector('.w[data-i="' + cursor + '"]');
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const bar = document.getElementById('stats').getBoundingClientRect();
+  // The bar is hidden in print media and has no height there; fall back to the
+  // bottom of the window rather than scrolling against a rectangle of nothing.
+  const floor = (bar.height > 0 ? bar.top : window.innerHeight) - 14;
+  const roof  = 76;                     // clear of the header
+  if (r.bottom > floor)   window.scrollBy(0, r.bottom - floor);
+  else if (r.top < roof)  window.scrollBy(0, r.top - roof);
 }
 
 function render(){
@@ -1660,8 +1950,19 @@ function render(){
   // words correct per minute" directly beside the banner saying a rate is not
   // reported for a word list. Two surfaces fixed out of three is how the
   // wrong number stays in circulation.
-  document.getElementById('sWcpm').textContent =
-    (LESSONS[currentLesson].kind === 'wordlist' || s.wcpm === null) ? '–' : s.wcpm;
+  const rateShown = !(LESSONS[currentLesson].kind === 'wordlist' || s.wcpm === null);
+  document.getElementById('sWcpm').textContent = rateShown ? s.wcpm : '–';
+  // WHAT WAS WRONG: this tile read "Words correct / min" in both states, while
+  // the number under it changes what it is measured over the moment a reading
+  // is unfinished — the whole passage once finished, the words got through so
+  // far until then. The line on the fixed bar beside it said "so far"; the
+  // tile, the printed sheet and the spreadsheet did not, so nobody reading the
+  // number could tell which one they had. Same test as the rate itself uses.
+  document.getElementById('sWcpmLabel').textContent =
+    !rateShown ? 'Words correct / min'
+    : rateBasis(clockState, stoppedAt) === 'live'  ? 'Words correct / min so far'
+    : rateBasis(clockState, stoppedAt) === 'stopmark' ? 'Words correct / min to the stop'
+    : 'Words correct / min';
 
   // The 95/90 bands are a PASSAGE measure and they do not transfer to a word
   // list. A word list is 17-22 scored items against a Form A passage of 31-61
@@ -1729,6 +2030,7 @@ function render(){
   pb.style.opacity = pb.disabled ? .45 : 1;
   document.getElementById('finishbtn').textContent =
     (clockState === 'done') ? 'Reopen' : 'Finish';
+  keepCursorVisible();
   paintPrint();
 }
 
@@ -1757,6 +2059,14 @@ function paintPrint(){
   // specialist — still stamped Independent or Frustration on all nine. Fixing
   // two of the three surfaces is worse than fixing none, because the paper
   // outlives the screen and nobody re-checks it.
+  // True when the rate on this sheet is the words-so-far one, not the whole
+  // passage's — i.e. the reading was never finished. Both the tile label and
+  // the footnote hang off it, so they cannot say different things.
+  // Which of the three bases produced the number on THIS sheet. Not a boolean:
+  // "not live" is not the same as "the whole passage", and treating it that way
+  // is what printed a stop-marked reading's rate under a whole-passage footnote.
+  const rateOn = (L.kind !== 'wordlist' && s.wcpm !== null)
+    ? rateBasis(clockState, stoppedAt) : null;
   const band = (L.kind === 'wordlist')
     ? 'not banded (word list)'
     // Math.round, like the screen and the CSV. render() was fixed to band the
@@ -1775,9 +2085,39 @@ function paintPrint(){
     cell(s.errors, 'Errors') +
     cell(s.errors ? '1:' + Math.max(1, Math.round(s.read / s.errors)) : '\u2013', 'Error rate') +
     cell(s.by.sc ? '1:' + Math.round((s.errors + s.by.sc) / s.by.sc) : '\u2013', 'Self-correction rate') +
+    // The label has to say what the number is measured over, on the copy that
+    // goes to the learning specialist most of all \u2014 see the tile in render()
+    // and the footnote below, which are worded to match this exactly.
     cell((L.kind === 'wordlist' || s.wcpm === null) ? '\u2013' : s.wcpm,
-         'Words correct/min') +
+         'Words correct/min' + (rateOn === 'live' ? ' so far'
+                              : rateOn === 'stopmark' ? ' to the stop' : '')) +
     cell(fmt(totalMs()), 'Time');
+
+  // The footnote and the tile above it have to describe the SAME number. A
+  // sheet that reports a rate measured over the words read so far, under a
+  // footnote saying the rate is measured over the whole passage, is a sheet
+  // that contradicts itself in front of the person it was printed for.
+  const rf = document.getElementById('prratefoot');
+  if (rf) rf.textContent =
+    // No rate on this sheet at all — a word list, or a reading too short to
+    // report one. The footnote used to fall through to the whole-passage
+    // sentence anyway, so a word-list printout explained how a rate was
+    // measured directly underneath a rate cell reading "–".
+    rateOn === null ? ''
+    : rateOn === 'live'
+      ? 'This reading was not finished, so words correct per minute is '
+        + 'provisional: it is measured over the words the child had got through '
+        + 'so far, not the whole passage and not a one-minute timing.'
+    : rateOn === 'stopmark'
+      // The commonest way a struggling reading ends, and the case that was
+      // being printed under the whole-passage sentence. A child who stopped
+      // after 13 words of 55 showed 24; the whole-passage figure was 108.
+      ? 'The child stopped before the end, so words correct per minute is '
+        + 'measured over the words they read up to that point — NOT the whole '
+        + 'passage, and not a one-minute timing. Do not compare it with a '
+        + 'benchmark score taken over a full passage.'
+      : 'Words correct per minute is measured over the whole passage, not a '
+        + 'one-minute timing, so it is not comparable to a DIBELS benchmark score.';
 
   const rows = [];
   // Two things this table used to get wrong, and both of them only on paper —
@@ -1896,6 +2236,14 @@ function openPop(i){
     b.style.background = on ? getComputedStyle(document.documentElement)
       .getPropertyValue('--c-' + b.dataset.code) : '';
   });
+  // The stop mark is a toggle, like the E key it copies, so the menu has to
+  // show whether this word is already the place the child stopped — otherwise
+  // the same button silently means "set" one moment and "lift" the next.
+  const stopBtn = pop.querySelector('button[data-extra="stop"]');
+  const stopOn = (stoppedAt === i);
+  stopBtn.classList.toggle('on', stopOn);
+  stopBtn.style.background = stopOn ? getComputedStyle(document.documentElement)
+    .getPropertyValue('--c-sub') : '';
   // Placed LAST, so the menu is measured at the width it will actually have —
   // the Cue used row is shown or hidden a few lines above this.
   placePop(i);
@@ -1911,6 +2259,14 @@ pop.querySelectorAll('button[data-code]').forEach(b => {
 pop.querySelectorAll('button[data-cue]').forEach(b => {
   b.addEventListener('click', () => {
     if (popFor === null) return;
+    // A cue describes a MISCUE. WHAT WAS WRONG: an open menu could outlive the
+    // mark it was drawn for (Backspace-undo used to leave it lit, see undo()),
+    // and a cue clicked then landed on a word carrying no mark. Nothing showed
+    // it — the tally only counts cues on sub/omit/told — until that word was
+    // marked later, when it surfaced on screen, on the printed record and in
+    // the spreadsheet as the teacher's judgement. Refuse a cue the word cannot
+    // carry, whatever route the click arrived by.
+    if (!['sub','omit','told'].includes(words[popFor].code)) return;
     snapshot();                       // undoable like every other mark
     const w = words[popFor];
     w.cues = w.cues || {};
@@ -1918,11 +2274,44 @@ pop.querySelectorAll('button[data-cue]').forEach(b => {
     render(); save(); openPop(popFor);
   });
 });
+// The tap route to the two marks that used to be keyboard-only. These do what
+// the I and E keys do (see the keydown handler below), on the word the menu is
+// open on rather than on the cursor. If you ever change what E decides about
+// the clock, change it in BOTH places — a teacher on an iPad and a teacher on a
+// keyboard have to end a reading the same way.
+pop.querySelectorAll('button[data-extra]').forEach(b => {
+  b.addEventListener('click', () => {
+    if (popFor === null) return;
+    if (b.dataset.extra === 'ins'){
+      autoStart(); snapshot();
+      insertions++; insertAt.push(popFor);
+    } else {
+      snapshot(true);
+      stoppedAt = (stoppedAt === popFor) ? null : popFor;
+      // Lifting the stop mark restarts the clock only when the stop mark is
+      // what stopped it — see finishedByStopMark. On a reading already ended
+      // with Finish, setting a stop mark and taking it back used to un-finish
+      // the reading and let the heartbeat write the growing time into the
+      // child's saved record. The keyboard's E does exactly this.
+      if (stoppedAt !== null){
+        if (clockState !== 'done') finishedByStopMark = true;
+        finish();
+      }
+      else if (clockState === 'done' && finishedByStopMark){
+        finishedByStopMark = false;
+        resumeClock();
+      }
+    }
+    render(); save(); openPop(popFor);
+  });
+});
 
 document.querySelectorAll('.retellrow button').forEach(b => {
   b.addEventListener('click', () => {
     retellLevel = (retellLevel === b.dataset.retell) ? null : b.dataset.retell;
-    paintRetell(); save();
+    // paintPrint() for the same reason as the four text fields below: nothing
+    // else repaints the printed Retell block once the clock has stopped.
+    paintRetell(); paintPrint(); save();
   });
 });
 function paintRetell(){
@@ -1934,6 +2323,14 @@ let saidWasBlank = true;
 saidbox.addEventListener('input', () => {
   if (popFor === null) return;
   const nowBlank = !saidbox.value.trim();
+  // Typing what the child said RECORDS A SUBSTITUTION, so it starts the
+  // assessment clock exactly as mark() does. This was the one route to a mark
+  // that never called autoStart(): a reading marked only this way sat at 0:00
+  // for its whole length and was then saved, printed and exported with no time
+  // and no reading rate. The clock "starts by itself on the first mark so the
+  // teacher never has to remember it" — every route to a mark has to keep that
+  // promise, not most of them.
+  if (!nowBlank) autoStart();
   if (saidWasBlank !== nowBlank) snapshot();       // undoable like every other mark
   saidWasBlank = nowBlank;
   words[popFor].said = saidbox.value;
@@ -1991,8 +2388,17 @@ document.addEventListener('keydown', e => {
                   // every further mark recorded no time at all, Pause did
                   // nothing, and nothing on screen said the clock had stopped.
                   // The words-per-minute at the end was silently inflated.
-                  if (stoppedAt !== null) finish();
-                  else if (clockState === 'done') resumeClock();
+                  // ...but only if the stop mark is what ended it. See
+                  // finishedByStopMark above: a reading already ended with
+                  // Finish stays ended.
+                  if (stoppedAt !== null){
+                    if (clockState !== 'done') finishedByStopMark = true;
+                    finish();
+                  }
+                  else if (clockState === 'done' && finishedByStopMark){
+                    finishedByStopMark = false;
+                    resumeClock();
+                  }
                   render(); save(); return; }
   if (e.key === 'Enter'){ e.preventDefault(); openPop(prev()); saidbox.focus(); return; }
   if (e.key === 'Backspace'){ e.preventDefault(); undo(); return; }
@@ -2007,7 +2413,18 @@ document.addEventListener('keydown', e => {
 // Deliberately mousedown and not click: a keyboard user tabbing to a button
 // still focuses it normally, so this takes nothing away from them.
 document.addEventListener('mousedown', e => {
-  if (e.target.closest('button')) e.preventDefault();
+  if (!e.target.closest('button')) return;
+  e.preventDefault();
+  // WHAT WAS WRONG: preventDefault leaves focus exactly where it was, and
+  // after typing what the child said that is the "read as" box. Clicking a
+  // mark or a cue button in the still-open menu therefore left focus in that
+  // text field, and every marking key after it was typed INTO the child's
+  // utterance instead of marking: Space, O and X appended letters, Backspace
+  // ate a letter instead of undoing, P did not pause, E set no stop mark, and
+  // the record was saved and printed as read as "houspe". Nothing on screen
+  // said the keyboard had stopped working. Pressing a button means the
+  // teacher has finished typing, so let the box go.
+  if (document.activeElement === saidbox) saidbox.blur();
 });
 
 // The word just dealt with — the cursor has usually already moved past it.
@@ -2028,16 +2445,33 @@ document.getElementById('finishbtn').addEventListener('click', () => {
     // clock and LEAVE the mark in place, so the rate's denominator grew for
     // ever against a word count frozen at the stop. Reopening means the child
     // is reading on; the mark that ended it has to come off with it.
-    if (stoppedAt !== null){ snapshot(true); stoppedAt = null; }
+    // The snapshot used to be taken only when a stop mark had ended the
+    // reading, so Reopen on a reading ended with the Finish button could not
+    // be undone at all — and Backspace, the undo the legend advertises, fell
+    // through to the snapshot before it and deleted the teacher's last MARK
+    // instead, while the restarted clock's inflated time went on being written
+    // to the saved record. Reopening is reversible whichever way it was ended.
+    snapshot(true);
+    stoppedAt = null;
+    finishedByStopMark = false;
     resumeClock(); render(); save();
   }
-  else finish();
+  else { finishedByStopMark = false; finish(); }   // Finish ended this one, not a stop mark
 });
 
 function undo(){
   const h = history.pop(); if (!h) return;
   words = h.words; cursor = h.cursor; stoppedAt = h.stoppedAt; insertions = h.insertions;
   insertAt = (h.insertAt || []).slice();
+  // WHAT WAS WRONG: Undo put the cursor back but not the answer to "did the
+  // cursor get here by a tap?", so a teacher who tapped a word to look at it,
+  // closed the menu and then pressed Backspace left prev() still saying "the
+  // cursor word itself". The very next S, R or A landed on the word the child
+  // had not read yet — over-marking that one and leaving the real miscue
+  // unmarked, which is exactly what the retreat() comment above was written to
+  // stop. The flag is part of the state a snapshot describes, so restore it
+  // with the rest of it.
+  cursorFromClick = !!h.fromClick;
   // Clear all marks tells the teacher "Press Undo if that was not what you
   // meant" — and Undo used to bring the marks back but not the reading time,
   // which the same button had reset to zero. A minute of a child's reading,
@@ -2048,6 +2482,15 @@ function undo(){
     runningSince = (clockState === 'running') ? Date.now() : null;
   }
   render(); save();
+  // The open menu is part of the screen and has to be rolled back with it.
+  // WHAT WAS WRONG: Backspace — the Undo key the on-screen legend advertises —
+  // took the mark off the word but left the menu lit for the mark that is now
+  // gone, with the "What they were using" row still on it. So the menu
+  // contradicted the passage; clicking the still-lit M switched that cue back
+  // ON instead of clearing it; and a cue could be recorded against a word
+  // carrying no mark at all. mark() has redrawn the open menu since it was
+  // written (a few lines below its own render()); undo() has to as well.
+  if (popFor !== null) openPop(popFor);
 }
 document.getElementById('undobtn').addEventListener('click', undo);
 
@@ -2079,8 +2522,17 @@ function writeIndex(list){ localStorage.setItem(INDEX_KEY, JSON.stringify(list))
 // The retell fields are wired to save() like every other input, but they were
 // missing from this list — so a teacher who typed a retell and nothing else
 // watched the write silently do nothing, with no record and no message.
+// `cursor > 0 && clockState !== 'idle'` — words scored correct — replaced
+// `totalMs() > 0`. A running clock is not by itself a reading: one stray
+// marking key, taken straight back with Undo, left the clock going with
+// nothing marked and the cursor back where it started, and that clock alone
+// kept a nameless record alive — 55 words read, 100%, Independent — in the
+// saved list, in the exported spreadsheet and across a reload, its stored time
+// growing on every heartbeat. Space, which scores a word without leaving a
+// mark on it, moves the cursor, so a real reading still counts as content.
 function hasContent(){
-  return words.some(w => w.code) || insertions > 0 || totalMs() > 0 ||
+  return words.some(w => w.code) || insertions > 0 ||
+         (cursor > 0 && clockState !== 'idle') ||
          document.getElementById('initials').value.trim() !== '' ||
          document.getElementById('notes').value.trim() !== '' ||
          document.getElementById('retell').value.trim() !== '' ||
@@ -2088,13 +2540,40 @@ function hasContent(){
 }
 
 // One place to talk to the teacher, so every path that gives up says why.
-function say(msg, ms){
+// `warn` is for the sentences the teacher cannot afford to miss. They go red
+// instead of the "Saved on this laptop" green, and they are repeated in the bar
+// pinned to the top of the screen, because #savedmsg itself lives at the bottom
+// of the Notes card — well below the fold on the iPad this tool is held on.
+let barMsg = '';
+function hideAlert(){
+  const bar = document.getElementById('alertbar');
+  if (!bar) return;
+  barMsg = ''; bar.textContent = ''; bar.classList.remove('on');
+}
+function say(msg, ms, warn){
   const m = document.getElementById('savedmsg');
   if (!m) return;
   m.textContent = msg;
-  setTimeout(() => { if (m.textContent === msg) m.textContent = ''; },
-             ms || 9000);
+  m.classList.toggle('warn', !!warn);
+  const bar = document.getElementById('alertbar');
+  if (bar){
+    if (warn){
+      barMsg = msg;
+      bar.textContent = msg;
+      const d = document.createElement('span');
+      d.className = 'dismiss'; d.textContent = '(tap to put this away)';
+      bar.appendChild(d);
+      bar.classList.add('on');
+    }
+    else hideAlert();
+  }
+  setTimeout(() => {
+    if (m.textContent !== msg) return;
+    m.textContent = ''; m.classList.remove('warn');
+    if (barMsg === msg) hideAlert();
+  }, ms || 9000);
 }
+document.getElementById('alertbar').addEventListener('click', hideAlert);
 
 // `quiet` is for the heartbeat below: it keeps the stored reading time honest
 // without flashing "Saved on this laptop" at the teacher every few seconds.
@@ -2118,7 +2597,16 @@ function writeRecord(quiet){
       retellText: document.getElementById('retell').value,
       retell: retellLevel,
       words, cursor, stoppedAt, insertions, insertAt,
-      elapsed: totalMs(), clockState, stateBeforeFinish,
+      // finishedByStopMark goes in the record beside stateBeforeFinish, and for
+      // the same reason. WHAT WAS WRONG: it lived only in memory and was
+      // re-derived on reopen as "a stop mark AND a finished clock" — which is
+      // also what a reading FINISHED first and stop-marked afterwards looks
+      // like. Lifting that mark after a reload restarted the clock on a
+      // finished reading, and the 5-second heartbeat wrote the growing time
+      // into the child's saved record and into the spreadsheet: a 2-second
+      // reading became 14 seconds and kept going. Which gesture ended a reading
+      // is part of the record, not something to guess at afterwards.
+      elapsed: totalMs(), clockState, stateBeforeFinish, finishedByStopMark,
       updated: new Date().toISOString(),
       accuracy: Math.round(st.acc), errors: st.errors, read: st.read
     };
@@ -2126,11 +2614,7 @@ function writeRecord(quiet){
   // catch the exception died inside the debounce timer: no message, no
   // "Saved", and a teacher marking a whole record that was never stored.
   try {
-    localStorage.setItem(recKey(recordId), JSON.stringify(rec));
     const list = readIndex();
-    const entry = { id: rec.id, lesson: rec.lesson, initials: rec.initials,
-                    date: rec.date, updated: rec.updated,
-                    accuracy: rec.accuracy, errors: rec.errors, read: rec.read };
     // A record that is already in the list stays WHERE IT IS. This used to
     // filter the old entry out and unshift the new one, so every save —
     // including the 5-second heartbeat — jumped the open record to the top of
@@ -2139,12 +2623,25 @@ function writeRecord(quiet){
     // your mouse belonged to a different child. Only a brand new record goes on
     // top, where it is expected.
     const at = list.findIndex(e => e && e.id === recordId);
+    // WHAT WAS WRONG: two readings of the same child, on the same lesson and the
+    // same day, drew two rows identical in every visible field — under a heading
+    // promising one row per child — and the delete confirmation could not tell
+    // them apart either. `created` is the time of day this record was STARTED,
+    // which is what makes the rows different. It is stamped once and never moves
+    // again: `updated` changes on every 5-second heartbeat, and a row that
+    // redrew itself twice a minute is the very thing paintRecords()'s signature
+    // was written to prevent.
+    rec.created = (at >= 0 && list[at].created) || rec.updated;
+    localStorage.setItem(recKey(recordId), JSON.stringify(rec));
+    const entry = { id: rec.id, lesson: rec.lesson, initials: rec.initials,
+                    date: rec.date, updated: rec.updated, created: rec.created,
+                    accuracy: rec.accuracy, errors: rec.errors, read: rec.read };
     if (at >= 0) list[at] = entry; else list.unshift(entry);
     writeIndex(list);
   } catch (err) {
     say('THIS RECORD IS NOT BEING SAVED — this browser refused to store it ' +
         '(private window, or the disk is full). Print or export before you ' +
-        'close this tab.', 60000);
+        'close this tab.', 60000, true);
     return;
   }
   paintRecords();
@@ -2182,8 +2679,88 @@ function flushSave(){
   saveTimer = null;
   writeRecord();
 }
+// The Child box holds initials, and a space is never part of a pair of them.
+// WHAT WAS WRONG: the page tells the teacher "Space if they read it, X if they
+// did not", and while the Child box still had focus the box ate those keys.
+// Nine keypresses marked nothing, moved nothing and said nothing — and the
+// spaces went INTO the name, where maxlength=4 swallowed two of them, so "JM  "
+// reached the saved record, the printed header and the spreadsheet. In a
+// spreadsheet "JM  " and "JM" are two different children. Two fixes, both here:
+// strip the whitespace so the three surfaces carry the same name, and let
+// Space mean what the page says it means — hand the keyboard back to the
+// passage and score the word.
+// The second fix here is the 4-character cap, which used to be maxlength="4" on
+// the input and therefore silent: type "Jacob" and the fifth letter simply did
+// not appear — no message, no counter, no red — and "Jaco" is what reached the
+// saved row, the printed header and the spreadsheet. The cap itself is right
+// (initials and a date are the only things that identify a child here), so it
+// stays; what changes is that the box now says a letter was not kept.
+const INITIALS_MAX = 4;
+const initialsBox = document.getElementById('initials');
+const initialsCap = document.getElementById('initcap');
+initialsBox.addEventListener('input', () => {
+  const clean = initialsBox.value.replace(/\s+/g, '');
+  if (clean !== initialsBox.value) initialsBox.value = clean;
+  const over = initialsBox.value.length > INITIALS_MAX;
+  if (over) initialsBox.value = initialsBox.value.slice(0, INITIALS_MAX);
+  // Recomputed on every keystroke, so deleting a letter takes the notice back.
+  // Both states say the same true thing about the box, so neither can be read
+  // as a warning about the record.
+  initialsCap.textContent = over ? 'up to 4 — the rest is not kept' : 'up to 4';
+  initialsCap.classList.toggle('hit', over);
+});
+initialsBox.addEventListener('keydown', e => {
+  if (e.key !== ' ' || e.metaKey || e.ctrlKey || e.altKey) return;
+  e.preventDefault();
+  initialsBox.blur();     // so the X, S, R and A that follow mark, too
+  advance(true);
+});
+// paintPrint(), not just save(). These four fields wrote to the screen and to
+// storage and left the print-only blocks holding whatever render() last put
+// there — and render() only ticks while the clock is RUNNING. So a teacher who
+// pressed Finish and then typed her notes, and printed with Cmd+P instead of
+// the tool's own Print button (which calls paintPrint() first), got a sheet
+// reading "TEACHER NOTES —" with no retell section and, if the initials or the
+// date were typed after Finish, no child on the header either. The paper is the
+// copy that reaches the learning specialist; it cannot depend on which button
+// the printing started from.
 ['initials','rdate','notes','retell'].forEach(id =>
-  document.getElementById(id).addEventListener('input', save));
+  document.getElementById(id).addEventListener('input', () => { paintPrint(); save(); }));
+
+// Two tabs of this tool are two copies of the same drawer, and until now they
+// never spoke. WHAT WAS WRONG: a record deleted in one tab came straight back.
+// The tab that still had that record open went on holding it in memory, and
+// about five seconds later the reading-time heartbeat wrote the body AND the
+// index entry back, whole, with nobody touching anything — so Delete, whose own
+// confirmation says "This cannot be undone", did not stick. deleteRecord()
+// already forgets the record and cancels the pending write when the deletion
+// happens in THIS tab; this does the same when it happens in another one.
+// The marks stay on screen, because they are the teacher's work and nothing
+// here throws that away — but they have stopped being that record, and she is
+// told so rather than left to find out.
+window.addEventListener('storage', e => {
+  if (e.storageArea && e.storageArea !== localStorage) return;
+  // e.key is null when another tab called localStorage.clear().
+  if (e.key !== null && e.key !== INDEX_KEY && e.key.indexOf(recKey('')) !== 0) return;
+  if (recordId && !readIndex().some(x => x && x.id === recordId)){
+    clearTimeout(saveTimer); saveTimer = null;
+    recordId = null;
+    say('This record was deleted in another tab, so it is no longer saved. ' +
+        'What is on screen is kept as a new record the moment you mark again.',
+        12000, true);
+  }
+  paintRecords();   // the other tab's list is stale too — rows added or deleted there
+});
+
+// Leaving the page is abandoning the record, so it flushes like every other
+// path that abandons one. Nothing did this, and the debounce restarts on every
+// keystroke — so a teacher typing a note steadily never let the 400ms elapse
+// at all, and following the nav link, reloading or closing the tab discarded
+// the whole note. Once a reading is finished there is no heartbeat either
+// (it needs a running clock), so the debounce was the only writer.
+// pagehide covers the iPad, where a backgrounded tab may never see unload.
+window.addEventListener('pagehide', () => flushSave());
+window.addEventListener('beforeunload', () => flushSave());
 
 // How many clickable items a lesson makes, WITHOUT touching any state. This
 // has to be answerable before openRecord() commits to anything — see below.
@@ -2291,8 +2868,17 @@ function openRecord(id){
   // (you cannot resume a timing you were not present for), and 'running' with
   // no start time is a clock that says it is counting and is not. Reopen
   // paused; the teacher presses Resume if they mean to carry on.
+  // WHAT WAS WRONG: a record saved before clockState was stored — every record
+  // made before this existed — came back as 'paused' when it had time on it,
+  // and 'paused' means a reading still going on, so its rate was recomputed
+  // over the words dealt with so far instead of the whole passage. Opening an
+  // old record turned 53 words correct per minute into 5, on the screen, on
+  // the printed sheet and in the spreadsheet — and the reopen saved it that
+  // way. A stored record with time on the clock and nothing saying otherwise
+  // is a reading that was FINISHED and put away. Reopen it 'done'. Nobody's
+  // numbers may move because somebody looked at them.
   clockState = (d.clockState === 'running') ? 'paused'
-             : (d.clockState || (elapsed > 0 ? 'paused' : 'idle'));
+             : (d.clockState || (elapsed > 0 ? 'done' : 'idle'));
   // stateBeforeFinish lives only in memory, so after a reload it was back to
   // its default of 'idle' — and pressing Reopen on a finished record then put
   // the clock into 'idle' with time still on it: the screen said "starts when
@@ -2302,6 +2888,16 @@ function openRecord(id){
   stateBeforeFinish = (d.stateBeforeFinish)
     ? d.stateBeforeFinish
     : (elapsed > 0 ? 'paused' : 'idle');
+  // Which gesture ended THIS record, so that lifting its stop mark behaves the
+  // same after a reload as it did before one. It is SAVED now (see
+  // writeRecord) — the heuristic below is only for records written before it
+  // was, where "finished with a stop mark still on it" is the best that can be
+  // said. Read the stored answer whenever there is one: the heuristic cannot
+  // tell a reading ended BY the mark from one finished first and marked after,
+  // and got the second kind wrong, restarting a finished child's clock.
+  finishedByStopMark = (d.finishedByStopMark !== undefined)
+    ? !!d.finishedByStopMark
+    : (stoppedAt !== null && clockState === 'done');
   history = [];
   document.getElementById('initials').value = d.initials || '';
   document.getElementById('rdate').value = d.date || '';
@@ -2329,10 +2925,41 @@ function newRecord(skipFlush){
   paintTitle(); paintNote(); render(); paintRecords();
 }
 
+// The time of day a record was started, for telling two readings of the same
+// child on the same day apart. Empty string for records saved before `created`
+// existed, so those rows simply read as they always did.
+function startedAt(iso){
+  const t = iso ? new Date(iso) : null;
+  if (!t || isNaN(t.getTime())) return '';
+  return t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
+// Which of this child's readings a row is — "reading 2 of 2". The time of day
+// on its own is not enough: "read her again in two weeks" is what the worked
+// example teaches, but a re-read minutes later — or two children who share
+// initials, which four characters makes ordinary — can land in the same minute
+// and print the same row twice. The list is newest first, so the newest reading
+// carries the highest number. Empty when the child has only one reading of this
+// lesson on this day, which is the usual case and needs no label.
+function whichReading(list, e){
+  const same = list.filter(x => x && x.initials === e.initials &&
+                                x.lesson === e.lesson && x.date === e.date);
+  return same.length > 1
+    ? 'reading ' + (same.length - same.indexOf(e)) + ' of ' + same.length : '';
+}
+
 function deleteRecord(id){
-  const e = readIndex().find(x => x.id === id);
+  const list = readIndex();
+  const e = list.find(x => x.id === id);
   const who = (e && e.initials) ? e.initials : 'this record';
-  if (!confirm('Delete the record for ' + who + '?\n\nThis cannot be undone.')) return;
+  // Which one, exactly. Two readings of the same child on the same day were
+  // both offered as "Delete the record for J.M.?", so the teacher was asked to
+  // destroy one of two things she could not tell apart.
+  const nth = e ? whichReading(list, e) : '';
+  const which = e ? ' — Lesson ' + e.lesson + ', ' + (e.date || '') +
+                    (startedAt(e.created) ? ' at ' + startedAt(e.created) : '') +
+                    (nth ? ', ' + nth : '') : '';
+  if (!confirm('Delete the record for ' + who + which + '?\n\nThis cannot be undone.')) return;
   localStorage.removeItem(recKey(id));
   writeIndex(readIndex().filter(x => x.id !== id));
   if (recordId === id){
@@ -2357,12 +2984,12 @@ function paintRecords(){
   // came up, and nothing happened, with no message. Nothing here depends on the
   // rebuild, so only rebuild when what is on screen would actually differ.
   const sig = JSON.stringify([recordId, list.map(e => e && [e.id, e.initials,
-                              e.lesson, e.date, e.read, e.accuracy])]);
+                              e.lesson, e.date, e.created, e.read, e.accuracy])]);
   if (host.dataset.sig === sig && host.children.length) return;
   host.dataset.sig = sig;
   if (!list.length){
     host.innerHTML = '<p class="norecs">No saved records yet. One is kept for ' +
-                     'every child you assess — nothing overwrites anything.</p>';
+                     'every reading you take — nothing overwrites anything.</p>';
     return;
   }
   host.innerHTML = '';
@@ -2372,7 +2999,9 @@ function paintRecords(){
     row.innerHTML =
       '<span class="who2">' + esc((e.initials || '\u2014').toUpperCase()) + '</span>' +
       '<span class="les">Lesson ' + e.lesson + '</span>' +
-      '<span class="dt">' + (e.date || '') + '</span>' +
+      '<span class="dt">' + (e.date || '') +
+        (startedAt(e.created) ? ' &middot; ' + startedAt(e.created) : '') + '</span>' +
+      '<span class="nth">' + whichReading(list, e) + '</span>' +
       '<span class="acc">' + (e.read ? e.accuracy + '%' : '') + '</span>';
     const open = document.createElement('button');
     open.className = 'btn tiny';
@@ -2601,7 +3230,16 @@ function exportCsv(){
                 // not. Nothing here is a miscue count — those are the Errors
                 // and Miscues coded columns.
                 'Every mark','Cue M','Cue S','Cue V','Miscues coded',
-                'Retell','Retell notes','Teacher notes'];
+                'Retell','Retell notes','Teacher notes',
+                // WHAT WAS WRONG: the Words correct per min column carried two
+                // different numbers under one name — the whole passage's rate
+                // for a finished reading, the words-got-through-so-far rate for
+                // an unfinished one — and nothing in the file said which. The
+                // screen tile and the printed sheet now say "so far"; the
+                // spreadsheet says it here. Appended at the END on purpose: a
+                // column inserted mid-row moves every column after it, and
+                // somebody's saved formula with it.
+                'Rate measured over'];
   const rows = [head.map(csvCell).join(',')];
 
   // A row can be listed while its body is gone or half-written — the browser
@@ -2642,8 +3280,15 @@ function exportCsv(){
     const accShown = Math.round(acc);
     const mins = (d.elapsed || 0) / 60000;
     // Floored like the screen — the spreadsheet must not disagree with the
-    // panel the number was read off.
-    const wcpm = (mins > 0.02) ? Math.max(0, Math.round((read - errors) / mins)) : '';
+    // panel the number was read off. Same rate numerator as stats() too: a row
+    // exported while the child is still reading was carrying the whole
+    // passage's words over the seconds so far, so a record with one word dealt
+    // with exported as 2721 words correct per minute while the screen beside it
+    // now says something a child could produce.
+    const dRate = rateWords(w, last, d.cursor || 0, dIns, dAt,
+                            readingLive(d.clockState, d.stoppedAt)) || { read, errors };
+    const wcpm = (mins > 0.02 && dRate.read > 0)
+      ? Math.max(0, Math.round((dRate.read - dRate.errors) / mins)) : '';
     // Cue counts, recomputed from the saved words so an exported row always
     // agrees with the record it came from.
     let cm = 0, cs = 0, cv = 0, ccoded = 0;
@@ -2673,7 +3318,14 @@ function exportCsv(){
       by.sub, by.omit, by.told, by.sc, by.rep, by.appeal, insCounted,
       miscues.join('; '),
       ccoded ? cm : '', ccoded ? cs : '', ccoded ? cv : '', ccoded || '',
-      d.retell ? RT[d.retell] : '', d.retellText || '', d.notes || ''
+      d.retell ? RT[d.retell] : '', d.retellText || '', d.notes || '',
+      // Blank when there is no rate in the row to describe — a word list, or a
+      // reading too short to report one. Same wording as the printed footnote.
+      // rateBasis, not readingLive — this cell used to print "whole passage"
+      // for a stop-marked reading whose rate was trimmed to the stop, in a file
+      // that outlives every screen it was read off.
+      ((L.kind === 'wordlist' || wcpm === '') ? ''
+        : RATE_OVER[rateBasis(d.clockState, d.stoppedAt)])
     ].map(csvCell).join(','));
   });
 
@@ -2764,7 +3416,17 @@ function switchLesson(n){
   // same lesson, and they cannot drift apart.
   const sel = document.getElementById('lessonpick');
   if (sel) sel.value = n;
+  // WHAT WAS WRONG: newRecord()'s job is to move on to the NEXT CHILD, so it
+  // clears the Child box — and switching lesson called it, which cleared the
+  // child too. The header reads Child, Lesson, Date from left to right, and a
+  // teacher who filled it in that order watched the name she had just typed
+  // disappear with no message; the reading that followed was saved, printed and
+  // exported as "—". Changing the lesson moves to another passage, not to
+  // another child, so carry the child across.
+  const who = document.getElementById('initials').value;
   newRecord(true);      // already flushed above; a second flush is what did the damage
+  document.getElementById('initials').value = who;
+  render();             // so the printed header carries the child too
 }
 
 (function fillPicker(){

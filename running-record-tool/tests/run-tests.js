@@ -118,6 +118,14 @@ async function harvest(page){
 // it teaches you to ignore red. Wait for the page to be genuinely finished.
 async function fresh(page, base, hash){
   await harvest(page);
+  // about:blank first, so this really is a fresh document. Going straight to
+  // the SAME url the page is already on — which is what happens whenever two
+  // tests in a row use the same #L20 — is a fragment navigation: the old
+  // document stays alive, keeps its marks and its recordId, and the clear
+  // below happens underneath it. The tool now writes any pending record when
+  // the page goes away, so that surviving document wrote its record back in
+  // after the clear and the next test began with a record it never made.
+  await page.goto('about:blank');
   await page.goto(base + '/index.html' + (hash || ''), { waitUntil: 'load' });
   await page.evaluate(() => localStorage.clear());
   await harvest(page);
@@ -430,7 +438,11 @@ async function main(){
       mark(0, 'sub'); mark(1, 'omit'); mark(2, 'told');
       mark(3, 'sc');  mark(4, 'rep');  mark(5, 'appeal');
       insertions = 2; insertAt = [6, 7];
-      elapsed = 60000; runningSince = null; clockState = 'paused';
+      // 'done', not 'paused': the identity below is the rate of a FINISHED
+      // reading. While a reading is still going the rate is out of the words
+      // the child has got through so far — see "A rate a child could produce"
+      // near the end of this file for why. The numbers asserted are unchanged.
+      elapsed = 60000; runningSince = null; clockState = 'done';
       render();
       return stats();
     });
@@ -2124,7 +2136,10 @@ async function main(){
     // of both papers, 18mm margins in: Letter 710px, A4 688px.
     await page.evaluate(() => {
       mark(2, 'sub'); mark(5, 'omit'); mark(8, 'told');
-      elapsed = 92000; runningSince = null; clockState = 'paused';
+      // 'done', not 'paused', for the same reason as "The arithmetic" above:
+      // the rate printed on a finished sheet is the whole passage's. The tile
+      // values asserted below are unchanged.
+      elapsed = 92000; runningSince = null; clockState = 'done';
       render();
     });
     await page.emulateMediaType('print');
@@ -2206,6 +2221,1325 @@ async function main(){
     eq('...while a lesson that already fitted is untouched at its full size',
        await page.evaluate(() =>
          childPassagePt(LESSONS[20].lines, LESSONS[20].title)), 26);
+  }
+
+  // =========================================================================
+  group('The open mark menu after an Undo, and the keys after a menu click');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Backspace is the Undo key the on-screen legend advertises, and it used
+    // to roll the mark back without redrawing the menu still open over the
+    // word. The teacher was left looking at a menu lit for a mark the word no
+    // longer carried, with the "What they were using" row still on it.
+    await page.click('.w[data-i="3"]');
+    await page.keyboard.press('t');
+    await page.keyboard.press('Backspace');
+    const m = await page.evaluate(() => ({
+      open: pop.style.display === 'block',
+      lit: [...pop.querySelectorAll('button[data-code].on')].map(b => b.dataset.code),
+      cuerow: document.getElementById('msvrow').style.display,
+      code: words[3].code
+    }));
+    eq('undoing with Backspace leaves the open menu showing no mark, like the word',
+       { lit: m.lit, code: m.code }, { lit: [], code: null });
+    eq('...and takes the M/S/V row off a word that now carries no mark',
+       { open: m.open, cuerow: m.cuerow }, { open: true, cuerow: 'none' });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The same stale menu inverted the cue buttons: undoing a cue left its
+    // button lit for a cue the record no longer held, so clicking the lit
+    // button to clear it switched the cue back ON and it took two clicks on a
+    // lit button to turn one off.
+    await page.click('.w[data-i="3"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="m"]');
+    await page.keyboard.press('Backspace');
+    eq('after undoing a cue, no cue button is lit for a cue that is gone',
+       await page.evaluate(() => ({
+         lit: [...pop.querySelectorAll('button[data-cue].on')].map(b => b.dataset.cue),
+         stored: Object.keys(words[3].cues || {}).filter(k => words[3].cues[k])
+       })), { lit: [], stored: [] });
+    await page.click('#pop button[data-cue="m"]');
+    eq('...so one press of an unlit M turns the cue on, and lights it',
+       await page.evaluate(() => ({
+         lit: [...pop.querySelectorAll('button[data-cue].on')].map(b => b.dataset.cue),
+         stored: Object.keys(words[3].cues || {}).filter(k => words[3].cues[k])
+       })), { lit: ['m'], stored: ['m'] });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // A cue clicked on that stale menu landed on a word carrying no mark.
+    // Nothing showed it — the tally only counts cues on sub/omit/told — until
+    // that word was marked later, when the teacher's own screen, the printed
+    // record and the spreadsheet all reported a coded miscue nobody coded.
+    await page.click('.w[data-i="3"]');
+    await page.keyboard.press('t');
+    await page.keyboard.press('Backspace');
+    const hidden = await page.evaluate(() =>
+      document.querySelector('#pop button[data-cue="m"]').getBoundingClientRect().height === 0);
+    check('the M button is not there to press on a word with no mark', hidden);
+    // Pressed through the DOM rather than with the mouse precisely BECAUSE it
+    // is hidden now: this proves the handler behind it also refuses, so no
+    // other route to a stale menu can put a cue on an unmarked word again.
+    await page.evaluate(() => document.querySelector('#pop button[data-cue="m"]').click());
+    eq('...and pressing it anyway records no cue',
+       await page.evaluate(() => words[3].cues || null), null);
+    await page.keyboard.press('Escape');
+    await page.click('.w[data-i="3"]');
+    await page.click('#pop button[data-code="sub"]');
+    eq('...so marking that word later arrives uncoded, on screen and on paper',
+       await page.evaluate(() => ({
+         cues: words[3].cues || null,
+         tally: document.getElementById('cuebox').style.display,
+         paper: /\[[MSV]/.test(document.getElementById('prmarks').innerText)
+       })), { cues: null, tally: 'none', paper: false });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Cues entered against a substitution used to outlive the decision they
+    // described: changing the mark to Self-corrected hid the cue row but kept
+    // M and S inside the saved record, so marking that word Wrong word again
+    // brought them back pre-lit and counted them as a fresh judgement. Only
+    // "Clear this mark" wiped them. All three surfaces are read here, because
+    // the screen, the paper and the spreadsheet have to agree.
+    await page.click('.w[data-i="1"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="m"]');
+    await page.click('#pop button[data-cue="s"]');
+    await page.click('#pop button[data-code="sc"]');
+    eq('re-coding a substitution to Self-corrected takes its cues with it',
+       await page.evaluate(() => words[1].cues || null), null);
+    await page.click('#pop button[data-code="sub"]');
+    eq('...so marking it Wrong word again does not arrive pre-coded',
+       await page.evaluate(() => ({
+         cues: words[1].cues || null,
+         lit: [...pop.querySelectorAll('button[data-cue].on')].map(b => b.dataset.cue),
+         tally: document.getElementById('cuebox').style.display
+       })), { cues: null, lit: [], tally: 'none' });
+    await page.keyboard.press('Escape');
+    const csv = await page.evaluate(() => {
+      document.getElementById('initials').value = 'EE';
+      render(); flushSave();
+      document.getElementById('exportbtn').click();
+      return { row: window.__downloads.slice(-1)[0] || '',
+               paper: document.getElementById('prmarks').innerText };
+    });
+    const rows = decodeURIComponent(csv.row.replace(/^data:[^,]*,/, ''))
+      .replace(/^﻿/, '').trim().split('\n').map(l => l.split(','));
+    // Blank, not 0: the export leaves the cue columns empty when the teacher
+    // coded nothing, so an empty cell cannot be read as a judgement of none.
+    eq('...and the spreadsheet counts no cues for it either',
+       ['Cue M', 'Cue S', 'Cue V', 'Miscues coded']
+         .map(k => rows[1][rows[0].indexOf(k)]), ['', '', '', '']);
+    check('...with nothing left on the printed record to say otherwise',
+          !/\[[MSV]/.test(csv.paper), csv.paper);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Clicking a button inside the still-open menu left focus sitting in the
+    // "read as" box, because a mousedown on a button is deliberately stopped
+    // from moving focus. Every marking key after that was typed INTO the
+    // child's utterance: Space, O and X appended letters instead of marking,
+    // Backspace ate a letter instead of undoing, P did not pause and E set no
+    // stop mark — and the record saved and printed as read as "houspe".
+    await page.keyboard.press('x');
+    await page.keyboard.press('Enter');
+    await page.type('#saidbox', 'house');
+    await page.click('#pop button[data-cue="v"]');
+    eq('pressing a menu button hands the keyboard back from the read-as box',
+       await page.evaluate(() => document.activeElement.id || document.activeElement.tagName),
+       'BODY');
+    await page.keyboard.press('o');
+    await page.keyboard.press('x');
+    eq('...so the next marking keys mark words instead of typing letters',
+       await page.evaluate(() => ({
+         marks: words.map((w, i) => w.code ? i + ':' + w.code : null).filter(Boolean),
+         said: words[0].said
+       })), { marks: ['0:sub', '1:omit', '2:sub'], said: 'house' });
+  }
+
+  // =========================================================================
+  group('The header boxes, and the keys the card says you can press');
+  // =========================================================================
+  await fresh(page, base, '#L25');
+  {
+    // The page says "On a keyboard you need two keys: Space if they read it,
+    // X if they did not" — and while the Child box still had focus the box ate
+    // them. Nine keypresses marked nothing, moved nothing and said nothing,
+    // and the swallowed spaces went INTO the name, where maxlength=4 turned
+    // "JM" into "JM  ". In a spreadsheet "JM  " and "JM" are two children.
+    const KEY = await indexKey(page);
+    await page.click('#initials');
+    await page.type('#initials', 'JM');
+    for (let i = 0; i < 8; i++) await page.keyboard.press(' ');
+    await page.keyboard.press('x');
+    await page.evaluate(() => flushSave());
+    await page.click('#exportbtn');
+    const s = await page.evaluate(k => ({
+      name:   document.getElementById('initials').value,
+      cursor, clock: clockState,
+      marks:  words.map((w, i) => w.code ? i + ':' + w.code : null).filter(Boolean),
+      paper:  document.querySelector('#prwho b').textContent,
+      stored: JSON.parse(localStorage.getItem(k))[0].initials,
+      csv:    decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+                .replace(/^data:[^,]*,/, '')).split('\n')[1].split(',')[0]
+    }), KEY);
+    eq('Space still marks when the cursor is left in the Child box',
+       { cursor: s.cursor, clock: s.clock }, { cursor: 9, clock: 'running' });
+    eq('...and the X after it marks the word it is on', s.marks, ['8:sub']);
+    eq('...and not one of those spaces is left in the child\'s name', s.name, 'JM');
+    eq('...nor on the printed header', s.paper, 'JM');
+    eq('...nor in the saved record', s.stored, 'JM');
+    eq('...nor in the spreadsheet, where "JM  " would be a different child',
+       s.csv, 'JM');
+  }
+  await fresh(page, base);
+  {
+    // The header reads Child, Lesson, Date from left to right. Filling it in
+    // that order used to empty the Child box the moment the lesson was chosen —
+    // switchLesson() calls newRecord(), whose job is to move on to the next
+    // CHILD — so the reading that followed was saved, printed and exported as
+    // "—", with nothing on screen to say the name had gone.
+    const KEY = await indexKey(page);
+    await page.click('#initials');
+    await page.type('#initials', 'AB');
+    await page.select('#lessonpick', '20');
+    const s = await page.evaluate(() => ({
+      name: document.getElementById('initials').value,
+      lesson: currentLesson,
+      paper: document.querySelector('#prwho b').textContent }));
+    eq('choosing the lesson keeps the child you are already sitting with',
+       s.name, 'AB');
+    eq('...on the lesson actually chosen', s.lesson, 20);
+    eq('...and on the printed header', s.paper, 'AB');
+    await page.click('#passage');   // X is a letter, and focus is still in the box
+    await page.keyboard.press('x');
+    await page.evaluate(() => flushSave());
+    eq('...so the reading that follows is saved under that child, not under "—"',
+       await page.evaluate(k => (JSON.parse(localStorage.getItem(k))
+         .find(e => e.lesson === 20) || {}).initials, KEY), 'AB');
+  }
+  await fresh(page, base, '#L25');
+  {
+    // The Keys card used to list "and tag M / S / V" among the keys. M and V
+    // are bound to nothing, and S was already published as self-corrected four
+    // lines above — so a teacher following that line pressed S and turned the
+    // substitution she had just recorded INTO a self-correction: the error
+    // vanished and the accuracy went up.
+    const tagLine = await page.evaluate(() =>
+      [...document.querySelectorAll('.keys li')]
+        .map(li => li.textContent.replace(/\s+/g, ' ').trim())
+        .find(t => /M\s*\/\s*S\s*\/\s*V/.test(t)) || '');
+    check('the Keys card does not offer M/S/V as keys you can press',
+          /buttons, not keys/.test(tagLine), 'the card says: ' + tagLine);
+    await page.keyboard.press('x');
+    await page.keyboard.press('m');
+    await page.keyboard.press('v');
+    eq('...because pressing M or V really does nothing at all',
+       await page.evaluate(() => ({ code: words[0].code,
+                                    cues: words[0].cues || null })),
+       { code: 'sub', cues: null });
+    await page.click('.w[data-i="0"]');
+    await page.click('#pop button[data-cue="m"]');
+    eq('...while M on the mark menu, the route the card now names, does tag it',
+       await page.evaluate(() => words[0].cues), { m: true });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Undo restored the cursor but not the answer to "did the cursor get here
+    // by a tap?", so after tapping a word to look at it and then pressing
+    // Backspace, the next S landed on the word under the cursor — the word the
+    // child had not read yet — over-marking that one and leaving the real
+    // miscue unmarked.
+    for (let i = 0; i < 6; i++) await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('x');
+    await page.click('.w[data-i="2"]');
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('Backspace');
+    await page.keyboard.press('s');
+    eq('after an Undo, S still refines the word just read, not one tapped since',
+       await page.evaluate(() => words.map((w, i) =>
+         w.code ? i + ':' + w.text : null).filter(Boolean)), ['5:the']);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The other half of the same rule: a mark MADE by tapping a word must
+    // still be refined on that word after it is undone.
+    await page.click('.w[data-i="3"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('Backspace');
+    await page.keyboard.press('s');
+    eq('...and undoing a mark you made by tapping refines the word you tapped',
+       await page.evaluate(() => words.map((w, i) =>
+         w.code ? i + ':' + w.text : null).filter(Boolean)), ['3:sit']);
+  }
+
+  // =========================================================================
+  group('A rate a child could produce  (was: 1628 words correct per minute)');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // The rate divided the WHOLE passage — all 55 words — by the seconds on the
+    // clock, so two seconds into a reading in which ONE word had been dealt
+    // with, the always-in-view bar read "1628 words correct per minute so far".
+    // The mins > 0.02 guard only hid the first 1.2 seconds of it.
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 2000));
+    const r = await page.evaluate(() => ({
+      dealt: cursor,
+      read: document.getElementById('ct-words').textContent,
+      tile: document.getElementById('wcpm').textContent,
+      stat: document.getElementById('sWcpm').textContent,
+      paper: [...document.getElementById('prnums').children][6]
+               .querySelector('.v').textContent
+    }));
+    eq('two seconds in, the rate is out of the one word dealt with', r.stat, '0');
+    check('...so the tile on the fixed bar claims no hundreds of words a minute',
+          /^0 words correct per minute/.test(r.tile), 'the tile said: ' + r.tile);
+    eq('...and the printed record says the same number', r.paper, r.stat);
+    eq('...while Words read is still the whole passage, as accuracy needs',
+       r.read, '55');
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Ten words dealt with, one of them wrong, one minute on the clock: nine
+    // words correct in a minute. The screen, the paper and the spreadsheet all
+    // have to say nine — the spreadsheet was exporting the whole passage over
+    // the seconds so far too (a stray keypress exported as 2721 wcpm).
+    for (let i = 0; i < 10; i++) await page.keyboard.press(i === 4 ? 'x' : ' ');
+    const r = await page.evaluate(() => {
+      elapsed = 60000; runningSince = null; clockState = 'paused';
+      render(); flushSave();
+      document.getElementById('exportbtn').click();
+      return { dealt: cursor,
+               stat: document.getElementById('sWcpm').textContent,
+               paper: [...document.getElementById('prnums').children][6]
+                        .querySelector('.v').textContent,
+               csv: decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+                      .replace(/^data:[^,]*,/, '')).split('\r\n')[1] || '' };
+    });
+    eq('ten words in with one wrong, a minute gone: nine correct a minute',
+       r.stat, '9');
+    eq('...the printed record agrees', r.paper, '9');
+    eq('...and so does the spreadsheet', r.csv.split(',')[11], '9');
+  }
+  {
+    // The finished figure must not move a single word: it is the one that goes
+    // in the child's record.
+    const r = await page.evaluate(() => {
+      cursor = 0;                       // the teacher never walked to the end
+      clockState = 'done'; render();
+      return { stat: document.getElementById('sWcpm').textContent,
+               read: document.getElementById('ct-words').textContent,
+               err: document.getElementById('ct-err').textContent };
+    });
+    eq('once the reading is finished the rate is the whole passage again',
+       r.stat, String(Math.round(+r.read - +r.err)));
+  }
+
+  // =========================================================================
+  group('A mark past the stop mark does not look like one that counts');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // render() greys every word past the stop mark, but .w.past carried only
+    // `color` and was declared BEFORE .w.m-sub and friends at the same
+    // specificity — so a word marked past the stop kept its full orange, its
+    // white-on-orange tag and its "read as" label, on screen AND on the printed
+    // record, while the Errors tile directly above it, the printed "Every mark"
+    // table and the spreadsheet all excluded it. Counting the marks on the
+    // passage gave a different answer from the number beside it.
+    await page.click('.w[data-i="3"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#saidbox');
+    await page.type('#saidbox', 'sat');
+    await page.keyboard.press('Escape');
+    await page.click('.w[data-i="10"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#saidbox');
+    await page.type('#saidbox', 'nap');
+    await page.keyboard.press('Escape');
+    await page.click('.w[data-i="5"]');       // the last word she really read
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('e');           // stopped reading here
+    const look = () => page.evaluate(() => {
+      const g = i => {
+        const el = document.querySelector('.w[data-i="' + i + '"]');
+        const tag = el.querySelector('.tag'), said = el.querySelector('.said');
+        return { color: getComputedStyle(el).color,
+                 tag: tag ? getComputedStyle(tag).backgroundColor : null,
+                 said: said ? getComputedStyle(said).color : null };
+      };
+      return { counted: g(3), past: g(10), plain: g(12),
+               errors: document.getElementById('ct-err').textContent,
+               marks: document.querySelectorAll('#prmarks tr').length };
+    });
+    const scr = await look();
+    eq('a mark past the stop is greyed like the unmarked words around it',
+       scr.past.color, scr.plain.color);
+    eq('...its tag is greyed too, not white on orange', scr.past.tag, scr.plain.color);
+    eq('...and so is what the child said there', scr.past.said, scr.plain.color);
+    check('...while the mark the numbers DO count keeps its full colour',
+          scr.counted.color !== scr.plain.color, JSON.stringify(scr.counted));
+    eq('...so the one error on screen is the one mark drawn in colour',
+       [scr.errors, scr.marks], ['1', 1]);
+    await page.emulateMediaType('print');
+    const pr = await look();
+    eq('the sheet the specialist counts greys it as well',
+       [pr.past.color, pr.past.tag, pr.past.said],
+       [pr.plain.color, pr.plain.color, pr.plain.color]);
+    check('...and still prints the counted mark in colour',
+          pr.counted.color !== pr.plain.color, JSON.stringify(pr.counted));
+    await page.emulateMediaType('screen');
+  }
+
+  // =========================================================================
+  group('The clock starts, and the record is written down');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Typing what the child said records a substitution — and was the one
+    // route to a mark that never started the clock. A reading marked only that
+    // way sat at 0:00 for its whole length, then saved, printed and exported
+    // with no time and no reading rate.
+    const KEY = await indexKey(page);
+    await page.click('.w[data-i="3"]');
+    await page.type('#saidbox', 'sat');
+    const r = await page.evaluate(() => ({ clock: clockState, code: words[3].code }));
+    eq('typing what the child said starts the clock, like every other mark',
+       r.clock, 'running');
+    eq('...and records the substitution it always did', r.code, 'sub');
+    await new Promise(r => setTimeout(r, 1300));
+    const stored = await page.evaluate(k => {
+      flushSave();
+      const list = JSON.parse(localStorage.getItem(k) || '[]');
+      return { elapsed: list.length ? JSON.parse(localStorage.getItem(recKey(list[0].id))).elapsed : 0,
+               tile: document.getElementById('wcpm').textContent };
+    }, KEY);
+    check('...so the saved record carries a reading time instead of 0:00',
+          stored.elapsed > 900, JSON.stringify(stored));
+    check('...and the tile has stopped saying the clock has not begun',
+          !/starts when you begin/i.test(stored.tile), stored.tile);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Space is "read correctly, move on". It started the clock but wrote
+    // nothing, and the 5-second heartbeat only ever UPDATES a record that
+    // already exists — so a child who began fluently was held entirely in
+    // memory and a reload threw the whole beginning away.
+    const KEY = await indexKey(page);
+    for (let i = 0; i < 6; i++) await page.keyboard.press(' ');
+    await new Promise(r => setTimeout(r, 700));
+    const s = await state(page);
+    eq('six words read correctly is a reading, and it is saved', s.records, 1);
+    const kept = await page.evaluate(k => {
+      const list = JSON.parse(localStorage.getItem(k) || '[]');
+      return JSON.parse(localStorage.getItem(recKey(list[0].id))).elapsed;
+    }, KEY);
+    check('...with the time the child has been reading in it', kept > 0, 'stored ' + kept + 'ms');
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Two keystrokes that cancel each other out used to leave a nameless
+    // record behind — 55 words read, 100%, Independent — in the saved list, in
+    // the spreadsheet and across a reload, its stored time still growing on
+    // every heartbeat, because a running clock counted as content all by
+    // itself.
+    await page.keyboard.press('x');
+    await page.keyboard.press('Backspace');
+    await new Promise(r => setTimeout(r, 700));
+    const s = await state(page);
+    eq('one stray marking key, undone, leaves nothing on screen', s.marks, 0);
+    eq('...and no record for a child who does not exist', s.records, 0);
+    await new Promise(r => setTimeout(r, 5400));    // past a heartbeat tick
+    eq('...and the heartbeat does not bring one into being either',
+       (await state(page)).records, 0);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The 400ms save debounce restarts on every keystroke, so a teacher typing
+    // steadily was never written at all — and once the reading is finished the
+    // heartbeat has stopped too. Following the page's own nav link, reloading
+    // or closing the tab discarded the whole note.
+    const KEY = await indexKey(page);
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 600));
+    await page.click('#finishbtn');
+    await page.click('#notes');
+    await page.type('#notes', 'Slowed on the last two lines.', { delay: 5 });
+    await nav(page, base + '/worked-example.html');
+    await nav(page, base + '/index.html');
+    const stored = await page.evaluate(k => {
+      const list = JSON.parse(localStorage.getItem(k) || '[]');
+      return list.length
+        ? JSON.parse(localStorage.getItem(recKey(list[0].id))).notes : '(no record at all)';
+    }, KEY);
+    eq('a note typed and then left behind is still there when you come back',
+       stored, 'Slowed on the last two lines.');
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Pressing E and taking it straight back used to un-finish a reading the
+    // teacher had already ended with Finish: the clock started again on a
+    // finished assessment and the heartbeat wrote the growing time into the
+    // child's saved record every five seconds.
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 900));
+    await page.click('#finishbtn');
+    const done = await state(page);
+    await page.keyboard.press('e');
+    await page.keyboard.press('e');
+    const after = await state(page);
+    eq('a reading ended with Finish stays ended when a stop mark is taken back',
+       after.clock, 'done');
+    eq('...at the time the reading actually took', after.elapsed, done.elapsed);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Reopen only took an Undo snapshot when a stop mark had ended the
+    // reading. Reopening after Finish could not be undone at all, and the
+    // Backspace meant as that undo deleted the teacher's last MARK instead.
+    await page.keyboard.press('x');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('o');
+    await new Promise(r => setTimeout(r, 900));
+    await page.click('#finishbtn');
+    const done = await state(page);
+    await page.click('#finishbtn');                 // the same button, now "Reopen"
+    await new Promise(r => setTimeout(r, 1200));
+    await page.keyboard.press('Backspace');
+    const back = await state(page);
+    eq('Reopen can be taken back even when Finish was what ended the reading',
+       back.clock, 'done');
+    eq('...putting the reading time back where it was', back.elapsed, done.elapsed);
+    eq('...and leaving both of the teacher\'s marks alone', back.marks, done.marks);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The tap menu's "Stopped reading here" is the same decision as the E key,
+    // so it has to make the same one: on a reading already ended with Finish,
+    // putting a stop mark on and taking it straight back must not restart the
+    // clock on a finished assessment.
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 900));
+    await page.click('#finishbtn');
+    const done = await state(page);
+    await page.click('.w[data-i="5"]');
+    await page.click('#pop button[data-extra="stop"]');
+    await page.click('#pop button[data-extra="stop"]');
+    const after = await state(page);
+    eq('the tap menu ends a reading the same way the keyboard does',
+       after.clock, 'done');
+    eq('...at the same time on the clock', after.elapsed, done.elapsed);
+    eq('...with the stop mark itself taken back', await page.evaluate(() => stoppedAt), null);
+  }
+
+  // =========================================================================
+  group('The teacher can see, and reach, what she is marking');
+  // =========================================================================
+  {
+    // This page had no scrolling code of any kind. Marking with the two keys
+    // the hint above the passage teaches — Space and X — walked the cursor
+    // behind the fixed stats bar and then off the bottom of the window while
+    // the page sat at the top, so the rest of the reading was marked blind. At
+    // a 13" laptop's 1280x650 all 36 lessons did it; on a portrait iPad, 25.
+    await page.setViewport({ width: 1280, height: 650 });
+    await fresh(page, base, '#L41');
+    const cursorSeen = () => page.evaluate(() => {
+      const el = document.querySelector('.w.cursor');
+      const r = el.getBoundingClientRect();
+      const bar = document.getElementById('stats').getBoundingClientRect();
+      return { word: el.textContent, top: Math.round(r.top),
+               bottom: Math.round(r.bottom), barTop: Math.round(bar.top),
+               clearOfBar: r.bottom <= bar.top, onScreen: r.top >= 0 };
+    });
+    for (let i = 0; i < 40; i++) await page.keyboard.press(' ');
+    const after40 = await cursorSeen();
+    check('the word being marked is still on screen forty words in',
+          after40.clearOfBar && after40.onScreen, JSON.stringify(after40));
+    for (let i = 0; i < 15; i++) await page.keyboard.press('x');
+    const after55 = await cursorSeen();
+    check('...and fifteen wrong words later, still clear of the fixed bar',
+          after55.clearOfBar && after55.onScreen, JSON.stringify(after55));
+    // The clock redraws this screen twice a second. A page that scrolled
+    // itself while the teacher was reading something else would be its own bug,
+    // so the scroll only happens when the cursor actually moves.
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await new Promise(r => setTimeout(r, 1300));
+    eq('...but the page never scrolls itself while nothing is being marked',
+       await page.evaluate(() => Math.round(window.scrollY)), 0);
+    await page.setViewport({ width: 1280, height: 900 });
+  }
+  {
+    // "Added a word" and "stopped reading here" were the keys I and E and
+    // nothing else — on a tool whose hint promises the tap menu "has every mark
+    // on it" and whose panel keeps a live "Added a word" tally. On a touch-only
+    // iPad, the device this tool is written for, no gesture anywhere on the
+    // page could make either mark.
+    await page.setViewport({ width: 768, height: 1024, isMobile: true, hasTouch: true });
+    await fresh(page, base, '#L20');
+    const tapAt = async sel => {
+      const b = await page.evaluate(s => {
+        const el = document.querySelector(s);
+        el.scrollIntoView({ block: 'center' });
+        const r = el.getBoundingClientRect();
+        return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+      }, sel);
+      await page.touchscreen.tap(b.x, b.y);
+    };
+    await tapAt('.w[data-i="3"]');
+    eq('the tap menu really does have every mark on it',
+       await page.evaluate(() => [...document.querySelectorAll('#pop button')]
+         .map(b => b.textContent.trim())
+         .filter(t => /^(Added a word|Stopped reading here)$/.test(t))),
+       ['Added a word', 'Stopped reading here']);
+    await tapAt('#pop button[data-extra="ins"]');
+    eq('a tap can record an added word, so the panel tally can leave zero',
+       await page.evaluate(() => ({ insertions, at: insertAt.slice(),
+         tally: document.getElementById('ct-ins').textContent })),
+       { insertions: 1, at: [3], tally: '1' });
+    await tapAt('#pop button[data-extra="stop"]');
+    eq('a tap can say where the child stopped reading',
+       await page.evaluate(() => ({ stoppedAt, clock: clockState,
+         bar: !!document.querySelector('.stopmark') })),
+       { stoppedAt: 3, clock: 'done', bar: true });
+    await tapAt('#pop button[data-extra="stop"]');
+    eq('...and tapping it again lifts it, exactly as pressing E twice does',
+       await page.evaluate(() => ({ stoppedAt, clock: clockState,
+         bar: !!document.querySelector('.stopmark') })),
+       { stoppedAt: null, clock: 'running', bar: false });
+    await page.setViewport({ width: 1280, height: 900 });
+    // The same two marks with a mouse, for the teacher at a laptop: a stop mark
+    // the menu set is a stop mark the menu can lift, and the reading carries on
+    // from where it was.
+    await fresh(page, base, '#L20');
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 600));
+    await page.click('.w[data-i="6"]');
+    await page.click('#pop button[data-extra="stop"]');
+    const ended = await page.evaluate(() => ({ stoppedAt, clock: clockState }));
+    await page.click('#pop button[data-extra="stop"]');
+    const lifted = await page.evaluate(() => ({ stoppedAt, clock: clockState }));
+    eq('the menu ends the reading where the child stopped', ended,
+       { stoppedAt: 6, clock: 'done' });
+    eq('...and lifting it there puts the child back to reading', lifted,
+       { stoppedAt: null, clock: 'running' });
+    await page.click('.w[data-i="8"]');
+    await page.click('#pop button[data-extra="ins"]');
+    eq('...and the menu records a word the child added, on the word it is open on',
+       await page.evaluate(() => ({ insertions, at: insertAt.slice(),
+         tally: document.getElementById('ct-ins').textContent })),
+       { insertions: 1, at: [8], tally: '1' });
+  }
+  {
+    // Pressing Pause made the reading-rate line ABOVE it shrink — three lines
+    // to one on a word list — which jerked the button itself 48px up the page.
+    // The second press, the natural "now Resume" gesture and the one a trackpad
+    // tap-to-click makes, landed on the panel background and did nothing, so
+    // the clock stayed paused however many times you pressed it.
+    await fresh(page, base, '#L6');
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 1600));
+    const centre = () => page.evaluate(() => {
+      const b = document.getElementById('pausebtn').getBoundingClientRect();
+      return { x: Math.round(b.x + b.width / 2), y: Math.round(b.y + b.height / 2) };
+    });
+    await page.evaluate(() => document.getElementById('pausebtn')
+      .scrollIntoView({ block: 'center' }));
+    const at = await centre();
+    await page.mouse.click(at.x, at.y);
+    eq('pressing Pause pauses the clock', await page.evaluate(() => clockState), 'paused');
+    const moved = await centre();
+    check('...without the button moving out from under the pointer',
+          Math.abs(moved.y - at.y) <= 2, `pressed at y=${at.y}, button now y=${moved.y}`);
+    await page.mouse.click(at.x, at.y);
+    eq('...so pressing the same place again resumes the reading',
+       await page.evaluate(() => clockState), 'running');
+  }
+  {
+    // Every message the tool gives the teacher goes into one box that was a
+    // fixed 16px tall, so anything longer than a line overflowed it and the
+    // button row below painted over the rest — including "THIS RECORD IS NOT
+    // BEING SAVED", the most urgent sentence in the tool, which was also
+    // written in the green of "Saved on this laptop" and sits 450px (desktop)
+    // to 1450px (iPad portrait) below the fold where nobody would see it.
+    await page.setViewport({ width: 1024, height: 1200 });
+    await nav(page, base + '/index.html');
+    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => {
+      Storage.prototype.setItem = function(){ throw new DOMException('QuotaExceededError'); };
+    });
+    await page.click('#passage');
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 800));
+    const warn = await page.evaluate(() => {
+      const m = document.getElementById('savedmsg'), r = m.getBoundingClientRect();
+      const btn = document.getElementById('childcopybtn').getBoundingClientRect();
+      const bar = document.getElementById('alertbar'), br = bar.getBoundingClientRect();
+      return { text: m.textContent.slice(0, 30),
+               clipped: m.scrollHeight > Math.round(r.height) + 1,
+               underTheButtons: Math.round(r.bottom) > Math.round(btn.top),
+               colour: getComputedStyle(m).color,
+               barText: bar.textContent.slice(0, 30),
+               barShown: getComputedStyle(bar).display !== 'none',
+               barInView: br.top >= 0 && br.bottom <= window.innerHeight };
+    });
+    check('the whole "this record is not being saved" warning fits in its box',
+          /NOT BEING SAVED/.test(warn.text) && !warn.clipped && !warn.underTheButtons,
+          JSON.stringify(warn));
+    check('...and is not written in the colour of "Saved on this laptop"',
+          warn.colour !== 'rgb(99, 153, 34)', warn.colour);
+    check('...and is on the screen the teacher is actually looking at',
+          warn.barShown && warn.barInView && /NOT BEING SAVED/.test(warn.barText),
+          JSON.stringify(warn));
+    // It lies over the header, so it has to be possible to put it away — a
+    // warning that cannot be dismissed is a warning that blocks the Child box.
+    await page.click('#alertbar');
+    eq('...and a tap puts it away again',
+       await page.evaluate(() =>
+         getComputedStyle(document.getElementById('alertbar')).display), 'none');
+    await fresh(page, base, '#L20');
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 700));
+    eq('an ordinary save still says so quietly, in green, with no red bar',
+       await page.evaluate(() => ({
+         text: document.getElementById('savedmsg').textContent,
+         colour: getComputedStyle(document.getElementById('savedmsg')).color,
+         bar: getComputedStyle(document.getElementById('alertbar')).display !== 'none' })),
+       { text: 'Saved on this laptop', colour: 'rgb(99, 153, 34)', bar: false });
+    await page.setViewport({ width: 1280, height: 900 });
+  }
+  {
+    // The retell box was a raw browser-default textarea — 183x36 of grey
+    // monospace sitting directly above its fully styled 550x150 twin in the
+    // same card — and it clipped what the teacher typed after about two lines.
+    await fresh(page, base, '#L20');
+    const box = await page.evaluate(() => {
+      const m = id => {
+        const e = document.getElementById(id), r = e.getBoundingClientRect(),
+              cs = getComputedStyle(e);
+        return { w: Math.round(r.width), h: Math.round(r.height),
+                 font: cs.fontFamily, size: cs.fontSize,
+                 radius: cs.borderRadius, pad: cs.padding };
+      };
+      return { retell: m('retell'), notes: m('notes') };
+    });
+    eq('the retell box is the same box as the notes box below it',
+       box.retell, box.notes);
+    await page.type('#retell', 'She said the cat got muddy and Sam had to wash it in the tub.');
+    check('...so a retell of any length stays in sight while it is typed',
+          await page.evaluate(() => {
+            const e = document.getElementById('retell');
+            return e.scrollHeight <= Math.round(e.getBoundingClientRect().height) + 1;
+          }), JSON.stringify(box.retell));
+  }
+
+  // =========================================================================
+  group('The sheet that goes to the learning specialist');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // The teacher who prints with Cmd+P, File > Print or the iPad Share sheet
+    // instead of the tool's own "Print this record" button got a sheet with no
+    // child on the header, "TEACHER NOTES —", and no Retell section at all.
+    // The four text fields and the retell buttons wrote to the screen and to
+    // storage and never repainted the print-only blocks; the only thing that
+    // did was render(), which stops ticking the moment the clock stops. Here
+    // the clock is never started, so nothing repaints those blocks except the
+    // fields themselves — which is exactly the hole that was open.
+    await page.click('#initials'); await page.type('#initials', 'JM');
+    await page.click('#notes');    await page.type('#notes', 'Slowed on the last two lines.');
+    await (await page.$$('.retellrow button'))[2].click();       // "Most of it"
+    await page.click('#retell');   await page.type('#retell', 'A cat got in the pot.');
+    await page.emulateMediaType('print');
+    const paper = await page.evaluate(() => ({
+      clock: clockState,
+      who:    document.getElementById('prwho').textContent,
+      body:   document.body.innerText
+    }));
+    await page.emulateMediaType('screen');
+    check('the child is on the printed header without pressing the Print button',
+          paper.clock === 'idle' && /^JM/.test(paper.who), paper.who);
+    check('...and so are the notes the teacher typed',
+          /Slowed on the last two lines\./.test(paper.body), 'clock: ' + paper.clock);
+    check('...and so is the whole retell section',
+          /Retell/i.test(paper.body) && /Most of it/.test(paper.body) &&
+          /A cat got in the pot\./.test(paper.body), 'clock: ' + paper.clock);
+  }
+
+  await fresh(page, base, '#L20');
+  {
+    // "Print gives you one page for the learning specialist" — and it was two
+    // sheets for all 36 lessons, even for the lightest possible record. On a
+    // word list the second sheet held nothing but the disclaimer; on a passage
+    // the marked passage straddled the break and the miscue table, the retell,
+    // the notes and the footer all landed on sheet 2. Measured two ways, the
+    // same two ways that found it: the real print box of both papers (Letter
+    // 710x950 css px at 14mm margins, A4 688x1017), and Chrome's own print
+    // pipeline counting the sheets it produces.
+    const tall = [];
+    for (const [paper, w, h] of [['US Letter', 710, 950], ['A4', 688, 1017]]){
+      for (const weight of ['two marks on it', 'a quarter of it wrong, with a retell and a note']){
+        await page.setViewport({ width: w, height: 2400 });
+        await page.emulateMediaType('print');
+        const over = await page.evaluate((weight) => {
+          const out = [];
+          for (const n of Object.keys(LESSONS).map(Number)){
+            switchLesson(n);
+            if (weight === 'two marks on it'){ mark(0, 'sub'); mark(3, 'omit'); }
+            else {
+              words.forEach((w, i) => { if (i % 4 === 0){ w.code = 'sub'; w.said = 'thet'; } });
+              document.getElementById('notes').value =
+                'Slowed on the last two lines and kept checking the picture for help.';
+              document.getElementById('retell').value =
+                'She said the cat got muddy and Sam had to wash it in the tub.';
+              retellLevel = 'most';
+            }
+            render(); paintPrint();
+            out.push([n, Math.ceil(Math.max(...[...document.querySelectorAll('main > *')]
+                                     .map(e => e.getBoundingClientRect().bottom)))]);
+          }
+          return out;
+        }, weight);
+        await page.emulateMediaType('screen');
+        tall.push(Math.max(...over.map(r => r[1])));
+        eq(`every lesson fits one ${paper} page with ${weight}`,
+           over.filter(r => r[1] > h).map(r => 'L' + r[0] + ' ' + r[1] + 'px'), []);
+      }
+    }
+    await page.setViewport({ width: 1280, height: 900 });
+
+    // Chrome's own print pipeline, not a measurement of the screen: a word
+    // list, a short passage and the tallest passage of the 36. The media
+    // emulation has to be cleared first — page.pdf() obeys it, so with 'screen'
+    // still pinned Chrome prints the SCREEN layout and reports ten sheets.
+    await page.emulateMediaType(null);
+    const sheets = (buf) =>
+      (Buffer.from(buf).toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length;
+    for (const n of [6, 20, 35]){
+      await page.evaluate((n) => {
+        switchLesson(n);
+        document.getElementById('initials').value = 'A.B.';
+        words.forEach((w, i) => { if (i % 4 === 0){ w.code = 'sub'; w.said = 'thet'; } });
+        document.getElementById('notes').value =
+          'Slowed on the last two lines and kept checking the picture for help.';
+        document.getElementById('retell').value =
+          'She said the cat got muddy and Sam had to wash it in the tub.';
+        retellLevel = 'most';
+        render(); paintPrint();
+      }, n);
+      const pdf = await page.pdf({ width: '8.5in', height: '11in', printBackground: true });
+      eq(`Chrome prints lesson ${n} as one sheet of paper`, sheets(pdf), 1);
+    }
+    await page.emulateMediaType('screen');
+  }
+
+  await fresh(page, base, '#L20');
+  {
+    // The blue "what they said" label and the coloured mark tag were both
+    // absolutely positioned in the same band above the word, so on any word
+    // under about nine characters they were painted one on top of the other —
+    // 25 of 28 sampled words, up to 100% covered, on screen AND on the printed
+    // record. Neither one was readable, which is the whole reason the teacher
+    // typed what the child said in the first place.
+    await page.setViewport({ width: 768, height: 1024 });
+    await page.click('.w[data-i="8"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#saidbox'); await page.type('#saidbox', 'cot');
+    await page.keyboard.press('Escape');
+    const boxes = () => page.evaluate(() => {
+      // Every mark type, every word of the lesson, with a said label on each.
+      const CODE = ['sub','omit','told','sc','rep','appeal'];
+      const SAID = ['cot','a','the','running','I','sh'];
+      words.forEach((w, i) => { w.code = CODE[i % 6]; w.said = SAID[i % 6]; });
+      render();
+      let pairs = 0, hit = [];
+      document.querySelectorAll('.w').forEach(e => {
+        const t = e.querySelector('.tag'), s = e.querySelector('.said');
+        if (!t || !s) return;
+        pairs++;
+        const a = t.getBoundingClientRect(), b = s.getBoundingClientRect();
+        if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
+            Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0)
+          hit.push(e.textContent);
+      });
+      return { pairs, hit: hit.slice(0, 4) };
+    });
+    const one = await page.evaluate(() => {
+      const w = document.querySelector('.w[data-i="8"]');
+      const a = w.querySelector('.tag').getBoundingClientRect();
+      const b = w.querySelector('.said').getBoundingClientRect();
+      return { over: Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0 &&
+                     Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0,
+               saidAbove: b.bottom <= a.top + 0.01 };
+    });
+    check('the word the child said is not printed on top of its own mark tag',
+          one.over === false, JSON.stringify(one));
+    check('...it sits in its own lane above the tag', one.saidAbove, JSON.stringify(one));
+    const screen = await boxes();
+    eq('...for every mark type on every word of the passage', screen.hit, []);
+    await page.emulateMediaType('print');
+    const printed = await boxes();
+    await page.emulateMediaType('screen');
+    eq('...and on the paper too, where nobody re-checks it', printed.hit, []);
+    check('...and both annotations are still on every marked word',
+          screen.pairs > 40 && printed.pairs === screen.pairs,
+          `screen ${screen.pairs}, print ${printed.pairs}`);
+    await page.setViewport({ width: 1280, height: 900 });
+  }
+
+  // =========================================================================
+  group('Which child, which reading, and a delete that stays deleted');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Delete did not stick. A record deleted in one tab was written back to
+    // storage, whole, by the tab that still had it open — body and index entry
+    // — about five seconds later, by the reading-time heartbeat, with nobody
+    // touching anything. The confirmation says "This cannot be undone", and the
+    // record came back on its own.
+    const KEY = await indexKey(page);
+    await page.click('#initials');
+    await page.type('#initials', 'GG');
+    await page.click('#passage');
+    await page.keyboard.press(' ');            // clock running, so the heartbeat is live
+    await page.evaluate(() => flushSave());
+    const born = await page.evaluate(() => recordId);
+
+    const tabB = await browser.newPage();
+    tabB.on('pageerror', e => pageErrors.push('second tab: ' + e.message));
+    await tabB.evaluateOnNewDocument(() => { window.confirm = () => true; });
+    await tabB.goto(base + '/index.html', { waitUntil: 'load' });
+
+    // Another tab writing something that is not a record must not disturb the
+    // reading in this one.
+    await tabB.evaluate(() => localStorage.setItem('not-a-record', 'x'));
+    await new Promise(r => setTimeout(r, 200));
+    eq('a stranger key written by another tab leaves this reading alone',
+       await page.evaluate(() => recordId), born);
+
+    const listed = await tabB.evaluate(() =>
+      document.querySelectorAll('.recrow').length);
+    const delBtn = (await tabB.$$('#records .recrow button'))[1];
+    await delBtn.click();                      // a real press on Delete, in the other tab
+    await new Promise(r => setTimeout(r, 300));
+    await page.bringToFront();
+    const seen = await page.evaluate(k => ({
+      records: JSON.parse(localStorage.getItem(k) || '[]').length,
+      open: recordId,
+      rows: document.querySelectorAll('.recrow').length,
+      bar: document.getElementById('alertbar').textContent
+    }), KEY);
+    eq('the other tab could see the record before it deleted it', listed, 1);
+    eq('a record deleted in another tab leaves this one too',
+       { records: seen.records, rows: seen.rows }, { records: 0, rows: 0 });
+    check('...and this tab stops holding it, so nothing can write it back',
+          seen.open === null, JSON.stringify(seen.open));
+    check('...and the teacher is told, in the bar pinned to the top of the screen',
+          /deleted in another tab/i.test(seen.bar), JSON.stringify(seen.bar));
+
+    // The real 5-second heartbeat, waited out rather than simulated: this is
+    // the exact clock tick that used to bring the record back.
+    await new Promise(r => setTimeout(r, 5600));
+    eq('...and five seconds later, untouched, it is still deleted',
+       await page.evaluate(k => ({
+         records: JSON.parse(localStorage.getItem(k) || '[]').length,
+         bodies: Object.keys(localStorage).filter(n => /^running-record-rec-/.test(n)).length
+       }), KEY),
+       { records: 0, bodies: 0 });
+    await tabB.close();
+    await page.bringToFront();
+  }
+  await fresh(page, base, '#L20');
+  {
+    // "One per child, nothing is overwritten" was not true of the second half:
+    // two readings of the same child, same lesson, same day drew two rows
+    // identical character for character, and Delete asked about "the record for
+    // J.M." without saying which of them it meant.
+    for (let i = 0; i < 2; i++){
+      await page.click('#initials');
+      await page.type('#initials', 'J.M.');
+      await page.click('#passage');
+      await page.keyboard.press('x');
+      await new Promise(r => setTimeout(r, 500));
+      await page.click('#clearbtn');           // "Start a new record"
+      await new Promise(r => setTimeout(r, 200));
+    }
+    const rows = await page.evaluate(() =>
+      [...document.querySelectorAll('.recrow')].map(r => r.innerText.replace(/\n/g, ' ')));
+    eq('a second reading of the same child is a second row', rows.length, 2);
+    check('...and the two rows do not read the same',
+          rows[0] !== rows[1], JSON.stringify(rows));
+    check('...they say which reading each one is',
+          /reading 2 of 2/.test(rows[0]) && /reading 1 of 2/.test(rows[1]),
+          JSON.stringify(rows));
+    check('...and each carries the time of day it was started',
+          rows.every(r => /\d:\d\d/.test(r)), JSON.stringify(rows));
+    const asked = await page.evaluate(() => {
+      window.__asked = null;
+      window.confirm = m => { window.__asked = m; return false; };
+      const b = [...document.querySelectorAll('.recrow')[0].querySelectorAll('button')]
+                  .find(b => b.textContent === 'Delete');
+      b.click();
+      window.confirm = () => true;             // hand the suite's stub back
+      return window.__asked;
+    });
+    check('the delete question names the reading it is about to destroy',
+          /J\.M\./.test(asked) && /Lesson 20/.test(asked) && /reading 2 of 2/.test(asked),
+          JSON.stringify(asked));
+    eq('...and answering no keeps both readings',
+       await page.evaluate(() => readIndex().length), 2);
+    check('the heading no longer promises one row per child',
+          !/one per child/i.test(await page.evaluate(() =>
+            document.querySelector('#recordscard h2').textContent)));
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The box was labelled "Child", so a teacher typed a child's name into it —
+    // and maxlength="4" ate the rest without a word. "Jacob" was stored,
+    // printed and listed as "Jaco", with no message, no counter and no red.
+    // The 4-character cap is right (initials and a date are the only things
+    // that identify a child here); being silent about it was not.
+    const box = await page.evaluate(() => ({
+      label: document.querySelector('label[for="initials"]').textContent,
+      cap:   document.getElementById('initcap').textContent,
+      maxlength: document.getElementById('initials').getAttribute('maxlength')
+    }));
+    eq('the box says it wants initials, not a name', box.label, 'Initials');
+    eq('...and says how many it keeps, before a letter is lost', box.cap, 'up to 4');
+    check('...without maxlength, which is what made the loss invisible',
+          box.maxlength === null, JSON.stringify(box.maxlength));
+    await page.click('#initials');
+    await page.type('#initials', 'Jacob');
+    const typed = await page.evaluate(() => {
+      const cap = document.getElementById('initcap'), r = cap.getBoundingClientRect();
+      return { value: document.getElementById('initials').value,
+               cap: cap.textContent,
+               colour: getComputedStyle(cap).color,
+               inView: r.top >= 0 && r.bottom <= window.innerHeight };
+    });
+    eq('a fifth letter is still not kept — this laptop holds initials, not names',
+       typed.value, 'Jaco');
+    check('...but the box says so, on screen, where the teacher is typing',
+          /not kept/i.test(typed.cap) && typed.inView, JSON.stringify(typed));
+    check('...in the colour of a miscue, not the colour of the quiet hint',
+          typed.colour === 'rgb(178, 59, 0)', typed.colour);
+    await page.keyboard.press('Backspace');
+    eq('...and deleting a letter takes the notice back',
+       await page.evaluate(() => document.getElementById('initcap').textContent),
+       'up to 4');
+  }
+
+  // =========================================================================
+  group('A finished reading stays finished, and every surface says what the rate is out of');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Finish ended this reading; the stop mark was only put in afterwards, to
+    // show where the child had got to. Which gesture ENDED a reading lived
+    // only in memory, and after a reload the tool guessed it back from "there
+    // is a stop mark and the clock is done" — which is what BOTH kinds of
+    // record look like. So lifting the mark on a reopened record restarted the
+    // clock on a finished reading, and the five-second heartbeat wrote the
+    // growing time into the child's saved record and into the spreadsheet: a
+    // two-second reading became fourteen seconds and kept climbing.
+    await page.type('#initials', 'FIN');
+    await page.evaluate(() => document.activeElement.blur());
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 1200));
+    await page.click('#finishbtn');                     // Finish ends it
+    await page.keyboard.press('e');                     // ...the mark comes after
+    const ended = await page.evaluate(() => ({ clock: clockState, stop: stoppedAt }));
+    eq('Finish ends the reading and a stop mark after it does not un-end it',
+       ended, { clock: 'done', stop: 1 });
+    await new Promise(r => setTimeout(r, 700));
+    const finId = await page.evaluate(() => recordId);
+    const finMs = await page.evaluate(() => totalMs());
+    await nav(page, base + '/index.html#L20');
+    await page.evaluate(i => openRecord(i), finId);
+    eq('...and the saved record remembers it was Finish, not the mark',
+       await page.evaluate(() => finishedByStopMark), false);
+    await page.keyboard.press('e');                     // lift the mark
+    await new Promise(r => setTimeout(r, 1400));
+    const after = await page.evaluate(() => ({ clock: clockState, ms: totalMs() }));
+    eq('...so lifting that mark after a reload does not restart the clock',
+       after.clock, 'done');
+    check('...and the time in the child\'s record does not start growing',
+          Math.abs(after.ms - finMs) < 200,
+          'was ' + finMs + 'ms, now ' + after.ms + 'ms');
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The other half of the same fix: a reading the stop mark really did end
+    // must still pick up where it left off when the mark is lifted, reload or
+    // no reload. Dropping the guess without saving the answer would break this.
+    await page.type('#initials', 'STP');
+    await page.evaluate(() => document.activeElement.blur());
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 800));
+    await page.keyboard.press('e');                     // the mark ends it
+    await new Promise(r => setTimeout(r, 700));
+    const stopId = await page.evaluate(() => recordId);
+    await nav(page, base + '/index.html#L20');
+    await page.evaluate(i => openRecord(i), stopId);
+    eq('a reading the stop mark ended remembers that it was the mark',
+       await page.evaluate(() => ({ clock: clockState, fbsm: finishedByStopMark })),
+       { clock: 'done', fbsm: true });
+    await page.keyboard.press('e');
+    eq('...so lifting it puts the child back to reading, even after a reload',
+       await page.evaluate(() => ({ clock: clockState, stop: stoppedAt })),
+       { clock: 'running', stop: null });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Every record saved before the clock's state was stored has no clockState
+    // at all. Those were being reopened as 'paused', and 'paused' means a
+    // reading still going on — so the rate was recomputed over the words dealt
+    // with so far instead of the whole passage, and openRecord wrote it back
+    // that way. An already-finished child's reading dropped from 54 words
+    // correct per minute to 4 simply by being opened, on the screen, on the
+    // printed sheet and in the spreadsheet.
+    await page.evaluate(k => {
+      build();
+      const w = words.map(x => ({ text: x.text, code: null, said: '' }));
+      w[4].code = 'sub';                       // one error, whole passage read
+      const rec = { id: 'legacy', lesson: 20, initials: 'OLD', date: '2026-01-01',
+        notes: '', retellText: '', retell: null, words: w, cursor: 0,
+        stoppedAt: null, insertions: 0, insertAt: [], elapsed: 60000,
+        updated: new Date().toISOString(), accuracy: 98, errors: 1, read: 55 };
+      localStorage.setItem(recKey('legacy'), JSON.stringify(rec));
+      localStorage.setItem(k, JSON.stringify([{ id: 'legacy', initials: 'OLD',
+        lesson: 20, date: '2026-01-01', accuracy: 98, updated: rec.updated }]));
+    }, await indexKey(page));
+    await nav(page, base + '/index.html#L20');
+    await page.evaluate(() => openRecord('legacy'));
+    eq('a record saved before the clock had a state reopens finished, not paused',
+       await page.evaluate(() => clockState), 'done');
+    const r = await page.evaluate(() => {
+      flushSave();
+      document.getElementById('exportbtn').click();
+      return { read: document.getElementById('ct-words').textContent,
+               err:  document.getElementById('ct-err').textContent,
+               tile: document.getElementById('sWcpm').textContent,
+               paper: [...document.getElementById('prnums').children][6]
+                        .querySelector('.v').textContent,
+               csv: decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+                      .replace(/^data:[^,]*,/, '')).replace(/^﻿/, '')
+                      .trim().split('\r\n') };
+    });
+    const whole = String(Math.round(+r.read - +r.err));
+    eq('...so its rate is still the whole passage, unchanged by being opened',
+       r.tile, whole);
+    eq('...the printed record says the same', r.paper, whole);
+    eq('...and so does the spreadsheet',
+       (r.csv[1] || '').split(',')[11], whole);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The deliberate choice this guards: while a reading is still going — and
+    // PAUSED is still going — the rate is out of the words the child has got
+    // through, not the whole passage. Two fixtures that used to pin this were
+    // moved to 'done' when the rate changed, and nothing was left holding the
+    // paused path. Ten words in, one of them wrong, one minute gone: nine.
+    for (let i = 0; i < 10; i++) await page.keyboard.press(i === 4 ? 'x' : ' ');
+    const live = await page.evaluate(() => {
+      elapsed = 60000; runningSince = null; clockState = 'paused'; render();
+      return { tile: document.getElementById('sWcpm').textContent,
+               read: document.getElementById('ct-words').textContent };
+    });
+    eq('a paused reading rates the words the child has got through, not the passage',
+       live.tile, '9');
+    // Compare the TILE against what the whole-passage figure would have been.
+    // This used to compare the words-read counter against the cursor position —
+    // 55 against 10 — which differ whether the bug is present or not, so the
+    // check could never fail. A check that cannot fail inflates the count and
+    // guards nothing.
+    const whole = await page.evaluate(() => {
+      const s = stats();
+      return String(Math.max(0, Math.round((s.read - s.errors) / (totalMs() / 60000))));
+    });
+    check('...which is not the whole passage figure',
+          live.tile !== whole, `tile ${live.tile}, whole passage would be ${whole}`);
+  }
+  {
+    // ...and it has to SAY so. The tile read "Words correct / min" in both
+    // states, and the printed sheet reported a words-so-far rate under a
+    // footnote saying the rate is measured over the whole passage — a sheet
+    // contradicting itself in front of the learning specialist it was printed
+    // for. The spreadsheet named the column the same either way.
+    const said = await page.evaluate(() => {
+      document.getElementById('initials').value = 'PRV';
+      flushSave();
+      document.getElementById('exportbtn').click();
+      const rows = decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+        .replace(/^data:[^,]*,/, '')).replace(/^﻿/, '')
+        .trim().split('\r\n').map(l => l.split(','));
+      return { tile: document.getElementById('sWcpmLabel').textContent,
+               paper: [...document.getElementById('prnums').children][6]
+                        .querySelector('.k').textContent,
+               foot: document.getElementById('prratefoot').textContent,
+               col: rows[0].indexOf('Rate measured over'),
+               cell: rows[1][rows[0].indexOf('Rate measured over')] };
+    });
+    check('the tile says the number is only the reading so far',
+          /so far/.test(said.tile), said.tile);
+    check('...the printed record says it too', /so far/.test(said.paper), said.paper);
+    check('...its footnote no longer claims the whole passage',
+          /so far/.test(said.foot) && !/measured over the whole passage/.test(said.foot),
+          said.foot);
+    check('the spreadsheet has a column saying what the rate is out of',
+          said.col >= 0, JSON.stringify(said.col));
+    check('...and it says the reading was not finished',
+          /not finished/.test(said.cell || ''), said.cell);
+  }
+  {
+    // Finished, and all three surfaces go back to the whole passage — and say
+    // so. Nothing about a finished record's wording may drift either.
+    const done = await page.evaluate(() => {
+      clockState = 'done'; render(); flushSave();
+      document.getElementById('exportbtn').click();
+      const rows = decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+        .replace(/^data:[^,]*,/, '')).replace(/^﻿/, '')
+        .trim().split('\r\n').map(l => l.split(','));
+      return { tile: document.getElementById('sWcpmLabel').textContent,
+               paper: [...document.getElementById('prnums').children][6]
+                        .querySelector('.k').textContent,
+               foot: document.getElementById('prratefoot').textContent,
+               cell: rows[1][rows[0].indexOf('Rate measured over')] };
+    });
+    eq('once it is finished the tile drops "so far"', done.tile, 'Words correct / min');
+    eq('...and so does the printed record', done.paper, 'Words correct/min');
+    check('...whose footnote says the whole passage again',
+          /measured over the whole passage/.test(done.foot), done.foot);
+    eq('...and the spreadsheet agrees with both', done.cell, 'whole passage');
+  }
+
+  // =========================================================================
+  group('A child who stops partway: the rate says what it was measured over');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // The commonest way a struggling reading ends, and the case that was
+    // printed under a whole-passage footnote. A child stopped after 13 of 55
+    // words showed 24 words per minute described as a whole-passage rate; the
+    // whole-passage figure would have been 108. Twenty-four reads as well
+    // below benchmark, a hundred and eight reads as fine.
+    const r = await page.evaluate(() => {
+      const letters = words.map((w, i) => /[a-z]/i.test(w.text) ? i : -1).filter(i => i >= 0);
+      mark(letters[3], 'sub');
+      cursor = letters[12];
+      stoppedAt = letters[12];
+      elapsed = 30000; runningSince = null; clockState = 'done';
+      render(); paintPrint();
+      const keys = [...document.querySelectorAll('#prnums .k')].map(d => d.textContent);
+      const vals = [...document.querySelectorAll('#prnums .v')].map(d => d.textContent);
+      const rateKey = keys.find(k => /Words correct\/min/.test(k)) || '';
+      return {
+        tileLabel: document.getElementById('sWcpmLabel').textContent,
+        tile: document.getElementById('sWcpm').textContent,
+        printKey: rateKey,
+        printVal: vals[keys.indexOf(rateKey)],
+        foot: (document.getElementById('prratefoot') || {}).textContent || '',
+        basis: rateBasis(clockState, stoppedAt),
+      };
+    });
+    eq('the rate is measured to the stop mark, not the whole passage',
+       r.basis, 'stopmark');
+    check('the screen tile says so', /to the stop/i.test(r.tileLabel), r.tileLabel);
+    check('the printed key says so', /to the stop/i.test(r.printKey), r.printKey);
+    check('the printed footnote does NOT claim the whole passage',
+          !/measured over the whole passage/i.test(r.foot), r.foot.slice(0, 120));
+    check('...and says the child stopped before the end',
+          /stopped before the end/i.test(r.foot), r.foot.slice(0, 120));
+    eq('the number on paper is the number on screen', r.printVal, r.tile);
+
+    // And the spreadsheet, which outlives every screen it was read off.
+    await page.evaluate(() => { flushSave(); });
+    await page.click('#exportbtn');
+    const csv = await page.evaluate(() =>
+      decodeURIComponent((window.__downloads.slice(-1)[0] || '').replace(/^data:[^,]*,/, '')));
+    check('the spreadsheet does not call it a whole-passage rate',
+          csv.length > 0 && !/whole passage/.test(csv),
+          (csv.match(/.{0,60}whole passage.{0,20}/) || ['(no export)'])[0]);
+    check('...it says the rate stops where the child did',
+          /read up to where the child stopped/.test(csv),
+          csv.split('\n')[1] ? csv.split('\n')[1].slice(-90) : '');
+
+    // Pin the NUMBER, not just the wording, and pin it in the SPREADSHEET —
+    // the one surface that re-derives this arithmetic for itself. Every other
+    // check here calls the tool's own stats(), so they would all agree with
+    // each other even if the export's separate sum drifted. Worked by hand:
+    // 12 correct words in 30 seconds is 24 per minute, and the whole-passage
+    // figure would be more than four times that.
+    const expected = await page.evaluate(() => {
+      const s = stats();
+      return { trimmed: String(Math.max(0, Math.round((s.read - s.errors) / 0.5))),
+               read: s.read, errors: s.errors };
+    });
+    const row = csv.split('\n')[1] || '';
+    const cells = row.split(',');
+    check('the spreadsheet reports the trimmed rate, worked out separately',
+          cells.includes(expected.trimmed),
+          `expected ${expected.trimmed} (${expected.read} read, ${expected.errors} wrong, 30s); row: ${row.slice(0, 120)}`);
+    eq('...which is the number on screen too', r.tile, expected.trimmed);
+    check('the whole-passage rate would have been far higher, so this matters',
+          Number(expected.trimmed) * 3 < Math.round((55 - expected.errors) / 0.5),
+          `trimmed ${expected.trimmed} vs whole-passage ${Math.round((55 - expected.errors) / 0.5)}`);
+  }
+  await fresh(page, base, '#L6');
+  {
+    // A word list has no rate, so its printed sheet must not explain how a
+    // rate was measured. The footnote fell through to the whole-passage
+    // sentence, printed directly under a rate cell reading "–".
+    const foot = await page.evaluate(() => {
+      mark(0, 'sub');
+      elapsed = 60000; runningSince = null; clockState = 'done';
+      render(); paintPrint();
+      return { foot: (document.getElementById('prratefoot') || {}).textContent || '',
+               rate: document.getElementById('sWcpm').textContent };
+    });
+    eq('a word list still reports no rate', foot.rate, '–');
+    check('...and its printed sheet does not explain how a rate was measured',
+          foot.foot.trim() === '', foot.foot.slice(0, 100));
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The control: a reading that really did cover the whole passage is still
+    // allowed to say so.
+    const r = await page.evaluate(() => {
+      mark(0, 'sub');
+      stoppedAt = null;
+      elapsed = 60000; runningSince = null; clockState = 'done';
+      render(); paintPrint();
+      return { basis: rateBasis(clockState, stoppedAt),
+               tileLabel: document.getElementById('sWcpmLabel').textContent,
+               foot: (document.getElementById('prratefoot') || {}).textContent || '' };
+    });
+    eq('a finished, unstopped reading is measured over the whole passage',
+       r.basis, 'whole');
+    eq('...and the tile says just that', r.tileLabel, 'Words correct / min');
+    check('...and the footnote may say whole passage',
+          /whole passage/i.test(r.foot), r.foot.slice(0, 100));
+  }
+
+  // =========================================================================
+  group('Changing the address on an open page');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Editing the #L number in the address bar of a page that is ALREADY open
+    // is a different path from loading that address fresh — it fires
+    // hashchange rather than running the start-up code. Someone sharing a
+    // lesson link with a colleague who already has the tool open lands here.
+    await page.evaluate(() => { location.hash = '#L26'; });
+    await page.evaluate(() => new Promise(r => setTimeout(r, 150)));
+    const s = await state(page);
+    eq('changing the address on an open page switches lesson', s.lesson, 26);
+    eq('...and moves the dropdown with it', s.picker, 26);
+    check('...and the heading follows', s.heading.includes('Lesson 26'), s.heading);
   }
 
   // =========================================================================

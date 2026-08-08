@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Regression tests for the Word by Word running record tool.",
   "scripts": {
-    "test": "EXPECTED_CHECKS=268 node run-tests.js",
-    "coverage": "EXPECTED_CHECKS=268 node run-tests.js --coverage"
+    "test": "EXPECTED_CHECKS=424 node run-tests.js",
+    "coverage": "EXPECTED_CHECKS=424 node run-tests.js --coverage"
   },
   "type": "commonjs",
   "dependencies": {
