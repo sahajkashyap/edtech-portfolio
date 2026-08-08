@@ -3543,6 +3543,80 @@ async function main(){
   }
 
   // =========================================================================
+  group('A teacher can find how to start');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // The person who BUILT this tool sat down with it and could not find how to
+    // begin. The clock started by itself on the first mark, which is right, but
+    // nothing on screen said so and there was no control to press.
+    const before = await page.evaluate(() => ({
+      clock: clockState,
+      startDisabled: document.getElementById('startbtn').disabled,
+      pauseDisabled: document.getElementById('pausebtn').disabled,
+      hint: document.getElementById('wcpm').textContent,
+      cursor, marks: words.filter(w => w.code).length,
+    }));
+    eq('the clock has not started', before.clock, 'idle');
+    check('Start is available before the reading begins', !before.startDisabled);
+    check('Pause is not, because there is nothing to pause', before.pauseDisabled);
+    check('and the line under the clock says what to do',
+          /start/i.test(before.hint), before.hint);
+
+    await page.click('#startbtn');
+    const after = await page.evaluate(() => ({
+      clock: clockState, cursor, marks: words.filter(w => w.code).length,
+      startDisabled: document.getElementById('startbtn').disabled,
+      pauseDisabled: document.getElementById('pausebtn').disabled,
+    }));
+    eq('pressing Start starts the clock', after.clock, 'running');
+    // The whole reason this is a button and not a note saying "press Space":
+    // Space means "read correctly, move on", so it would advance past the
+    // first word before the child has read it.
+    eq('...without moving the cursor off the first word', after.cursor, 0);
+    eq('...and without scoring anything', after.marks, 0);
+    check('Start is then out of the way', after.startDisabled);
+    check('...and Pause becomes available', !after.pauseDisabled);
+
+    await new Promise(r => setTimeout(r, 700));
+    check('the clock is really running', (await state(page)).elapsed > 400);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Start, Pause and Finish must be visible together, and the clock must be
+    // above the explanation — it used to sit below several blocks of prose, so
+    // the one control needed first was the last thing on the panel.
+    const layout = await page.evaluate(() => {
+      const t = document.querySelector('.timer');
+      const whatis = document.querySelector('.whatis');
+      const btns = [...document.querySelectorAll('.tbtns .btn')].map(b => b.textContent.trim());
+      return { buttons: btns,
+               timerAboveExplanation: !!(t.compareDocumentPosition(whatis) &
+                                         Node.DOCUMENT_POSITION_FOLLOWING),
+               timerTop: Math.round(t.getBoundingClientRect().top) };
+    });
+    eq('Start, Pause and Finish sit together', layout.buttons, ['Start', 'Pause', 'Finish']);
+    check('the clock is above the explanation, not below it',
+          layout.timerAboveExplanation, JSON.stringify(layout));
+    check('...and is near the top of the page without scrolling',
+          layout.timerTop < 600, 'top at ' + layout.timerTop + 'px');
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Pressing Start twice must not double-count, and must not resurrect a
+    // finished reading.
+    await page.click('#startbtn');
+    const t1 = (await state(page)).elapsed;
+    await page.click('#startbtn');
+    await page.click('#finishbtn');
+    const done = await page.evaluate(() => clockState);
+    eq('Start does nothing once the reading is over', done, 'done');
+    await page.click('#startbtn');
+    eq('...even if it is pressed again', await page.evaluate(() => clockState), 'done');
+    check('the clock did not jump', t1 >= 0);
+  }
+
+  // =========================================================================
   group('Nothing broke while all of the above ran');
   // =========================================================================
   check('still no JavaScript errors after every test',

@@ -493,6 +493,33 @@
     <div id="passage"></div>
 
     <aside class="panel">
+      <!-- The clock lives at the TOP of the panel, above the explanation.
+           WHAT WAS WRONG: it sat at the bottom, below several blocks of
+           prose and the error tallies, so a teacher starting an
+           assessment had to scroll past everything to find the one
+           control they needed first. The person who built this tool sat
+           down with it and could not find how to start the timing. What
+           you need first belongs where you look first. -->
+      <div class="timer">
+        <h2 style="margin-bottom:6px">Time</h2>
+        <div class="clock idle" id="clock">0:00</div>
+        <!-- The buttons sit ABOVE the reading-rate line, not below it. WHAT WAS
+             WRONG: that line changes height as the reading goes on — "reading…"
+             to a two-line rate, a three-line word-list message, back to
+             "paused" — and every change moved the two buttons under it by 27px
+             on a passage and 48px on a word list. Pressing Pause and then
+             pressing the same spot again to resume (the natural gesture, and
+             the one a trackpad tap-to-click makes) landed on the panel
+             background and did nothing, so the clock stayed paused however many
+             times you pressed. Nothing above these buttons ever changes height,
+             so here they hold still. -->
+        <div class="tbtns">
+          <button class="btn" id="startbtn">Start</button>
+          <button class="btn" id="pausebtn">Pause</button>
+          <button class="btn" id="finishbtn">Finish</button>
+        </div>
+        <div class="wcpm" id="wcpm">press Start, or just mark your first word</div>
+      </div>
       <h2>What's happening</h2>
       <p class="whatis">You mark. This counts. Every number here is arithmetic on
       what <em>you</em> marked &mdash; accuracy, error and self&#8209;correction rates,
@@ -537,25 +564,6 @@
 
       <div id="lessonnote" class="wlnote"></div>
 
-      <div class="timer">
-        <h2 style="margin-bottom:6px">Time</h2>
-        <div class="clock idle" id="clock">0:00</div>
-        <!-- The buttons sit ABOVE the reading-rate line, not below it. WHAT WAS
-             WRONG: that line changes height as the reading goes on — "reading…"
-             to a two-line rate, a three-line word-list message, back to
-             "paused" — and every change moved the two buttons under it by 27px
-             on a passage and 48px on a word list. Pressing Pause and then
-             pressing the same spot again to resume (the natural gesture, and
-             the one a trackpad tap-to-click makes) landed on the panel
-             background and did nothing, so the clock stayed paused however many
-             times you pressed. Nothing above these buttons ever changes height,
-             so here they hold still. -->
-        <div class="tbtns">
-          <button class="btn" id="pausebtn">Pause</button>
-          <button class="btn" id="finishbtn">Finish</button>
-        </div>
-        <div class="wcpm" id="wcpm">starts when you begin</div>
-      </div>
     </aside>
   </div>
 
@@ -2024,6 +2032,19 @@ function render(){
        + 'list — it is not comparable to a passage</span>';
   else w.innerHTML = '<b>' + s.wcpm + '</b> words correct per minute'
        + (clockState === 'done' ? '' : ' so far');
+  // Start is only ever useful before the reading begins. Once the clock is
+  // going it would be a button that does nothing, which is worse than no
+  // button. WHAT WAS WRONG: there was no Start at all. The clock started by
+  // itself on the first mark — which is right, a teacher should not have to
+  // remember it while a child is already reading — but nothing on screen said
+  // so. The person who BUILT this tool sat down with it and could not find how
+  // to begin. A control a user cannot find does not exist, however elegant the
+  // behaviour behind it.
+  const sb = document.getElementById('startbtn');
+  if (sb){
+    sb.disabled = (clockState !== 'idle');
+    sb.style.opacity = sb.disabled ? .45 : 1;
+  }
   const pb = document.getElementById('pausebtn');
   pb.textContent = (clockState === 'paused') ? 'Resume' : 'Pause';
   pb.disabled = (clockState === 'idle' || clockState === 'done');
@@ -2438,6 +2459,17 @@ function prev(){
   return Math.max(0, cursor - 1);
 }
 
+// Starts the clock and does NOTHING else — no cursor movement, no mark. That
+// is the whole reason this exists rather than a note saying "press Space":
+// Space means "read correctly, move on", so it advances past the first word,
+// and a teacher told to press it to start the timing would be one word out of
+// step for the whole reading. A note would also be useless on an iPad in
+// portrait, which is the device this tool is written for and which has no
+// space bar at all.
+document.getElementById('startbtn').addEventListener('click', () => {
+  if (clockState !== 'idle') return;
+  autoStart(); render(); save();
+});
 document.getElementById('pausebtn').addEventListener('click', togglePause);
 document.getElementById('finishbtn').addEventListener('click', () => {
   if (clockState === 'done'){
