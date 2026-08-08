@@ -1,0 +1,13 @@
+{
+  "name": "decodable-passages-tests",
+  "version": "1.0.0",
+  "description": "Regression tests for the decodable passage index and its 128 printable sheets.",
+  "scripts": {
+    "test": "node run-tests.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^25.5.0"
+  },
+  "private": true
+}

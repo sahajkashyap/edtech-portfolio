@@ -54,6 +54,16 @@
     line-height: 1.5;
   }
   .toolbar .hint b { color: #4a3f35; }
+  .toolbar .privacy { font-size: 12.5px; font-weight: 700; color: #5f7a45; }
+  /* Shown only when the browser actually refuses a save. Before this existed,
+     a failed save was completely silent and the teacher found out by reloading. */
+  .save-warn {
+    flex-basis: 100%;
+    background: var(--berry-soft); border: 1px solid #eccdd2;
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 13.5px; line-height: 1.55; color: #7d3b49;
+  }
+  .offline-warn { background: var(--sky-soft); border-color: #cadae6; color: #3f5566; }
   button {
     padding: 10px 16px;
     font-size: 14px;
@@ -89,6 +99,14 @@
   .archive-bar .ab-title { font-size: 14px; font-weight: 800; color: #4a3f35; }
   .archive-bar .ab-sub { font-size: 12.5px; color: #8a7c6d; margin-top: 1px; }
   .archive-bar .ab-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* The example term has to be unmistakable. A stranger opening the tool cold
+     used to see twelve weeks of somebody else's term with nothing saying so. */
+  .ab-tag, .archive-list .row .tag {
+    display: inline-block; margin-left: 6px;
+    background: #F6E2BD; border: 1px solid #E0C48D; color: #7a5c22;
+    border-radius: 999px; padding: 1px 8px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase;
+  }
   .archive-list {
     flex-basis: 100%;
     border-top: 1px dashed var(--line);
@@ -169,6 +187,30 @@
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(74,63,53,0.18);
+  }
+
+  /* The sheet arrives filled in so a stranger can see a finished newsletter
+     rather than a blank form. The archive said "Example" everywhere; the sheet
+     itself said nothing, so an untouched Download PDF / image / Copy as text
+     left the laptop reading like a genuine class newsletter. This band lives
+     INSIDE .sheet on purpose — that is what the PDF, the image and the
+     print-out are made from — and the first thing typed takes it away. */
+  .sheet-example {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 2.25rem;
+    background: #F6E2BD;
+    border-bottom: 1px solid #E0C48D;
+    color: #7a5c22;
+    font-size: 12.5px; font-weight: 600; line-height: 1.45;
+    /* Browsers drop background colour when printing unless told not to, and a
+       warning that only shows up on the screen is not a warning. */
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .sheet-example .se-tag {
+    flex: none; margin-top: 1px;
+    background: #7a5c22; color: #F8EBD2;
+    border-radius: 999px; padding: 2px 9px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase;
   }
 
   /* header banner */
@@ -380,7 +422,11 @@
   /* responsive */
   @media (max-width: 680px) {
     .grid-2, .photos { grid-template-columns: 1fr; }
-    .banner, .greeting, .body, .footer { padding-left: 1.4rem; padding-right: 1.4rem; }
+    .banner, .greeting, .body, .footer, .sheet-example { padding-left: 1.4rem; padding-right: 1.4rem; }
+    /* On a phone the pill beside the sentence squeezes it into a four-line
+       column. Drop the sentence underneath and it reads in two. */
+    .sheet-example { flex-wrap: wrap; gap: 6px; }
+    .sheet-example .se-text { flex: 1 1 100%; }
     h1.title { font-size: 27px; }
   }
 
@@ -391,6 +437,10 @@
     .sheet { box-shadow: none; border-radius: 0; max-width: 100%; }
     .photo .remove { display: none !important; }
     [contenteditable]:empty:before { content: ""; }
+    /* An empty photo box used to print as a big dashed square saying
+       "Click to add a photo" on the sheet that went home to families. */
+    .photo:not(.has-img) { display: none !important; }
+    .photos:not(:has(.photo.has-img)) { display: none !important; }
   }
 </style>
 
@@ -402,13 +452,19 @@
   <button onclick="saveDraft()">💾 Save draft</button>
   <button onclick="resetSheet()">↺ Start fresh</button>
   <span class="hint">Click any text to edit it. Click a photo box to add a picture. To post in a school system like <b>Blackbaud</b>: attach the <b>PDF</b>, embed the <b>image</b>, or use <b>Copy as text</b> when formatting gets stripped. Your work saves in this browser — use <b>Save draft</b> to keep it between visits.</span>
+  <span class="privacy">● Stays on this laptop</span>
+  <div class="save-warn" id="saveWarn" style="display:none"></div>
+  <div class="save-warn offline-warn" id="offlineWarn" style="display:none"></div>
+  <!-- Kept separate from saveWarn: a saved draft clears that box, and a broken
+       archive entry is still broken after the next successful save. -->
+  <div class="save-warn" id="archiveWarn" style="display:none"></div>
 </div>
 
 <!-- ===== ARCHIVE BAR ===== -->
 <div class="archive-bar" id="archiveBar">
   <span class="ab-icon">🗂️</span>
   <div class="ab-text">
-    <div class="ab-title">Term archive</div>
+    <div class="ab-title">Term archive<span class="ab-tag" id="archiveExampleTag" style="display:none">Example</span></div>
     <div class="ab-sub" id="archiveStatus">No weeks saved yet.</div>
   </div>
   <div class="ab-actions">
@@ -417,6 +473,7 @@
     <button onclick="exportArchive()" title="Save a backup file of every saved week">⬇ Back up</button>
     <button onclick="document.getElementById('archiveImport').click()" title="Load a backup file from another device">⬆ Restore</button>
     <button onclick="toggleArchiveList()" id="manageBtn">Manage</button>
+    <button id="clearExampleBtn" style="display:none" onclick="clearExampleWeeks()" title="Remove the example weeks that came with the tool">🧹 Clear the example</button>
   </div>
   <div class="archive-list" id="archiveList" style="display:none"></div>
 </div>
@@ -424,10 +481,21 @@
 
 <div class="sheet" id="sheet">
 
+  <!-- ===== "THIS IS THE STARTING TEMPLATE" BAND =====
+       Deliberately inside the sheet, above the banner, and deliberately NOT
+       .no-export: the PDF, the image and the print-out are all made from this
+       sheet, and an untouched one used to go out looking like a real class's
+       newsletter. claimSheet() takes it away the moment anything is changed. -->
+  <div class="sheet-example" id="sheetExampleTag">
+    <span class="se-tag">Example</span>
+    <span class="se-text">This is the starting template that came with the tool — a made-up class,
+      not a real one. Change anything on the sheet and this note goes away.</span>
+  </div>
+
   <!-- ===== BANNER ===== -->
   <div class="banner">
     <div class="sun"></div>
-    <p class="kicker" contenteditable="true" data-ph="Room 12 · Ms. Rivera">Room 18 · Mr. Kashyap</p>
+    <p class="kicker" contenteditable="true" data-field="kicker" data-ph="Room 12 · Ms. Rivera">Room 18 · Mr. Kashyap</p>
     <h1 class="title" contenteditable="true" data-field="title" data-ph="Our Weekly Newsletter">Our Weekly Newsletter</h1>
     <div class="meta-row">
       <span class="pair"><span class="lbl">Week of</span><span contenteditable="true" data-field="week" data-ph="March 3">November 23, 2026</span></span>
@@ -564,12 +632,17 @@
   <div class="footer">
     <div class="contact">
       <div><span class="lbl">Questions?</span> We'd love to hear from you.</div>
-      <div><span class="lbl">Email:</span> <span contenteditable="true" data-ph="you@school.edu">skashyap@school.edu</span></div>
-      <div><span class="lbl">Class site:</span> <span contenteditable="true" data-ph="ourclass.example.com">room18.example.com</span></div>
+      <!-- Example contact details on purpose. A real school address shipped here
+           went out on every copy of this newsletter a stranger printed. -->
+      <div><span class="lbl">Email:</span> <span contenteditable="true" data-field="email" data-ph="you@school.edu">teacher@ourschool.example.com</span></div>
+      <div><span class="lbl">Class site:</span> <span contenteditable="true" data-field="site" data-ph="ourclass.example.com">ourclass.example.com</span></div>
     </div>
     <div class="signoff">
       <div class="warm" contenteditable="true" data-ph="Warmly,">Warmly,</div>
-      <div class="name" contenteditable="true" data-ph="Mr. Sahaj Kashyap">Mr. Sahaj Kashyap</div>
+      <!-- data-follows: the sign-off copies the Teacher field until somebody
+           types in it directly. Changing the teacher up top used to leave the
+           previous teacher's name signing the letter. -->
+      <div class="name" contenteditable="true" data-field="signoff" data-follows="teacher" data-ph="Mr. Sahaj Kashyap">Mr. Sahaj Kashyap</div>
     </div>
   </div>
 </div>
@@ -598,21 +671,71 @@
   const STORAGE_KEY = 'weekly-family-newsletter';
   let activeSlot = null;
 
+  /* ---------- "this is only the starting template" ---------- */
+  // The sheet ships filled in, so the very first thing a stranger can do is
+  // download it. Until they have changed something it is not their class, and
+  // every copy that leaves the laptop has to say so. The band is part of the
+  // sheet, so it rides along in the PDF, the image and the print-out; this
+  // reads it back for the plain-text copy, which is the one export that is
+  // written by hand rather than photographed off the page.
+  function sheetIsExample() {
+    return !!document.getElementById('sheetExampleTag');
+  }
+  // Called from everything that changes the sheet: typing, a photo, an album
+  // link. Once it is theirs it is theirs — the band never comes back except
+  // through Start fresh, which puts the whole template back with it.
+  function claimSheet() {
+    const band = document.getElementById('sheetExampleTag');
+    if (band) band.remove();
+  }
+
   /* ---------- photo handling ---------- */
+  // Clicking a photo that already has a picture in it used to do nothing at all
+  // — no chooser, no message — so the only way to swap a picture was to guess
+  // that ✕ removes it first. Now a click opens the chooser either way.
   function pickPhoto(slot) {
-    const photo = document.querySelector('.photo[data-slot="' + slot + '"]');
-    if (photo.classList.contains('has-img')) return; // already filled; use ✕ to change
     activeSlot = slot;
     document.getElementById('fileInput').click();
+  }
+
+  // A photo straight off a phone is 3–5 million pixels, and two of them as
+  // data URLs are far bigger than the roughly 5MB a browser will store. Every
+  // save then failed and a reload threw the teacher's work away. Shrink the
+  // picture to newsletter size first: it still prints sharply at this width,
+  // and two of them fit with room to spare.
+  const PHOTO_MAX_PX = 1400;
+  function shrinkPhoto(dataUrl, done) {
+    const img = new Image();
+    img.onload = function () {
+      const scale = Math.min(1, PHOTO_MAX_PX / Math.max(img.width, img.height));
+      if (scale === 1 && dataUrl.length < 400000) { done(dataUrl); return; }
+      const c = document.createElement('canvas');
+      c.width  = Math.max(1, Math.round(img.width  * scale));
+      c.height = Math.max(1, Math.round(img.height * scale));
+      try {
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        done(c.toDataURL('image/jpeg', 0.82));
+      } catch (err) { done(dataUrl); }
+    };
+    img.onerror = function () { done(dataUrl); };
+    img.src = dataUrl;
   }
 
   document.getElementById('fileInput').addEventListener('change', function (e) {
     const file = e.target.files[0];
     if (!file || activeSlot === null) return;
+    const slot = activeSlot;
     const reader = new FileReader();
     reader.onload = function (ev) {
-      setPhoto(activeSlot, ev.target.result);
+      shrinkPhoto(ev.target.result, function (small) {
+        setPhoto(slot, small);
+        activeSlot = null;
+        autoSave();
+      });
+    };
+    reader.onerror = function () {
       activeSlot = null;
+      flash('That picture could not be read — try a different file', true);
     };
     reader.readAsDataURL(file);
     e.target.value = '';
@@ -622,16 +745,27 @@
     const photo = document.querySelector('.photo[data-slot="' + slot + '"]');
     photo.querySelector('img').src = dataUrl;
     photo.classList.add('has-img');
+    claimSheet();
   }
 
   function removePhoto(e, slot) {
     e.stopPropagation();
     const photo = document.querySelector('.photo[data-slot="' + slot + '"]');
+    if (!confirm('Take this picture out of the newsletter?\n\nThe caption stays, and you can click the box to add another.')) return;
     photo.querySelector('img').src = '';
     photo.classList.remove('has-img');
+    autoSave();
   }
 
   /* ---------- more-photos album link ---------- */
+  // A web address has no spaces and has a dot with letters after it.
+  function looksLikeUrl(url) {
+    const rest = url.replace(/^https?:\/\//i, '');
+    if (!rest || /\s/.test(rest)) return false;
+    const host = rest.split(/[\/?#]/)[0];
+    return /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host) || /^localhost(:\d+)?$/i.test(host);
+  }
+
   function setAlbumLink() {
     const link = document.getElementById('albumLink');
     const current = link.getAttribute('href');
@@ -641,10 +775,20 @@
     url = url.trim();
     if (!url || url === 'https://') return;
     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    // Anything at all used to be accepted here, so a sentence typed by mistake
+    // became a live "View album →" button that went nowhere for every family.
+    if (!looksLikeUrl(url)) {
+      flash('That doesn\'t look like a web address, so nothing was changed. A link looks like photos.app.goo.gl/abc123', true);
+      return;
+    }
     link.href = url;
     document.getElementById('albumUrl').textContent = url;
     document.getElementById('album').classList.add('has-link');
-    saveSilently();
+    claimSheet();
+    // These two were the only actions that threw away the answer to "did the
+    // browser take it?", so a laptop that had stopped saving stayed quiet here
+    // while every other button said so. autoSave() saves AND reports.
+    autoSave();
     flash('Photo album link added ✓');
   }
 
@@ -654,43 +798,83 @@
     link.href = '#';
     document.getElementById('albumUrl').textContent = '';
     document.getElementById('album').classList.remove('has-link');
-    saveSilently();
+    claimSheet();
+    autoSave();
     flash('Link removed');
   }
 
   /* ---------- save / restore draft ---------- */
-  function saveDraft() {
-    const data = {
-      html: document.getElementById('sheet').innerHTML,
+  // A standing note at the top of the page, not a toast: a save that failed
+  // needs to still be on screen when the teacher comes back from lunch.
+  function warnNotSaving(msg) {
+    const box = document.getElementById('saveWarn');
+    if (!box) return;
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+  function clearSaveWarning() {
+    const box = document.getElementById('saveWarn');
+    if (box) box.style.display = 'none';
+  }
+
+  function draftData() {
+    const clone = document.getElementById('sheet').cloneNode(true);
+    // The pictures used to be stored twice — once inside this saved HTML and
+    // once in the photos list below — which halved how much would fit before
+    // the browser refused the whole save. Blank them here; they are put back
+    // from `photos` on restore.
+    Array.prototype.forEach.call(clone.querySelectorAll('.photo img'), function (img) {
+      img.removeAttribute('src');
+    });
+    return {
+      html: clone.innerHTML,
       photos: [0, 1].map(function (s) {
         const img = document.querySelector('.photo[data-slot="' + s + '"] img');
         return img && img.src.startsWith('data:') ? img.src : '';
       })
     };
+  }
+
+  // Returns true when the browser actually took it.
+  function saveSilently() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      flash('Draft saved ✓');
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(draftData()));
+      clearSaveWarning();
+      return true;
     } catch (err) {
-      flash('Could not save (photos may be too large)', true);
+      return false;
     }
   }
 
-  function autoSave() {
-    try { saveSilently(); } catch (e) {}
+  function saveDraft() {
+    if (saveSilently()) { flash('Draft saved ✓'); return; }
+    flash('This browser would not store the draft', true);
+    warnNotSaving('This browser would not store your newsletter, so it will not be here after a reload. ' +
+      'It is usually a photo that is too big, or a private window. Try taking a picture out, ' +
+      'and use Download PDF or Print to keep a copy of what is on screen now.');
   }
-  function saveSilently() {
-    const data = {
-      html: document.getElementById('sheet').innerHTML,
-      photos: [0, 1].map(function (s) {
-        const img = document.querySelector('.photo[data-slot="' + s + '"] img');
-        return img && img.src.startsWith('data:') ? img.src : '';
-      })
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+  // The autosave used to swallow the failure whole — no toast, no note, no
+  // console line — so a teacher kept typing into a page that had quietly
+  // stopped saving, and lost the lot on the next reload.
+  function autoSave() {
+    if (!saveSilently()) {
+      warnNotSaving('This browser has stopped storing your newsletter, so anything typed from now on ' +
+        'will not survive a reload. It is usually a photo that is too big, or a private window. ' +
+        'Try taking a picture out, and use Download PDF or Print to keep a copy.');
+    }
   }
 
   function restoreDraft() {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = null;
+    // Reading storage throws too, not just writing: Safari's private window
+    // refuses both. An exception here used to stop the whole page booting.
+    try { raw = localStorage.getItem(STORAGE_KEY); }
+    catch (e) {
+      warnNotSaving('This browser will not let the newsletter save or reload work here ' +
+        '(a private window does this). Everything still works on screen — use Download PDF or Print to keep it.');
+      return;
+    }
     if (!raw) return;
     try {
       const data = JSON.parse(raw);
@@ -698,12 +882,23 @@
       (data.photos || []).forEach(function (src, s) {
         if (src) setPhoto(s, src);
       });
-    } catch (e) {}
+    } catch (e) {
+      warnNotSaving('The saved draft on this laptop could not be read, so the newsletter opened ' +
+        'with the example content instead. Nothing on screen has been sent anywhere.');
+    }
   }
 
   function resetSheet() {
-    if (!confirm('Start a fresh newsletter? This clears the current one on screen.')) return;
-    localStorage.removeItem(STORAGE_KEY);
+    if (!confirm('Start a fresh newsletter?\n\nThis clears everything on the sheet — text, photos and captions.\n\n' +
+                 'It cannot be undone, so use Download PDF or Print first if you want a copy. ' +
+                 'Your saved weeks in the Term archive are kept.')) return;
+    // Cancel the pending autosave and lock the flush below. Without this, the
+    // page unloading fired one last save AFTER the draft was deleted, wrote the
+    // whole newsletter straight back, and Start fresh appeared to do nothing.
+    clearTimeout(window.__save);
+    window.__save = null;
+    window.__resetting = true;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
     location.reload();
   }
 
@@ -719,32 +914,74 @@
     setTimeout(function () { t.remove(); }, 2100);
   }
 
+  /* ---------- naming the files that leave this laptop ---------- */
+  // Every download used to be called "weekly-newsletter.pdf", so a folder of
+  // them was a pile of (1), (2), (3) with no way to tell which week was which.
+  function slug(s) {
+    return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+  }
+  function exportFileName(ext) {
+    const bits = ['newsletter'];
+    const wk = slug(fieldText('week'));
+    // Same rule as the archive backup: a download of the untouched template was
+    // named for the made-up teacher in the box, so it sat in the downloads
+    // folder looking like a real class's newsletter. Name it what it is.
+    if (sheetIsExample()) {
+      bits.push('EXAMPLE-not-a-real-class');
+    } else {
+      const who = slug(fieldText('teacher'));
+      if (who) bits.push(who);
+    }
+    bits.push(wk || 'undated');
+    return bits.join('-') + '.' + ext;
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  /* ---------- the two picture-makers come from the internet ---------- */
+  // html2canvas and jsPDF are downloaded from a CDN in the <head>. Behind a
+  // school firewall, or on a plane, they simply are not there — and calling
+  // html2canvas() then threw before any promise existed, so the .catch() below
+  // could never run: the button flashed "Building your PDF…" and nothing ever
+  // happened again. Check first and say plainly what still works.
+  function pictureMakerMissing() {
+    return typeof html2canvas !== 'function';
+  }
+  function sayOffline(which) {
+    flash(which + ' needs a one-time download from the internet that did not arrive — ' +
+          'usually a school firewall or no wifi. Print and Copy as text still work.', true);
+  }
+
   /* ---------- export as image (easy to upload/embed) ---------- */
   function exportImage() {
+    if (pictureMakerMissing()) { sayOffline('Download image'); return; }
     const sheet = document.getElementById('sheet');
     flash('Building your image…');
-    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipCatchup }).then(function (canvas) {
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipFromExport }).then(function (canvas) {
       canvas.toBlob(function (blob) {
-        if (!blob) { flash('Image export failed — try Download PDF', true); return; }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'weekly-newsletter.png';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        if (!blob) { flash('The image could not be made — try Download PDF', true); return; }
+        downloadBlob(blob, exportFileName('png'));
       }, 'image/png');
     }).catch(function () {
-      flash('Image export failed — try Download PDF', true);
+      flash('The image could not be made — try Download PDF', true);
     });
   }
 
   /* ---------- export to PDF ---------- */
   function exportPDF() {
+    if (pictureMakerMissing() || !window.jspdf) { sayOffline('Download PDF'); return; }
     const sheet = document.getElementById('sheet');
     flash('Building your PDF…');
-    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipCatchup }).then(function (canvas) {
+    html2canvas(sheet, { scale: 2, backgroundColor: '#FBF9F7', useCORS: true, ignoreElements: skipFromExport }).then(function (canvas) {
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageW = pdf.internal.pageSize.getWidth();
@@ -765,9 +1002,9 @@
           if (remaining > 0) { pdf.addPage(); position = margin - (imgH - remaining); }
         }
       }
-      pdf.save('weekly-newsletter.pdf');
+      pdf.save(exportFileName('pdf'));
     }).catch(function () {
-      flash('PDF export failed — try Print instead', true);
+      flash('The PDF could not be made — try Print instead', true);
     });
   }
 
@@ -796,7 +1033,17 @@
 
   function buildPlainText() {
     const L = [];
+    // Copy as text is built by hand rather than photographed off the sheet, so
+    // the band above the banner has to be written in here as well — otherwise
+    // an untouched newsletter pasted into Blackbaud reads as a real class.
+    if (sheetIsExample()) {
+      L.push('EXAMPLE NEWSLETTER — the starting template that came with the tool, not a real class');
+      L.push('');
+    }
     const title = fieldText('title') || 'Weekly Newsletter';
+    // The room-and-teacher line at the very top was the one thing on screen the
+    // text copy left out, so a pasted newsletter did not say whose class it was.
+    if (fieldText('kicker')) L.push(fieldText('kicker'));
     L.push(title.toUpperCase());
     const bits = [];
     if (fieldText('week'))    bits.push('Week of ' + fieldText('week'));
@@ -838,6 +1085,14 @@
     const name = document.querySelector('.signoff .name');
     if (warm && warm.innerText.trim()) L.push(warm.innerText.trim());
     if (name && name.innerText.trim()) L.push(name.innerText.trim());
+
+    // The footer went missing from the text copy, so families who got the
+    // pasted version had no email address to reply to.
+    if (fieldText('email') || fieldText('site')) {
+      L.push('');
+      if (fieldText('email')) L.push('Email: ' + fieldText('email'));
+      if (fieldText('site'))  L.push('Class site: ' + fieldText('site'));
+    }
 
     return L.join('\n').replace(/\n{3,}/g, '\n\n').trim();
   }
@@ -885,7 +1140,11 @@
   // never overwrites a teacher's own saved weeks.
   const SEED_META = { title: 'Our Weekly Newsletter', grade: '3rd / 4th Grade', teacher: 'Sahaj Kashyap' };
   function seedWeek(week, learned, highlight, extra) {
-    return Object.assign({ week: week, greeting: '', sections: Object.assign(
+    // `example: true` rides on the week itself. Every surface that shows a week
+    // reads this, so the example can never be mistaken for a real term — not in
+    // the archive bar, not in Manage, not in Time travel, not in the summary,
+    // and not inside a backup file a year from now.
+    return Object.assign({ week: week, example: true, greeting: '', sections: Object.assign(
       { learned: learned, coming: [], highlight: highlight ? [highlight] : [], reminders: [], home: [] },
       extra || {}) }, SEED_META);
   }
@@ -982,14 +1241,81 @@
     })
   ];
 
+  // A standing note of its own, because this one is not about saving and must
+  // not be wiped by the next successful save.
+  function noteArchiveTrouble(skipped) {
+    const box = document.getElementById('archiveWarn');
+    if (!box) return;
+    if (!skipped) { box.style.display = 'none'; return; }
+    box.textContent = skipped + (skipped === 1 ? ' saved week in the term archive could not be read'
+                                               : ' saved weeks in the term archive could not be read') +
+      ', so ' + (skipped === 1 ? 'it has' : 'they have') + ' been left out of the summary and Time travel. ' +
+      'Everything else is still here. If a week is missing, use Restore to load it back from a backup file.';
+    box.style.display = 'block';
+  }
+
   function loadArchive() {
-    try { return JSON.parse(localStorage.getItem(ARCHIVE_KEY)) || []; }
-    catch (e) { return []; }
+    let raw;
+    try { raw = JSON.parse(localStorage.getItem(ARCHIVE_KEY)); }
+    catch (e) { raw = null; }
+    if (!Array.isArray(raw)) { noteArchiveTrouble(0); return []; }
+    // The try/catch above only ever covered JSON.parse. A stored list that
+    // parsed fine but held a null, a number or a week with no `sections` threw
+    // out of Time travel at boot — and because that runs before the autosave
+    // listener is attached, the page stopped booting and NOTHING typed after
+    // that was ever saved. Drop what isn't a week here, and say so.
+    const weeks = raw.filter(function (w) {
+      return w && typeof w === 'object' && !Array.isArray(w) &&
+             w.sections && typeof w.sections === 'object';
+    });
+    noteArchiveTrouble(raw.length - weeks.length);
+    return weeks;
+  }
+
+  // Weeks that came with the tool, not the teacher's own. Tagged on the week
+  // itself rather than worked out from a flag, so the label survives a Back up,
+  // a Restore, and being mixed in with the teacher's real weeks.
+  function exampleCount(list) {
+    return list.filter(function (w) { return w.example; }).length;
+  }
+  // "1 example weeks" is the kind of thing a teacher notices immediately.
+  function exWeeks(n) { return n + (n === 1 ? ' example week' : ' example weeks'); }
+
+  function clearExampleWeeks() {
+    const list = loadArchive();
+    const mine = list.filter(function (w) { return !w.example; });
+    const going = list.length - mine.length;
+    if (!going) { flash('There are no example weeks to remove'); return; }
+    if (!confirm('Remove the ' + exWeeks(going) + ' that came with the tool?\n\n' +
+                 (mine.length ? 'Your own ' + mine.length + ' saved week(s) are kept. ' : '') +
+                 'This cannot be undone, so use Back up first if you want a copy.')) return;
+    markArchiveOwned();
+    storeArchive(mine);
+    renderArchiveList();
+    flash('Example weeks removed ✓');
   }
   function storeArchive(list) {
-    localStorage.setItem(ARCHIVE_KEY, JSON.stringify(list));
+    // This setItem had no catch, so a full disk or a private window threw
+    // straight out of "Add this week to archive" — the button did nothing and
+    // said nothing, and the screen still showed the old count.
+    try {
+      localStorage.setItem(ARCHIVE_KEY, JSON.stringify(list));
+      clearSaveWarning();
+    } catch (e) {
+      warnNotSaving('This browser would not store the term archive, so the week you just added ' +
+        'will be gone after a reload. Use Back up to keep a copy of the weeks you have.');
+    }
     renderArchiveStatus();
     renderCatchup();
+  }
+
+  // "Week 12 · November 23, 2026" and "November 23, 2026" are the same week.
+  // The archive matched labels exactly, so adding the week already on screen
+  // filed a second copy of it and the term summary printed that week twice.
+  function weekKey(label) {
+    return (label || '')
+      .replace(/^\s*week\s*\d+\s*[·:\-–—]\s*/i, '')
+      .toLowerCase().replace(/\s+/g, ' ').trim();
   }
 
   function snapshotWeek() {
@@ -1009,11 +1335,15 @@
     const snap = snapshotWeek();
     const list = loadArchive();
     // if a week with the same label exists, update it instead of duplicating
-    const existing = list.findIndex(function (w) { return w.week === snap.week; });
+    const existing = list.findIndex(function (w) { return weekKey(w.week) === weekKey(snap.week); });
     if (existing >= 0) {
-      if (!confirm('"' + snap.week + '" is already in the archive. Update it with what\'s on screen now?')) return;
+      const shown = list[existing].week;
+      if (!confirm('"' + shown + '" is already in the archive.\n\nUpdate it with what\'s on screen now?\n\nOK = update it · Cancel = leave the saved one alone')) return;
+      // Keep the label the archive already used, so "Week 12 · November 23"
+      // does not quietly become a bare date.
+      snap.week = shown;
       list[existing] = snap;
-      flash('Updated "' + snap.week + '" in the archive ✓');
+      flash('Updated "' + shown + '" in the archive ✓');
     } else {
       list.push(snap);
       flash('Saved "' + snap.week + '" to the archive ✓');
@@ -1034,10 +1364,24 @@
 
   function renderArchiveStatus() {
     const list = loadArchive();
+    const ex = exampleCount(list);
     const el = document.getElementById('archiveStatus');
-    el.textContent = list.length
-      ? list.length + (list.length === 1 ? ' week saved.' : ' weeks saved.') + ' Ready to summarize.'
-      : 'No weeks saved yet. Fill in a newsletter, then add it here.';
+    if (!list.length) {
+      el.textContent = 'No weeks saved yet. Fill in a newsletter, then add it here.';
+    } else if (ex === list.length) {
+      el.textContent = exWeeks(ex) + ' that came with the tool, so nothing here is blank ' +
+        'on your first look. None of it is a real class. Clear the example when you start your own.';
+    } else if (ex) {
+      el.textContent = (list.length - ex) + ' of your weeks saved, plus ' + exWeeks(ex) +
+        ' that came with the tool. Ready to summarize.';
+    } else {
+      el.textContent = list.length + (list.length === 1 ? ' week saved.' : ' weeks saved.') +
+        ' Ready to summarize.';
+    }
+    const tag = document.getElementById('archiveExampleTag');
+    if (tag) tag.style.display = ex ? 'inline-block' : 'none';
+    const btn = document.getElementById('clearExampleBtn');
+    if (btn) btn.style.display = ex ? '' : 'none';
   }
 
   function toggleArchiveList() {
@@ -1053,7 +1397,8 @@
     const box = document.getElementById('archiveList');
     if (!list.length) { box.innerHTML = '<div class="empty">Nothing saved yet.</div>'; return; }
     box.innerHTML = list.map(function (w, i) {
-      return '<div class="row"><span class="wk">' + escapeHtml(w.week) + '</span>' +
+      return '<div class="row"><span class="wk">' + escapeHtml(w.week) +
+             (w.example ? '<span class="tag">Example</span>' : '') + '</span>' +
              '<button onclick="deleteWeek(' + i + ')">Remove</button></div>';
     }).join('');
   }
@@ -1068,16 +1413,31 @@
   function exportArchive() {
     const list = loadArchive();
     if (!list.length) { flash('Nothing to back up yet', true); return; }
-    const payload = { type: 'weekly-family-newsletter-archive', version: 1, weeks: list };
+    const ex = exampleCount(list);
+    const allExample = ex === list.length;
+    const payload = {
+      type: 'weekly-family-newsletter-archive', version: 1,
+      // Who and when, inside the file as well as in its name: a backup with
+      // neither is impossible to tell apart from anyone else's a term later.
+      teacher: fieldText('teacher'), grade: fieldText('grade'),
+      savedOn: new Date().toISOString().slice(0, 10),
+      exampleWeeks: ex,
+      note: allExample
+        ? 'These are the example weeks that came with the tool, not a real class.'
+        : (ex ? ex + ' of these weeks are the example that came with the tool, not a real class.'
+              : 'Saved weeks from this teacher\'s own newsletters.'),
+      weeks: list
+    };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'newsletter-archive.json';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    // A file of nothing but the example used to be named for whoever was in the
+    // Teacher box, so it looked like their term. Name it what it is instead.
+    const name = allExample
+      ? 'newsletter-archive-EXAMPLE-not-a-real-class-' +
+        (slug(list[list.length - 1].week) || 'weeks') + '.json'
+      : 'newsletter-archive' +
+        (slug(fieldText('teacher')) ? '-' + slug(fieldText('teacher')) : '') +
+        '-' + (slug(list[list.length - 1].week) || 'weeks') + '.json';
+    downloadBlob(blob, name);
     flash('Backup saved ✓');
   }
 
@@ -1111,7 +1471,7 @@
       if (merge && current.length) {
         result = current.slice();
         clean.forEach(function (w) {
-          const at = result.findIndex(function (x) { return x.week === w.week; });
+          const at = result.findIndex(function (x) { return weekKey(x.week) === weekKey(w.week); });
           if (at >= 0) result[at] = w; else result.push(w);
         });
       } else {
@@ -1132,8 +1492,15 @@
      ===================================================================== */
   let openSubject = null;
 
-  function skipCatchup(el) {
-    return el && el.classList && el.classList.contains('no-export');
+  // Everything the PDF and the image should leave behind. Screen-only controls
+  // carry .no-export; an empty photo box used to be exported as a big dashed
+  // square reading "Click to add a photo" on the sheet that went to families.
+  function skipFromExport(el) {
+    if (!el || !el.classList) return false;
+    if (el.classList.contains('no-export')) return true;
+    if (el.classList.contains('photo') && !el.classList.contains('has-img')) return true;
+    if (el.classList.contains('photos') && !el.querySelector('.photo.has-img')) return true;
+    return false;
   }
 
   // "Reading: retelling stories" -> { subject:'Reading', detail:'retelling stories' }
@@ -1149,9 +1516,9 @@
     const map = {};
     // Time travel is only the PAST: skip the week that's currently on screen
     // (it's already shown up top in "What we learned").
-    const currentWeek = (fieldText('week') || '').trim();
+    const currentWeek = weekKey(fieldText('week'));
     const past = loadArchive().filter(function (w) {
-      return !(currentWeek && w.week && w.week.indexOf(currentWeek) !== -1);
+      return !(currentWeek && weekKey(w.week) === currentWeek);
     });
     past.forEach(function (w) {
       const lines = (w.sections && w.sections.learned) || [];
@@ -1165,7 +1532,7 @@
     });
     // newest week first, oldest at the bottom
     order.forEach(function (k) { map[k].entries.reverse(); });
-    return { order: order, map: map };
+    return { order: order, map: map, example: exampleCount(past), total: past.length };
   }
 
   function renderCatchup() {
@@ -1182,7 +1549,13 @@
     let html =
       '<div class="catchup-head"><span class="ic">🕘</span>' +
       '<span class="t">Time travel</span>' +
-      '<span class="note">Tap a subject to see what we’ve covered so far</span></div>' +
+      '<span class="note">' + (
+        !data.example ? 'Tap a subject to see what we’ve covered so far'
+        : data.example === data.total
+          ? 'Tap a subject — every week behind these buttons is the example term that came with the tool, not a real class'
+          : 'Tap a subject to look back — ' + data.example + ' of these weeks ' +
+            (data.example === 1 ? 'is' : 'are') + ' the example term that came with the tool'
+      ) + '</span></div>' +
       '<div class="catchup-pills">';
     data.order.forEach(function (key) {
       const s = data.map[key];
@@ -1225,12 +1598,23 @@
     document.getElementById('summaryModal').style.display = 'none';
   }
 
+  // Carried into the summary on screen, the copied text and the AI prompt, so a
+  // printed page of example weeks can never be read as a real class's term.
+  function exampleNote(list, lead) {
+    const ex = exampleCount(list);
+    if (!ex) return '';
+    return (lead || '') + (ex === list.length
+      ? 'EXAMPLE TERM — sample weeks that came with the tool, not a real class'
+      : 'Includes ' + exWeeks(ex) + ' that came with the tool');
+  }
+
   function buildSummaryHtml(list) {
     const cls = list[0].title || 'Our Class';
     const grade = list[0].grade ? ' · ' + list[0].grade : '';
     let html = '<h1>Term Summary — ' + escapeHtml(cls) + '</h1>';
     html += '<div class="sum-meta">' + list.length + ' weeks' + escapeHtml(grade) +
-            '  ·  ' + escapeHtml(list[0].week) + ' → ' + escapeHtml(list[list.length - 1].week) + '</div>';
+            '  ·  ' + escapeHtml(list[0].week) + ' → ' + escapeHtml(list[list.length - 1].week) +
+            exampleNote(list, '  ·  ') + '</div>';
 
     SUBJECTS.forEach(function (s) {
       const entries = list.filter(function (w) {
@@ -1256,9 +1640,15 @@
 
   function buildSummaryText() {
     const list = loadArchive();
+    // Copy summary text and Copy AI prompt read the archive fresh. If the last
+    // week went away while the summary was open, list[0].title threw and the
+    // button did nothing at all with no explanation.
+    if (!list.length) return 'TERM SUMMARY\n\nNo weeks are saved in the archive yet.';
     const L = [];
     L.push('TERM SUMMARY — ' + (list[0].title || 'Our Class'));
     L.push(list.length + ' weeks  ·  ' + list[0].week + ' → ' + list[list.length - 1].week);
+    const note = exampleNote(list, '');
+    if (note) L.push(note);
     L.push('');
     SUBJECTS.forEach(function (s) {
       L.push('== ' + s.label.toUpperCase() + ' ==');
@@ -1280,6 +1670,7 @@
   /* ---------- AI prompt: paste into Claude for a polished narrative ---------- */
   function buildAIPrompt() {
     const list = loadArchive();
+    if (!list.length) return buildSummaryText();
     const cls = list[0].title || 'our class';
     const grade = list[0].grade || '';
     let p = 'You are helping a teacher write a warm, well-organized one-page summary ' +
@@ -1319,18 +1710,88 @@
     setTimeout(function () { w.print(); }, 300);
   }
 
+  /* =====================================================================
+     THE LITTLE THINGS THAT MAKE THE PAGE BEHAVE
+     ===================================================================== */
+
+  // Deleting the last word of a section leaves a stray <br> behind, so the box
+  // is no longer :empty and the grey hint ("What did the class explore this
+  // week?") never came back — the section just became a silent blank gap.
+  function tidyEmptyBlocks(el) {
+    if (!el || !el.isContentEditable) return;
+    const html = el.innerHTML.replace(/<br\s*\/?>/gi, '').replace(/&nbsp;|\s/g, '');
+    if (html === '' && el.innerHTML !== '') el.innerHTML = '';
+  }
+
+  // The sign-off follows the Teacher field until somebody types in the
+  // sign-off itself; then it is theirs and we leave it alone.
+  function syncSignoff() {
+    const el = document.querySelector('[data-follows="teacher"]');
+    if (!el) return;
+    const who = fieldText('teacher');
+    if (who) el.textContent = who;
+  }
+
+  // Escape and a click on the dark surround close the summary. Only the ✕
+  // button used to, which leaves a modal that feels stuck.
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (document.getElementById('summaryModal').style.display !== 'none') closeSummary();
+  });
+  document.getElementById('summaryModal').addEventListener('mousedown', function (e) {
+    if (e.target === this) closeSummary();
+  });
+
   /* ---------- boot ---------- */
   restoreDraft();
   // Keep the example term loaded until the teacher makes the archive their own
   // (adds, imports, or removes a week). Until then it stays in sync with updates.
-  if (localStorage.getItem(ARCHIVE_OWNED_KEY) !== '1') {
-    try { localStorage.setItem(ARCHIVE_KEY, JSON.stringify(SEED_ARCHIVE)); } catch (e) {}
-  }
+  // getItem throws in a private window too, so this whole block has to be
+  // guarded or the page stops booting before the archive ever renders.
+  try {
+    if (localStorage.getItem(ARCHIVE_OWNED_KEY) !== '1') {
+      localStorage.setItem(ARCHIVE_KEY, JSON.stringify(SEED_ARCHIVE));
+    }
+  } catch (e) {}
   renderArchiveStatus();
   renderCatchup();
-  document.addEventListener('input', function () {
+
+  // Tell a visitor at the door, not after they have clicked and waited.
+  if (pictureMakerMissing() || !window.jspdf) {
+    const box = document.getElementById('offlineWarn');
+    box.textContent = 'Download PDF and Download image need two small files from the internet that did not ' +
+      'arrive this time — usually a school firewall or no wifi. Everything else works: use Print, ' +
+      'or Copy as text to paste the newsletter somewhere else.';
+    box.style.display = 'block';
+  }
+
+  document.addEventListener('input', function (e) {
+    const el = e.target;
+    tidyEmptyBlocks(el);
+    // The first keystroke anywhere on the sheet makes it the teacher's, so the
+    // "starting template" band goes. Scoped to the sheet: the hidden file
+    // inputs fire this event too, and they are not the newsletter.
+    if (el && el.closest && el.closest('#sheet')) claimSheet();
+    if (el && el.getAttribute && el.getAttribute('data-field') === 'signoff') {
+      el.removeAttribute('data-follows');   // hand-edited from here on
+    }
+    if (el && el.getAttribute && el.getAttribute('data-field') === 'teacher') syncSignoff();
     clearTimeout(window.__save);
     window.__save = setTimeout(autoSave, 800);
+  });
+
+  // Typing is saved 800ms after you stop. Closing the tab inside that window
+  // used to throw away the last sentence, so flush on the way out as well.
+  function flushSave() {
+    if (window.__resetting) return;   // Start fresh is mid-wipe; do not write it back
+    if (!window.__save) return;
+    clearTimeout(window.__save);
+    window.__save = null;
+    autoSave();
+  }
+  window.addEventListener('pagehide', flushSave);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') flushSave();
   });
 </script>
 

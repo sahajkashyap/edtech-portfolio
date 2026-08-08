@@ -1,0 +1,13 @@
+{
+  "name": "writing-assessment-tests",
+  "version": "1.0.0",
+  "description": "Regression tests for the Writing Assessment tool. node_modules is a symlink to ../../running-record-tool/tests/node_modules — nothing is installed here.",
+  "scripts": {
+    "test": "node run-tests.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^25.5.0"
+  },
+  "private": true
+}

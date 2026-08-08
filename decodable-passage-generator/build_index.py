@@ -26,9 +26,27 @@ TARGET_SOUND_NOTES = {
         "worksheet generator instead."),
 }
 
+# The dash below is written as &mdash; on purpose, and so is every other
+# non-ASCII character on this page -- see ascii_only() at the bottom of this
+# file, which encodes the ones that arrive from the data.
+#
+# The story: this page shipped with no <meta charset>, so a host that serves
+# it without a charset in the Content-Type header (a plain
+# `python3 -m http.server`, some CDNs) made Chrome fall back to windows-1252
+# and every non-ASCII character came out as mojibake. That was 28 broken runs
+# of text, not one: the em dash in this sentence, and the phonetic symbols in
+# 27 lesson skill labels -- "a /ăăă/" reading as "a /Äƒ/", "ng /ŋ/" as
+# "ng /Å‹/". Fixing this one dash by hand fixed 1 of the 28.
+#
+# So there are now two independent defences, and either one alone is enough:
+#   1. <meta charset="utf-8"> in the head.
+#   2. Not a single raw non-ASCII byte in the file -- everything is an HTML
+#      entity, which means nothing to mis-decode in the first place.
+# Belt and braces on purpose. A head regenerated without the charset line
+# should not be able to break 27 lesson labels again.
 NO_PASSAGE_REASON = (
     "No decodable passage exists this early. A story needs a vocabulary, and "
-    "these lessons are still introducing single letter-sounds — at Lesson 1 there "
+    "these lessons are still introducing single letter-sounds &mdash; at Lesson 1 there "
     "are no words a child can sound out at all, and by Lesson 5 there are four "
     "(<em>am, at, mat, sat</em>)."
 )
@@ -56,7 +74,12 @@ section{margin-top:2.4rem}
 .stat{background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:.75rem .85rem}
 .stat .v{font-family:var(--serif);font-size:1.7rem;line-height:1;font-variant-numeric:tabular-nums}
 .stat .k{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.35rem}
-.note{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--warn);
+/* Two boxes share this look, but they are deliberately two DIFFERENT classes.
+   The phone line used to be class="onphone note", which meant the page had two
+   .note elements and the first one -- the one any querySelector('.note') finds
+   -- was the one that is invisible on a laptop. Nothing broke, because this
+   page runs no script at all, but it is a trap laid for the next person. */
+.note,.onphone{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--warn);
  border-radius:8px;padding:.9rem 1.1rem;font-size:.9rem}
 .unit{margin-top:1.6rem;scroll-margin-top:3.6rem}
 .uh{font-family:var(--serif);font-size:1.45rem;font-weight:700;border-bottom:2px solid var(--ink);
@@ -94,7 +117,45 @@ details.card .tnote{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(
 .card.letter .n a{color:inherit;text-decoration:none}
 .card.letter .n a:hover{text-decoration:underline}
 footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font-size:.82rem;color:var(--muted)}
+/* The one thing this page says on a phone. This is a desktop page on purpose:
+   you come here to print letter-size paper, and nobody prints from a phone.
+   So rather than reworking the whole layout for a screen it was never meant
+   for, it says so plainly and gets out of the way. Deliberately the ONLY
+   small-screen rule in this stylesheet -- do not grow a mobile design here. */
+.onphone{display:none}
+@media (max-width:640px){.onphone{display:block}}
 """
+
+
+def ascii_only(html):
+    """Turn every remaining non-ASCII character into an HTML entity.
+
+    The hand-written text in this file already uses entities (&mdash;, &ndash;,
+    &middot;). What it cannot control is the text that arrives from the data:
+    the skill labels in sound-list.json carry phonetic symbols -- a /ăăă/,
+    ng /ŋ/, a_e /ā/ -- and there are 34 such characters across 27 lesson cards.
+    Those were raw UTF-8 bytes in the shipped page, and raw UTF-8 bytes are
+    exactly what a charset-less host mis-reads.
+
+    `&#x103;` says which character is meant with no encoding to get wrong, so
+    the page reads correctly even if it is served with no charset at all, or
+    pasted into an editor that saves as something else. Chrome renders the two
+    forms identically -- textContent gives back the real character either way.
+    """
+    return html.encode("ascii", "xmlcharrefreplace").decode("ascii")
+
+
+def sheet_pages(n):
+    """How many pages lesson n's sheet really is, read from the sheet itself.
+
+    This number used to be arithmetic: passages x 5 + letter sheets x 3. That
+    assumed all five letter-and-sound sheets are three pages, but four of them
+    are four pages, so the headline tile claimed 630 when Chrome actually
+    prints 634. Every sheet already states its own page count correctly; only
+    this tile was guessing. Count what is in the file instead of predicting it.
+    """
+    f = HERE / "sheets" / f"lesson-{n:03d}.html"
+    return f.read_text().count('class="page') if f.exists() else 0
 
 
 def build():
@@ -161,13 +222,33 @@ def build():
     letter_sheets = sorted(n for n in missing
                            if (HERE / "sheets" / f"lesson-{n:03d}.html").exists())
     still_missing = [n for n in missing if n not in letter_sheets]
-    total_pages = len(passages) * 5 + len(letter_sheets) * 3
+    total_pages = sum(sheet_pages(n) for n in range(1, 129))
 
     jump = ('<nav class="jump">'
             + "".join(f'<a href="#u{i}">{u}</a>' for i, u in enumerate(order, 1))
             + "</nav>")
 
-    page = f"""<title>Decodable Passages &mdash; all 128 lessons</title>
+    # These four lines at the top are load-bearing, and this page shipped
+    # without them:
+    #   <!doctype html>  -- without it Chrome renders the page in quirks mode,
+    #                       a legacy layout path nothing here should depend on.
+    #   lang="en"        -- screen readers guess the language without it.
+    #   <meta charset>   -- without it a host that sends no charset falls back
+    #                       to windows-1252 and any raw non-ASCII byte turns
+    #                       into mojibake. GitHub Pages sends a charset; a
+    #                       plain `python3 -m http.server` does not. This is
+    #                       the first of the two defences described up by
+    #                       NO_PASSAGE_REASON; ascii_only() is the second, and
+    #                       either one alone keeps the page readable.
+    #   <meta viewport>  -- without it a phone lays the page out at 980px and
+    #                       shrinks it to 40%, so 16px body text arrives at
+    #                       6px. This does NOT make the page a phone page --
+    #                       see .onphone below, which says so out loud.
+    page = f"""<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decodable Passages &mdash; all 128 lessons</title>
 <style>{CSS}</style>
 <div class="wrap">
 <header>
@@ -183,6 +264,9 @@ def build():
     <div class="stat"><div class="v">{total_pages}</div><div class="k">Printable pages</div></div>
     <div class="stat"><div class="v">100%</div><div class="k">Passed the gate</div></div>
   </div>
+  <p class="onphone" style="margin-top:1.5rem">This page is built for a computer.
+  You can read the stories on a phone, but the practice sheets are made for
+  letter-size paper &mdash; open this on a laptop when it is time to print one.</p>
 </header>
 
 <section>
@@ -211,9 +295,11 @@ def build():
 </footer>
 </div>
 """
+    page = ascii_only(page)
     OUT.write_text(page)
     print(f"wrote {OUT}")
-    print(f"  {len(passages)} passages, {words:,} words, {len(passages) * 4} printable pages")
+    # Was `len(passages) * 4`, which matched neither the tile nor the paper.
+    print(f"  {len(passages)} passages, {words:,} words, {total_pages} printable pages")
     print(f"  no passage for lessons: {missing}")
 
 

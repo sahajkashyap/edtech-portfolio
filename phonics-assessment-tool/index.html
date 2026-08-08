@@ -38,7 +38,8 @@
   #pieChart { width: 100%; height: 160px; cursor: pointer; }
   
   .counts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .count-item { padding: 10px; text-align: center; border-radius: 8px; border: 0.5px solid; cursor: pointer; transition: all 0.2s; }
+  .count-item { padding: 10px; text-align: center; border-radius: 8px; border: 0.5px solid; cursor: pointer; transition: all 0.2s;
+                font-family: inherit; width: 100%; }
   .count-item:hover { transform: scale(1.05); }
   .count-item.e { background: rgba(55, 138, 221, 0.1); border-color: #378ADD; }
   .count-item.d { background: rgba(186, 117, 23, 0.1); border-color: #BA7517; }
@@ -52,7 +53,10 @@
   select { width: 100%; padding: 12px 14px; border: 1px solid var(--color-border-secondary); border-radius: 8px; font-size: 16px; font-weight: 500; background: var(--color-background-primary); color: var(--color-text-primary); margin-bottom: 1rem; cursor: pointer; }
   
   .lessons { display: grid; gap: 10px; max-height: 350px; overflow-y: auto; }
-  .lesson { padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; display: grid; grid-template-columns: 1fr auto auto auto; gap: 8px; align-items: center; }
+  /* The three score buttons used to be three separate grid columns. They are
+     one group now, so a narrow screen can drop them onto their own line
+     instead of pushing the whole row off the side. */
+  .lesson { padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
   .lesson-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
   .lesson-meta { font-size: 11px; color: var(--color-text-secondary); display: block; margin-top: 2px; }
   
@@ -118,6 +122,53 @@
   .ws-get { margin-top: 8px; padding: 6px 12px; font-size: 12px; }
   .ws-story { background: #2a6db0; border: 0.5px solid #2a6db0; color: #fff; font-weight: 500; font-size: 12px; padding: 6px 12px; border-radius: 6px; text-decoration: none; display: inline-block; }
   .ws-story:hover { background: #22598f; }
+
+  /* who this assessment is for. Initials only, never a full name, and it never
+     leaves this laptop — see the note above saveWork(). */
+  .whorow { display: flex; align-items: flex-end; gap: 1.25rem; flex-wrap: wrap; margin-top: 1rem; }
+  .who { display: flex; flex-direction: column; gap: 4px; }
+  .who label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary); }
+  #initials { width: 90px; padding: 10px 12px; border: 1px solid #A0D4E8; border-radius: 8px;
+    background: #E3F2FD; color: var(--color-text-primary); font-size: 14px; font-family: inherit;
+    text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+  #assessDate { width: 180px; margin-bottom: 0; }
+  .privacy { margin-left: auto; font-size: 12.5px; font-weight: bold; color: var(--color-text-secondary); }
+
+  .sample-banner { display: none; margin-top: 1rem; padding: 10px 14px; border-radius: 8px;
+    background: #FFF3D9; border: 1px solid #E0C070; font-size: 13px; color: #6b4e00; line-height: 1.5; }
+  .sample-banner.show { display: block; }
+  .sample-banner strong { font-weight: 700; }
+  .banner-btn { margin-left: 6px; padding: 4px 10px; font-family: inherit; font-size: 12px;
+    font-weight: 600; border-radius: 6px; border: 1px solid #B08A20; background: #fff;
+    color: #6b4e00; cursor: pointer; }
+  .banner-btn:hover { background: #FFE9B8; }
+
+  /* One place to talk to the teacher, so every path that gives up says why. */
+  .say { margin-top: 10px; font-size: 13px; line-height: 1.5; color: #8a3b00; font-weight: 500; flex-basis: 100%; }
+  .say:empty { margin-top: 0; }
+
+  .lessons-hint { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 8px 0; }
+
+  /* WHAT WAS WRONG: nothing here collapsed on a phone. The two-column top grid
+     stayed two-column at 390px, so the page was 247px wider than the screen and
+     every button, both comment boxes and the Clear button sat off to the right
+     where a thumb could not reach them. */
+  @media (max-width: 760px) {
+    body { padding: 0.85rem; }
+    .top-boxes { grid-template-columns: 1fr; gap: 1rem; }
+    .two-column { grid-template-columns: 1fr; }
+    .box, .section { padding: 1rem; }
+    .header h1 { font-size: 20px; }
+    .privacy { margin-left: 0; flex-basis: 100%; }
+    .counts { gap: 8px; }
+    .count-item { padding: 8px 4px; }
+    .count-label { font-size: 10px; }
+    .lesson { grid-template-columns: 1fr; gap: 8px; }
+    .score-buttons .btn-score { flex: 1; padding: 8px 10px; }
+    .ws-row { grid-template-columns: 1fr; }
+    .modal-content { width: 94%; padding: 1.25rem; max-height: 85vh; }
+  }
+  .lesson-name, .ws-name { min-width: 0; overflow-wrap: anywhere; }
 </style>
 
 <div class="container">
@@ -130,6 +181,37 @@
       scope and sequence &mdash; a teaching method, freely followable &mdash; and
       every word, sentence, and worksheet here is original. Sight words come from
       the public-domain Dolch list (1936).</p>
+
+    <!-- Initials and a date, never a full name. Two children assessed in one
+         morning used to produce two identical anonymous files. -->
+    <div class="whorow">
+      <div class="who">
+        <label for="initials">Child</label>
+        <input type="text" id="initials" maxlength="4" placeholder="J.M." autocomplete="off">
+      </div>
+      <div class="who">
+        <label for="assessDate">Date</label>
+        <input type="date" id="assessDate">
+      </div>
+      <div class="privacy">&#9679; Stays on this laptop</div>
+    </div>
+
+    <div class="sample-banner" id="sampleBanner">
+      <span id="sampleBannerPlain">
+        <strong>Sample student &mdash; Maya Torres.</strong> These scores are made up,
+        so you can see the chart and the report with something in them. Nothing here
+        belongs to a real child. Press <em>Clear the sample</em> to start your own.
+      </span>
+      <!-- The second wording appears the moment the Child box stops saying M.T.
+           See paintSample(): typing your own initials over Maya's used to leave
+           her 58 made-up scores sitting under them with nothing saying so. -->
+      <span id="sampleBannerMixed" style="display:none">
+        <strong>These are still Maya Torres&rsquo; scores.</strong> You have put your
+        own initials in, but every score, and both comment boxes, still belong to the
+        made-up sample student &mdash; not to a real child.
+        <button type="button" id="startMineBtn" class="banner-btn" onclick="startMyOwn()">Clear her scores, keep what I typed</button>
+      </span>
+    </div>
   </div>
 
   <!-- TOP: GRAPH AND LESSONS SIDE BY SIDE -->
@@ -142,28 +224,36 @@
         <svg id="pieChart"></svg>
       </div>
       <div class="counts">
-        <div class="count-item e" onclick="showLessonsByScore('e')">
+        <!-- WHAT WAS WRONG: these three were plain <div>s with an onclick. A mouse
+             opened the lesson list behind a tally; a keyboard could not reach them
+             at all, and a screen reader was never told they did anything. Real
+             buttons, so Tab lands on them and Enter and Space both work. -->
+        <button type="button" class="count-item e" onclick="showLessonsByScore('e')"
+                aria-label="Show the lessons scored emerging or beginning">
           <p class="count-num" id="count-e">0</p>
           <p class="count-label">Emerging / Beginning</p>
-        </div>
-        <div class="count-item d" onclick="showLessonsByScore('d')">
+        </button>
+        <button type="button" class="count-item d" onclick="showLessonsByScore('d')"
+                aria-label="Show the lessons scored developing">
           <p class="count-num" id="count-d">0</p>
           <p class="count-label">Developing</p>
-        </div>
-        <div class="count-item m" onclick="showLessonsByScore('m')">
+        </button>
+        <button type="button" class="count-item m" onclick="showLessonsByScore('m')"
+                aria-label="Show the lessons scored mastered">
           <p class="count-num" id="count-m">0</p>
           <p class="count-label">Mastered</p>
-        </div>
+        </button>
       </div>
     </div>
 
     <!-- RIGHT: SELECT UNIT + LESSONS -->
     <div class="box">
       <div class="box-title">Select Unit</div>
-      <select id="unitSelect" onchange="updateLessons()">
+      <select id="unitSelect" onchange="unitChanged()">
         <option value="">Choose a unit...</option>
         <option value="all">All Lessons</option>
       </select>
+      <p class="lessons-hint" id="lessonsHint">E is emerging, D is developing, M is mastered. Tap a level a second time to take the score back off.</p>
       <div class="lessons" id="lessonsList"></div>
     </div>
 
@@ -209,7 +299,10 @@
     <button class="btn-primary" onclick="exportPDF()">Export PDF</button>
     <button onclick="exportJSON()">Export JSON</button>
     <button onclick="exportCSV()">Export CSV</button>
+    <button id="sampleBtn" onclick="toggleSample()">Try it with a sample student</button>
     <button onclick="clearForm()">Clear</button>
+    <button id="undoBtn" style="display: none;" onclick="undoClear()">Undo the clear</button>
+    <div class="say" id="sayMsg"></div>
   </div>
 
 </div>
@@ -388,8 +481,285 @@ const curriculum = {
 };
 
 const scores = {};
-let allAssessments = JSON.parse(localStorage.getItem('ufliAssessments')) || [];
 let currentUnit = "";
+let isSample = false;        // true while Maya Torres' made-up scores are on screen
+let sampleCleared = false;   // she does not come back once a teacher has dismissed her
+let undoSnapshot = null;     // what Clear threw away, so it can be put back
+
+const el = id => document.getElementById(id);
+
+// Every lesson gets a slot up front. The old code created slots lazily, as a
+// unit was opened, so the tallies and the exports depended on which units the
+// teacher happened to have looked at.
+function initScores() {
+  Object.values(curriculum).forEach(data => {
+    data.lessons.forEach(lesson => { scores[lesson.name] = scores[lesson.name] || null; });
+  });
+}
+
+// One place to talk to the teacher, so every path that gives up says why.
+function say(msg, ms) {
+  const m = el('sayMsg');
+  if (!m) return;
+  m.textContent = msg || '';
+  if (msg) setTimeout(() => { if (m.textContent === msg) m.textContent = ''; }, ms || 9000);
+}
+
+function todayLocal() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' +
+         String(d.getDate()).padStart(2, '0');
+}
+
+// ---------------------------------------------------------------------------
+// Saving on this laptop
+//
+// WHAT WAS WRONG: nothing was ever saved. The file read 'ufliAssessments' into
+// a variable it then never used again, so a reload — or a tab closed by
+// accident — silently destroyed a whole assessment, and there was no warning
+// either. Everything on screen is written here after every change and read
+// back on load. localStorage only: nothing is sent anywhere.
+//
+// Every call is wrapped. Safari's private window and a full disk both make
+// localStorage throw, and a silent failure here loses a teacher's morning.
+// ---------------------------------------------------------------------------
+const STORE_KEY = 'ufli-assessment';
+
+function hasContent() {
+  return Object.values(scores).some(s => s) ||
+         el('initials').value.trim() !== '' ||
+         el('strengthsComment').value.trim() !== '' ||
+         el('stretchesComment').value.trim() !== '';
+}
+
+function snapshot() {
+  return {
+    initials: el('initials').value,
+    date: el('assessDate').value,
+    unit: currentUnit,
+    scores: { ...scores },
+    strengths: el('strengthsComment').value,
+    stretches: el('stretchesComment').value,
+    sample: isSample,
+    sampleCleared: sampleCleared
+  };
+}
+
+function saveWork() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(snapshot()));
+    return true;
+  } catch (err) {
+    say('THIS ASSESSMENT IS NOT BEING SAVED — this browser refused to store it ' +
+        '(a private window, or the disk is full). Export CSV before you close ' +
+        'this tab, or the scores go with it.', 60000);
+    return false;
+  }
+}
+
+function readSaved() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); }
+  catch (err) { return null; }
+}
+
+// The three levels a lesson can be scored, and nothing else. Anything that is
+// not one of these is not a score.
+const LEVELS = ['Emerging', 'Developing', 'Mastered'];
+
+// WHAT WAS WRONG: a saved record was read back and put straight on screen. This
+// tool is the only thing that ever writes it, but it is just a line of text in
+// the browser's own storage, and a half-written or hand-edited one could put
+// anything in it. A record whose initials came back as {"x":1} was assigned to
+// the Child box as-is, and the teacher's screen read "[object Object]".
+// Nothing coming out of storage is trusted now: text has to be text, a score
+// has to be one of the three levels, and anything else is dropped quietly and
+// the tool opens the way it does on a first visit.
+function savedText(v, limit) {
+  if (typeof v !== 'string') return '';
+  return limit ? v.slice(0, limit) : v;
+}
+function savedLevel(v) {
+  return LEVELS.indexOf(v) > -1 ? v : null;
+}
+
+function applySaved(d) {
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return;
+  el('initials').value = savedText(d.initials, 4);
+  // A blank date is kept blank on purpose. If a teacher clears the date, the
+  // tool must not quietly write today's date back in behind them.
+  el('assessDate').value = typeof d.date === 'string' ? d.date : todayLocal();
+  el('strengthsComment').value = savedText(d.strengths);
+  el('stretchesComment').value = savedText(d.stretches);
+  Object.keys(scores).forEach(k => { scores[k] = null; });
+  const savedScores = (d.scores && typeof d.scores === 'object') ? d.scores : {};
+  Object.entries(savedScores).forEach(([k, v]) => {
+    if (k in scores) scores[k] = savedLevel(v);
+  });
+  isSample = !!d.sample;
+  sampleCleared = !!d.sampleCleared;
+  currentUnit = savedText(d.unit);
+  el('unitSelect').value = curriculumHasUnit(currentUnit) ? currentUnit : '';
+  currentUnit = el('unitSelect').value;
+  updateLessons();
+  updateCharts();
+  paintSample();
+}
+
+function curriculumHasUnit(u) {
+  return u === 'all' || (u && Object.prototype.hasOwnProperty.call(curriculum, u));
+}
+
+// The debounce exists so typing initials does not write on every keystroke.
+let saveTimer = null;
+function saveSoon() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveWork, 300);
+}
+
+// WHAT WAS WRONG: a comment typed in either box was only ever read at export
+// time, so it lived nowhere until then and a reload took it with it. Saving on
+// 'input' means the box is stored as it is typed — a teacher does not have to
+// click somewhere else first for the words to count.
+function wireInputs() {
+  ['initials', 'assessDate', 'strengthsComment', 'stretchesComment'].forEach(id =>
+    el(id).addEventListener('input', saveSoon));
+  // The sample banner has to answer to the Child box as it is typed in — see
+  // paintSample() for what it is watching for.
+  el('initials').addEventListener('input', paintSample);
+}
+
+// ---------------------------------------------------------------------------
+// The sample student
+//
+// Maya Torres is not real, and the page says so everywhere she appears —
+// on screen and in every export. Her profile is deliberately mixed: strong on
+// short vowels, wobbly on digraphs, only starting VCe. A child who scored the
+// same on everything would show a visitor nothing.
+// ---------------------------------------------------------------------------
+const SAMPLE_NAME = 'Maya Torres';
+const SAMPLE_INITIALS = 'M.T.';
+const SAMPLE_SCORES = (() => {
+  const s = {};
+  const set = (nums, level) => nums.forEach(n => { s['Lesson ' + n] = level; });
+  // Unit 1 — letter sounds. Solid, with a few late consonants still coming.
+  set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27,28,30,32,33], 'Mastered');
+  set([18,29,31,34], 'Developing');
+  // Unit 2 — short vowel review. Short e is the one that lags.
+  set([35,36,37,38], 'Mastered');
+  set([39,41], 'Developing');
+  set([40], 'Emerging');
+  // Unit 3 — digraphs. Half there.
+  set([42,43,44,45,48], 'Mastered');
+  set([46,49,51], 'Developing');
+  set([47,50,52,53], 'Emerging');
+  // Unit 4 — VCe, only just started.
+  set([54], 'Developing');
+  set([55,56,57], 'Emerging');
+  return s;
+})();
+const SAMPLE_STRENGTHS =
+  'Blends and reads short-vowel words on her own now — she does not wait for me ' +
+  'to model it. sh and ch are automatic in her reading and her spelling, and she ' +
+  'goes back and fixes a word when it does not sound like a real word.';
+const SAMPLE_STRETCHES =
+  'th and wh still come out as /f/ and /w/, and she guesses at ng and nk at the ' +
+  'end of a word. Magic e is brand new — she reads "cape" as "cap" about half the ' +
+  'time. Ten minutes a day on VCe words, and th cards in the warm-up.';
+
+function loadSample() {
+  Object.keys(scores).forEach(k => { scores[k] = null; });
+  Object.entries(SAMPLE_SCORES).forEach(([k, v]) => { if (k in scores) scores[k] = v; });
+  el('initials').value = SAMPLE_INITIALS;
+  el('assessDate').value = todayLocal();
+  el('strengthsComment').value = SAMPLE_STRENGTHS;
+  el('stretchesComment').value = SAMPLE_STRETCHES;
+  el('unitSelect').value = 'Unit 3: Digraphs';
+  currentUnit = 'Unit 3: Digraphs';
+  isSample = true;
+  updateLessons();
+  updateCharts();
+  paintSample();
+  saveWork();
+}
+
+function clearSample() {
+  isSample = false;
+  sampleCleared = true;   // so she does not walk back in on the next reload
+  wipe();
+  paintSample();
+  saveWork();
+  say('Sample cleared. The tool is empty and ready for your own assessment.', 6000);
+}
+
+function toggleSample() {
+  if (isSample) { clearSample(); return; }
+  if (hasContent() &&
+      !confirm('Load the sample student?\n\nMaya Torres\' made-up scores would ' +
+               'replace what is on screen now.')) return;
+  loadSample();
+  say('This is a sample student. Press "Clear the sample" when you want to start your own.', 8000);
+}
+
+// WHAT WAS WRONG: a teacher who typed their own initials over Maya's kept all
+// of her made-up scores, and the banner went on saying the same calm thing it
+// says on arrival. The exports never lied — they stayed marked SAMPLE and named
+// her inside — but the teacher's own screen read as a half-real record. The
+// banner now notices the moment the Child box stops being hers and says so,
+// with one button that clears her scores and keeps what has been typed.
+function typedOverSample() {
+  if (!isSample) return false;
+  const ini = el('initials').value.trim();
+  return ini !== '' && ini.toUpperCase() !== SAMPLE_INITIALS.toUpperCase();
+}
+
+function paintSample() {
+  el('sampleBanner').classList.toggle('show', isSample);
+  el('sampleBtn').textContent = isSample ? 'Clear the sample' : 'Try it with a sample student';
+  const mixed = typedOverSample();
+  el('sampleBannerPlain').style.display = mixed ? 'none' : '';
+  el('sampleBannerMixed').style.display = mixed ? '' : 'none';
+}
+
+// The one-press way out of a mixed record: Maya's scores and Maya's words go,
+// the teacher's own initials, date and any words they have written stay.
+function startMyOwn() {
+  const ini      = el('initials').value;
+  const date     = el('assessDate').value;
+  const unit     = el('unitSelect').value;
+  const strength = el('strengthsComment').value;
+  const stretch  = el('stretchesComment').value;
+  clearSample();
+  el('initials').value = ini;
+  el('assessDate').value = date;
+  if (strength !== SAMPLE_STRENGTHS) el('strengthsComment').value = strength;
+  if (stretch  !== SAMPLE_STRETCHES) el('stretchesComment').value = stretch;
+  el('unitSelect').value = unit;
+  currentUnit = el('unitSelect').value;
+  updateLessons();
+  updateCharts();
+  paintSample();
+  saveWork();
+  say('Maya’s scores are gone. Your initials and anything you wrote are still here.', 8000);
+}
+
+// What every export writes at the top, so a printed sheet can never be mistaken
+// for a real child's record.
+function sampleLabel() {
+  return isSample ? 'SAMPLE STUDENT — ' + SAMPLE_NAME + '. Made-up scores, not a real child.' : '';
+}
+
+// Initials and the date in the filename, so two children assessed in one
+// morning no longer produce two identical, indistinguishable files.
+//
+// WHAT WAS WRONG: an empty date fell back to today here, but the CSV cell and
+// the JSON field stayed empty — so a file called ..._2026-08-07.csv held a row
+// with no date in it, and the name of the file and the record inside it said
+// two different things. The filename now says the same as the record: no date.
+function fileTag() {
+  const ini = (el('initials').value || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+  const date = el('assessDate').value || 'no-date';
+  return (isSample ? 'SAMPLE-' : '') + (ini || 'no-initials') + '_' + date;
+}
 
 function initUnits() {
   const select = document.getElementById('unitSelect');
@@ -401,16 +771,41 @@ function initUnits() {
   });
 }
 
+// The dropdown calls this; updateLessons() only redraws. Kept apart so a
+// redraw after a score cannot quietly reset which unit is open.
+function unitChanged() {
+  currentUnit = el('unitSelect').value;
+  updateLessons();
+  saveWork();
+}
+
 function updateLessons() {
   currentUnit = document.getElementById('unitSelect').value;
   if (!currentUnit) {
     document.getElementById('lessonsList').innerHTML = '';
     return;
   }
-  
+
   const list = document.getElementById('lessonsList');
+  // The whole list is rebuilt on every click. Without this the list jumped back
+  // to Lesson 1 each time a score was set, which in "All Lessons" means scrolling
+  // down through 128 rows again to reach the next lesson.
+  const keepScroll = list.scrollTop;
+
+  // WHAT WAS WRONG: rebuilding the list threw the keyboard away. The button a
+  // teacher was standing on was deleted mid-press, so focus fell back to <body>
+  // — and the whole point of "press the level again to take the score off" is a
+  // SECOND press on the SAME button. After the first press there was nothing to
+  // press: Space just scrolled the page, and a keyboard-only teacher had to Tab
+  // in from the top of the document after every single score. Remember where the
+  // keyboard was standing, and put it back on the rebuilt button.
+  const was = document.activeElement;
+  const keep = (was && was.classList && was.classList.contains('btn-score'))
+    ? { lesson: was.dataset.lesson, level: was.dataset.level }
+    : null;
+
   list.innerHTML = '';
-  
+
   let lessonsToShow = [];
   
   if (currentUnit === 'all') {
@@ -437,18 +832,33 @@ function updateLessons() {
         <div class="lesson-name">${name}: ${skill}</div>
         ${currentUnit === 'all' ? `<span class="lesson-meta">${unit}</span>` : ''}
       </div>
-      <button class="btn-score ${scoreE}" onclick="setScore('${name}', 'Emerging')">E</button>
-      <button class="btn-score ${scoreD}" onclick="setScore('${name}', 'Developing')">D</button>
-      <button class="btn-score ${scoreM}" onclick="setScore('${name}', 'Mastered')">M</button>
+      <div class="score-buttons">
+        <button class="btn-score ${scoreE}" data-lesson="${name}" data-level="Emerging" aria-pressed="${scoreE ? 'true' : 'false'}" aria-label="Emerging / beginning — ${name}: ${skill}" title="${scoreE ? 'Scored emerging — press again to take the score off' : 'Emerging / beginning'}" onclick="setScore('${name}', 'Emerging')">E</button>
+        <button class="btn-score ${scoreD}" data-lesson="${name}" data-level="Developing" aria-pressed="${scoreD ? 'true' : 'false'}" aria-label="Developing — ${name}: ${skill}" title="${scoreD ? 'Scored developing — press again to take the score off' : 'Developing'}" onclick="setScore('${name}', 'Developing')">D</button>
+        <button class="btn-score ${scoreM}" data-lesson="${name}" data-level="Mastered" aria-pressed="${scoreM ? 'true' : 'false'}" aria-label="Mastered — ${name}: ${skill}" title="${scoreM ? 'Scored mastered — press again to take the score off' : 'Mastered'}" onclick="setScore('${name}', 'Mastered')">M</button>
+      </div>
     `;
     list.appendChild(row);
   });
+  list.scrollTop = keepScroll;
+
+  // Put the keyboard back where it was. preventScroll, or the list jumps under
+  // the teacher's hands on a phone.
+  if (keep && keep.lesson){
+    const again = list.querySelector('.btn-score[data-lesson="' + keep.lesson +
+                                     '"][data-level="' + keep.level + '"]');
+    if (again) again.focus({ preventScroll: true });
+  }
 }
 
+// WHAT WAS WRONG: a mis-clicked score could not be taken back. Pressing the
+// level again did nothing, and the only escape was Clear, which destroyed the
+// whole assessment. Pressing the level a lesson already has now un-scores it.
 function setScore(lesson, level) {
-  scores[lesson] = level;
+  scores[lesson] = (scores[lesson] === level) ? null : level;
   updateLessons();
   updateCharts();
+  saveWork();
 }
 
 function updateCharts() {
@@ -456,64 +866,112 @@ function updateCharts() {
   updateCounts();
 }
 
-function updateCounts() {
+function tallies() {
   const counts = { e: 0, d: 0, m: 0 };
   Object.values(scores).forEach(score => {
     if (score === 'Emerging') counts.e++;
     else if (score === 'Developing') counts.d++;
     else if (score === 'Mastered') counts.m++;
   });
-  
+  return counts;
+}
+
+function updateCounts() {
+  const counts = tallies();
   document.getElementById('count-e').textContent = counts.e;
   document.getElementById('count-d').textContent = counts.d;
   document.getElementById('count-m').textContent = counts.m;
 }
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
 function drawPieChart() {
-  const counts = { e: 0, d: 0, m: 0 };
-  Object.values(scores).forEach(score => {
-    if (score === 'Emerging') counts.e++;
-    else if (score === 'Developing') counts.d++;
-    else if (score === 'Mastered') counts.m++;
-  });
-  
-  const total = counts.e + counts.d + counts.m || 1;
+  const counts = tallies();
+  const total = counts.e + counts.d + counts.m;
   const svg = document.getElementById('pieChart');
   svg.innerHTML = '';
   svg.setAttribute('viewBox', '0 0 280 160');
-  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  
-  const radius = 50;
-  const cx = 80, cy = 70;
+  svg.setAttribute('xmlns', SVG_NS);
+
+  // The circle sits left and small on purpose: the key beside it has to fit
+  // inside the 280-wide viewBox, and SVG silently CLIPS anything past that —
+  // on a phone the key read "Mastered \u2014 39 (68" with the end cut off.
+  const radius = 46;
+  const cx = 62, cy = 70;
   const colors = { e: '#378ADD', d: '#BA7517', m: '#639922' };
+  const shortLabel = { e: 'Emerging', d: 'Developing', m: 'Mastered' };
   const order = ['e', 'd', 'm'];
-  let startAngle = -Math.PI / 2;
-  
+
+  const add = (tag, attrs, text) => {
+    const node = document.createElementNS(SVG_NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+    if (text !== undefined) node.textContent = text;
+    svg.appendChild(node);
+    return node;
+  };
+
+  if (total === 0) {
+    // An empty white box told a visitor nothing about whether the tool was
+    // working. Say what is missing instead.
+    add('circle', { cx: cx, cy: cy, r: radius, fill: 'none',
+                    stroke: '#D4C5B9', 'stroke-width': 2, 'stroke-dasharray': '5 5' });
+    add('text', { x: cx, y: cy + 4, 'text-anchor': 'middle', 'font-size': 10.5,
+                  fill: '#7f8c8d', 'font-family': 'inherit' }, 'No scores yet');
+    add('text', { x: 118, y: 74, 'font-size': 11, fill: '#7f8c8d',
+                  'font-family': 'inherit' }, 'Score a lesson to fill this in.');
+    return;
+  }
+
+  const active = order.filter(k => counts[k] > 0);
+
+  if (active.length === 1) {
+    // WHAT WAS WRONG: when every scored lesson sat in one band — which is what
+    // the very first click a stranger makes always produces — the slice was a
+    // full turn, so the arc ended on exactly the point it started from and SVG
+    // drew nothing at all. The panel went blank white with the tallies right
+    // beside it saying 12. One band is a circle; that is what 100% looks like.
+    const key = active[0];
+    const whole = add('circle', { cx: cx, cy: cy, r: radius, fill: colors[key],
+                                  stroke: 'white', 'stroke-width': 2 });
+    whole.style.cursor = 'pointer';
+    whole.onclick = () => showLessonsByScore(key);
+  } else {
+    let startAngle = -Math.PI / 2;
+    order.forEach(key => {
+      const value = counts[key];
+      if (value === 0) return;
+
+      const sliceAngle = (value / total) * 2 * Math.PI;
+      const endAngle = startAngle + sliceAngle;
+
+      const x1 = cx + radius * Math.cos(startAngle);
+      const y1 = cy + radius * Math.sin(startAngle);
+      const x2 = cx + radius * Math.cos(endAngle);
+      const y2 = cy + radius * Math.sin(endAngle);
+
+      const largeArc = sliceAngle > Math.PI ? 1 : 0;
+      const pathData = `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+
+      const path = add('path', { d: pathData, fill: colors[key],
+                                 stroke: 'white', 'stroke-width': 2 });
+      path.style.cursor = 'pointer';
+      path.onclick = () => showLessonsByScore(key);
+
+      startAngle = endAngle;
+    });
+  }
+
+  // A key beside the circle, so a chart made of one solid colour still says
+  // which band it is.
+  let y = 46;
   order.forEach(key => {
-    const value = counts[key];
-    if (value === 0) return;
-    
-    const sliceAngle = (value / total) * 2 * Math.PI;
-    const endAngle = startAngle + sliceAngle;
-    
-    const x1 = cx + radius * Math.cos(startAngle);
-    const y1 = cy + radius * Math.sin(startAngle);
-    const x2 = cx + radius * Math.cos(endAngle);
-    const y2 = cy + radius * Math.sin(endAngle);
-    
-    const largeArc = sliceAngle > Math.PI ? 1 : 0;
-    const pathData = `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`;
-    
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', pathData);
-    path.setAttribute('fill', colors[key]);
-    path.setAttribute('stroke', 'white');
-    path.setAttribute('stroke-width', '2');
-    path.style.cursor = 'pointer';
-    path.onclick = () => showLessonsByScore(key);
-    svg.appendChild(path);
-    
-    startAngle = endAngle;
+    if (counts[key] === 0) return;
+    const pct = Math.round(counts[key] / total * 100);
+    add('rect', { x: 116, y: y - 9, width: 11, height: 11, rx: 2, fill: colors[key] });
+    add('text', { x: 133, y: y, 'font-size': 11, fill: '#2c3e50',
+                  'font-family': 'inherit' },
+        `${shortLabel[key]} — ${counts[key]} (${pct}%)`);
+    y += 22;
   });
 }
 
@@ -603,62 +1061,130 @@ window.onclick = function(event) {
   }
 }
 
-function exportJSON() {
-  const strengths = document.getElementById('strengthsComment').value;
-  const stretches = document.getElementById('stretchesComment').value;
-  
-  const assessment = {
-    unit: currentUnit || 'All Units',
-    scores: { ...scores },
-    strengths: strengths,
-    stretches: stretches
-  };
-  
-  const dataStr = JSON.stringify(assessment, null, 2);
-  const blob = new Blob([dataStr], { type: 'application/json' });
+function download(blob, filename) {
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'ufli_assessment.json';
+  a.download = filename;
+  document.body.appendChild(a);
   a.click();
+  a.remove();
+  setTimeout(() => window.URL.revokeObjectURL(url), 1000);
 }
 
-function exportCSV() {
-  const strengths = document.getElementById('strengthsComment').value;
-  const stretches = document.getElementById('stretchesComment').value;
-  
-  let csv = 'Lesson,Skill,Score\n';
-  
-  Object.entries(scores).forEach(([lesson, score]) => {
-    if (score) {
-      csv += `"${lesson}","","${score}"\n`;
-    }
+// The skill name for a lesson, from the same curriculum the screen is drawn
+// from, so an export can never disagree with what the teacher scored.
+function skillOf(lessonName) {
+  let found = '';
+  Object.values(curriculum).forEach(data => {
+    data.lessons.forEach(lesson => { if (lesson.name === lessonName) found = lesson.skill; });
   });
-  
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'ufli_assessment.csv';
-  a.click();
+  return found;
+}
+
+function unitOf(lessonName) {
+  let found = '';
+  Object.entries(curriculum).forEach(([unitName, data]) => {
+    data.lessons.forEach(lesson => { if (lesson.name === lessonName) found = unitName; });
+  });
+  return found;
+}
+
+function exportJSON() {
+  const assessment = {
+    child: el('initials').value.toUpperCase(),
+    date: el('assessDate').value,
+    sampleStudent: isSample ? SAMPLE_NAME : null,
+    note: isSample ? sampleLabel() : undefined,
+    unit: currentUnit || 'All Units',
+    // WHAT WAS WRONG: this copied the whole score sheet, and every lesson gets a
+    // slot the moment the tool opens — so a JSON export of one scored lesson was
+    // three thousand characters of "null" with the one real score buried in it.
+    // Only what was actually scored goes in the file, which is what the CSV and
+    // the report have always done.
+    scores: Object.fromEntries(Object.entries(scores).filter(([, score]) => score)),
+    skills: Object.fromEntries(Object.entries(scores)
+      .filter(([, score]) => score)
+      .map(([lesson]) => [lesson, skillOf(lesson)])),
+    strengths: el('strengthsComment').value,
+    stretches: el('stretchesComment').value
+  };
+
+  download(new Blob([JSON.stringify(assessment, null, 2)], { type: 'application/json' }),
+           `ufli_assessment_${fileTag()}.json`);
+}
+
+// Quotes, commas and newlines all have to be escaped or a comment with a comma
+// in it silently splits into two columns.
+function csvCell(v) {
+  v = (v === null || v === undefined) ? '' : String(v);
+  return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+
+// WHAT WAS WRONG: the Skill column was hardcoded to "" on every row, so the
+// header promised a skill name the file never contained; the two comment boxes
+// were read into variables and then thrown away; and there was no child, no
+// date and no unit, so the CSV, the JSON and the PDF were three different
+// records of the same assessment. Everything on screen is in here now.
+function exportCSV() {
+  const child = el('initials').value.toUpperCase();
+  const date = el('assessDate').value;
+  const strengths = el('strengthsComment').value;
+  const stretches = el('stretchesComment').value;
+
+  const head = ['Child', 'Date', 'Sample', 'Unit', 'Lesson', 'Skill', 'Score',
+                'Strengths', 'Stretches'];
+  const rows = [head.map(csvCell).join(',')];
+
+  // Strengths and stretches repeat on every row on purpose: it keeps the file a
+  // plain rectangle a spreadsheet can sort and filter, and nothing on screen is
+  // left out of it.
+  const scored = Object.entries(scores).filter(([, score]) => score);
+
+  if (scored.length === 0) {
+    // Even with nothing scored, the comments and who it was are worth keeping.
+    rows.push([child, date, isSample ? SAMPLE_NAME : '', currentUnit || 'All Units',
+               '', '', '', strengths, stretches].map(csvCell).join(','));
+  } else {
+    scored.forEach(([lesson, score]) => {
+      rows.push([child, date, isSample ? SAMPLE_NAME : '', unitOf(lesson), lesson,
+                 skillOf(lesson), score, strengths, stretches].map(csvCell).join(','));
+    });
+  }
+
+  const csv = '﻿' + rows.join('\r\n');   // BOM so Excel reads the accents
+  download(new Blob([csv], { type: 'text/csv;charset=utf-8' }),
+           `ufli_assessment_${fileTag()}.csv`);
 }
 
 function exportPDF() {
+  // WHAT WAS WRONG: this destructured window.jspdf with no guard. The PDF
+  // library comes from a CDN, so on a school network that blocks it — or a
+  // laptop with no internet — window.jspdf is simply not there, the click threw
+  // an error into a console nobody has open, and the button appeared to do
+  // nothing at all. Say what happened and what still works.
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    say('The PDF maker did not load, so this button cannot build one. It comes ' +
+        'from the internet, and this laptop could not reach it — no connection, ' +
+        'or a school filter in the way. Nothing is lost: Export CSV holds every ' +
+        'score and both comment boxes, and File > Print will save this page as a ' +
+        'PDF.', 60000);
+    return;
+  }
   const { jsPDF } = window.jspdf;
-  
+
   // Get current data
   const strengths = document.getElementById('strengthsComment').value;
   const stretches = document.getElementById('stretchesComment').value;
   const unit = currentUnit || 'All Units';
-  
+  const child = el('initials').value.toUpperCase() || '—';
+  // A dash, not today's date. The printed report has to say the same thing the
+  // CSV, the JSON and the filename say: this one was never dated.
+  const date = el('assessDate').value || '—';
+
   // Calculate counts
-  const counts = { e: 0, d: 0, m: 0 };
-  Object.values(scores).forEach(score => {
-    if (score === 'Emerging') counts.e++;
-    else if (score === 'Developing') counts.d++;
-    else if (score === 'Mastered') counts.m++;
-  });
-  
+  const counts = tallies();
+
   // Create PDF
   const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const pageWidth = pdf.internal.pageSize.getWidth();
@@ -679,8 +1205,26 @@ function exportPDF() {
   pdf.setFontSize(20);
   pdf.setTextColor(...colors.title);
   pdf.text('UFLI Foundations Assessment Report', pageWidth / 2, yPosition, { align: 'center' });
-  yPosition += 12;
-  
+  yPosition += 8;
+
+  // Who and when. Without this two children assessed in one morning produced
+  // two anonymous, identical-looking reports.
+  pdf.setFontSize(11);
+  pdf.setTextColor(...colors.lightText);
+  pdf.text(`Child: ${child}    Date: ${date}    Unit: ${unit}`, pageWidth / 2, yPosition,
+           { align: 'center' });
+  yPosition += 7;
+
+  // The sample child is named on the printed page too, so a sheet left on a
+  // desk can never be read as a real child's record.
+  if (isSample) {
+    pdf.setFontSize(10);
+    pdf.setTextColor(...colors.developing);
+    pdf.text(sampleLabel(), pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 7;
+  }
+  yPosition += 3;
+
   // Summary counts (visual representation)
   pdf.setFontSize(12);
   pdf.setTextColor(...colors.title);
@@ -799,17 +1343,51 @@ function exportPDF() {
   }
   
   // Save PDF
-  pdf.save('ufli_assessment_report.pdf');
+  pdf.save(`ufli_assessment_report_${fileTag()}.pdf`);
+  say('PDF saved to your Downloads folder.', 6000);
 }
 
-function clearForm() {
+// The actual wiping, with no questions asked. Everything that destroys work
+// goes through here so there is one place that has to be right.
+function wipe() {
   document.getElementById('unitSelect').value = '';
+  document.getElementById('initials').value = '';
   document.getElementById('strengthsComment').value = '';
   document.getElementById('stretchesComment').value = '';
+  document.getElementById('assessDate').value = todayLocal();
   Object.keys(scores).forEach(k => scores[k] = null);
   currentUnit = "";
   document.getElementById('lessonsList').innerHTML = '';
   updateCharts();
+}
+
+// WHAT WAS WRONG: this wiped a whole morning's assessment on one click, with no
+// question asked and no way back — and it sits right beside Export CSV, which is
+// the button a teacher is actually reaching for. Ask first, and keep what was
+// thrown away so Undo can put it straight back.
+function clearForm() {
+  if (!hasContent()) { say('There is nothing to clear yet.', 5000); return; }
+  const who = el('initials').value.trim().toUpperCase();
+  if (!confirm('Clear the whole assessment' + (who ? ' for ' + who : '') + '?\n\n' +
+               'Every score and both comment boxes go. "Undo the clear" puts it ' +
+               'all straight back.')) return;
+
+  undoSnapshot = snapshot();
+  if (isSample) { isSample = false; sampleCleared = true; }
+  wipe();
+  paintSample();
+  saveWork();
+  el('undoBtn').style.display = '';
+  say('Cleared. Press "Undo the clear" if that was not what you meant.', 30000);
+}
+
+function undoClear() {
+  if (!undoSnapshot) { say('There is nothing to undo.', 5000); return; }
+  applySaved(undoSnapshot);
+  undoSnapshot = null;
+  el('undoBtn').style.display = 'none';
+  saveWork();
+  say('Put back.', 5000);
 }
 
 // ============================================================
@@ -1496,7 +2074,10 @@ function buildWorksheetHTML(c) {
     .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 6px; }
     .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
     h1 { font-size: 22px; margin: 4px 0 0; }
-    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; }
+    /* margin-left and nowrap: on the four "Short x" sheets the title ran
+       long enough to butt straight into this badge with a 1-2px gap, so the
+       heading read as one run-on string. */
+    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; margin-left: 18px; white-space: nowrap; }
     h2 { font-size: 15px; margin: 26px 0 4px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
     .hint { font-size: 12px; color: #666; margin: 0 0 12px 12px; }
     .wordgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 20px; letter-spacing: 0.04em; text-align: center; margin-left: 12px; }
@@ -1629,7 +2210,10 @@ function buildVCeHTML(c) {
     .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 6px; }
     .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
     h1 { font-size: 22px; margin: 4px 0 0; }
-    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; }
+    /* margin-left and nowrap: on the four "Short x" sheets the title ran
+       long enough to butt straight into this badge with a 1-2px gap, so the
+       heading read as one run-on string. */
+    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; margin-left: 18px; white-space: nowrap; }
     h2 { font-size: 15px; margin: 26px 0 4px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
     .hint { font-size: 12px; color: #666; margin: 0 0 12px 12px; }
     .wordgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 20px; letter-spacing: 0.04em; text-align: center; margin-left: 12px; }
@@ -1750,7 +2334,10 @@ const WS_BASE_CSS = `
     .band { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 6px; }
     .band .tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #555; }
     h1 { font-size: 22px; margin: 4px 0 0; }
-    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; }
+    /* margin-left and nowrap: on the four "Short x" sheets the title ran
+       long enough to butt straight into this badge with a 1-2px gap, so the
+       heading read as one run-on string. */
+    .flagged { font-size: 12px; color: #b23b00; letter-spacing: 0.08em; text-transform: uppercase; font-weight: bold; margin-left: 18px; white-space: nowrap; }
     h2 { font-size: 15px; margin: 26px 0 4px; border-left: 4px solid #1a1a1a; padding-left: 8px; }
     .hint { font-size: 12px; color: #666; margin: 0 0 12px 12px; }
     .wordgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 20px; letter-spacing: 0.04em; text-align: center; margin-left: 12px; }
@@ -2005,6 +2592,21 @@ function closeWorksheetModal() {
 
 // Initialize
 initUnits();
+initScores();
+wireInputs();
+el('assessDate').value = todayLocal();
+
+// Bring back whatever was on screen last time. A first-time visitor with an
+// empty tool gets Maya Torres instead, so the chart and the report have
+// something in them on arrival — she is labelled everywhere she appears, and
+// one press of "Clear the sample" gets rid of her for good.
+(function start() {
+  const saved = readSaved();
+  if (saved) applySaved(saved);
+  if (!hasContent() && !(saved && saved.sampleCleared)) loadSample();
+  updateCharts();
+  paintSample();
+})();
 </script>
 
 </body>

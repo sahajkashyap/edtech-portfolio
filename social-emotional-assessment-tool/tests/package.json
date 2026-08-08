@@ -1,0 +1,13 @@
+{
+  "name": "social-emotional-assessment-tests",
+  "version": "1.0.0",
+  "description": "Regression tests for the Social-Emotional Assessment tool.",
+  "scripts": {
+    "test": "node run-tests.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^25.5.0"
+  },
+  "private": true
+}

@@ -1,12 +1,20 @@
-<html>
+<!doctype html>
+<!-- There was no doctype here at all, so Chrome rendered the whole tool in
+     quirks mode (document.compatMode = 'BackCompat'), where the box model and
+     several layout rules are the 1990s ones. Nothing looked broken, which is
+     exactly why it survived. Leave the doctype and the lang alone. -->
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Science Assessment Tool</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- html2canvas used to be downloaded here on every single visit and was never
+     called anywhere in the file. Dropped. jsPDF below is the only thing this
+     page fetches, and exportPDF() now copes with it not arriving. Nothing is
+     ever uploaded: everything you type stays in this browser. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body style="margin: 0; padding: 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: transparent;">
+<body>
 
 <style>
   :root {
@@ -18,24 +26,40 @@
     --color-border-secondary: #D4C5B9;
     --color-border-tertiary: #E8DDD4;
   }
-  
+
   * { box-sizing: border-box; }
-  body { margin: 0; padding: 1.5rem; background: #E8D4C4; }
+  body { margin: 0; padding: 1.5rem; background: #E8D4C4; color: var(--color-text-primary);
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   .container { max-width: 1400px; margin: 0 auto; }
-  
-  .header { margin-bottom: 2rem; }
+
+  .header { margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1.25rem; }
   .header h1 { margin: 0; font-size: 24px; font-weight: 600; color: var(--color-text-primary); }
-  
+  .header .what { display: block; font-size: 13px; font-weight: 400; color: var(--color-text-secondary); margin-top: 4px; }
+
+  .who label { font-size: 11px; margin-bottom: 4px; }
+  .who input { width: auto; }
+  #initials { width: 84px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+  .privacy { font-size: 12px; color: #4a7a2a; margin-left: auto; align-self: center; }
+
+  .banner { margin: 0 0 1.25rem 0; padding: 10px 14px; border-radius: 8px; font-size: 13px;
+            background: #FFF3D6; border: 1px solid #E0C070; color: #6b4e10;
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .banner button { padding: 6px 10px; font-size: 12px; background: white; }
+  .saved { min-height: 18px; font-size: 13px; color: #4a7a2a; margin: 0 0 1rem 0; }
+  .saved.trouble { color: #a4271b; font-weight: 600; }
+  .saved button { padding: 4px 10px; font-size: 12px; margin-left: 8px; background: white; }
+
   .top-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-  
+
   .box { padding: 1.5rem; background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); }
   .box-title { font-size: 15px; font-weight: 700; color: var(--color-text-secondary); margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 0.5px; }
-  
+
   .chart-area { background: var(--color-background-primary); border-radius: 8px; padding: 1rem; border: 0.5px solid var(--color-border-tertiary); margin-bottom: 1rem; }
   #pieChart { width: 100%; height: 160px; cursor: pointer; }
-  
+
   .counts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .count-item { padding: 10px; text-align: center; border-radius: 8px; border: 0.5px solid; cursor: pointer; transition: all 0.2s; }
+  .count-item { padding: 10px; text-align: center; border-radius: 8px; border: 0.5px solid; cursor: pointer; transition: all 0.2s;
+                font-family: inherit; width: 100%; }
   .count-item:hover { transform: scale(1.05); }
   .count-item.e { background: rgba(55, 138, 221, 0.1); border-color: #378ADD; }
   .count-item.d { background: rgba(186, 117, 23, 0.1); border-color: #BA7517; }
@@ -45,21 +69,21 @@
   .count-item.d .count-num { color: #BA7517; }
   .count-item.m .count-num { color: #639922; }
   .count-label { font-size: 11px; font-weight: 600; text-transform: uppercase; margin: 4px 0 0 0; color: var(--color-text-secondary); }
-  
+
   .skills { display: grid; gap: 10px; max-height: 350px; overflow-y: auto; }
-  .skill { padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; display: grid; grid-template-columns: 1fr auto auto auto; gap: 8px; align-items: center; }
+  .skill { padding: 10px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
   .skill-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-  
+
   .score-buttons { display: flex; gap: 6px; }
   .btn-score { padding: 6px 10px; font-size: 11px; font-weight: 500; border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); color: var(--color-text-primary); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
   .btn-score:hover { border-color: var(--color-border-secondary); background: var(--color-background-secondary); }
   .btn-score.e { background: #378ADD; border-color: #378ADD; color: white; }
   .btn-score.d { background: #BA7517; border-color: #BA7517; color: white; }
   .btn-score.m { background: #639922; border-color: #639922; color: white; }
-  
+
   .section { margin: 1.5rem 0; padding: 1.5rem; background: var(--color-background-secondary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); }
-  
-  input[type="date"], textarea, input[type="file"] {
+
+  input[type="text"], input[type="date"], textarea {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid #A0D4E8;
@@ -69,65 +93,131 @@
     background: #E3F2FD;
     color: var(--color-text-primary);
   }
-  input[type="date"]:focus, textarea:focus, input[type="file"]:focus {
+  input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
     outline: none;
     border-color: #378ADD;
     background: #E3F2FD;
   }
   textarea { resize: vertical; min-height: 80px; }
-  
+
   label { font-size: 15px; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1rem; }
-  
+
   .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 600px) { .two-column { grid-template-columns: 1fr; } }
-  
+
   .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
   .modal.show { display: block; }
   .modal-content { background: var(--color-background-secondary); margin: 5% auto; padding: 2rem; border-radius: 12px; border: 1px solid var(--color-border-secondary); width: 90%; max-width: 600px; max-height: 70vh; overflow-y: auto; }
-  .close-modal { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--color-text-secondary); }
-  .close-modal:hover { color: var(--color-text-primary); }
+  .close-modal { float: right; font-size: 22px; font-weight: bold; cursor: pointer; color: var(--color-text-secondary);
+                 padding: 0 8px; line-height: 1.2; background: transparent; border: 0; }
+  .close-modal:hover { color: var(--color-text-primary); background: transparent; }
   .modal-title { font-size: 18px; font-weight: 700; margin: 0 0 1.5rem 0; color: var(--color-text-primary); }
   .skill-item { padding: 12px; margin-bottom: 10px; background: var(--color-background-primary); border-radius: 8px; border-left: 4px solid; }
   .skill-item.e { border-color: #378ADD; }
   .skill-item.d { border-color: #BA7517; }
   .skill-item.m { border-color: #639922; }
   .skill-item-name { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
-  
-  button { padding: 10px 16px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); border-radius: 6px; cursor: pointer; transition: 0.2s; }
+
+  button { padding: 10px 16px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); border-radius: 6px; cursor: pointer; transition: 0.2s; font-family: inherit; }
   button:hover { background: var(--color-background-secondary); }
-  
+
   .btn-primary { background: #378ADD; border-color: #378ADD; color: white; font-weight: 500; }
   .btn-primary:hover { background: #2966bb; }
+
+  .hint { font-size: 12px; color: var(--color-text-secondary); margin: 10px 0 0 0; }
+
+  /* The only @media rule in this file used to target .two-column, so on a phone
+     the two-column .top-boxes grid never collapsed: the skills list — the only
+     way to score anything — sat 285px off the right edge of the screen and a
+     visitor saw the chart and nothing else. Both grids collapse now, and the
+     skill rows put their E/D/M buttons under the skill name instead of pushing
+     the row wider than the phone. */
+  @media (max-width: 820px) {
+    body { padding: 1rem; }
+    .top-boxes { grid-template-columns: 1fr; gap: 1rem; }
+    .two-column { grid-template-columns: 1fr; }
+    .skills { max-height: none; }
+    .skill { grid-template-columns: 1fr; }
+    .privacy { margin-left: 0; }
+    .box { padding: 1rem; }
+    .section { padding: 1rem; }
+  }
+
+  /* The three EMERGING / DEVELOPING / MASTERED tiles are one grid row of three
+     unbreakable words. On a 320px phone (an iPhone SE, an iPhone 5) that row
+     cannot shrink below 284px, and 284px plus the body and box padding is wider
+     than the screen — so the whole page scrolled sideways by 14px. The words get
+     a smaller size and tighter padding on the narrowest phones, which is all it
+     takes for the row to fit. */
+  @media (max-width: 380px) {
+    body { padding: 0.75rem; }
+    .box { padding: 0.85rem; }
+    .counts { gap: 8px; }
+    .count-item { padding: 8px 5px; }
+    .count-num { font-size: 17px; }
+    .count-label { font-size: 10px; letter-spacing: 0.2px; }
+  }
 </style>
 
 <div class="container">
-  
+
   <div class="header">
-    <h1>Science Assessment Tool</h1>
+    <div>
+      <h1>Science Assessment Tool</h1>
+      <span class="what">Six science skills for K&#8209;2, scored in one sitting</span>
+    </div>
+    <div class="who">
+      <label for="initials">Child</label>
+      <input type="text" id="initials" maxlength="4" placeholder="J.M." autocomplete="off">
+    </div>
+    <div class="who">
+      <label for="adate">Date</label>
+      <input type="date" id="adate">
+    </div>
+    <div class="privacy">&#9679; Stays on this laptop</div>
   </div>
+
+  <div class="banner" id="sampleBanner" style="display: none;">
+    <span><strong>Sample student &mdash; Maya Torres.</strong> Made-up scores, so you can see the
+      tool full. Not a real child.</span>
+    <button type="button" onclick="clearSample()">Clear the sample</button>
+  </div>
+
+  <!-- Three separate lines on purpose. There used to be one, and everything
+       fought over it: the red "nothing is being saved" warning and the Undo
+       button after a Clear were both wiped by the next ordinary "Saved" or
+       "CSV saved" message. The two that matter now have their own line and stay
+       until they are dealt with. -->
+  <p class="saved trouble" id="storageMsg" style="display: none;"></p>
+  <!-- The wording is set from the code now, because more than one thing can take
+       work away: Clear, and loading or clearing the sample student over the top
+       of a real assessment. -->
+  <p class="saved" id="undoBar" style="display: none;"><span id="undoText">Cleared. If you
+    did not mean to, this puts it all back.</span><button type="button" id="undoClear"
+    onclick="putItBack()">Undo</button></p>
+  <p class="saved" id="saveMsg"></p>
 
   <!-- TOP: GRAPH AND SKILLS SIDE BY SIDE -->
   <div class="top-boxes">
-    
+
     <!-- LEFT: DISTRIBUTION GRAPH -->
     <div class="box">
       <div class="box-title">Distribution</div>
       <div class="chart-area">
-        <svg id="pieChart"></svg>
+        <svg id="pieChart" role="img" aria-label="How the six skills are spread across the three levels"></svg>
       </div>
       <div class="counts">
-        <div class="count-item e" onclick="showSkillsByScore('e')">
+        <button type="button" class="count-item e" onclick="showSkillsByScore('e')">
           <p class="count-num" id="count-e">0</p>
           <p class="count-label">Emerging</p>
-        </div>
-        <div class="count-item d" onclick="showSkillsByScore('d')">
+        </button>
+        <button type="button" class="count-item d" onclick="showSkillsByScore('d')">
           <p class="count-num" id="count-d">0</p>
           <p class="count-label">Developing</p>
-        </div>
-        <div class="count-item m" onclick="showSkillsByScore('m')">
+        </button>
+        <button type="button" class="count-item m" onclick="showSkillsByScore('m')">
           <p class="count-num" id="count-m">0</p>
           <p class="count-label">Mastered</p>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -135,6 +225,7 @@
     <div class="box">
       <div class="box-title">All Skills</div>
       <div class="skills" id="skillsList"></div>
+      <p class="hint">Tap a level again to take it back off.</p>
     </div>
 
   </div>
@@ -154,9 +245,9 @@
   </div>
 
   <!-- MODAL FOR FILTERED SKILLS -->
-  <div id="skillsModal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
+  <div id="skillsModal" class="modal" onclick="backdropClose(event)">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button type="button" class="close-modal" onclick="closeModal()" aria-label="Close">&times;</button>
       <div class="modal-title" id="modalTitle">Emerging Skills</div>
       <div id="modalSkillsList"></div>
     </div>
@@ -165,6 +256,9 @@
   <!-- BUTTONS -->
   <div class="section" style="display: flex; gap: 8px; flex-wrap: wrap;">
     <button class="btn-primary" onclick="exportPDF()">Export PDF</button>
+    <button onclick="exportCsv()">Export CSV</button>
+    <button onclick="window.print()">Print</button>
+    <button onclick="fillSample()">Try it with a sample student</button>
     <button onclick="clearForm()">Clear</button>
   </div>
 
@@ -181,36 +275,198 @@ const SCIENCE_SKILLS = [
 ];
 
 let scores = {};
+let isSample = false;
+let undoSnapshot = null;   // what was last thrown away, and how to put it back
+
+// --- talking to the teacher ------------------------------------------------
+// One place to say the passing things — "Saved", "CSV saved to your Downloads
+// folder". Anything that MUST stay put (the storage warning, the Undo offer)
+// lives on its own line and is not routed through here, because this slot is
+// overwritten by whatever is said next.
+function say(msg, ms, trouble){
+  const m = document.getElementById('saveMsg');
+  m.innerHTML = '';
+  m.className = 'saved' + (trouble ? ' trouble' : '');
+  m.textContent = msg;
+  if (ms) setTimeout(() => { if (m.textContent === msg) { m.textContent = ''; m.className = 'saved'; } }, ms);
+  return m;
+}
+
+// --- storage ---------------------------------------------------------------
+// Everything below is localStorage only. No network calls anywhere in this
+// file except the jsPDF <script> tag in the head.
+//
+// Safari's private windows and a full disk both make setItem THROW. There was
+// no try/catch anywhere here, so on those machines the very first click raised
+// an uncaught error, the rest of the click handler never ran, and a teacher
+// scored a whole child into nothing with no warning at all.
+//
+// The warning about that used to be said once, into the shared message line,
+// behind a flag that never reset — so the next ordinary message ("CSV saved to
+// your Downloads folder") painted over it and it never came back. A teacher
+// then scored five more skills into nothing while looking at a reassuring green
+// line. It has its own line now, it is re-stated on every refused write, and
+// nothing else can overwrite it.
+const STORAGE_TROUBLE =
+  'NOTHING IS BEING SAVED — this browser refused to store it (a private ' +
+  'window, or the disk is full). Export or print before you close this tab.';
+
+function warnStorage(){
+  const el = document.getElementById('storageMsg');
+  el.textContent = STORAGE_TROUBLE;
+  el.style.display = 'block';
+}
+
+function store(key, value){
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (err) {
+    warnStorage();
+    return false;
+  }
+}
+function read(key){
+  try { return localStorage.getItem(key); }
+  catch (err) { return null; }
+}
+function drop(key){
+  try { localStorage.removeItem(key); } catch (err) { /* nothing to do */ }
+}
+
+// Every key is written, then the results are looked at. These used to be chained
+// with &&, so a failure on the first key skipped the other five and the comments
+// a teacher had already typed were left behind whatever stale text was in
+// storage from the last child.
+function saveAll(){
+  const results = [
+    store('scienceScores', JSON.stringify(scores)),
+    store('scienceStrengths', document.getElementById('strengthsComment').value),
+    store('scienceStretches', document.getElementById('stretchesComment').value),
+    store('scienceInitials', document.getElementById('initials').value),
+    store('scienceDate', document.getElementById('adate').value),
+    store('scienceSample', isSample ? 'yes' : '')
+  ];
+  return results.every(Boolean);
+}
+
+// --- taking a copy before work is thrown away ------------------------------
+// Three buttons can take a whole assessment off the screen: Clear, "Try it with
+// a sample student" (which writes Maya's over the top of it), and "Clear the
+// sample". They all come through here first.
+//
+// The copy used to live in a variable and nowhere else — so a refresh, a closed
+// lid or a crash between the Clear and the Undo lost the assessment for good,
+// while the confirm box was promising "Undo appears straight after and puts it
+// all back". It is written to localStorage now and picked up again on load, so
+// the promise holds across a reload.
+function currentState(){
+  return {
+    scores: Object.assign({}, scores),
+    strengths: document.getElementById('strengthsComment').value,
+    stretches: document.getElementById('stretchesComment').value,
+    initials: document.getElementById('initials').value,
+    date: document.getElementById('adate').value,
+    sample: isSample
+  };
+}
+
+function takeSnapshot(msg){
+  undoSnapshot = currentState();
+  undoSnapshot.msg = msg;
+  store('scienceUndo', JSON.stringify(undoSnapshot));
+  showUndo(true);
+}
+
+function isEmptyForm(){
+  return Object.keys(scores).length === 0 &&
+    !document.getElementById('strengthsComment').value &&
+    !document.getElementById('stretchesComment').value &&
+    !document.getElementById('initials').value;
+}
+
+// The sample exactly as it arrives is not work: it is one click away again.
+function isSampleAsLoaded(){
+  return document.getElementById('initials').value === SAMPLE.initials &&
+    document.getElementById('strengthsComment').value === SAMPLE.strengths &&
+    document.getElementById('stretchesComment').value === SAMPLE.stretches &&
+    Object.keys(scores).length === SCIENCE_SKILLS.length &&
+    SCIENCE_SKILLS.every(s => scores[s] === SAMPLE.scores[s]);
+}
+
+// "Is there anything on screen a person would be upset to lose?"
+function hasWork(){
+  return !isEmptyForm() && !isSampleAsLoaded();
+}
+
+// --- the skills list -------------------------------------------------------
+function esc(s){
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+                  .replace(/'/g, '&#39;');
+}
 
 function renderSkills() {
   const skillsList = document.getElementById('skillsList');
+
+  // Scoring rebuilds every button, so the button the teacher was standing on is
+  // removed from the page and the keyboard lands back on <body>. That made the
+  // whole list keyboard-hostile: taking a mis-tap back off needs a second press
+  // on the SAME button, and after the first press there was nothing to press —
+  // a keyboard-only teacher had to Tab in from the top of the list again after
+  // every single score. Remember where the keyboard was, and put it back.
+  const was = document.activeElement;
+  const keep = (was && was.classList && was.classList.contains('btn-score'))
+    ? { skill: was.dataset.skill, level: was.dataset.level }
+    : null;
+
   skillsList.innerHTML = '';
-  
-  SCIENCE_SKILLS.forEach(skill => {
+
+  SCIENCE_SKILLS.forEach((skill, i) => {
     const score = scores[skill] || null;
-    const scoreE = score === 'Emerging' ? 'e' : '';
-    const scoreD = score === 'Developing' ? 'd' : '';
-    const scoreM = score === 'Mastered' ? 'm' : '';
-    
+    const levels = [['Emerging', 'e', 'E'], ['Developing', 'd', 'D'], ['Mastered', 'm', 'M']];
+
     const skillEl = document.createElement('div');
     skillEl.className = 'skill';
-    skillEl.innerHTML = `
-      <div class="skill-name">${skill}</div>
-      <div class="score-buttons">
-        <button class="btn-score ${scoreE}" onclick="setScore('${skill}', 'Emerging')">E</button>
-        <button class="btn-score ${scoreD}" onclick="setScore('${skill}', 'Developing')">D</button>
-        <button class="btn-score ${scoreM}" onclick="setScore('${skill}', 'Mastered')">M</button>
-      </div>
-    `;
+    skillEl.innerHTML =
+      '<div class="skill-name" id="skill-' + i + '">' + esc(skill) + '</div>' +
+      '<div class="score-buttons">' +
+      levels.map(([name, cls, letter]) =>
+        '<button class="btn-score ' + (score === name ? cls : '') + '"' +
+        ' data-skill="' + i + '" data-level="' + name + '"' +
+        ' aria-pressed="' + (score === name ? 'true' : 'false') + '"' +
+        ' aria-label="' + esc(name + ': ' + skill) + '">' + letter + '</button>'
+      ).join('') +
+      '</div>';
     skillsList.appendChild(skillEl);
   });
+
+  // Listeners rather than inline onclick with the skill name interpolated into
+  // a quoted JS string — a skill containing an apostrophe would have broken the
+  // handler outright.
+  skillsList.querySelectorAll('.btn-score').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setScore(SCIENCE_SKILLS[+btn.dataset.skill], btn.dataset.level);
+    });
+  });
+
+  if (keep){
+    const again = skillsList.querySelector(
+      '.btn-score[data-skill="' + keep.skill + '"][data-level="' + keep.level + '"]');
+    // preventScroll, or the list jumps under the teacher's hands on a phone.
+    if (again) again.focus({ preventScroll: true });
+  }
 }
 
+// A mis-tapped score used to be permanent: the only way out was Clear, which
+// wiped the whole assessment. Tapping the level that is already set now takes
+// it back off and returns the skill to unscored.
 function setScore(skill, level) {
-  scores[skill] = level;
+  if (scores[skill] === level) delete scores[skill];
+  else scores[skill] = level;
   renderSkills();
   updateCharts();
-  localStorage.setItem('scienceScores', JSON.stringify(scores));
+  if (saveAll()) say('Saved on this laptop', 1600);
 }
 
 function updateCharts() {
@@ -218,113 +474,267 @@ function updateCharts() {
   updateCounts();
 }
 
-function updateCounts() {
+function tally(){
   const counts = { e: 0, d: 0, m: 0 };
   Object.values(scores).forEach(score => {
     if (score === 'Emerging') counts.e++;
     else if (score === 'Developing') counts.d++;
     else if (score === 'Mastered') counts.m++;
   });
-  
+  return counts;
+}
+
+function updateCounts() {
+  const counts = tally();
   document.getElementById('count-e').textContent = counts.e;
   document.getElementById('count-d').textContent = counts.d;
   document.getElementById('count-m').textContent = counts.m;
 }
 
+function svgEl(name, attrs){
+  const el = document.createElementNS('http://www.w3.org/2000/svg', name);
+  Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+  return el;
+}
+
 function drawPieChart() {
-  const counts = { e: 0, d: 0, m: 0 };
-  Object.values(scores).forEach(score => {
-    if (score === 'Emerging') counts.e++;
-    else if (score === 'Developing') counts.d++;
-    else if (score === 'Mastered') counts.m++;
-  });
-  
-  const total = counts.e + counts.d + counts.m || 1;
+  const counts = tally();
+  const total = counts.e + counts.d + counts.m;
   const svg = document.getElementById('pieChart');
   svg.innerHTML = '';
   svg.setAttribute('viewBox', '0 0 280 160');
   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  
+
   const radius = 50;
   const cx = 80, cy = 70;
   const colors = { e: '#378ADD', d: '#BA7517', m: '#639922' };
+  const names  = { e: 'Emerging', d: 'Developing', m: 'Mastered' };
   const order = ['e', 'd', 'm'];
-  let startAngle = -Math.PI / 2;
-  
+
+  if (total === 0){
+    svg.appendChild(svgEl('circle', { cx: cx, cy: cy, r: radius, fill: '#FBF9F7',
+      stroke: '#D4C5B9', 'stroke-width': 2, 'stroke-dasharray': '5 5' }));
+    const t = svgEl('text', { x: cx, y: cy + 4, 'text-anchor': 'middle',
+      'font-size': 11, fill: '#7f8c8d', 'font-family': 'inherit' });
+    t.textContent = 'No scores yet';
+    svg.appendChild(t);
+    return;
+  }
+
+  const used = order.filter(k => counts[k] > 0);
+
+  // A slice that is the whole circle cannot be drawn as an arc: the start point
+  // and the end point are the same point, so the path collapses and the browser
+  // paints nothing. That was every single-level case — including the moment
+  // after a teacher's FIRST click — so the chart looked broken exactly when a
+  // visitor first touched it. One level in play draws a plain circle instead.
+  if (used.length === 1){
+    const key = used[0];
+    const circle = svgEl('circle', { cx: cx, cy: cy, r: radius, fill: colors[key],
+      stroke: 'white', 'stroke-width': 2 });
+    circle.style.cursor = 'pointer';
+    circle.onclick = () => showSkillsByScore(key);
+    svg.appendChild(circle);
+  } else {
+    let startAngle = -Math.PI / 2;
+    used.forEach(key => {
+      const sliceAngle = (counts[key] / total) * 2 * Math.PI;
+      const endAngle = startAngle + sliceAngle;
+
+      const x1 = cx + radius * Math.cos(startAngle);
+      const y1 = cy + radius * Math.sin(startAngle);
+      const x2 = cx + radius * Math.cos(endAngle);
+      const y2 = cy + radius * Math.sin(endAngle);
+
+      const largeArc = sliceAngle > Math.PI ? 1 : 0;
+      const path = svgEl('path', {
+        d: 'M ' + cx + ' ' + cy + ' L ' + x1 + ' ' + y1 +
+           ' A ' + radius + ' ' + radius + ' 0 ' + largeArc + ' 1 ' + x2 + ' ' + y2 + ' Z',
+        fill: colors[key], stroke: 'white', 'stroke-width': 2
+      });
+      path.style.cursor = 'pointer';
+      path.onclick = () => showSkillsByScore(key);
+      svg.appendChild(path);
+
+      startAngle = endAngle;
+    });
+  }
+
+  // Legend, so the colours mean something without hovering.
+  let ly = 46;
   order.forEach(key => {
-    const value = counts[key];
-    if (value === 0) return;
-    
-    const sliceAngle = (value / total) * 2 * Math.PI;
-    const endAngle = startAngle + sliceAngle;
-    
-    const x1 = cx + radius * Math.cos(startAngle);
-    const y1 = cy + radius * Math.sin(startAngle);
-    const x2 = cx + radius * Math.cos(endAngle);
-    const y2 = cy + radius * Math.sin(endAngle);
-    
-    const largeArc = sliceAngle > Math.PI ? 1 : 0;
-    const pathData = `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`;
-    
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', pathData);
-    path.setAttribute('fill', colors[key]);
-    path.setAttribute('stroke', 'white');
-    path.setAttribute('stroke-width', '2');
-    path.style.cursor = 'pointer';
-    path.onclick = () => showSkillsByScore(key);
-    svg.appendChild(path);
-    
-    startAngle = endAngle;
+    if (!counts[key]) return;
+    svg.appendChild(svgEl('rect', { x: 175, y: ly - 9, width: 10, height: 10, rx: 2, fill: colors[key] }));
+    const t = svgEl('text', { x: 191, y: ly, 'font-size': 11, fill: '#2c3e50', 'font-family': 'inherit' });
+    t.textContent = names[key] + ' ' + counts[key];
+    svg.appendChild(t);
+    ly += 20;
   });
 }
 
 function showSkillsByScore(scoreLevel) {
   const levelNames = { e: 'Emerging', d: 'Developing', m: 'Mastered' };
-  const levelMap = { e: 'Emerging', d: 'Developing', m: 'Mastered' };
-  
-  const skillsByScore = SCIENCE_SKILLS.filter(skill => scores[skill] === levelMap[scoreLevel]);
-  
+  const skillsByScore = SCIENCE_SKILLS.filter(skill => scores[skill] === levelNames[scoreLevel]);
+
   const modalList = document.getElementById('modalSkillsList');
   modalList.innerHTML = '';
-  
+
   if (skillsByScore.length === 0) {
-    modalList.innerHTML = '<p style="color: #999;">No skills in this category.</p>';
+    modalList.innerHTML = '<p style="color: #7f8c8d;">Nothing is scored ' +
+      levelNames[scoreLevel].toLowerCase() + ' yet.</p>';
   } else {
     skillsByScore.forEach(skill => {
       const skillItem = document.createElement('div');
-      skillItem.className = `skill-item ${scoreLevel}`;
-      skillItem.innerHTML = `<div class="skill-item-name">${skill}</div>`;
+      skillItem.className = 'skill-item ' + scoreLevel;
+      skillItem.innerHTML = '<div class="skill-item-name">' + esc(skill) + '</div>';
       modalList.appendChild(skillItem);
     });
   }
-  
-  document.getElementById('modalTitle').textContent = `${levelNames[scoreLevel]} Skills`;
+
+  document.getElementById('modalTitle').textContent = levelNames[scoreLevel] + ' Skills';
   document.getElementById('skillsModal').classList.add('show');
+  document.querySelector('#skillsModal .close-modal').focus();
 }
 
 function closeModal() {
   document.getElementById('skillsModal').classList.remove('show');
 }
 
+// The small × was the only way out of this modal: Escape did nothing, clicking
+// the dark backdrop did nothing, and the tiles that open it were <div>s the Tab
+// key skipped, so a keyboard-only visitor could open it and never close it. The
+// tiles are real buttons now, and both usual escape routes work.
+function backdropClose(event){
+  if (event.target.id === 'skillsModal') closeModal();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('skillsModal').classList.contains('show')){
+    closeModal();
+  }
+});
+
+// --- the sample student ----------------------------------------------------
+// Maya Torres is made up, and mixed on purpose: two skills strong, two coming
+// along, two not there yet. A child who scores the same on everything shows a
+// visitor nothing about what the tool does.
+const SAMPLE = {
+  initials: 'M.T.',
+  scores: {
+    "Demonstrates curiosity and engagement": "Mastered",
+    "Observes and describes properties of materials and living things": "Mastered",
+    "Asks questions, identifies problems, and designs solutions": "Developing",
+    "Plans, builds, tests, and revisits designs using materials": "Emerging",
+    "Makes observations to collect data that can be used for comparison": "Developing",
+    "Notices patterns and cause-and-effect relationships": "Emerging"
+  },
+  strengths: "Maya is first to the science table every morning and asks about " +
+    "everything on it. She describes what she sees in real detail — she told the " +
+    "group the wet sponge was \"heavier and darker\" without being prompted.",
+  stretches: "When a build falls over she starts a new one rather than fixing the " +
+    "old one, so she rarely gets to a second try. She also needs a hand seeing that " +
+    "the ramp height is why the car went further; right now the two feel unrelated to her."
+};
+const SAMPLE_LABEL = 'Sample student — Maya Torres (example, not a real child)';
+
+// This button sits in the same row as Clear and looks friendlier than anything
+// else on the page, so it gets pressed in the middle of a real sitting. It used
+// to overwrite the six scores, both comments and the initials — on the screen
+// AND in storage — with Maya's, without asking, with no Undo offered and no copy
+// left anywhere: the child who was actually being assessed survived nowhere. It
+// asks first now, and takes a copy before it writes, exactly as Clear does.
+function fillSample(){
+  if (hasWork()){
+    if (!confirm('Load the sample student over what is here?\n\nThe six scores, ' +
+                 'both comments and the initials on screen now are replaced by ' +
+                 'Maya Torres’s made-up ones.\n\nIf you did not mean to, Undo ' +
+                 'appears straight after and puts your work back.')) return;
+    takeSnapshot('The sample student was loaded over your work. This puts it back.');
+  }
+  scores = Object.assign({}, SAMPLE.scores);
+  document.getElementById('initials').value = SAMPLE.initials;
+  document.getElementById('adate').value = today();
+  document.getElementById('strengthsComment').value = SAMPLE.strengths;
+  document.getElementById('stretchesComment').value = SAMPLE.stretches;
+  isSample = true;
+  paintSample();
+  renderSkills();
+  updateCharts();
+  saveAll();
+  say('Sample student loaded. Clear the sample when you want an empty form.', 5000);
+}
+
+// The same care as Clear. Wiping Maya exactly as she arrived costs nobody
+// anything, so that stays one click — but once a teacher has typed or scored
+// over her, this button is emptying real work and has to ask.
+function clearSample(){
+  if (hasWork()){
+    if (!confirm('Clear everything?\n\nThe six scores, both comments and the ' +
+                 'initials on screen all go.\n\nIf you did not mean to, Undo ' +
+                 'appears straight after and puts it all back.')) return;
+    takeSnapshot('Cleared. If you did not mean to, this puts it all back.');
+  }
+  scores = {};
+  document.getElementById('initials').value = '';
+  document.getElementById('adate').value = today();
+  document.getElementById('strengthsComment').value = '';
+  document.getElementById('stretchesComment').value = '';
+  isSample = false;
+  paintSample();
+  renderSkills();
+  updateCharts();
+  saveAll();
+  say('Sample cleared. The form is empty and ready.', 4000);
+}
+
+function paintSample(){
+  document.getElementById('sampleBanner').style.display = isSample ? 'flex' : 'none';
+}
+
+function today(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') +
+         '-' + String(d.getDate()).padStart(2, '0');
+}
+
+// --- who this is, for the screen, the export and the file name -------------
+function who(){
+  return (document.getElementById('initials').value || '').trim().toUpperCase();
+}
+function whoLabel(){
+  return who() || '(no initials)';
+}
+function fileStamp(){
+  // Every export used to be called science_assessment_report.pdf, so assessing a
+  // second child quietly replaced the first one in the Downloads folder.
+  const bits = ['science-assessment'];
+  if (isSample) bits.push('SAMPLE');
+  const i = who().replace(/[^A-Z0-9]/g, '');
+  bits.push(i || 'no-initials');
+  bits.push(document.getElementById('adate').value || today());
+  return bits.join('-');
+}
+
+// --- PDF -------------------------------------------------------------------
 function exportPDF() {
+  // jsPDF comes from a CDN, and a school firewall, an outage or a plane all
+  // block it. This used to throw "Cannot destructure property 'jsPDF'" into a
+  // console nobody was looking at: the button simply did nothing forever.
+  if (!window.jspdf || !window.jspdf.jsPDF){
+    say('The PDF library did not load — usually a school firewall or no internet. ' +
+        'Export CSV and Print both still work, and Print can save as a PDF.', 0, true);
+    return;
+  }
   const { jsPDF } = window.jspdf;
-  
+
   const strengths = document.getElementById('strengthsComment').value;
   const stretches = document.getElementById('stretchesComment').value;
-  
-  const counts = { e: 0, d: 0, m: 0 };
-  Object.values(scores).forEach(score => {
-    if (score === 'Emerging') counts.e++;
-    else if (score === 'Developing') counts.d++;
-    else if (score === 'Mastered') counts.m++;
-  });
-  
+  const counts = tally();
+
   const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   let yPosition = 20;
-  
+
   const colors = {
     title: [44, 62, 80],
     emerging: [55, 138, 221],
@@ -333,114 +743,267 @@ function exportPDF() {
     text: [44, 62, 80],
     lightText: [127, 140, 141]
   };
-  
+
+  // The old export checked the page height ONCE, after both comment blocks were
+  // already written, so a long comment ran straight off the bottom edge: at
+  // 3,600 characters thirteen lines were drawn below the paper and simply were
+  // not in the file. Every line now asks for room before it is drawn.
+  function room(need){
+    if (yPosition + (need || 0) > pageHeight - 15){
+      pdf.addPage();
+      yPosition = 20;
+    }
+  }
+  function block(title, titleColor, body){
+    room(14);
+    pdf.setFontSize(13);
+    pdf.setTextColor(...titleColor);
+    pdf.text(title, 15, yPosition);
+    yPosition += 6;
+    pdf.setFontSize(10);
+    pdf.setTextColor(...colors.text);
+    pdf.splitTextToSize(body, pageWidth - 30).forEach(line => {
+      room(4);
+      pdf.text(line, 15, yPosition);
+      yPosition += 4;
+    });
+    yPosition += 5;
+  }
+
   pdf.setFontSize(20);
   pdf.setTextColor(...colors.title);
   pdf.text('Science Assessment Report', pageWidth / 2, yPosition, { align: 'center' });
-  yPosition += 12;
-  
+  yPosition += 8;
+
+  // A report a teacher can file needs a child and a date on it. There was
+  // neither, on screen or on paper. Initials only — never a full name.
+  pdf.setFontSize(11);
+  pdf.setTextColor(...colors.lightText);
+  pdf.text('Child: ' + whoLabel() + '     Date: ' +
+           (document.getElementById('adate').value || '(no date)'),
+           pageWidth / 2, yPosition, { align: 'center' });
+  yPosition += 7;
+
+  if (isSample){
+    pdf.setTextColor(186, 117, 23);
+    pdf.text(SAMPLE_LABEL, pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 7;
+  }
+
   pdf.setFontSize(12);
   pdf.setTextColor(...colors.title);
   pdf.text('Assessment Summary', 15, yPosition);
   yPosition += 8;
-  
+
   pdf.setFontSize(11);
   pdf.setTextColor(...colors.emerging);
-  pdf.text(`Emerging: ${counts.e}`, 15, yPosition);
+  pdf.text('Emerging: ' + counts.e, 15, yPosition);
   yPosition += 5;
-  
+
   pdf.setTextColor(...colors.developing);
-  pdf.text(`Developing: ${counts.d}`, 15, yPosition);
+  pdf.text('Developing: ' + counts.d, 15, yPosition);
   yPosition += 5;
-  
+
   pdf.setTextColor(...colors.mastered);
-  pdf.text(`Mastered: ${counts.m}`, 15, yPosition);
+  pdf.text('Mastered: ' + counts.m, 15, yPosition);
   yPosition += 10;
-  
-  pdf.setFontSize(13);
-  pdf.setTextColor(...colors.mastered);
-  pdf.text('Strengths', 15, yPosition);
-  yPosition += 6;
-  
-  pdf.setFontSize(10);
-  pdf.setTextColor(...colors.text);
-  const strengthsLines = pdf.splitTextToSize(strengths || '(No strengths recorded)', pageWidth - 30);
-  pdf.text(strengthsLines, 15, yPosition);
-  yPosition += strengthsLines.length * 4 + 5;
-  
-  pdf.setFontSize(13);
-  pdf.setTextColor(...colors.emerging);
-  pdf.text('Stretches: Areas of Growth', 15, yPosition);
-  yPosition += 6;
-  
-  pdf.setFontSize(10);
-  pdf.setTextColor(...colors.text);
-  const stretchesLines = pdf.splitTextToSize(stretches || '(No stretches recorded)', pageWidth - 30);
-  pdf.text(stretchesLines, 15, yPosition);
-  yPosition += stretchesLines.length * 4 + 5;
-  
-  if (yPosition > pageHeight - 30) {
-    pdf.addPage();
-    yPosition = 20;
-  }
-  
+
+  block('Strengths', colors.mastered, strengths || '(No strengths recorded)');
+  block('Stretches: Areas of Growth', colors.emerging, stretches || '(No stretches recorded)');
+
+  room(12);
   pdf.setFontSize(12);
   pdf.setTextColor(...colors.title);
   pdf.text('Skills Assessment', 15, yPosition);
   yPosition += 6;
-  
+
   SCIENCE_SKILLS.forEach(skill => {
-    if (yPosition > pageHeight - 10) {
-      pdf.addPage();
-      yPosition = 20;
-    }
-    
+    room(6);
     pdf.setFontSize(10);
     const score = scores[skill];
     const scoreColor = score === 'Emerging' ? colors.emerging : score === 'Developing' ? colors.developing : score === 'Mastered' ? colors.mastered : colors.lightText;
     pdf.setTextColor(...scoreColor);
-    pdf.text(`${skill}: ${score || 'Not Scored'}`, 15, yPosition);
+    pdf.text(skill + ': ' + (score || 'Not Scored'), 15, yPosition);
     yPosition += 4;
   });
-  
-  pdf.save('science_assessment_report.pdf');
-}
 
-function clearForm() {
-  if (confirm('Clear all data?')) {
-    scores = {};
-    document.getElementById('strengthsComment').value = '';
-    document.getElementById('stretchesComment').value = '';
-    renderSkills();
-    updateCharts();
-    localStorage.removeItem('scienceScores');
-    localStorage.removeItem('scienceStrengths');
-    localStorage.removeItem('scienceStretches');
+  try {
+    pdf.save(fileStamp() + '.pdf');
+    say('PDF saved to your Downloads folder.', 4000);
+  } catch (err) {
+    say('The browser would not save the PDF. Print instead — you can choose ' +
+        '"Save as PDF" in the print box.', 0, true);
   }
 }
 
+// --- CSV -------------------------------------------------------------------
+// Built as a data: URI in the page. Nothing is uploaded.
+function csvCell(v){
+  v = (v === null || v === undefined) ? '' : String(v);
+  return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+
+function exportCsv(){
+  const strengths = document.getElementById('strengthsComment').value;
+  const stretches = document.getElementById('stretchesComment').value;
+  const counts = tally();
+
+  // Child, date and both comments repeat on every row on purpose. A spreadsheet
+  // that puts them on the first row only loses them the moment anyone sorts or
+  // filters it — and everything on screen has to be in the export.
+  const head = ['Child', 'Date', 'Sample', 'Skill', 'Level',
+                'Emerging total', 'Developing total', 'Mastered total',
+                'Strengths', 'Stretches'];
+  const rows = [head.map(csvCell).join(',')];
+
+  SCIENCE_SKILLS.forEach(skill => {
+    rows.push([
+      whoLabel(),
+      document.getElementById('adate').value || '',
+      isSample ? SAMPLE_LABEL : '',
+      skill,
+      scores[skill] || 'Not scored',
+      counts.e, counts.d, counts.m,
+      strengths, stretches
+    ].map(csvCell).join(','));
+  });
+
+  const csv = '﻿' + rows.join('\r\n');      // BOM so Excel reads accents
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = fileStamp() + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  say('CSV saved to your Downloads folder.', 4000);
+}
+
+// --- clearing --------------------------------------------------------------
+// Clear used to wipe six scores and two comments on one click, with one bare
+// "Clear all data?" and no way back. It says what goes now, and what has just
+// gone can be put back for as long as the tab is open.
+function clearForm() {
+  if (isEmptyForm()){ say('There is nothing to clear yet.', 3000); return; }
+
+  if (!confirm('Clear everything?\n\nThe six scores, both comments, the initials ' +
+               'and the date all go.\n\nIf you did not mean to, Undo appears ' +
+               'straight after and puts it all back.')) return;
+
+  // Copy first, and the copy goes to storage, so a refresh cannot strand it.
+  takeSnapshot('Cleared. If you did not mean to, this puts it all back.');
+
+  scores = {};
+  document.getElementById('strengthsComment').value = '';
+  document.getElementById('stretchesComment').value = '';
+  document.getElementById('initials').value = '';
+  document.getElementById('adate').value = today();
+  isSample = false;
+  paintSample();
+  renderSkills();
+  updateCharts();
+  drop('scienceScores');
+  drop('scienceStrengths');
+  drop('scienceStretches');
+  drop('scienceInitials');
+  drop('scienceDate');
+  drop('scienceSample');
+
+  // The Undo button used to be appended to the shared message line, so the very
+  // next message — one more score, one export — removed it, and the only copy of
+  // the assessment was stranded in memory with no way to reach it. It sits on
+  // its own line now (put there by takeSnapshot above) and stays until it is used.
+  say('Cleared.', 4000);
+}
+
+function showUndo(on){
+  document.getElementById('undoBar').style.display = on ? 'block' : 'none';
+  if (on && undoSnapshot && undoSnapshot.msg){
+    document.getElementById('undoText').textContent = undoSnapshot.msg;
+  }
+}
+
+function putItBack(){
+  if (!undoSnapshot) return;
+  scores = Object.assign({}, undoSnapshot.scores);
+  document.getElementById('strengthsComment').value = undoSnapshot.strengths;
+  document.getElementById('stretchesComment').value = undoSnapshot.stretches;
+  document.getElementById('initials').value = undoSnapshot.initials;
+  document.getElementById('adate').value = undoSnapshot.date;
+  isSample = undoSnapshot.sample;
+  undoSnapshot = null;
+  drop('scienceUndo');
+  showUndo(false);
+  paintSample();
+  renderSkills();
+  updateCharts();
+  saveAll();
+  say('Put back.', 3000);
+}
+
+// --- loading what was here before -----------------------------------------
 function loadData() {
-  const savedScores = localStorage.getItem('scienceScores');
-  const savedStrengths = localStorage.getItem('scienceStrengths');
-  const savedStretches = localStorage.getItem('scienceStretches');
-  
-  if (savedScores) scores = JSON.parse(savedScores);
+  const savedScores = read('scienceScores');
+  if (savedScores){
+    // A half-written JSON string used to take the whole page down on load, and
+    // there was no way for a teacher to get past it.
+    try { scores = JSON.parse(savedScores) || {}; }
+    catch (err) {
+      scores = {};
+      say('The saved scores could not be read, so this form has started empty.', 0, true);
+    }
+  }
+  const savedStrengths = read('scienceStrengths');
+  const savedStretches = read('scienceStretches');
+  const savedInitials  = read('scienceInitials');
+  const savedDate      = read('scienceDate');
+
   if (savedStrengths) document.getElementById('strengthsComment').value = savedStrengths;
   if (savedStretches) document.getElementById('stretchesComment').value = savedStretches;
+  if (savedInitials)  document.getElementById('initials').value = savedInitials;
+  document.getElementById('adate').value = savedDate || today();
+  isSample = read('scienceSample') === 'yes';
+
+  // An Undo that was still on offer when the tab was closed is still on offer
+  // now. Without this, a reload between the Clear and the Undo was the end of
+  // the assessment.
+  const savedUndo = read('scienceUndo');
+  if (savedUndo){
+    try {
+      undoSnapshot = JSON.parse(savedUndo) || null;
+      if (undoSnapshot) showUndo(true);
+    } catch (err) {
+      undoSnapshot = null;
+      drop('scienceUndo');
+    }
+  }
 }
 
 // Initialize
 loadData();
+paintSample();
 renderSkills();
 updateCharts();
 
-// Auto-save comments
-document.getElementById('strengthsComment').addEventListener('change', () => {
-  localStorage.setItem('scienceStrengths', document.getElementById('strengthsComment').value);
+// Auto-save every field, on 'input'. These listeners were on 'change', which
+// only fires when a box loses focus — so a teacher who typed a comment and hit
+// reload, or closed the laptop lid, lost every word of it. Scores saved
+// instantly; comments have to behave the same way.
+['strengthsComment', 'stretchesComment', 'initials', 'adate'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => { saveAll(); });
 });
-document.getElementById('stretchesComment').addEventListener('change', () => {
-  localStorage.setItem('scienceStretches', document.getElementById('stretchesComment').value);
-});
+
+// The sample fills the Child box with "M.T." — exactly the four characters the
+// box holds — so the natural way to start a real assessment over the sample,
+// clicking in and typing your own child's initials, did literally nothing: the
+// box was already full and every keystroke was refused. It read as a dead
+// control. The sample's initials behave like a placeholder now — clicking in
+// selects them, so the first key typed replaces them.
+(function(){
+  const box = document.getElementById('initials');
+  const selectIfSample = () => {
+    if (isSample && box.value === SAMPLE.initials) box.select();
+  };
+  box.addEventListener('focus', selectIfSample);
+  box.addEventListener('click', selectIfSample);
+})();
 </script>
 
 </body>

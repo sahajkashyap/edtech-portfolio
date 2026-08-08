@@ -1,0 +1,14 @@
+{
+  "name": "ufli-tracker-tests",
+  "version": "1.0.0",
+  "description": "Regression tests for the UFLI Foundations Tracker (phonics assessment tool).",
+  "scripts": {
+    "test": "node run-tests.js",
+    "coverage": "node run-tests.js --coverage"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^25.5.0"
+  },
+  "private": true
+}

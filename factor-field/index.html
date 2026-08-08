@@ -421,7 +421,11 @@
     padding: 28px; margin-top: 20px; color: #111;
   }
   .ws-head { display: flex; justify-content: space-between; border-bottom: 3px solid var(--ink); padding-bottom: 10px; margin-bottom: 8px; }
-  .ws-meta { display: flex; gap: 24px; font-size: .95rem; color: #444; margin-bottom: 18px; }
+  /* flex-wrap: on a 390px phone the three fixed-width spans could not fit on one
+     line, so "Score: ____ / 20" hung 65px past the right edge and the whole page
+     scrolled sideways — which also dragged the closed Settings drawer into view.
+     Let the line wrap instead of pushing the page wider than the screen. */
+  .ws-meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .95rem; color: #444; margin-bottom: 18px; }
   .ws-problems { display: grid; gap: 16px 24px; }
   .ws-prob { font-size: 1.25rem; font-weight: 700; position: relative; padding-left: 28px; }
   .ws-prob .n { position: absolute; left: 0; top: 0; color: var(--purple); font-size: .95rem; font-weight: 800; }
@@ -456,6 +460,41 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* Said out loud when the browser refuses to store anything (Safari private
+     window, full disk). Silent failure here loses a whole session of practice. */
+  .storage-note {
+    background: #7a2d1d; color: #fff; font-weight: 700; font-size: .95rem;
+    padding: 12px 18px; line-height: 1.45; text-align: center;
+  }
+
+  /* ---------- Who this report is for (initials only, never a name) ---------- */
+  .who-row {
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 18px;
+    margin: 4px 0 18px; padding: 14px 16px; background: var(--parchment);
+    border: 1px solid var(--line); border-radius: 14px;
+  }
+  .who-row label { display: block; font-weight: 800; font-size: .82rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+  .who-row input[type=text] { width: 92px; text-transform: uppercase; font-weight: 800;
+    letter-spacing: 1px; text-align: center; font-family: inherit; font-size: 1rem;
+    padding: 9px; border-radius: 10px; border: 2px solid var(--line); }
+  .who-row input[type=date] { font-family: inherit; font-size: 1rem; padding: 9px;
+    border-radius: 10px; border: 2px solid var(--line); }
+  .privacy { margin-left: auto; font-size: .85rem; font-weight: 700; color: var(--teal); }
+  .who-print { display: none; }
+
+  /* ---------- The sample student, so nobody mistakes her for a real child ---------- */
+  .sample-banner {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    background: #fff4d6; border: 2px dashed #c99f2f; border-radius: 14px;
+    padding: 12px 16px; margin-bottom: 16px; font-size: .97rem; line-height: 1.45; color: #4a3a12;
+  }
+  .sample-banner b { color: #3d2f0c; }
+  .sample-bar {
+    background: #fff4d6; border-bottom: 2px dashed #c99f2f; color: #4a3a12;
+    font-size: .92rem; font-weight: 700; text-align: center; padding: 8px 16px; line-height: 1.4;
+  }
+
   .center { text-align: center; }
   .mt { margin-top: 18px; }
   .hidden { display: none !important; }
@@ -468,6 +507,13 @@
     .card { box-shadow: none; padding: 0; margin: 0; }
     .worksheet { border: none; padding: 0; margin: 0; }
     .answer-key { page-break-before: always; }
+    /* A printed progress report used to carry no name and no date at all, so a
+       sheet on a desk belonged to nobody. The live inputs are no use on paper —
+       swap them for the plain text line, which always prints. */
+    .who-row { display: none !important; }
+    .who-print { display: block !important; font-weight: 700; margin-bottom: 12px;
+                 border-bottom: 2px solid #222; padding-bottom: 8px; }
+    .sample-banner { border: 2px dashed #999; background: #fff; }
   }
 
   /* ================= Show Me How (worked-example walkthrough) ================= */
@@ -668,6 +714,10 @@
     <button data-screen="progress">📊 My Progress</button>
   </nav>
 
+  <!-- Says out loud, on every screen, that the stars and the report on show
+       belong to a made-up student and not to a real child. -->
+  <div class="sample-bar hidden" id="sampleBar"></div>
+
   <main id="app"></main>
 
   <!-- Settings panel -->
@@ -745,37 +795,166 @@ function shuffle(arr) {
   return a;
 }
 
+/* ---------- Storage: everything stays on this laptop -----------------------
+   WHAT WAS WRONG: these calls used to touch localStorage directly. Safari's
+   private window and a full disk make localStorage throw on READ as well as on
+   write — so the very first line below (`localStorage.getItem("mq_stars")`)
+   threw before a single screen had drawn, and the whole page came up blank
+   white with nothing but a console error nobody would ever see.
+   Every read and write now goes through here, the app carries on without
+   saving, and the first failure says so on screen instead of losing a child's
+   whole session in silence. Nothing here goes anywhere near the network. */
+let storageOK = true;
+let storageToldYou = false;
+function lsGet(key) {
+  try { return localStorage.getItem(key); } catch (e) { storageBroke(); return null; }
+}
+function lsSet(key, value) {
+  try { localStorage.setItem(key, value); return true; } catch (e) { storageBroke(); return false; }
+}
+function lsDel(key) {
+  try { localStorage.removeItem(key); return true; } catch (e) { storageBroke(); return false; }
+}
+function storageBroke() {
+  storageOK = false;
+  if (storageToldYou) return;
+  storageToldYou = true;
+  // Deferred, because the first failed read happens while the page is still
+  // being parsed and there is nowhere to put the message yet.
+  setTimeout(showStorageNotice, 0);
+}
+function showStorageNotice() {
+  if (!document.body) return;
+  let el = document.getElementById("storageNote");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "storageNote";
+    el.className = "storage-note";
+    document.body.insertBefore(el, document.body.firstChild);
+  }
+  el.textContent = "Nothing is being saved on this laptop. This browser won't let the page " +
+    "store anything — usually a private window, or a full disk. You can still play and " +
+    "print, but stars and progress will be gone when you close this tab.";
+}
+
 /* ---------- Settings ---------- */
 const DEFAULTS = { tables: [2, 3, 4, 5, 6, 7, 8, 9, 10], maxFactor: 12, difficulty: "medium" };
 let settings = loadSettings();
 function loadSettings() {
   try {
-    const s = JSON.parse(localStorage.getItem("mq_settings"));
+    const s = JSON.parse(lsGet("mq_settings"));
     if (s && Array.isArray(s.tables) && s.tables.length) return Object.assign({}, DEFAULTS, s);
   } catch (e) {}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
-function saveSettings() { localStorage.setItem("mq_settings", JSON.stringify(settings)); }
+function saveSettings() { lsSet("mq_settings", JSON.stringify(settings)); }
 
 /* ---------- Stars (reward) ---------- */
-let stars = parseInt(localStorage.getItem("mq_stars") || "0", 10) || 0;
+let stars = parseInt(lsGet("mq_stars") || "0", 10) || 0;
+function paintStars() {
+  const el = document.getElementById("starCount");
+  if (el) el.textContent = stars;
+}
 function addStars(n) {
   stars += n;
-  localStorage.setItem("mq_stars", String(stars));
-  document.getElementById("starCount").textContent = stars;
+  lsSet("mq_stars", String(stars));
+  paintStars();
 }
-document.getElementById("starCount").textContent = stars;
+// Stars are part of progress. "Reset progress" used to leave them behind, so the
+// same report card could say "9 questions answered" and "36 stars earned".
+function setStars(n) {
+  stars = n;
+  lsSet("mq_stars", String(stars));
+  paintStars();
+}
+paintStars();
 
 /* ---------- Progress tracking (100% on-device; nothing leaves the browser) ---
    Aggregated per-fact results keyed by the unordered pair "lo x hi", so 6x8 and
    8x6 count as one fact. Powers the Strengths & Stretches report and steers
    Focus practice toward the facts a child needs most. */
 let stats = loadStats();
+// A count we can trust: anything that is not a real number at or above zero
+// becomes zero. Rounded, because half a question answered is not a thing.
+function safeCount(v) {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+}
+// WHAT WAS WRONG: a saved blob whose shape was plausible but wrong — a facts
+// list that was a word instead of a list, a count saved as text — sailed
+// straight through this guard, and the report then printed "NaN questions
+// answered" and "NaN% correct overall" as its two headline numbers. Nothing
+// crashed and nothing appeared in the console; the numbers were simply
+// nonsense on a teacher's paper. So don't trust the saved shape — rebuild it
+// into one we know, keeping whatever was genuinely a number.
 function loadStats() {
-  try { const s = JSON.parse(localStorage.getItem("mq_stats")); if (s && s.facts) return s; } catch (e) {}
+  try {
+    const s = JSON.parse(lsGet("mq_stats"));
+    if (s && typeof s === "object" && s.facts && typeof s.facts === "object" && !Array.isArray(s.facts)) {
+      const facts = {};
+      Object.keys(s.facts).forEach((k) => {
+        const f = s.facts[k];
+        if (!f || typeof f !== "object") return;
+        const seen = safeCount(f.seen);
+        // Got more right than you were asked is impossible; cap it rather than
+        // let it through and print an accuracy over 100%.
+        facts[k] = {
+          seen: seen,
+          correct: Math.min(safeCount(f.correct), seen),
+          wrong: Math.min(safeCount(f.wrong), seen),
+          hinted: Math.min(safeCount(f.hinted), seen),
+          ts: safeCount(f.ts)
+        };
+      });
+      return { facts: facts, correct: safeCount(s.correct), wrong: safeCount(s.wrong) };
+    }
+  } catch (e) {}
   return { facts: {}, correct: 0, wrong: 0 };
 }
-function saveStats() { localStorage.setItem("mq_stats", JSON.stringify(stats)); }
+function saveStats() { lsSet("mq_stats", JSON.stringify(stats)); }
+
+/* ---------- Who this report is for -----------------------------------------
+   Initials and a date, never a full name, and never sent anywhere — the same
+   choice the running record tool makes. Four characters is enough to tell two
+   printed reports apart on a desk, and it is not a child's identity.
+   Before this, a printed progress report carried no name and no date at all,
+   and every print came out of the browser under the same filename. */
+let who = loadWho();
+function todayISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
+         "-" + String(d.getDate()).padStart(2, "0");
+}
+function loadWho() {
+  try {
+    const w = JSON.parse(lsGet("mq_who"));
+    if (w && typeof w === "object") {
+      return { initials: w.initials || "", date: w.date || todayISO(), sample: !!w.sample };
+    }
+  } catch (e) {}
+  return { initials: "", date: todayISO(), sample: false };
+}
+function saveWho() { lsSet("mq_who", JSON.stringify(who)); }
+
+/* ---------- One step back from "Reset progress" ----------------------------
+   Clearing used to be final on a single click. The old progress is kept in one
+   spare slot so the "Bring it back" button on the report can undo it. */
+function stashUndo() {
+  lsSet("mq_undo", JSON.stringify({ stats: stats, stars: stars, who: who }));
+}
+function readUndo() {
+  try { const u = JSON.parse(lsGet("mq_undo")); if (u && u.stats && u.stats.facts) return u; } catch (e) {}
+  return null;
+}
+function undoReset() {
+  const u = readUndo();
+  if (!u) return false;
+  stats = u.stats;
+  who = u.who || { initials: "", date: todayISO(), sample: false };
+  saveStats(); saveWho(); setStars(u.stars || 0);
+  lsDel("mq_undo");
+  return true;
+}
 function factKey(a, b) { return Math.min(a, b) + "x" + Math.max(a, b); }
 function recordAttempt(a, b, correct, usedHint) {
   if (!a || !b) return;
@@ -927,6 +1106,7 @@ let pendingTimers = [];
 function later(fn, ms) { const id = setTimeout(fn, ms); pendingTimers.push(id); return id; }
 function show(name, params) {
   pendingTimers.forEach(clearTimeout); pendingTimers = [];
+  paintSampleBar();
   if (cleanup) { cleanup(); cleanup = null; }
   document.querySelectorAll("#nav button").forEach((b) =>
     b.classList.toggle("active", b.dataset.screen === name));
@@ -1002,11 +1182,17 @@ SCREENS.home = function () {
     <div class="card center">
       <h2>Practicing: ${settings.tables.slice().sort((x,y)=>x-y).join(", ")} times tables</h2>
       <p class="lead">Tap the ⚙️ gear up top to change which tables and the difficulty.</p>
-      <button class="btn ghost" id="openSettingsHome">⚙️ Change practice settings</button>
+      <div class="row" style="justify-content:center">
+        <button class="btn ghost" id="openSettingsHome">⚙️ Change practice settings</button>
+        <button class="btn ghost" id="loadSample">👋 Try it with a sample student</button>
+      </div>
+      <p class="small-note mt">New here? The sample fills My Progress with one made-up
+        student so you can see a finished report straight away — one click clears her again.</p>
     </div>`;
   appEl.querySelectorAll("[data-go]").forEach((b) =>
     b.addEventListener("click", () => show(b.dataset.go)));
   appEl.querySelector("#openSettingsHome").addEventListener("click", openPanel);
+  wireSampleButtons();
 };
 
 /* ====================== DIGIT DROP ====================== */
@@ -1213,7 +1399,7 @@ SCREENS.mystery = function () {
 /* ====================== SPEED RUN ====================== */
 SCREENS.speed = function () {
   const DURATION = 60;
-  let timeLeft, score, streak, best = parseInt(localStorage.getItem("mq_speed_best") || "0", 10);
+  let timeLeft, score, streak, best = parseInt(lsGet("mq_speed_best") || "0", 10);
   let prob, locked, ticker, log;
   function start() {
     timeLeft = DURATION; score = 0; streak = 0; locked = false; log = [];
@@ -1276,7 +1462,7 @@ SCREENS.speed = function () {
   function end() {
     clearInterval(ticker);
     const isBest = score > best;
-    if (isBest) { best = score; localStorage.setItem("mq_speed_best", String(best)); }
+    if (isBest) { best = score; lsSet("mq_speed_best", String(best)); }
     const earned = Math.max(1, Math.round(score / 2));
     addStars(earned);
     // Build the two-column review: got-right on the left, missed (with the
@@ -1568,6 +1754,89 @@ function buildInsights(report) {
   }
   return { strengths, stretches, trouble };
 }
+/* ---------- The sample student -------------------------------------------
+   A visitor who has never played arrives at My Progress and sees nothing at all
+   until they have answered eight questions — an empty tool tells you nothing.
+   This fills it with one made-up child so the report, the strengths, the
+   stretches and the times-table map are all populated on arrival.
+
+   She is deliberately MIXED, because a child who scores the same on everything
+   shows a visitor nothing and is not what real practice looks like: the 2s, 5s
+   and 10s are solid, the 3s and 4s are getting there, the 7s, 8s and 9s need
+   work, the small 6s are fine while the big 6s are not, and the 11s and 12s have
+   never been tried at all. The numbers are fixed, so everybody who clicks the
+   button sees the same report.
+
+   She is labelled on screen and on anything printed or exported, so a sheet on a
+   desk can never be mistaken for a real child's record. */
+const SAMPLE_NAME = "Maya Torres";
+const SAMPLE_INITIALS = "M.T.";
+// How much of each table this made-up child gets right. null = never tried.
+const SAMPLE_STRENGTH = { 1: 0.98, 2: 0.98, 3: 0.88, 4: 0.85, 5: 0.98,
+                          6: null, 7: 0.42, 8: 0.48, 9: 0.62, 10: 0.98, 11: null, 12: null };
+// ×1, ×2, ×5 and ×10 are easy whatever the other number is — real children who
+// wobble on their 7s still get 2 × 7 right, so the sample has to behave that way.
+const SAMPLE_EASY = [1, 2, 5, 10];
+function sampleAccuracy(a, b) {
+  const strength = (t, other) => {
+    // The 6s carry the "small ones fine, big ones not" pattern the report looks for.
+    if (t === 6) return other <= 5 ? 0.95 : 0.34;
+    return SAMPLE_STRENGTH[t];
+  };
+  const sa = strength(a, b), sb = strength(b, a);
+  if (sa == null || sb == null) return null;          // never practised
+  if (SAMPLE_EASY.includes(a) || SAMPLE_EASY.includes(b)) return Math.max(sa, sb);
+  return Math.min(sa, sb);
+}
+function buildSampleStats() {
+  const facts = {};
+  let correct = 0, wrong = 0, hintedTotal = 0;
+  const ts = Date.now();
+  for (let a = 1; a <= 12; a++) {
+    for (let b = a; b <= 12; b++) {
+      const acc = sampleAccuracy(a, b);
+      if (acc == null) continue;
+      const seen = acc >= 0.8 ? 3 : 4;                 // wobbly facts get tried more often
+      const corr = Math.round(seen * acc);
+      const hinted = acc < 0.6 ? seen - corr : 0;
+      facts[a + "x" + b] = { seen: seen, correct: corr, wrong: seen - corr, hinted: hinted, ts: ts };
+      correct += corr; wrong += seen - corr; hintedTotal += hinted;
+    }
+  }
+  return { stats: { facts: facts, correct: correct, wrong: wrong },
+           stars: Math.max(0, correct * 2 - hintedTotal) };
+}
+function loadSample() {
+  const s = buildSampleStats();
+  stats = s.stats;
+  who = { initials: SAMPLE_INITIALS, date: todayISO(), sample: true };
+  saveStats(); saveWho(); setStars(s.stars);
+  setFocus(false);
+}
+function clearSample() {
+  stats = { facts: {}, correct: 0, wrong: 0 };
+  who = { initials: "", date: todayISO(), sample: false };
+  saveStats(); saveWho(); setStars(0);
+  setFocus(false);
+}
+// The one banner that appears everywhere the sample does — on screen, on the
+// printed report and at the top of the CSV.
+function sampleLabel() { return "Sample student — " + SAMPLE_NAME + " (" + SAMPLE_INITIALS + ")"; }
+function paintSampleBar() {
+  const bar = document.getElementById("sampleBar");
+  if (!bar) return;
+  bar.classList.toggle("hidden", !who.sample);
+  if (who.sample) bar.textContent = "👋 " + sampleLabel() + " — a made-up student, so you can see how this works. Not a real child.";
+}
+function sampleBannerHTML() {
+  if (!who.sample) return "";
+  return `<div class="sample-banner">
+      <span>👋 <b>${sampleLabel()}</b> — made-up practice so you can see what a report looks like.
+      This is not a real child.</span>
+      <button class="btn ghost sm no-print" id="clearSampleBtn">Clear the sample</button>
+    </div>`;
+}
+
 function cellClass(acc, seen) {
   if (seen < 2 || acc == null) return "tc-none";
   if (acc >= 0.9) return "tc-strong";
@@ -2330,6 +2599,161 @@ SCREENS.showme = function () {
   renderShell();
 };
 
+/* ---------- Getting the report off the screen ------------------------------
+   WHAT WAS WRONG: there was no way at all to keep a copy of this report, and
+   every print the tool made came out of the browser suggesting the same
+   filename — "Factor Field — Times Tables Practice" — so a folder of saved
+   reports was a folder of files with identical names. The browser takes the
+   suggested filename from document.title, so set it to who and when, print,
+   then put it back. */
+function safeName(s) {
+  return String(s).replace(/[\\/:*?"<>|]/g, " ").replace(/\s+/g, " ").trim();
+}
+function printAs(name) {
+  const original = document.title;
+  document.title = safeName(name) || original;
+  window.print();
+  // Put the tab's real title back once the print dialog has taken its copy.
+  setTimeout(() => { document.title = original; }, 1200);
+}
+function whoStamp() {
+  const ini = (who.initials || "").trim().toUpperCase();
+  const when = who.date || todayISO();
+  if (who.sample) return "SAMPLE " + SAMPLE_NAME + " " + when;
+  return (ini || "no initials") + " " + when;
+}
+// The line that prints at the top of the report. On screen the teacher types
+// into the boxes; on paper the boxes are hidden and this is what you read.
+// WHAT WAS WRONG: this was baked into the report's HTML once, when the report
+// was drawn, and nothing repainted it afterwards. So typing initials, picking a
+// date and pressing Print straight away put "Child: —" and TODAY'S date on the
+// paper — a report carrying a date the teacher never chose, which is worse than
+// carrying no line at all. It only came right after a reload. Same fix as the
+// worksheet heading: repaint this one div in place on every keystroke.
+function whoPrintInner() {
+  const ini = (who.initials || "").trim().toUpperCase();
+  const when = who.date || todayISO();
+  const label = who.sample ? sampleLabel() : (ini ? "Child: " + escapeHTML(ini) : "Child: —");
+  return `${label} &nbsp;·&nbsp; Date: ${escapeHTML(when)} &nbsp;·&nbsp; ✖️ Factor Field`;
+}
+function whoPrintLine() {
+  return `<div class="who-print" id="whoPrintLine">${whoPrintInner()}</div>`;
+}
+function paintWhoPrint() {
+  const el = appEl.querySelector("#whoPrintLine");
+  if (el) el.innerHTML = whoPrintInner();
+}
+
+/* ---------- CSV -----------------------------------------------------------
+   Everything that is on the report goes into the file — the initials, the date,
+   the sample label, the headline numbers, every times table, the strengths and
+   the stretches. csvCell quotes anything holding a comma, a quote mark or a
+   line break; without it a strength sentence with a comma in it would split
+   itself across two columns and silently shift the whole row. */
+function csvCell(v) {
+  const s = (v === null || v === undefined) ? "" : String(v);
+  return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+function csvRow(cells) { return cells.map(csvCell).join(","); }
+function stripTags(s) { return String(s).replace(/<[^>]*>/g, ""); }
+function downloadCSV(filename, text) {
+  // A byte-order mark, so Excel opens the accented characters properly.
+  const blob = new Blob(["﻿" + text], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = safeName(filename);
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function progressCSV(report, ins, acc, total) {
+  const lines = [];
+  lines.push(csvRow(["Factor Field — progress report"]));
+  if (who.sample) lines.push(csvRow([sampleLabel() + " — made-up practice, not a real child"]));
+  lines.push(csvRow(["Child (initials)", who.sample ? SAMPLE_INITIALS : (who.initials || "").trim().toUpperCase()]));
+  lines.push(csvRow(["Date", who.date || todayISO()]));
+  lines.push(csvRow(["Questions answered", total]));
+  lines.push(csvRow(["Correct overall (%)", acc]));
+  lines.push(csvRow(["Stars earned", stars]));
+  lines.push("");
+  lines.push(csvRow(["Times table", "Questions tried", "Got right", "Correct (%)", "Hints used", "How it's going"]));
+  report.forEach((r) => {
+    const band = r.seen < 2 || r.acc == null ? "not tried yet"
+      : r.acc >= 0.9 ? "strong" : r.acc >= 0.75 ? "good" : r.acc >= 0.6 ? "getting there" : "needs practice";
+    lines.push(csvRow([r.t + "s", r.seen, r.correct, r.acc == null ? "" : Math.round(r.acc * 100), r.hinted, band]));
+  });
+  lines.push("");
+  lines.push(csvRow(["Strengths"]));
+  if (ins.strengths.length) ins.strengths.forEach((s) => lines.push(csvRow([stripTags(s)])));
+  else lines.push(csvRow(["Nothing stands out yet — keep playing."]));
+  lines.push("");
+  lines.push(csvRow(["Stretches"]));
+  if (ins.stretches.length) ins.stretches.forEach((s) => lines.push(csvRow([stripTags(s.text)])));
+  else lines.push(csvRow(["Nothing tricky right now."]));
+  lines.push("");
+  lines.push(csvRow(["Trickiest single facts", ins.trouble.length ? ins.trouble.join(", ") : "none yet"]));
+  lines.push("");
+  lines.push(csvRow(["Everything here was worked out on this laptop. Nothing was uploaded."]));
+  return lines.join("\r\n");
+}
+
+// The initials/date boxes. Saved on every keystroke, not on blur — typing two
+// initials and printing straight away used to lose them, because nothing was
+// stored until the box was clicked out of.
+function wireWhoBoxes() {
+  const ini = appEl.querySelector("#whoInitials");
+  const dat = appEl.querySelector("#whoDate");
+  if (!ini || !dat) return;
+  ini.value = who.initials || "";
+  dat.value = who.date || todayISO();
+  // While the sample is loaded the boxes are locked. Letting someone type real
+  // initials over Maya Torres would leave HER numbers under SOMEBODY ELSE'S
+  // name — the one thing this label exists to prevent. Clear the sample first.
+  if (who.sample) {
+    ini.readOnly = true; dat.readOnly = true;
+    ini.title = dat.title = "This is the sample student. Clear the sample to put your own initials in.";
+    return;
+  }
+  // Save AND repaint the printed line on every keystroke. Saving alone is not
+  // enough: what goes on paper is the printed line, not the box.
+  ini.addEventListener("input", () => { who.initials = ini.value.toUpperCase(); saveWho(); paintWhoPrint(); });
+  dat.addEventListener("input", () => { who.date = dat.value; saveWho(); paintWhoPrint(); });
+}
+function whoRowHTML() {
+  return `<div class="who-row no-print">
+      <div><label for="whoInitials">Who's this for?</label>
+        <input type="text" id="whoInitials" maxlength="4" placeholder="M.T." autocomplete="off"></div>
+      <div><label for="whoDate">Date</label><input type="date" id="whoDate"></div>
+      <span class="privacy">● Stays on this laptop</span>
+    </div>`;
+}
+// Shown right after "Reset progress", because clearing used to be final.
+function undoRowHTML() {
+  return readUndo()
+    ? `<div class="row mt no-print"><button class="btn ghost sm" id="undoReset">↩️ Bring back the progress I just cleared</button></div>`
+    : "";
+}
+function wireUndo() {
+  const b = appEl.querySelector("#undoReset");
+  if (b) b.addEventListener("click", () => {
+    if (undoReset()) { toast("Brought it back. 👍"); show("progress"); }
+  });
+}
+function wireSampleButtons() {
+  const load = appEl.querySelector("#loadSample");
+  if (load) load.addEventListener("click", () => {
+    // Never quietly write over a real child's practice.
+    if (totalAnswered() > 0 && !who.sample &&
+        !confirm("Load the sample student?\n\nThe practice already on this laptop is put safely aside, " +
+                 "and a “Bring it back” button appears so you can undo this.")) return;
+    if (totalAnswered() > 0 && !who.sample) stashUndo();
+    loadSample();
+    show("progress");
+    toast("This is " + SAMPLE_NAME + " — a made-up student. ⭐");
+  });
+  const clear = appEl.querySelector("#clearSampleBtn");
+  if (clear) clear.addEventListener("click", () => { clearSample(); show("progress"); toast("Sample cleared."); });
+}
+
 SCREENS.progress = function () {
   const total = totalAnswered();
   if (total < 8) {
@@ -2342,9 +2766,16 @@ SCREENS.progress = function () {
           <button class="btn orange" id="goSpeed">Play Speed Run ⚡</button>
           <button class="btn ghost" id="goMystery">Play Mystery Factor 🔍</button>
         </div>
+        <p class="lead mt">Want to see what a finished report looks like first?</p>
+        <div class="row" style="justify-content:center">
+          <button class="btn teal" id="loadSample">👋 Try it with a sample student</button>
+        </div>
+        ${undoRowHTML()}
       </div>`;
     appEl.querySelector("#goSpeed").addEventListener("click", () => show("speed"));
     appEl.querySelector("#goMystery").addEventListener("click", () => show("mystery"));
+    wireSampleButtons();
+    wireUndo();
     return;
   }
   const report = tableReport();
@@ -2363,11 +2794,18 @@ SCREENS.progress = function () {
   }).join("");
   appEl.innerHTML = `
     <div class="card">
-      <h1>📊 My Progress</h1>
+      <h1 class="no-print">📊 My Progress</h1>
+      ${whoPrintLine()}
+      ${sampleBannerHTML()}
+      ${whoRowHTML()}
       <div class="stat-row">
         <div class="stat-tile"><div class="big">${total}</div><div class="lbl">questions answered</div></div>
         <div class="stat-tile"><div class="big">${acc}%</div><div class="lbl">correct overall</div></div>
         <div class="stat-tile"><div class="big">${stars}</div><div class="lbl">stars earned</div></div>
+      </div>
+      <div class="row mt no-print">
+        <button class="btn teal" id="progPrint">🖨️ Print this report</button>
+        <button class="btn ghost" id="progCsv">⬇️ Save the numbers (CSV)</button>
       </div>
     </div>
     <div class="card ss-card ss-strength"><h2>💪 Strengths</h2>${strengthsHTML}</div>
@@ -2386,9 +2824,32 @@ SCREENS.progress = function () {
       <div class="tbl-map">${mapHTML}</div>
     </div>
     <div class="card">
-      <details class="grownups"><summary>👀 For grown-ups</summary>${buildParentSummary(report, ins, acc, total)}</details>
-      <button class="btn ghost sm mt" id="resetProg">Reset progress</button>
+      <details class="grownups" id="grownups"><summary class="no-print">👀 For grown-ups</summary>${buildParentSummary(report, ins, acc, total)}</details>
+      <div class="row mt no-print">
+        <button class="btn ghost sm" id="resetProg">Reset progress</button>
+        ${who.sample ? "" : `<button class="btn ghost sm" id="loadSample">👋 Try it with a sample student</button>`}
+      </div>
+      ${undoRowHTML()}
     </div>`;
+  wireWhoBoxes();
+  wireSampleButtons();
+  wireUndo();
+  appEl.querySelector("#progPrint").addEventListener("click", () => {
+    // A collapsed <details> prints as nothing but its heading, so the grown-ups
+    // summary — the part a teacher actually wants on paper — came out missing.
+    const g = appEl.querySelector("#grownups");
+    const wasOpen = g.open;
+    g.open = true;
+    // Belt and braces: whatever else has touched `who`, the line on the paper
+    // is rebuilt from it in the instant before the print dialog opens.
+    paintWhoPrint();
+    printAs("Factor Field progress - " + whoStamp());
+    setTimeout(() => { g.open = wasOpen; }, 1200);
+  });
+  appEl.querySelector("#progCsv").addEventListener("click", () => {
+    downloadCSV("factor-field-progress - " + whoStamp() + ".csv", progressCSV(report, ins, acc, total));
+    toast("Saved to your Downloads. ⬇️");
+  });
   const focus = (mode) => { setFocus(true); toast("🎯 Focusing on your stretches!"); show(mode); };
   appEl.querySelector("#focusSpeed").addEventListener("click", () => focus("speed"));
   appEl.querySelector("#focusMystery").addEventListener("click", () => focus("mystery"));
@@ -2399,9 +2860,23 @@ SCREENS.progress = function () {
     show("mystery");             // untimed, with hints — gentler for a tricky table
   }));
   appEl.querySelector("#resetProg").addEventListener("click", () => {
-    if (confirm("Clear all progress and start fresh? This can't be undone.")) {
-      stats = { facts: {}, correct: 0, wrong: 0 }; saveStats(); show("progress");
-    }
+    // WHAT WAS WRONG, twice over:
+    // 1. This cleared the answers but left the ⭐ count alone, so the very same
+    //    report card went on to say "9 questions answered" and "36 stars
+    //    earned" — two headline numbers contradicting each other, and the old
+    //    total survived a reload. Stars are progress; they go too.
+    // 2. It said "This can't be undone", and it meant it. Now the old progress
+    //    is put aside first and a "Bring it back" button appears underneath.
+    if (!confirm("Clear all progress and start fresh?\n\n" +
+                 "The answers, the stars and the times-table map all go back to zero. " +
+                 "Your settings and your worksheet are kept.\n\n" +
+                 "If you change your mind, a “Bring it back” button appears right afterwards.")) return;
+    stashUndo();
+    stats = { facts: {}, correct: 0, wrong: 0 };
+    who = { initials: "", date: todayISO(), sample: false };
+    saveStats(); saveWho(); setStars(0); setFocus(false);
+    show("progress");
+    toast("Progress cleared — you can still bring it back.");
   });
 };
 
@@ -2589,7 +3064,7 @@ SCREENS.blast = function () {
   let ship = { x: W / 2, y: H - 40 }, bullets = [], invaders = [], particles = [];
   let prob, answer, score = 0, lives = 3, combo = 0, running = false, rafId = 0, lastT = 0, fireCd = 0, flash = null;
   let moveDir = 0, firing = false;
-  let best = +(localStorage.getItem("mq_blast_best") || 0);
+  let best = +(lsGet("mq_blast_best") || 0);
   let soundOn = true, actx = null;
 
   // difficulty modes: harder problems fall a little faster. Speed = base + ramp·(facts
@@ -2600,7 +3075,7 @@ SCREENS.blast = function () {
     medium:   { tables: [2, 3, 4, 5, 6, 7, 8, 9, 10], maxB: 10, base: 26, ramp: 1.6, cap: 30, opts: 4 },
     advanced: { tables: [3, 4, 6, 7, 8, 9, 11, 12],   maxB: 12, base: 32, ramp: 2.0, cap: 36, opts: 4 },
   };
-  let blLevel = localStorage.getItem("mq_blast_level") || "medium";
+  let blLevel = lsGet("mq_blast_level") || "medium";
   if (!LEVELS[blLevel]) blLevel = "medium";
 
   function beep(type) {
@@ -2646,7 +3121,7 @@ SCREENS.blast = function () {
     flash = { color: "#57c79f", t: .55, text: inv.val + "! ✓" };
     recordAttempt(prob.a, prob.b, true, false); addStars(1);
     renderScore();
-    if (score > best) { best = score; localStorage.setItem("mq_blast_best", best); }
+    if (score > best) { best = score; lsSet("mq_blast_best", String(best)); }
     invaders = []; later(newProblem, 260);
   }
   function onWrong(inv) { combo = 0; boom(inv.x, inv.y, "#bd5568"); beep("bad"); flash = { color: "#e0879a", t: .5, text: "not " + answer }; renderScore(); }
@@ -2802,7 +3277,7 @@ SCREENS.blast = function () {
     appEl.querySelectorAll(".blvl").forEach((b) => b.classList.toggle("active", b.dataset.lvl === blLevel));
   }
   appEl.querySelectorAll(".blvl").forEach((b) => b.addEventListener("click", () => {
-    blLevel = b.dataset.lvl; localStorage.setItem("mq_blast_level", blLevel); renderLevels();
+    blLevel = b.dataset.lvl; lsSet("mq_blast_level", blLevel); renderLevels();
     if (running) { invaders = []; newProblem(); }        // apply the new difficulty right away
   }));
   renderLevels();
@@ -2929,7 +3404,7 @@ SCREENS.worksheet = function (params) {
 
       <div class="card">
         <div class="worksheet" id="sheet">
-          <div class="ws-head"><strong style="font-size:1.4rem">${escapeHTML(cfg.title)}</strong><span>✖️ Factor Field</span></div>
+          <div class="ws-head"><strong id="wsHeadTitle" style="font-size:1.4rem">${escapeHTML(cfg.title)}</strong><span>✖️ Factor Field</span></div>
           <div class="ws-meta"><span>Name: _______________________</span><span>Date: ____________</span><span>Score: ____ / ${total}</span></div>
           ${bodyHTML}
           ${cfg.showAnswers ? `<div class="answer-key"><h3>Answer Key</h3><div class="ak-grid">${akHTML}</div></div>` : ""}
@@ -2937,8 +3412,19 @@ SCREENS.worksheet = function (params) {
       </div>`;
 
     appEl.querySelector("#wsType").value = cfg.type;
-    appEl.querySelector("#wsTitle").addEventListener("input", (e) => { cfg.title = e.target.value; });
-    appEl.querySelector("#wsTitle").addEventListener("change", render);
+    // WHAT WAS WRONG: the title used to be applied on "change" — which fires on
+    // BLUR — and that handler re-rendered this whole panel. So the first click
+    // you made after typing a title landed on a button that was destroyed
+    // between mousedown and mouseup: 🖨️ Print and 🔗 Copy share link silently
+    // did nothing at all, and you had to click a second time. It also meant the
+    // sheet heading lagged behind whatever you had typed until you clicked away.
+    // Save on every keystroke, and repaint just the heading in place — never
+    // re-render the panel out from under the mouse.
+    appEl.querySelector("#wsTitle").addEventListener("input", (e) => {
+      cfg.title = e.target.value;
+      const h = appEl.querySelector("#wsHeadTitle");
+      if (h) h.textContent = cfg.title;
+    });
     appEl.querySelector("#wsType").addEventListener("change", (e) => {
       cfg.type = e.target.value; cfg.title = WS_TYPES[cfg.type].title; cfg.cols = WS_TYPES[cfg.type].cols; cfg.seed = newSeed(); render();
     });
@@ -2960,7 +3446,10 @@ SCREENS.worksheet = function (params) {
     }
     appEl.querySelector("#wsAns").addEventListener("change", (e) => { cfg.showAnswers = e.target.checked; render(); });
     appEl.querySelector("#wsRegen").addEventListener("click", () => { cfg.tables = settings.tables.slice(); cfg.maxFactor = settings.maxFactor; cfg.seed = newSeed(); render(); });
-    appEl.querySelector("#wsPrint").addEventListener("click", () => window.print());
+    // Name the file after the sheet and the day, so a folder of saved
+    // worksheets isn't a stack of files all called the same thing.
+    appEl.querySelector("#wsPrint").addEventListener("click", () =>
+      printAs("Factor Field worksheet - " + cfg.title + " - " + todayISO()));
     appEl.querySelector("#wsShare").addEventListener("click", copyShare);
   }
   function copyShare() {
