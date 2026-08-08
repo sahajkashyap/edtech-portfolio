@@ -33,6 +33,30 @@ def esc(s):
     return html.escape(s)
 
 
+# Must mirror index.html's tokenList(): every clickable item, passages AND word
+# lists, with sentences split into words. The old header sum counted passages
+# only and under-reported the set by more than a hundred words.
+#
+# WHAT WAS WRONG, second time: this lived inside build() and was used ONLY for
+# the header total, while each word list's own meta counted whole sentences as
+# one item. Lesson 14 therefore read "12 items" beside a tool that scores 22,
+# all nine word lists disagreed, and the page contradicted its own header
+# (1972 = the tool's number; the metas summed to 1903). That count is the
+# denominator of the accuracy the teacher then reads, so it has to be the
+# number the tool actually scores. One function, used for both.
+def tokens(d):
+    if d["instrument"] == "passage":
+        return sum(len(l.split()) for l in d["lines"])
+    n = 0
+    for label, key in (("Real words", "real_words"),
+                       ("Nonsense words", "nonsense_words"),
+                       ("Heart words", "high_frequency"),
+                       ("Sentences", "sentences")):
+        for v in d.get(key) or []:
+            n += len(v.split()) if label == "Sentences" else 1
+    return n
+
+
 def build() -> str:
     items = [json.loads(p.read_text())
              for p in sorted(DATA.glob("lesson-*.json"),
@@ -40,9 +64,16 @@ def build() -> str:
     rows = []
     for d in items:
         n, skill = d["lesson"], esc(d["skill"])
+        # limit_note FIRST, exactly as sync_index.py builds the tool's own
+        # panel. WHAT WAS WRONG: it was not rendered here at all, so on
+        # Lessons 22 and 34 — the only two that carry it — this page dropped
+        # the one sentence saying the score does NOT measure the sound the
+        # lesson is named for. The page claims to be what the tool serves; on
+        # those two lessons it was the tool minus its most important caveat.
         notes = "".join(
             '<p class="note">%s</p>' % esc(d[k])
-            for k in ("scoring_note", "nwf_note", "supply_note") if d.get(k))
+            for k in ("limit_note", "scoring_note", "nwf_note", "supply_note")
+            if d.get(k))
         if d["instrument"] == "passage":
             body = "".join("<p>%s</p>" % esc(l) for l in d["lines"])
             words = len(" ".join(d["lines"]).split())
@@ -60,10 +91,7 @@ def build() -> str:
                                   % (label, esc(" &middot; ".join(d[key]))
                                      .replace("&amp;middot;", "&middot;")))
             body = "".join(groups)
-            n_items = sum(len(d.get(k) or []) for k in
-                          ("real_words", "nonsense_words", "high_frequency",
-                           "sentences"))
-            kind, meta = "wordlist", "%d items" % n_items
+            kind, meta = "wordlist", "%d items" % tokens(d)
             title = "Word list"
         rows.append(
             '\n<article class="item %s" id="L%d">\n'
@@ -78,20 +106,6 @@ def build() -> str:
                     for d in items)
     n_pass = sum(1 for d in items if d["instrument"] == "passage")
     n_wl = len(items) - n_pass
-    # Must mirror index.html's tokenList(): every clickable item, passages AND
-    # word lists, with sentences split into words. The old sum counted passages
-    # only and under-reported the set by more than a hundred words.
-    def tokens(d):
-        if d["instrument"] == "passage":
-            return sum(len(l.split()) for l in d["lines"])
-        n = 0
-        for label, key in (("Real words", "real_words"),
-                           ("Nonsense words", "nonsense_words"),
-                           ("Heart words", "high_frequency"),
-                           ("Sentences", "sentences")):
-            for v in d.get(key) or []:
-                n += len(v.split()) if label == "Sentences" else 1
-        return n
     total = sum(tokens(d) for d in items)
 
     return TEMPLATE % {
@@ -139,10 +153,17 @@ TEMPLATE = """<!DOCTYPE html>
  .kicker{margin:0 0 .3rem;font-size:.8rem;color:var(--muted);letter-spacing:.03em}
  .kicker a{color:var(--blue);text-decoration:none;font-weight:bold}
  .kicker a:hover{text-decoration:underline}
+ .warnflag{display:inline-block;margin:0 0 .6rem;padding:3px 9px;border-radius:5px;
+   background:#fff;color:#2966bb;border:1.5px solid var(--blue);font-size:.78rem;font-weight:700}
  @media print{.jump,.mark{display:none} .item{break-inside:avoid}}
 </style></head><body><div class="wrap">
 <p class="kicker"><a href="index.html">Word by Word</a> &middot; a running record tool</p>
 <h1>Form B &mdash; every lesson we built</h1>
+<p class="warnflag">Assessment text &middot; internal school use</p>
+<p class="sub">The tool prints that flag beside every one of these passages, and it means it:
+a child who has read these words before is no longer being assessed by them. They are set out
+in full here because nobody can judge an assessment without reading what it asks. They are not
+practice material and they are not for sending home.</p>
 <p class="sub">All %(n)d assessment items, exactly as the child sees them. This page is
 GENERATED from <code>formb/data/</code> by <code>formb/build_all_lessons.py</code>, and
 <code>verify_all.py</code> fails if it falls out of step &mdash; so what you read here is

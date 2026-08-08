@@ -38,7 +38,7 @@ const TARGET  = cfg.target || 'running-record-tool'
 // the job — reproducing a bug in a real browser and then arguing it down — and
 // it is where the deepest findings came from when it was tried by hand. Set
 // `model: 'inherit'` in args to fall back to whatever model the session is on.
-const MODEL   = (cfg.model === 'inherit') ? undefined : (cfg.model || 'fable')
+const MODEL   = (cfg.model === 'inherit') ? undefined : (cfg.model || 'opus')
 const DRY_ROUNDS_TO_STOP = cfg.dryRounds || 2
 const MAX_ROUNDS = cfg.maxRounds || 4
 const APP     = REPO + '/' + TARGET + '/index.html'
@@ -128,8 +128,10 @@ log('Verifying ' + TARGET + ' — will stop after ' + DRY_ROUNDS_TO_STOP +
 
 const seen = new Set()
 const confirmed = []
+const unverified = []          // found, but every skeptic died before judging it
 const testCode = []
 let dry = 0, round = 0
+let degraded = null            // set if the run was cut short by agent failures
 
 while (dry < DRY_ROUNDS_TO_STOP && round < MAX_ROUNDS){
   round++
@@ -138,7 +140,7 @@ while (dry < DRY_ROUNDS_TO_STOP && round < MAX_ROUNDS){
   // ---- Phase 1: hunt, four lenses at once -------------------------------
   phase('Hunt')
   const already = [...seen].join(', ') || '(nothing yet)'
-  const hunts = (await parallel(LENSES.map(L => () =>
+  const huntsRaw = (await parallel(LENSES.map(L => () =>
     agent(`Try to break the tool at ${APP}. It is a single-file HTML classroom tool.
 
 YOUR LENS FOR THIS PASS — stay on it, the other lenses are covered by other agents:
@@ -156,14 +158,32 @@ Findings already known this run, do NOT report them again: ${already}
 Give each finding a short stable id slug so it can be recognised across rounds.
 Say plainly whether a teacher could hit it in normal use, or whether it needs contrived input.`,
       { label: 'hunt:' + L.key, phase: 'Hunt', schema: FINDINGS, model: MODEL })
-  ))).filter(Boolean)
+  )))
+  const hunts = huntsRaw.filter(Boolean)
+  const huntersLost = huntsRaw.length - hunts.length
+
+  // THE WHOLE POINT OF THIS WORKFLOW IS THE WORD "CONVERGED", so it must never
+  // be earned by accident. A dead agent returns null, which is indistinguishable
+  // from an agent that looked hard and found nothing — so a round in which every
+  // hunter ran out of quota used to look exactly like a clean round, and two of
+  // those in a row declared victory over a tool nobody had actually examined.
+  // A round with any hunter missing is not evidence of anything.
+  if (huntersLost){
+    degraded = huntersLost + ' of ' + LENSES.length + ' hunters failed in round ' +
+               round + ' (usually the session limit). Silence from a dead agent ' +
+               'is not the same as a clean result, so this run is reported as ' +
+               'INCOMPLETE rather than converged.'
+    log('STOPPING: ' + degraded)
+    break
+  }
 
   const fresh = hunts.flatMap(h => h.findings || []).filter(f => !seen.has(f.id))
   log('Round ' + round + ': ' + fresh.length + ' new finding(s) across four lenses')
 
   if (!fresh.length){
     dry++
-    log('Nothing new — ' + dry + ' of ' + DRY_ROUNDS_TO_STOP + ' quiet rounds')
+    log('Nothing new, and all four hunters reported — ' + dry + ' of ' +
+        DRY_ROUNDS_TO_STOP + ' quiet rounds')
     continue
   }
   dry = 0
@@ -194,7 +214,10 @@ Run the steps yourself before answering. Set refuted true if it does not hold up
       // Majority rules. One dissenting skeptic does not kill a real bug, and
       // one credulous one does not let a phantom through.
       const kills = good.filter(v => v.refuted).length
-      return { f, survives: good.length > 0 && kills < 2, votes: good }
+      // If EVERY skeptic died, the finding is unjudged — not refuted. Treating
+      // silence as refutation quietly discarded real bugs.
+      if (!good.length) return { f, survives: false, unjudged: true, votes: [] }
+      return { f, survives: kills < 2, unjudged: false, votes: good }
     }),
     r => {
       if (!r.survives) return r
@@ -215,12 +238,15 @@ Return ONLY the code block, ready to paste. Do not edit any file.`,
     }
   )
 
-  results.filter(Boolean).filter(r => r.survives).forEach(r => {
+  const done = results.filter(Boolean)
+  done.filter(r => r.survives).forEach(r => {
     confirmed.push(r.f)
     if (r.code) testCode.push({ id: r.f.id, summary: r.f.summary, code: r.code })
   })
-  const killed = results.filter(Boolean).filter(r => !r.survives).length
-  log('Round ' + round + ': ' + (fresh.length - killed) + ' survived, ' + killed + ' refuted')
+  done.filter(r => r.unjudged).forEach(r => unverified.push(r.f))
+  const killed = done.filter(r => !r.survives && !r.unjudged).length
+  log('Round ' + round + ': ' + done.filter(r => r.survives).length + ' survived, ' +
+      killed + ' refuted, ' + done.filter(r => r.unjudged).length + ' left unjudged')
 }
 
 if (round >= MAX_ROUNDS && dry < DRY_ROUNDS_TO_STOP)
@@ -233,6 +259,8 @@ language, and define any technical word in one line the first time you use it.
 
 Tool verified: ${TARGET}
 Rounds run: ${round}. Consecutive quiet rounds at the end: ${dry} (target was ${DRY_ROUNDS_TO_STOP}).
+${degraded ? 'THIS RUN WAS CUT SHORT: ' + degraded + ' Say so plainly in section 3 — do NOT describe this as converged.' : 'Every hunter reported in every round.'}
+${unverified.length ? 'These were found but NOBODY JUDGED them, because the skeptics failed. List them separately as needing a look, not as confirmed: ' + JSON.stringify(unverified.map(u => u.summary)) : ''}
 Findings that survived three skeptics each:
 ${JSON.stringify(confirmed, null, 1)}
 
@@ -250,9 +278,14 @@ Be direct. Do not pad. If nothing was found, say the tool held up and say what w
 return {
   tool: TARGET,
   rounds: round,
-  converged: dry >= DRY_ROUNDS_TO_STOP,
+  // Converged means: enough consecutive rounds found nothing new, AND every
+  // hunter in every round actually reported. Never true when the run was cut
+  // short — a quiet room is not the same as an empty one.
+  converged: dry >= DRY_ROUNDS_TO_STOP && !degraded,
+  incompleteBecause: degraded,
   confirmedCount: confirmed.length,
   confirmed,
+  unverified,          // real candidates nobody got to judge — do not discard
   testCode,
   verdict,
 }

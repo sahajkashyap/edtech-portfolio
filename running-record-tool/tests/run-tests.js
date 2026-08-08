@@ -145,7 +145,11 @@ const state = page => page.evaluate(() => ({
   read: +document.getElementById('ct-words').textContent,
   ins: +document.getElementById('ct-ins').textContent,
   popOpen: document.getElementById('pop').style.display === 'block',
-  records: (JSON.parse(localStorage.getItem('wbw.index') || '[]')).length
+  // INDEX_KEY, read from the page itself. This used to be the literal string
+  // 'wbw.index', which the tool has never used — so this always returned 0 and
+  // the check asserting "nothing was written to storage" passed by checking
+  // nothing at all. A test that cannot fail is worse than no test.
+  records: (JSON.parse(localStorage.getItem(INDEX_KEY) || '[]')).length
 }));
 
 // The storage keys are read from the page itself so a rename cannot silently
@@ -287,9 +291,12 @@ async function main(){
   // =========================================================================
   {
     const s = await state(page);
-    check('opens on a passage, not a word list',
-          await page.evaluate(() => LESSONS[currentLesson].kind === 'passage'),
-          'opened on lesson ' + s.lesson);
+    // The front door is the FIRST item in the sequence — a teacher expects
+    // lesson 6 before lesson 15, and opening in the middle says the order does
+    // not matter.
+    const first = await page.evaluate(() =>
+      Math.min(...Object.keys(LESSONS).map(Number)));
+    eq('opens on the first lesson in the sequence', s.lesson, first);
     eq('the picker agrees with the lesson on screen', s.picker, s.lesson);
   }
 
@@ -586,8 +593,7 @@ async function main(){
     await new Promise(r => setTimeout(r, 6000)); // past one heartbeat
     const gap = await page.evaluate(k => {
       const id = JSON.parse(localStorage.getItem(k))[0].id;
-      const rec = JSON.parse(localStorage.getItem('wbw.rec.' + id) ||
-                             localStorage.getItem(recKey(id)));
+      const rec = JSON.parse(localStorage.getItem(recKey(id)));
       return { live: totalMs(), stored: rec.elapsed };
     }, KEY);
     check('the stored reading time keeps up with the clock',
@@ -1323,6 +1329,886 @@ async function main(){
   }
 
   // =========================================================================
+  group('Undoing an accident returns the clock to where it was');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Finish (or E) on a reading that never STARTED, then Reopen: the clock
+    // used to run from idle, timing the silence before the child began, and
+    // the debounce saved a phantom record whose time grew on every heartbeat.
+    await page.keyboard.press('e');
+    await page.keyboard.press('e');
+    await new Promise(r => setTimeout(r, 700));
+    const s = await state(page);
+    eq('lifting a stop mark that never started a reading leaves the clock idle',
+       s.clock, 'idle');
+    eq('...with no time on it', s.elapsed, 0);
+    eq('...and no phantom record saved', s.records, 0);
+  }
+  await fresh(page, base, '#L20');
+  {
+    await page.click('#finishbtn');
+    await page.click('#finishbtn');            // now labelled Reopen
+    await new Promise(r => setTimeout(r, 700));
+    const s = await state(page);
+    eq('the same holds for Finish then Reopen on a reading never begun',
+       s.clock, 'idle');
+    eq('...and nothing was written to storage', s.records, 0);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // A teacher paused for an interruption, then hit E by mistake and
+    // corrected it. The clock used to quietly restart during the pause.
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 800));
+    await page.keyboard.press('p');
+    const paused = await state(page);
+    eq('the clock is paused', paused.clock, 'paused');
+    await page.keyboard.press('e');
+    await page.keyboard.press('e');
+    const after = await state(page);
+    eq('lifting the stop mark leaves it paused, not running', after.clock, 'paused');
+    await new Promise(r => setTimeout(r, 600));
+    eq('...and no time passes during the interruption',
+       (await state(page)).elapsed, after.elapsed);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // But a reading that WAS running must come back running.
+    await page.keyboard.press('x');
+    await page.keyboard.press('e');
+    await page.keyboard.press('e');
+    eq('a reading that was under way resumes when the stop mark is lifted',
+       await page.evaluate(() => clockState), 'running');
+  }
+
+  // =========================================================================
+  group('Moving the cursor is not scoring a word');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // The legend calls the arrows navigation. ArrowRight was starting the
+    // assessment clock, so lining the cursor up before the child began timed
+    // the silence.
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    const s = await state(page);
+    eq('the arrow key moves the cursor', await page.evaluate(() => cursor), 2);
+    eq('...without starting the clock', s.clock, 'idle');
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Space DOES score — "read correctly, move on" — so it still starts it.
+    await page.keyboard.press(' ');
+    eq('the space bar still starts the clock, because it scores a word',
+       await page.evaluate(() => clockState), 'running');
+  }
+
+  // =========================================================================
+  group('The popover always agrees with the word underneath it');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    await page.click('.w[data-i="2"]');
+    await page.keyboard.press('x');
+    const r = await page.evaluate(() => ({
+      code: words[2].code,
+      lit: [...document.querySelectorAll('#pop button[data-code]')]
+             .filter(b => b.classList.contains('on')).map(b => b.dataset.code),
+      open: document.getElementById('pop').style.display === 'block' }));
+    eq('marking with the keyboard marks the word', r.code, 'sub');
+    check('the open popover shows that mark rather than showing none',
+          !r.open || r.lit.includes('sub'), JSON.stringify(r));
+  }
+
+  // =========================================================================
+  group('A finished reading does not say it is still reading');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    await page.keyboard.press('x');
+    await page.click('#finishbtn');
+    const label = await page.evaluate(() =>
+      document.getElementById('wcpm').textContent);
+    check('a finished reading with no rate yet is not labelled "reading…"',
+          !/reading/i.test(label), 'the tile said: ' + label);
+  }
+
+  // =========================================================================
+  group('Regressions introduced by the Aug 7 fixes, and now guarded');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // "Start a new record" was wired straight to newRecord, so the click event
+    // arrived as the skipFlush argument. An event object is truthy, so the
+    // record being left was never written: mark a word, type initials, press
+    // the button, and the whole record was gone.
+    await page.keyboard.press('x');
+    await page.type('#initials', 'JD');
+    await page.click('#clearbtn');
+    await new Promise(r => setTimeout(r, 800));
+    eq('starting a new record saves the one you are leaving',
+       (await state(page)).records, 1);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Moving the stop mark called finish() a second time while already
+    // finished, overwriting the memory of what the clock had been doing. The
+    // tile then reported a reading rate for a child who never read a word.
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('e');           // stop mark
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('e');           // MOVE it
+    await page.keyboard.press('e');           // lift it
+    await new Promise(r => setTimeout(r, 900));
+    const s = await state(page);
+    eq('moving the stop mark then lifting it leaves the clock idle', s.clock, 'idle');
+    eq('...with no time on it', s.elapsed, 0);
+    eq('...and no phantom record saved', s.records, 0);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The same memory lives only in the page, so after a reload Reopen used to
+    // drop a finished record's clock to 'idle' with time still showing —
+    // "starts when you begin" on screen, a finished rate on the paper.
+    const KEY = await indexKey(page);
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 1400));
+    await page.click('#finishbtn');
+    await page.evaluate(() => flushSave());
+    await page.reload({ waitUntil: 'load' });
+    await page.evaluate(k => openRecord(JSON.parse(localStorage.getItem(k))[0].id), KEY);
+    await page.click('#finishbtn');           // now labelled Reopen
+    const s = await page.evaluate(() => ({ clock: clockState,
+      label: document.getElementById('wcpm').textContent,
+      pauseDisabled: document.getElementById('pausebtn').disabled }));
+    check('reopening after a reload does not claim the reading never started',
+          s.clock !== 'idle', JSON.stringify(s));
+    check('...and Pause still works', !s.pauseDisabled);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Reopening a reading ended with the stop mark left the mark in place, so
+    // the rate's denominator grew for ever against a frozen word count.
+    await page.keyboard.press('x');
+    await page.keyboard.press('e');
+    await page.click('#finishbtn');           // Reopen
+    eq('reopening lifts the stop mark that ended the reading',
+       await page.evaluate(() => stoppedAt), null);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Choosing the lesson is the teacher's FIRST action, and it left focus on
+    // the dropdown — where marking keys are deliberately ignored. Every key
+    // after it was silently discarded.
+    await page.select('#lessonpick', '26');
+    await page.keyboard.press('x');
+    const s = await state(page);
+    eq('marking works immediately after choosing a lesson from the dropdown',
+       s.marks, 1);
+    eq('...on the lesson that was chosen', s.lesson, 26);
+  }
+
+  // =========================================================================
+  group('The date on the record is the teacher\'s day, wherever they are');
+  // =========================================================================
+  // The date box used to be filled in with `rdate.valueAsDate = new Date()`,
+  // and that setter reads the instant back out in UTC. So a reading done at
+  // 5pm in California was stamped TOMORROW, and one done at 9am in Sydney was
+  // stamped YESTERDAY — on the screen, on the paper, in the saved-records list
+  // and in the spreadsheet. Only initials and a date name a child here, so the
+  // wrong day is the wrong child's record.
+  //
+  // The page's clock is pinned to one exact instant so this check says the
+  // same thing in November as it does today, and Chrome is put in a real
+  // timezone either side of UTC midnight.
+  {
+    const pinScript = `(() => {
+      // Keep hold of the browser's own Date, so pinning a second instant
+      // later wraps the real one rather than the first pin.
+      const Real = window.__nativeDate || Date; window.__nativeDate = Real;
+      const FIXED = ${Date.UTC(2026, 7, 8, 0, 2, 0)};
+      function D(...a){
+        if (!(this instanceof D)) return new Real(FIXED).toString();
+        return a.length ? new Real(...a) : new Real(FIXED);
+      }
+      D.prototype = Real.prototype; D.now = () => FIXED;
+      D.parse = Real.parse; D.UTC = Real.UTC;
+      window.Date = D;
+    })()`;
+    const pinned = await page.evaluateOnNewDocument(pinScript);
+
+    // Friday 7 August, 17:02 in California — already Saturday 8th in UTC.
+    await page.emulateTimezone('America/Los_Angeles');
+    await fresh(page, base, '#L20');
+    eq('a reading marked at 5pm in California is dated today, not tomorrow',
+       await page.evaluate(() => document.getElementById('rdate').value), '2026-08-07');
+
+    await page.type('#initials', 'JM');
+    await page.keyboard.press('x');
+    await page.evaluate(() => flushSave());
+    const surfaces = await page.evaluate(() => {
+      paintPrint(); paintRecords();
+      return { paper:  document.getElementById('prwho').textContent,
+               row:    document.getElementById('records').textContent,
+               stored: (JSON.parse(localStorage.getItem(INDEX_KEY) || '[]')[0] || {}).date };
+    });
+    check('...and the printed header says that same day',
+          surfaces.paper.includes('2026-08-07'), surfaces.paper.replace(/\s+/g, ' ').trim());
+    check('...and so does the saved-records row',
+          surfaces.row.includes('2026-08-07'));
+    eq('...and so does the record in storage', surfaces.stored, '2026-08-07');
+
+    // The spreadsheet is the third surface, and the file it downloads is named
+    // for the same day.
+    await page.evaluate(() => {
+      window.__csvName = '';
+      document.addEventListener('click', e => {
+        const a = e.target.closest && e.target.closest('a[download]');
+        if (a) window.__csvName = a.getAttribute('download') || '';
+      }, true);
+    });
+    await page.click('#exportbtn');
+    const csv = await page.evaluate(() => ({
+      name: window.__csvName,
+      text: decodeURIComponent((window.__downloads.slice(-1)[0] || '').replace(/^data:[^,]*,/, ''))
+    }));
+    check('...and the exported spreadsheet is dated that day too',
+          csv.text.includes('2026-08-07') && !csv.text.includes('2026-08-08'), csv.text.slice(0, 200));
+    eq('...right down to the name of the file', csv.name, 'running-records-2026-08-07.csv');
+
+    // "Start a new record" fills the box in a second time, from the same
+    // construct — it was wrong there too.
+    await page.evaluate(() => newRecord());
+    eq('"Start a new record" also fills in the teacher\'s day',
+       await page.evaluate(() => document.getElementById('rdate').value), '2026-08-07');
+
+    // The other side of UTC: Friday 7 August, 09:15 in Sydney is still
+    // Thursday 6th in UTC, and the box used to read the 6th all morning.
+    await page.emulateTimezone('Australia/Sydney');
+    const sydney = await page.evaluateOnNewDocument(
+      pinScript.replace(String(Date.UTC(2026, 7, 8, 0, 2, 0)),
+                        String(Date.UTC(2026, 7, 6, 23, 15, 0))));
+    await fresh(page, base, '#L20');
+    eq('a reading marked on a Friday morning in Sydney is dated that Friday',
+       await page.evaluate(() => document.getElementById('rdate').value), '2026-08-07');
+
+    // Put the clock and the timezone back so nothing after this runs pinned.
+    for (const s of [pinned, sydney])
+      if (s && s.identifier) await page.removeScriptToEvaluateOnNewDocument(s.identifier);
+    await page.emulateTimezone(undefined);
+  }
+
+  // =========================================================================
+  group('The pages either side of the tool tell the same story it does');
+  // =========================================================================
+  // Three surfaces have to agree about the numbers; the pages a reader reaches
+  // in one click have to agree about everything else. Each of these was found
+  // by a reader who simply followed a link out of the tool and back.
+  {
+    // The "For the teacher" panel on Lessons 22 and 34 says the score does NOT
+    // measure the sound the lesson is named for. all-lessons.html is generated
+    // from the same data and claims to be "what the tool serves" — but its
+    // builder rendered scoring_note and never limit_note, so on exactly those
+    // two lessons the catalogue dropped the most important sentence on it.
+    await fresh(page, base, '#L22');
+    const notes = await page.evaluate(() => ({ 22: LESSONS[22].note, 34: LESSONS[34].note }));
+    await nav(page, base + '/all-lessons.html');
+    const sections = await page.evaluate(() => ({
+      22: document.getElementById('L22').innerText,
+      34: document.getElementById('L34').innerText }));
+    const flat = s => s.replace(/\s+/g, ' ').trim();
+    for (const n of [22, 34]){
+      const paras = notes[n].split('\n\n').map(flat).filter(Boolean);
+      check(`Lesson ${n}'s "this does not measure what it is named for" warning ` +
+            'is on the catalogue page too',
+            paras.length === 2 && paras.every(p => flat(sections[n]).includes(p)),
+            JSON.stringify({ paras: paras.length, section: flat(sections[n]).slice(0, 90) }));
+    }
+
+    // The catalogue counted a word list's SENTENCES as one item each while the
+    // tool scores every word in them, so Lesson 14 advertised "12 items" for a
+    // list the tool marks out of 22 — and that number is the denominator of
+    // the accuracy the teacher reads. The page even contradicted its own
+    // header total, which had always used the tool's number.
+    const metas = await page.evaluate(() => {
+      const o = {};
+      document.querySelectorAll('article.item.wordlist').forEach(a =>
+        o[a.id.slice(1)] = parseInt(a.querySelector('.meta').textContent, 10));
+      return o;
+    });
+    await nav(page, base + '/index.html');
+    const scored = await page.evaluate(ns => {
+      const o = {}; ns.forEach(n => o[n] = tokenCount(+n)); return o;
+    }, Object.keys(metas));
+    check('every word list is advertised with the number of items the tool scores',
+          Object.keys(metas).length === 9 &&
+          Object.keys(metas).every(n => metas[n] === scored[n]),
+          JSON.stringify({ page: metas, tool: scored }));
+
+    // "Open Maya's record in the tool" wrote the record and then linked to the
+    // LESSON, so the reader landed on a blank Lesson 20 — no marks, 100%,
+    // Independent, 0:00 — contradicting every number in the article they had
+    // just read. There is now a #R<id> deep link that opens the record itself.
+    await page.evaluate(() => localStorage.clear());
+    await nav(page, base + '/worked-example.html');
+    await harvest(page);
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: 'load' }),
+      page.click('#load')
+    ]);
+    const maya = await page.evaluate(() => ({
+      open: recordId !== null,
+      marks: words.filter(w => w.code).length,
+      initials: document.getElementById('initials').value,
+      acc: document.getElementById('sAcc').textContent,
+      band: document.getElementById('band').textContent,
+      clock: document.getElementById('clock').textContent }));
+    eq('the worked example\'s button lands on Maya\'s record, not a blank one',
+       maya, { open: true, marks: 5, initials: 'M.R.', acc: '93%',
+               band: 'Instructional', clock: '1:22' });
+    // Following that same link from index.html itself changes only the hash,
+    // which does not reload the page — so the deep link has to work on
+    // hashchange too, or it would move the address bar and nothing else.
+    const back = await page.evaluate(async () => {
+      const id = recordId;
+      newRecord();
+      location.hash = '#L20';        // leave the record's own hash first
+      await new Promise(r => setTimeout(r, 60));
+      location.hash = '#R' + id;
+      await new Promise(r => setTimeout(r, 60));
+      return { open: recordId === id,
+               acc: document.getElementById('sAcc').textContent };
+    });
+    eq('...and the same link followed from inside the tool opens it too',
+       back, { open: true, acc: '93%' });
+
+    // The tool badges its passage "Assessment text · internal school use" and
+    // the nav link one click away published all 36 of those texts with no
+    // caveat at all. Two clicks, and the tool contradicted itself.
+    await nav(page, base + '/all-lessons.html');
+    const said = await page.evaluate(() => document.body.innerText);
+    check('the public catalogue repeats the tool\'s internal-use flag',
+          /internal school use/i.test(said), said.slice(0, 120));
+  }
+  {
+    // A portrait iPad is what a teacher actually holds, and the only marking
+    // instructions on the page were a card of keyboard KEYS sitting 1800px
+    // below the fold. Nothing anywhere said a word could be tapped.
+    await page.setViewport({ width: 768, height: 1024, isMobile: true, hasTouch: true });
+    await fresh(page, base);
+    const hint = await page.evaluate(() => {
+      const el = document.getElementById('taphint');
+      const r = el.getBoundingClientRect();
+      return { text: el.innerText.replace(/\s+/g, ' ').trim(),
+               aboveTheFold: r.top >= 0 && r.bottom <= window.innerHeight,
+               shown: getComputedStyle(el).display !== 'none' };
+    });
+    check('an iPad user is told, above the fold, that a word can be tapped',
+          hint.shown && hint.aboveTheFold && /^Tap a word to mark it\./.test(hint.text),
+          JSON.stringify(hint));
+    await page.emulateMediaType('print');
+    eq('...and that instruction is not on the printed record',
+       await page.evaluate(() =>
+         getComputedStyle(document.getElementById('taphint')).display), 'none');
+    await page.emulateMediaType('screen');
+    await page.setViewport({ width: 1280, height: 900 });
+    await fresh(page, base, '#L20');
+  }
+
+  // =========================================================================
+  group('What the screen takes away, the saved record must not keep');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // "Clear all marks" on a record with nothing typed in it — no initials, no
+    // notes, no retell — emptied the last thing hasContent() could see, so the
+    // write gave up before rewriting. The screen said 100% and 0 errors while
+    // the saved-records row and the spreadsheet both still said 95% and 3.
+    await page.keyboard.press('x');
+    await page.keyboard.press('x');
+    await page.keyboard.press('x');
+    await new Promise(r => setTimeout(r, 700));
+    const wasSaved = await page.evaluate(k =>
+      JSON.parse(localStorage.getItem(k))[0].errors, await indexKey(page));
+    eq('three wrong words are saved as three errors', wasSaved, 3);
+
+    await page.click('#clearmarksbtn');
+    await new Promise(r => setTimeout(r, 900));
+    const r = await page.evaluate(k => {
+      paintPrint();
+      document.getElementById('exportbtn').click();
+      const row = JSON.parse(localStorage.getItem(k))[0];
+      return { screenAcc: document.getElementById('sAcc').textContent,
+               screenErr: +document.getElementById('ct-err').textContent,
+               screenBand: document.getElementById('band').textContent,
+               printBand: [...document.getElementById('prnums').children][1]
+                            .querySelector('.v').textContent,
+               rowAcc: row.accuracy, rowErr: row.errors,
+               csv: decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+                      .replace(/^data:[^,]*,/, '')) };
+    }, await indexKey(page));
+    eq('after Clear all marks the screen shows no errors', r.screenErr, 0);
+    eq('the saved-records row agrees with the screen', r.rowAcc + '%', r.screenAcc);
+    eq('...and shows no errors either', r.rowErr, 0);
+    eq('the printed record agrees with the screen', r.printBand, r.screenBand);
+    {
+      const rows = r.csv.replace(/^﻿/, '').trim().split('\r\n').map(l => l.split(','));
+      const ec = rows[0].indexOf('Errors'), ac = rows[0].indexOf('Accuracy %');
+      eq('the spreadsheet agrees with the screen too',
+         [Number(rows[1][ec]), rows[1][ac] + '%'], [r.screenErr, r.screenAcc]);
+    }
+  }
+  await fresh(page, base, '#L26');
+  {
+    // "Clear this mark" took the mark off and left the M/S/V cue analysis on
+    // the word, in memory and in storage. Re-marking that word later — even on
+    // another day, after a reload — arrived pre-coded Meaning, Structure and
+    // Visual, and the cue tally reported it as the teacher's judgement.
+    await page.type('#initials', 'CUE');
+    await page.click('.w[data-i="4"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="m"]');
+    await page.click('#pop button[data-cue="s"]');
+    await page.click('#pop button[data-cue="v"]');
+    await page.click('#pop button[data-code="correct"]');
+    await new Promise(r => setTimeout(r, 700));
+    const stored = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem(recKey(recordId))).words[4].cues || null);
+    eq('clearing a mark takes its cue analysis with it, in storage as well',
+       stored, null);
+
+    await page.reload({ waitUntil: 'load' });
+    await page.evaluate(k => openRecord(JSON.parse(localStorage.getItem(k))[0].id),
+                        await indexKey(page));
+    await page.click('.w[data-i="4"]');
+    const pressed = await page.evaluate(() =>
+      [...document.querySelectorAll('#pop button[data-cue]')]
+        .filter(b => b.className === 'on').length);
+    eq('reopening that word shows no cues still pressed', pressed, 0);
+    await page.click('#pop button[data-code="told"]');
+    const after = await page.evaluate(() => ({
+      cues: JSON.stringify(words[4].cues || null),
+      cuebox: document.getElementById('cuebox').style.display }));
+    eq('a fresh mark on that word is not pre-coded', after.cues, 'null');
+    eq('...so the cue tally stays out of sight until a cue is entered',
+       after.cuebox, 'none');
+  }
+  await fresh(page, base, '#L15');
+  {
+    // ArrowLeft never forgot that a word had been tapped, so with the cursor
+    // in the identical place the arrows-only path tagged the word just read and
+    // the tap-then-ArrowLeft path tagged the word the child had not reached.
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('s');
+    const arrows = await page.evaluate(() =>
+      words.map((w, i) => w.code ? i + ':' + w.text : null).filter(Boolean));
+
+    await fresh(page, base, '#L15');
+    await page.click('.w[data-i="4"]');
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('ArrowLeft');
+    await page.keyboard.press('s');
+    const tapped = await page.evaluate(() => ({
+      cursor,
+      marks: words.map((w, i) => w.code ? i + ':' + w.text : null).filter(Boolean) }));
+    eq('the cursor ends up in the same place either way', tapped.cursor, 3);
+    eq('a self-correction after ArrowLeft marks the word just read, not the next one',
+       tapped.marks, arrows);
+  }
+  await fresh(page, base, '#L15');
+  {
+    // Opening a saved record is not tapping a word either: reopening after a
+    // tap left the tool in click mode, so the first S, R or A landed on the
+    // cursor word instead of the word just read.
+    const KEY = await indexKey(page);
+    await page.type('#initials', 'RE');
+    await page.evaluate(() => document.activeElement.blur());
+    await page.keyboard.press('x');
+    await page.evaluate(() => { cursor = 4; flushSave(); });
+    await page.evaluate(() => newRecord());
+    await page.click('.w[data-i="2"]');            // a tap, to set click mode
+    await page.keyboard.press('Escape');
+    await page.evaluate(k => openRecord(JSON.parse(localStorage.getItem(k))[0].id), KEY);
+    await page.keyboard.press('r');
+    const marked = await page.evaluate(() =>
+      words.map((w, i) => w.code === 'rep' ? i : null).filter(i => i !== null));
+    eq('a repetition after reopening a record marks the word before the cursor',
+       marked, [3]);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Export skipped any record whose body storage had lost or half-written,
+    // with no alert and no message: three children on the screen, two in the
+    // spreadsheet, and a file downloaded anyway.
+    const KEY = await indexKey(page);
+    await page.type('#initials', 'AA');
+    await page.evaluate(() => document.activeElement.blur());
+    await page.keyboard.press('x');
+    await page.evaluate(() => flushSave());
+    await page.evaluate(() => newRecord());
+    await page.click('#initials');
+    await page.type('#initials', 'BB');
+    await page.evaluate(() => document.activeElement.blur());
+    await page.keyboard.press('o');
+    await page.evaluate(() => flushSave());
+    const r = await page.evaluate(k => {
+      const gone = JSON.parse(localStorage.getItem(k)).find(e => e.initials === 'AA');
+      localStorage.removeItem(recKey(gone.id));
+      window.__alert = ''; window.__downloads.length = 0;
+      document.getElementById('savedmsg').textContent = '';
+      document.getElementById('exportbtn').click();
+      return { alert: window.__alert,
+               msg: document.getElementById('savedmsg').textContent,
+               rows: document.querySelectorAll('.recrow').length,
+               csv: decodeURIComponent((window.__downloads.slice(-1)[0] || '')
+                      .replace(/^data:[^,]*,/, '')) };
+    }, KEY);
+    const dataRows = r.csv.replace(/^﻿/, '').trim().split('\r\n').length - 1;
+    eq('two children are listed but only one can be exported',
+       [r.rows, dataRows], [2, 1]);
+    check('the teacher is told a record is missing from the spreadsheet',
+          /missing/i.test(r.alert), JSON.stringify(r.alert));
+    check('...and the message stays on the page after the alert is dismissed',
+          /missing/i.test(r.msg), JSON.stringify(r.msg));
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The same silence with the only record damaged handed over a spreadsheet
+    // with a header row and no children in it, which reads like an empty class.
+    const KEY = await indexKey(page);
+    await page.type('#initials', 'ZZ');
+    await page.evaluate(() => document.activeElement.blur());
+    await page.keyboard.press('x');
+    await page.evaluate(() => flushSave());
+    await page.evaluate(() => newRecord());
+    const r = await page.evaluate(k => {
+      const id = JSON.parse(localStorage.getItem(k))[0].id;
+      localStorage.setItem(recKey(id), '{half written');
+      window.__alert = ''; window.__downloads.length = 0;
+      document.getElementById('exportbtn').click();
+      return { alert: window.__alert, downloads: window.__downloads.length };
+    }, KEY);
+    eq('a spreadsheet with nobody in it is not handed over', r.downloads, 0);
+    check('...and the refusal says why, the way Open already does',
+          /could be read/i.test(r.alert), JSON.stringify(r.alert));
+  }
+
+  // =========================================================================
+  group('Everything on screen can actually be reached and pressed');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // Coding a single M/S/V cue opens "What they were using", which takes the
+    // fixed bottom bar from 67px to nearly 250px tall. main's bottom padding
+    // was a flat 130px, so past that the bar covered the Saved records card
+    // completely — scrolled all the way down, the centre of the Open button
+    // belonged to #cuebox, a real click on Delete did nothing at all, and the
+    // only way to reach the list again was to un-tag the cue.
+    await page.type('#initials', 'JM');
+    await page.click('.w[data-i="0"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="m"]');
+    await page.keyboard.press('Escape');
+    await page.evaluate(() => flushSave());
+    // Scroll twice: the bar's new height reaches the page's bottom padding on
+    // the next frame, and the page grows taller than the first scroll allowed.
+    for (let i = 0; i < 2; i++){
+      await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
+      await page.evaluate(() => window.scrollTo(0, 999999));
+    }
+    const reach = await page.evaluate(() => {
+      const del = [...document.querySelectorAll('#records .btn')]
+                    .find(b => b.textContent === 'Delete');
+      const r = del.getBoundingClientRect();
+      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return { bar: document.getElementById('stats').offsetHeight,
+               onTop: hit === del, sits: hit ? (hit.id || hit.className) : null,
+               x: Math.round(r.left + r.width / 2),
+               y: Math.round(r.top + r.height / 2) };
+    });
+    check('coding one cue grows the bottom bar past the old fixed runway',
+          reach.bar > 130, 'bar is ' + reach.bar + 'px');
+    check('the saved records are still reachable underneath it',
+          reach.onTop, JSON.stringify(reach));
+    await page.mouse.click(reach.x, reach.y);
+    eq('...and a real press on Delete reaches the button, not the bar',
+       (await state(page)).records, 0);
+  }
+  {
+    // The mark menu was placed with `Math.min(left, window.innerWidth - 270)`,
+    // and 270 was a guess at its width — it is 319px. On a portrait iPad, the
+    // device this tool is written for, "Appealed" hung 49px off the right edge
+    // and the whole page could be dragged sideways.
+    await page.setViewport({ width: 768, height: 1024 });
+    for (const n of [15, 25, 41]){
+      await fresh(page, base, '#L' + n);
+      const r = await page.evaluate(() => {
+        let off = 0, neverOpened = 0, opened = 0;
+        const pop = document.getElementById('pop');
+        document.querySelectorAll('.w').forEach(el => {
+          el.click();
+          // Assert the menu actually OPENED before measuring where it is. A
+          // hidden element reports a rectangle of [0,0,0,0], which is neither
+          // off the right edge nor left of zero — so this whole sweep used to
+          // pass green against a tool where tapping a word did nothing at all.
+          if (pop.style.display !== 'block'){ neverOpened++; return; }
+          opened++;
+          const p = pop.getBoundingClientRect();
+          if (p.right > document.documentElement.clientWidth || p.left < 0) off++;
+        });
+        return { off, neverOpened, openedAtLeastOne: opened > 0,
+                 sideways: document.documentElement.scrollWidth >
+                           document.documentElement.clientWidth };
+      });
+      eq(`on a portrait iPad every mark menu in lesson ${n} opens and stays on the screen`,
+         r, { off: 0, neverOpened: 0, openedAtLeastOne: true, sideways: false });
+    }
+
+    // Turning the iPad reflowed the passage under an open menu while the menu
+    // kept its old coordinates. It drifted a full line down and hung under a
+    // DIFFERENT word than the one it was about to mark.
+    await fresh(page, base, '#L15');
+    await page.click('.w[data-i="20"]');
+    await page.setViewport({ width: 1024, height: 768 });
+    await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
+    const rot = await page.evaluate(() => {
+      const w = document.querySelector('.w[data-i="20"]').getBoundingClientRect();
+      const p = document.getElementById('pop').getBoundingClientRect();
+      return { dx: Math.round(p.left - w.left), dy: Math.round(p.top - w.bottom),
+               shown: document.getElementById('pop').style.display };
+    });
+    eq('turning the iPad leaves the mark menu under the word it will mark',
+       rot, { dx: 0, dy: 8, shown: 'block' });
+    await page.setViewport({ width: 1280, height: 900 });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // Every save re-sorted the Saved records list most-recently-updated first.
+    // Open an older child, type one letter in the notes, and 400ms later the
+    // Delete button the teacher's mouse was resting on belonged to a different
+    // child — with no warning and no movement to see.
+    await page.evaluate(() => {
+      for (const who of ['AA', 'BB', 'CC']){
+        newRecord(); document.getElementById('initials').value = who;
+        mark(1, 'sub'); flushSave();
+      }
+      openRecord(readIndex().find(e => e.initials === 'AA').id);
+    });
+    const cc = await page.evaluate(() => {
+      const row = [...document.querySelectorAll('.recrow')]
+                    .find(r => r.querySelector('.who2').textContent === 'CC');
+      row.scrollIntoView({ block: 'center' });
+      const b = [...row.querySelectorAll('button')].find(b => b.textContent === 'Delete');
+      const r = b.getBoundingClientRect();
+      return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+    });
+    await page.mouse.move(cc.x, cc.y);
+    await page.focus('#notes');
+    await page.keyboard.type('h');
+    await new Promise(r => setTimeout(r, 700));
+    const under = await page.evaluate(({ x, y }) => {
+      const el = document.elementFromPoint(x, y);
+      const row = el && el.closest && el.closest('.recrow');
+      return { order: readIndex().map(e => e.initials),
+               who: row ? row.querySelector('.who2').textContent : null,
+               label: el ? el.textContent : null };
+    }, cc);
+    eq('typing a note does not slide another child\'s row under the mouse',
+       under, { order: ['CC', 'BB', 'AA'], who: 'CC', label: 'Delete' });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The 5-second reading-time heartbeat writes the record, and that repainted
+    // the list, and that replaced every button with a brand new element. A
+    // press whose mousedown and mouseup straddled the rebuild produced no click
+    // at all: the button visibly went down, came up, and nothing happened.
+    await page.evaluate(() => {
+      for (const who of ['AA', 'BB']){
+        newRecord(); document.getElementById('initials').value = who;
+        mark(1, 'sub'); flushSave();
+      }
+    });
+    const aa = await page.evaluate(() => {
+      const row = [...document.querySelectorAll('.recrow')]
+                    .find(r => r.querySelector('.who2').textContent === 'AA');
+      row.scrollIntoView({ block: 'center' });
+      const b = [...row.querySelectorAll('button')].find(b => b.textContent === 'Delete');
+      const r = b.getBoundingClientRect();
+      return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+    });
+    await page.mouse.move(aa.x, aa.y);
+    await page.mouse.down();
+    await page.evaluate(() => writeRecord(true));   // exactly what the heartbeat runs
+    await page.mouse.up();
+    eq('a save landing mid-press does not swallow the press',
+       await page.evaluate(() => readIndex().map(e => e.initials)), ['BB']);
+  }
+
+  // =========================================================================
+  group('What goes on the paper, and what goes in the spreadsheet');
+  // =========================================================================
+  await fresh(page, base, '#L20');
+  {
+    // The printed "Every mark" table ran to the end of the passage while every
+    // number beside it stopped at the stop mark. A reading stopped at word 5
+    // printed a miscue from word 10 directly above its own "Errors 1".
+    await page.click('.w[data-i="0"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="v"]');
+    await page.keyboard.press('Escape');
+    await page.click('.w[data-i="10"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="v"]');
+    await page.keyboard.press('Escape');
+    const r = await page.evaluate(() => {
+      stoppedAt = 5; render();
+      // Only the per-word rows: the cue-analysis line under them is one
+      // colspan=3 cell, and it has a <b> in it too.
+      const rows = [...document.querySelectorAll('#prmarks tr')]
+                     .filter(t => t.cells.length === 3);
+      return { words: rows.map(t => t.querySelector('b').textContent),
+               errors: document.getElementById('ct-err').textContent,
+               printed: document.getElementById('prmarks').innerText };
+    });
+    eq('the printed record stops listing marks at the stop mark',
+       r.words, ['Sam']);
+    eq('...so the list is as long as the Errors figure printed above it',
+       r.words.length, Number(r.errors));
+    check('...and the cue tally on the same sheet still counts one of one',
+          /1 of 1 miscues coded/.test(r.printed), r.printed.replace(/\n/g, ' | '));
+  }
+  await fresh(page, base, '#L20');
+  {
+    // A word marked "Wrong word" and coded M and V, then re-marked
+    // "Self-corrected" when the teacher saw the child fix it, keeps those cues
+    // in the record. The screen and the spreadsheet both refuse to show them.
+    // Only the paper printed "sit [MV] Self-corrected" — cue letters on a word
+    // its own cue tally, two lines below, did not count.
+    await page.click('.w[data-i="3"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="m"]');
+    await page.click('#pop button[data-cue="v"]');
+    await page.click('#pop button[data-code="sc"]');
+    await page.keyboard.press('Escape');
+    await page.click('.w[data-i="9"]');
+    await page.click('#pop button[data-code="sub"]');
+    await page.click('#pop button[data-cue="v"]');
+    await page.keyboard.press('Escape');
+    const r = await page.evaluate(() => {
+      const rows = [...document.querySelectorAll('#prmarks tr')]
+        .filter(t => t.cells.length === 3)
+        .map(t => ({ word: t.querySelector('b').textContent,
+                     cues: t.querySelector('i') ? t.querySelector('i').textContent : '' }));
+      return { rows, printed: document.getElementById('prmarks').innerText,
+               foot: document.getElementById('cueFoot').textContent };
+    });
+    eq('a self-corrected word prints with no cue letters left on it',
+       r.rows, [{ word: 'sit', cues: '' }, { word: 'naps', cues: '[V]' }]);
+    eq('...and the cue tally printed under it counts the same one word',
+       /(\d+) of (\d+) miscues coded/.exec(r.printed).slice(1, 3), ['1', '1']);
+    check('...which is what the screen was saying all along',
+          /^1 of 1 miscues coded/.test(r.foot), r.foot);
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The eight numbers were one flex row inside overflow:hidden and could not
+    // shrink past their own labels, so on Letter the last two tiles ran off
+    // the right edge of the paper and on A4 the last three did. WORDS
+    // CORRECT/MIN and TIME are nowhere else on the sheet: the copy that goes
+    // to the learning specialist had no reading rate and no reading time on
+    // it, and nothing on screen said so. Measured at the real printable width
+    // of both papers, 18mm margins in: Letter 710px, A4 688px.
+    await page.evaluate(() => {
+      mark(2, 'sub'); mark(5, 'omit'); mark(8, 'told');
+      elapsed = 92000; runningSince = null; clockState = 'paused';
+      render();
+    });
+    await page.emulateMediaType('print');
+    for (const [paper, w] of [['US Letter', 710], ['A4', 688]]){
+      await page.setViewport({ width: w, height: 1000 });
+      const r = await page.evaluate(() => {
+        const box = document.getElementById('prnums');
+        const b = box.getBoundingClientRect();
+        const tiles = [...box.children].map(c => ({
+          key: c.querySelector('.k').textContent,
+          val: c.querySelector('.v').textContent,
+          off: c.getBoundingClientRect().right > b.right + 0.5
+        }));
+        return { off: tiles.filter(t => t.off).map(t => t.key), tiles };
+      });
+      eq(`every number is on the paper on ${paper}`, r.off, []);
+      eq(`...including the reading rate on ${paper}`,
+         r.tiles[6], { key: 'Words correct/min', val: '34', off: false });
+      eq(`...and the reading time on ${paper}`,
+         r.tiles[7], { key: 'Time', val: '1:32', off: false });
+    }
+    await page.emulateMediaType('screen');
+    await page.setViewport({ width: 1280, height: 900 });
+  }
+  await fresh(page, base, '#L20');
+  {
+    // The spreadsheet column was called "Miscues" but held one entry per mark
+    // of ANY kind — self-corrections, repetitions and appeals included. A
+    // specialist counting the cell got 5 for a record the screen, the paper
+    // and the "Miscues coded" column beside it all called 4. The printed table
+    // holds the same list and has always been honest about its name.
+    const r = await page.evaluate(() => {
+      document.getElementById('initials').value = 'KL';
+      mark(3, 'sc'); mark(9, 'sub'); words[9].cues = { v: true };
+      render(); flushSave();
+      document.getElementById('exportbtn').click();
+      return { csv: window.__downloads.slice(-1)[0] || '',
+               err: document.getElementById('ct-err').textContent };
+    });
+    const text = decodeURIComponent(r.csv.replace(/^data:[^,]*,/, '')).replace(/^﻿/, '');
+    const rows = text.trim().split('\n').map(l => l.split(','));
+    check('the spreadsheet does not call a list of every mark "Miscues"',
+          rows[0].indexOf('Miscues') === -1, rows[0].join('|'));
+    const col = rows[0].indexOf('Every mark');
+    check('it calls it "Every mark", the same as the printed table', col >= 0,
+          rows[0].join('|'));
+    eq('...and it still lists the self-correction the specialist wants to see',
+       (rows[1][col] || '').split('; ').length, 2);
+    eq('...beside a Miscues coded count that is not that number',
+       rows[1][rows[0].indexOf('Miscues coded')], '1');
+  }
+  {
+    // The child's copy is handed across the table before a timed read and the
+    // child reads it aloud straight through. Lessons 31 and 35 are eleven
+    // lines long and short-lined enough to earn the full 26pt, so their last
+    // sentence printed alone on a second sheet with the footer — a second
+    // sheet to hand over mid-sentence. Rendered at the real Letter content
+    // box, 18mm margins in: 680 x 920px.
+    const copies = await page.evaluate(() => Object.keys(LESSONS).map(n => {
+      switchLesson(+n);
+      return { n, html: childCopyHtml() };
+    }));
+    const sheet = await browser.newPage();
+    await sheet.emulateMediaType('print');
+    await sheet.setViewport({ width: 680, height: 920 });
+    const over = [];
+    for (const c of copies){
+      await sheet.setContent(c.html, { waitUntil: 'load' });
+      const h = await sheet.evaluate(() => document.body.scrollHeight);
+      if (h > 920) over.push('L' + c.n + ' is ' + h + 'px');
+    }
+    await sheet.close();
+    check('no child\'s copy runs onto a second sheet, on any of the 36 lessons',
+          over.length === 0, over.join(', '));
+    eq('...and the two long ones are still printed in large type',
+       await page.evaluate(() =>
+         [31, 35].map(n => childPassagePt(LESSONS[n].lines, LESSONS[n].title))),
+       [22, 22]);
+    eq('...while a lesson that already fitted is untouched at its full size',
+       await page.evaluate(() =>
+         childPassagePt(LESSONS[20].lines, LESSONS[20].title)), 26);
+  }
+
+  // =========================================================================
   group('Nothing broke while all of the above ran');
   // =========================================================================
   check('still no JavaScript errors after every test',
@@ -1414,6 +2300,33 @@ async function main(){
   srv.close();
 
   // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // How many checks were SUPPOSED to run.
+  //
+  // Several checks sit inside `if (...)` guards, because the thing they inspect
+  // has to exist before they can inspect it. When such a guard is false the
+  // checks inside do not fail — they silently do not happen, and the run still
+  // ends green. That is how a suite quietly shrinks: two runs of this file
+  // reported 267 and then 268 checks, with no FAIL line in either.
+  //
+  // So the count itself is a check. If it moves, either you added checks (put
+  // the new number here, deliberately) or some checks stopped running (find out
+  // why). Both are things you want to be told about.
+  // -------------------------------------------------------------------------
+  const EXPECTED_CHECKS = Number(process.env.EXPECTED_CHECKS || 0);
+  const ran = passed + failures.length;
+  if (EXPECTED_CHECKS && ran !== EXPECTED_CHECKS){
+    failures.push({
+      name: `the suite ran ${ran} checks, but ${EXPECTED_CHECKS} were expected`,
+      detail: ran < EXPECTED_CHECKS
+        ? 'Checks vanished rather than failed — look for an `if (...)` guard that went false.'
+        : 'Checks were added. If that was deliberate, update EXPECTED_CHECKS.',
+    });
+    console.log(`${R}  FAIL${X} expected ${EXPECTED_CHECKS} checks, ran ${ran}`);
+  } else if (!EXPECTED_CHECKS){
+    console.log(`${DIM}  (no EXPECTED_CHECKS set — ran ${ran})${X}`);
+  }
+
   console.log('');
   if (failures.length){
     console.log(`${R}${failures.length} CHECK(S) FAILED${X}  (${passed} passed)`);

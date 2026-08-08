@@ -66,7 +66,11 @@
   #initials{width:80px; text-transform:uppercase; font-weight:bold; letter-spacing:1px}
   .privacy{margin-left:auto; font-size:12.5px; color:var(--c-sc); font-weight:bold}
 
-  main{max-width:1240px; margin:0 auto; padding:22px 22px 130px}
+  /* The bottom padding is a runway for the fixed bar below, and the bar GROWS
+     (coding one cue opens "What they were using"). It was a flat 130px, which
+     the bar outgrew, so the Saved records card ended up permanently underneath
+     it. --runway is kept in step with the real bar height in script below. */
+  main{max-width:1240px; margin:0 auto; padding:22px 22px var(--runway, 130px)}
   .passage-title{font-size:15px; color:var(--muted); margin:0 0 10px}
   .passage-title strong{color:var(--ink); font-size:20px}
   .warnflag{
@@ -74,6 +78,18 @@
     background:var(--bg-rep); color:var(--deepblue); border:1.5px solid var(--blue);
     font-size:12px; font-weight:bold; vertical-align:2px;
   }
+
+  /* WHAT WAS WRONG: the tool names a portrait iPad as the device a teacher
+     actually holds (see the comment on .sitenav below), but the only marking
+     instructions anywhere on the page were the card of keyboard KEYS — which
+     sits 2000px below the fold on a 768x1024 screen and needs a keyboard
+     nobody holding an iPad has. Nothing said a word could be tapped; the only
+     hint was .w{cursor:pointer}, which does not exist on a touch screen. This
+     line sits directly above the passage at every width, so it is the first
+     thing after the heading. Hidden on paper with the rest of the interface. */
+  .taphint{font-size:14px; color:var(--muted); margin:0 0 12px; max-width:62ch}
+  .taphint b{color:var(--ink)}
+  @media print{ .taphint{display:none !important} }
 
   /* Passage on the left, live data on the right */
   .work{display:grid; grid-template-columns:1fr 310px; gap:20px; align-items:start}
@@ -270,14 +286,26 @@
     .prhead h1{font-size:15pt; margin:0}
     .prhead .prwho{font-size:12pt; text-align:right; line-height:1.5}
     .prhead .prwho b{font-size:15pt; letter-spacing:1px}
+    /* Four across, twice down — not eight across. These are eight tiles and
+       the widest key on them is SELF-CORRECTION RATE; as a single flex row
+       with overflow:hidden they could not shrink past their own text, so on
+       Letter the last two ran off the right edge of the paper and on A4 the
+       last three did. WORDS CORRECT/MIN and TIME appear nowhere else on the
+       printed record, so the sheet that reaches the learning specialist simply
+       had no reading rate and no reading time on it, silently. A grid cannot
+       overflow: the columns are a quarter of whatever the paper gives it.
+       The order of the eight is unchanged. */
     .prnums{
-      display:flex; gap:0; margin:14px 0 10px; border:1px solid #999;
+      display:grid; grid-template-columns:repeat(4, 1fr);
+      gap:0; margin:14px 0 10px; border:1px solid #999;
       border-radius:6px; overflow:hidden;
     }
     .prnums div{
-      flex:1; padding:8px 10px; border-right:1px solid #ccc; text-align:center;
+      padding:8px 10px; text-align:center;
+      border-right:1px solid #ccc; border-bottom:1px solid #ccc;
     }
-    .prnums div:last-child{border-right:none}
+    .prnums div:nth-child(4n){border-right:none}
+    .prnums div:nth-child(n+5){border-bottom:none}
     .prnums .v{font-size:16pt; font-weight:bold; line-height:1.2}
     .prnums .k{font-size:8pt; text-transform:uppercase; letter-spacing:.6px; color:#555}
     .prmarks{margin-top:10px; font-size:10.5pt}
@@ -338,6 +366,10 @@
   </div>
 
   <p class="passage-title" id="ptitle"></p>
+
+  <p class="taphint" id="taphint"><b>Tap a word to mark it.</b> The menu that opens
+  has every mark on it. On a keyboard you need two keys: <kbd>Space</kbd> if they
+  read it, <kbd>X</kbd> if they did not.</p>
 
   <div class="work">
     <div id="passage"></div>
@@ -1297,13 +1329,12 @@ const LESSONS = {
  }
 };
 
-// A stranger with no #L link in hand used to land on Lesson 41 — Short Vowels
-// Review (all), the last and hardest item in the set — which is a strange
-// first thing to show someone who has never seen the tool. 15 is the first
-// PASSAGE: a word list would open on the one kind of item that gets no reading
-// level and cannot show cue analysis, which is the tool at its least
-// explanatory. Change this number to move the front door.
-let currentLesson = 15;
+// The front door is the FIRST item in the sequence, because the sequence is the
+// point: a teacher expects lesson 6 before lesson 15, and opening somewhere in
+// the middle quietly says the order does not matter. It used to open on Lesson
+// 41 — the last and hardest item — which is a strange first thing to show
+// anybody. Change this number to move the front door.
+let currentLesson = 6;
 
 
 // Warm marks count against the child, cool ones do not. Self-corrections and
@@ -1424,11 +1455,37 @@ function pauseClock(){
   if (clockState !== 'running') return;
   bank(); clockState = 'paused';
 }
+// What the clock was doing before Finish (or a stop mark) stopped it, so that
+// undoing that gesture puts it back rather than always starting it.
+let stateBeforeFinish = 'idle';
+
 function resumeClock(){
   if (clockState !== 'paused' && clockState !== 'done') return;
+  if (clockState === 'done'){
+    // Reopening used to map 'done' straight to 'running' with no memory of
+    // what came before. Two consequences, both silent:
+    //   - Finish (or E) on a reading that had never STARTED, then Reopen,
+    //     left a clock running from idle. It counted the dead minutes before
+    //     the child began, and the debounce saved a phantom record whose time
+    //     grew forever on the 5-second heartbeat.
+    //   - A teacher who had PAUSED for an interruption, then hit E by mistake
+    //     and corrected it, had the clock quietly restarted during the pause.
+    // Undoing an accident should return the clock to where it was, never
+    // start one that was not running.
+    clockState = stateBeforeFinish === 'idle' ? 'idle'
+               : stateBeforeFinish === 'paused' ? 'paused' : 'running';
+    runningSince = (clockState === 'running') ? Date.now() : null;
+    return;
+  }
   clockState = 'running'; runningSince = Date.now();
 }
 function finish(){
+  // Only remember the state we came FROM. Moving the stop mark calls finish()
+  // again while the clock is already 'done', which used to overwrite the memory
+  // with 'done' itself — so lifting the mark afterwards fell through to
+  // "start running", on a reading that had never begun. The tile then reported
+  // 1360 words per minute for a child who had not read a word, and saved it.
+  if (clockState !== 'done') stateBeforeFinish = clockState;
   if (clockState === 'idle'){ clockState = 'done'; render(); save(); return; }
   bank(); clockState = 'done'; render(); save();
 }
@@ -1443,6 +1500,20 @@ function fmt(ms){
   const s = Math.floor(ms / 1000);
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 }
+// The teacher's own calendar day, as the YYYY-MM-DD a <input type="date">
+// wants. WHAT WAS WRONG: this used to be `rdate.valueAsDate = new Date()`, and
+// the valueAsDate setter reads the instant back out in UTC. So an assessment
+// entered after 5pm in California — or any morning in Sydney — was stamped with
+// the wrong day, and that wrong day then went everywhere: the date box, the
+// printed header, the saved-records row, the stored record and the spreadsheet.
+// Only a date and initials identify a child here, so the date has to be the day
+// the teacher was sitting with them. Read the LOCAL parts, never UTC.
+function todayLocal(){
+  const t = new Date();
+  return t.getFullYear() + '-' +
+         String(t.getMonth() + 1).padStart(2, '0') + '-' +
+         String(t.getDate()).padStart(2, '0');
+}
 
 function mark(i, code){
   if (i < 0 || i >= words.length) return;
@@ -1454,10 +1525,38 @@ function mark(i, code){
   snapshot();
   words[i].code = (code === 'correct') ? null : code;
   if (code !== 'sub') words[i].said = '';
+  // The cue analysis has to die with the mark. "Clear this mark" took the mark
+  // off and left M/S/V on the word — in memory AND in storage — so re-marking
+  // that word later, even on another day after a reload, arrived pre-coded
+  // Meaning + Structure + Visual and the cue tally reported it as the
+  // teacher's judgement. "Clear all marks" has always done this properly.
+  if (code === 'correct') delete words[i].cues;
   render(); save();
+  // If the popover is open on THIS word, redraw it. A teacher who clicked a
+  // word and then reached for the keyboard was left with a popover showing no
+  // mark selected while the word underneath it carried one — the panel
+  // contradicting the passage.
+  if (popFor === i) openPop(i);
 }
-function advance(){ autoStart(); cursorFromClick = false; if (cursor < words.length - 1) cursor++; render(); }
-function retreat(){ if (cursor > 0) cursor--; render(); }
+// `scoring` separates the two things that move the cursor. Space means "read
+// correctly, move on" — a scoring decision about a word the child just read, so
+// it starts the clock. ArrowRight is navigation, and the on-screen legend says
+// so ("← back → forward"). It was starting the assessment clock too, so a
+// teacher lining the cursor up on the first word before the child began was
+// timing the silence. Same trap the popover's "Clear this mark" already fixed.
+function advance(scoring){
+  if (scoring) autoStart();
+  cursorFromClick = false;
+  if (cursor < words.length - 1) cursor++;
+  render();
+}
+// ArrowLeft is navigation exactly as ArrowRight is, so it has to forget the
+// click the same way. It did not: once any word had been tapped, prev() kept
+// answering "the cursor word itself", so the very next S, R or A landed on the
+// word the child had not read yet — over-marking that one and leaving the real
+// miscue unmarked, from a cursor sitting in the identical place as the
+// arrows-only path.
+function retreat(){ cursorFromClick = false; if (cursor > 0) cursor--; render(); }
 
 // --- the numbers -----------------------------------------------------------
 function stats(){
@@ -1613,6 +1712,11 @@ function render(){
   const w = document.getElementById('wcpm');
   if (clockState === 'idle')        w.textContent = 'starts when you begin';
   else if (clockState === 'paused') w.textContent = 'paused';
+  // 'done' has to be tested BEFORE the no-rate-yet case. A reading finished
+  // with under 1.2 seconds on the clock has no rate to report, so it fell
+  // through to "reading…" — the tile naming the one state the clock was not
+  // in, while Pause sat disabled and the button beside it read "Reopen".
+  else if (clockState === 'done' && s.wcpm === null) w.textContent = 'finished';
   else if (s.wcpm === null)         w.textContent = 'reading…';
   else if (isList) w.innerHTML = '<b>' + fmt(ms) + '</b> to read the list'
        + '<br><span style="font-size:12px">rate is not reported for a word '
@@ -1676,9 +1780,25 @@ function paintPrint(){
     cell(fmt(totalMs()), 'Time');
 
   const rows = [];
-  words.forEach(w => {
+  // Two things this table used to get wrong, and both of them only on paper —
+  // the one copy that reaches the learning specialist and that nobody
+  // re-checks against the screen afterwards.
+  //
+  // 1. Nothing past the stop mark counts. stats() above and exportCsv() below
+  //    both stop at `last`; this loop ran to the end of the passage, so a
+  //    reading stopped at word 5 printed a miscue from word 10 directly above
+  //    its own "Errors 1" and "1 of 1 miscues coded".
+  // 2. Cue letters belong to a miscue. A word marked "Wrong word" and coded
+  //    M/V, then re-marked "Self-corrected" when the teacher saw the child fix
+  //    it, keeps those cues in the record — the screen and the spreadsheet
+  //    both refuse to show them (they guard on sub/omit/told), and only the
+  //    paper printed "sit [MV] Self-corrected" beside a cue tally of nothing.
+  const lastRow = (stoppedAt === null) ? words.length - 1 : stoppedAt;
+  words.forEach((w, i) => {
+    if (i > lastRow) return;
     if (!w.code) return;
-    const cl = w.cues ? ['m','s','v'].filter(k => w.cues[k]).join('').toUpperCase() : '';
+    const cl = (w.cues && ['sub','omit','told'].includes(w.code))
+      ? ['m','s','v'].filter(k => w.cues[k]).join('').toUpperCase() : '';
     rows.push('<tr><td><b>' + w.text + '</b>' + (cl ? ' <i>[' + cl + ']</i>' : '') +
               '</td><td>' + MARKNAME[w.code] +
               '</td><td>' + (w.said ? 'read as \u201c' + esc(w.said) + '\u201d' : '') + '</td></tr>');
@@ -1711,8 +1831,48 @@ function paintPrint(){
 // keeps the clock moving without touching any of the marks
 setInterval(() => { if (runningSince !== null) render(); }, 500);
 
+// --- room for the fixed bottom bar -------------------------------------------
+// The bar is pinned to the bottom of the window and it CHANGES HEIGHT: coding a
+// single M/S/V cue opens "What they were using" and takes it from 67px to about
+// 245px. main's bottom padding was a flat 130px, so past that the bar covered
+// the Saved records card completely — at the very bottom of the page the "Open"
+// and "Delete" buttons were underneath it, clicks landed on #cuebox instead,
+// and the only way back was to un-tag the cue. Keep the runway as tall as the
+// bar actually is. Print is unaffected: @media print unpins the bar and resets
+// main's padding, and this only ever sets a custom property.
+function fitStatsRunway(){
+  const h = document.getElementById('stats').offsetHeight;
+  document.documentElement.style.setProperty('--runway', (h + 26) + 'px');
+}
+new ResizeObserver(fitStatsRunway).observe(document.getElementById('stats'));
+fitStatsRunway();
+
 // --- popover ---------------------------------------------------------------
 let popFor = null;
+
+// Put the open menu under its word and inside the screen. The old line here was
+// `Math.min(left, window.innerWidth - 270)`: 270 was a guess at the menu's
+// width, and the menu is 319px wide, so on an iPad in portrait — the device
+// this tool is written for — the "Appealed" button hung off the right edge and
+// the whole page could be dragged sideways. Measure the menu instead of
+// guessing it, and leave a small margin on both sides.
+function placePop(i){
+  const el = passageEl.querySelector('.w[data-i="' + i + '"]');
+  if (!el) return false;
+  const r = el.getBoundingClientRect();
+  const room = document.documentElement.clientWidth - pop.offsetWidth - 8;
+  pop.style.left = (window.scrollX + Math.max(8, Math.min(r.left, room))) + 'px';
+  pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
+  return true;
+}
+// Rotating the iPad reflows the passage, but the menu kept its old absolute
+// coordinates — it drifted a full line away and hung under a different word
+// than the one it would actually mark. Follow the word; if the word is gone,
+// close rather than point at nothing.
+window.addEventListener('resize', () => {
+  if (popFor !== null && !placePop(popFor)) closePop();
+});
+
 function openPop(i){
   popFor = i;
   const el = passageEl.querySelector('.w[data-i="' + i + '"]');
@@ -1720,10 +1880,7 @@ function openPop(i){
   // with the keyboard fires no document click, so closePop() never ran and the
   // next code button threw on a null span.
   if (!el){ closePop(); return; }
-  const r = el.getBoundingClientRect();
   pop.style.display = 'block';
-  pop.style.left = Math.min(r.left + window.scrollX, window.innerWidth - 270) + 'px';
-  pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
   saidbox.value = words[i].said || '';
   saidWasBlank = !saidbox.value.trim();
   // M/S/V only applies to a miscue. Showing it on an unmarked word invites a
@@ -1739,6 +1896,9 @@ function openPop(i){
     b.style.background = on ? getComputedStyle(document.documentElement)
       .getPropertyValue('--c-' + b.dataset.code) : '';
   });
+  // Placed LAST, so the menu is measured at the width it will actually have —
+  // the Cue used row is shown or hidden a few lines above this.
+  placePop(i);
 }
 function closePop(){ pop.style.display = 'none'; popFor = null; }
 
@@ -1809,11 +1969,14 @@ document.addEventListener('keydown', e => {
   // is a printed record. A modified key is never a marking key.
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const k = e.key.toLowerCase();
-  if (k === ' ' || e.key === 'ArrowRight'){ e.preventDefault(); advance(); return; }
+  // Space scores the word as read correctly and starts the clock; the arrow
+  // only moves the cursor.
+  if (k === ' '){ e.preventDefault(); advance(true); return; }
+  if (e.key === 'ArrowRight'){ e.preventDefault(); advance(false); return; }
   if (e.key === 'ArrowLeft'){ e.preventDefault(); retreat(); return; }
-  if (k === 'x'){ e.preventDefault(); mark(cursor, 'sub');  advance(); return; }
-  if (k === 'o'){ e.preventDefault(); mark(cursor, 'omit'); advance(); return; }
-  if (k === 't'){ e.preventDefault(); mark(cursor, 'told'); advance(); return; }
+  if (k === 'x'){ e.preventDefault(); mark(cursor, 'sub');  advance(true); return; }
+  if (k === 'o'){ e.preventDefault(); mark(cursor, 'omit'); advance(true); return; }
+  if (k === 't'){ e.preventDefault(); mark(cursor, 'told'); advance(true); return; }
   if (k === 's'){ e.preventDefault(); mark(prev(), 'sc');     return; }
   if (k === 'r'){ e.preventDefault(); mark(prev(), 'rep');    return; }
   if (k === 'a'){ e.preventDefault(); mark(prev(), 'appeal'); return; }
@@ -1860,7 +2023,14 @@ function prev(){
 
 document.getElementById('pausebtn').addEventListener('click', togglePause);
 document.getElementById('finishbtn').addEventListener('click', () => {
-  if (clockState === 'done'){ resumeClock(); render(); save(); }   // reopen
+  if (clockState === 'done'){
+    // Reopening a reading that was ended with the stop mark used to restart the
+    // clock and LEAVE the mark in place, so the rate's denominator grew for
+    // ever against a word count frozen at the stop. Reopening means the child
+    // is reading on; the mark that ended it has to come off with it.
+    if (stoppedAt !== null){ snapshot(true); stoppedAt = null; }
+    resumeClock(); render(); save();
+  }
   else finish();
 });
 
@@ -1929,7 +2099,15 @@ function say(msg, ms){
 // `quiet` is for the heartbeat below: it keeps the stored reading time honest
 // without flashing "Saved on this laptop" at the teacher every few seconds.
 function writeRecord(quiet){
-  if (!hasContent()) return;
+  // `!recordId` matters. hasContent() is only there to stop a blank record
+  // being BORN; it was also stopping an existing one being CORRECTED. Clear
+  // all marks on a record with no initials, notes or retell emptied the last
+  // thing hasContent() could see, so this returned and left the pre-clear
+  // marks in storage: the screen said 100% and 0 errors while the saved-records
+  // row, and the exported spreadsheet, still said 95% and 3 errors — for a
+  // button whose own message promises the clear is reversible. A record that
+  // already exists is rewritten whatever is left in it.
+  if (!hasContent() && !recordId) return;
   if (!recordId) recordId = newId();
   const st = stats();
     const rec = {
@@ -1940,7 +2118,7 @@ function writeRecord(quiet){
       retellText: document.getElementById('retell').value,
       retell: retellLevel,
       words, cursor, stoppedAt, insertions, insertAt,
-      elapsed: totalMs(), clockState,
+      elapsed: totalMs(), clockState, stateBeforeFinish,
       updated: new Date().toISOString(),
       accuracy: Math.round(st.acc), errors: st.errors, read: st.read
     };
@@ -1949,10 +2127,19 @@ function writeRecord(quiet){
   // "Saved", and a teacher marking a whole record that was never stored.
   try {
     localStorage.setItem(recKey(recordId), JSON.stringify(rec));
-    const list = readIndex().filter(e => e.id !== recordId);
-    list.unshift({ id: rec.id, lesson: rec.lesson, initials: rec.initials,
-                   date: rec.date, updated: rec.updated,
-                   accuracy: rec.accuracy, errors: rec.errors, read: rec.read });
+    const list = readIndex();
+    const entry = { id: rec.id, lesson: rec.lesson, initials: rec.initials,
+                    date: rec.date, updated: rec.updated,
+                    accuracy: rec.accuracy, errors: rec.errors, read: rec.read };
+    // A record that is already in the list stays WHERE IT IS. This used to
+    // filter the old entry out and unshift the new one, so every save —
+    // including the 5-second heartbeat — jumped the open record to the top of
+    // the Saved records list while the teacher was looking at it. Open an older
+    // child, type one letter in Notes, and 400ms later the Delete button under
+    // your mouse belonged to a different child. Only a brand new record goes on
+    // top, where it is expected.
+    const at = list.findIndex(e => e && e.id === recordId);
+    if (at >= 0) list[at] = entry; else list.unshift(entry);
     writeIndex(list);
   } catch (err) {
     say('THIS RECORD IS NOT BEING SAVED — this browser refused to store it ' +
@@ -2080,6 +2267,11 @@ function openRecord(id){
   document.getElementById('lessonpick').value = d.lesson;
   build();
   words = d.words; cursor = d.cursor || 0;
+  // The saved cursor is a POSITION, not a tap. Reopening a record while
+  // cursorFromClick was still true from a word tapped in the record before it
+  // made the first S, R or A land on the cursor word instead of the word just
+  // read. Opening a record is not clicking a word.
+  cursorFromClick = false;
   // A stop mark outside the passage made stats() count from a negative index:
   // a record with a real substitution in it reported "0 words read, 100%,
   // Independent" with every word greyed out. Keep it inside the passage or
@@ -2101,6 +2293,15 @@ function openRecord(id){
   // paused; the teacher presses Resume if they mean to carry on.
   clockState = (d.clockState === 'running') ? 'paused'
              : (d.clockState || (elapsed > 0 ? 'paused' : 'idle'));
+  // stateBeforeFinish lives only in memory, so after a reload it was back to
+  // its default of 'idle' — and pressing Reopen on a finished record then put
+  // the clock into 'idle' with time still on it: the screen said "starts when
+  // you begin" and Pause went dead, while the printed sheet on the same page
+  // reported a completed reading rate. Reconstruct it from the record: time on
+  // the clock means the child had been reading.
+  stateBeforeFinish = (d.stateBeforeFinish)
+    ? d.stateBeforeFinish
+    : (elapsed > 0 ? 'paused' : 'idle');
   history = [];
   document.getElementById('initials').value = d.initials || '';
   document.getElementById('rdate').value = d.date || '';
@@ -2124,7 +2325,7 @@ function newRecord(skipFlush){
   document.getElementById('notes').value = '';
   document.getElementById('retell').value = '';
   retellLevel = null; paintRetell();
-  document.getElementById('rdate').valueAsDate = new Date();
+  document.getElementById('rdate').value = todayLocal();   // local day, not UTC
   paintTitle(); paintNote(); render(); paintRecords();
 }
 
@@ -2149,6 +2350,16 @@ function deleteRecord(id){
 function paintRecords(){
   const host = document.getElementById('records');
   const list = readIndex();
+  // Every save called this, and this threw away every row and every button and
+  // built new ones. A press whose mousedown and mouseup straddled a rebuild —
+  // and the 5-second reading-time heartbeat rebuilt the list twice a minute
+  // throughout every reading — produced no click at all: the button went down,
+  // came up, and nothing happened, with no message. Nothing here depends on the
+  // rebuild, so only rebuild when what is on screen would actually differ.
+  const sig = JSON.stringify([recordId, list.map(e => e && [e.id, e.initials,
+                              e.lesson, e.date, e.read, e.accuracy])]);
+  if (host.dataset.sig === sig && host.children.length) return;
+  host.dataset.sig = sig;
   if (!list.length){
     host.innerHTML = '<p class="norecs">No saved records yet. One is kept for ' +
                      'every child you assess — nothing overwrites anything.</p>';
@@ -2192,7 +2403,14 @@ document.getElementById('clearmarksbtn').addEventListener('click', () => {
       6000);
 });
 
-document.getElementById('clearbtn').addEventListener('click', newRecord);
+// () => newRecord(), NOT newRecord. Passed directly as a listener, the click
+// event itself arrives as the skipFlush argument — and an event object is
+// truthy, so `if (!skipFlush) flushSave()` never ran and this button abandoned
+// the open record WITHOUT writing the pending 400ms of work. Mark a word, type
+// the initials, press this: the whole record was gone. Introduced the same day
+// skipFlush was added, for the delete fix, and invisible because the parameter
+// is optional.
+document.getElementById('clearbtn').addEventListener('click', () => newRecord());
 
 // --- the child's copy --------------------------------------------------------
 // The teacher marks on the screen; the child reads from paper. The tool printed
@@ -2206,8 +2424,11 @@ document.getElementById('clearbtn').addEventListener('click', newRecord);
 // same elements from two directions, and the failure would be a specialist
 // receiving a sheet with no marks on it. A separate document cannot do that.
 //
-// Type is deliberately large and the sheet is allowed to run onto a second page.
-// Shrinking a child's reading text to save paper is not a saving.
+// Type is deliberately large. Shrinking a child's reading text to save paper is
+// not a saving — but it IS worth a point or two of type to keep the story on
+// one sheet, because the child reads it aloud straight through while the
+// teacher times them, and being handed a second sheet mid-sentence is an
+// interruption the sheet caused. See CHILD_PAGE_PX below.
 const CHILD_ESC = s => String(s).replace(/[<>&]/g,
   c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
 
@@ -2235,6 +2456,37 @@ function childCopyPt(strings, titleText){
   return Math.max(12, Math.min(CHILD_MAX_PT, Math.floor(px * 0.75)));
 }
 
+// The printable HEIGHT, the same way round: Letter is 279mm tall against A4's
+// 297, so this time Letter sets the limit. Minus the same 18mm page margins.
+const CHILD_PAGE_PX = (279 - 36) / 25.4 * 96;
+
+// What one line of THIS sheet costs, as a multiple of the body font size, read
+// straight off the stylesheet in childCopyHtml(): every <p> is a 2.0
+// line-height plus a .35em margin under it. The fixed part is the title —
+// 1.25em at line-height 1.35 with a 1.1em margin under it — plus the 2em
+// margin above the footer, less the last paragraph's margin, which collapses
+// into it. Checked against a real Chrome render of all 27 passages: exact.
+const CHILD_LINE_EM = 2.35;
+const CHILD_FIXED_EM = 2.7;
+// The footer is fixed at 8.5pt over a 1px rule and 6px of padding. Three lines
+// of it, which is one more than the longest skill name has ever needed.
+const CHILD_FOOT_PX = 3 * (8.5 / 0.75) * 1.5 + 7;
+
+// Width alone used to decide the size, so Lessons 31 and 35 — eleven lines
+// each, and short enough lines to earn the full 26pt — printed 1037px and
+// 1054px onto a 920px page, putting their last sentence alone on a second
+// sheet with the footer. Shrink until the whole story fits one page. Only the
+// two long lessons move, and they land at 22pt, still larger than any reading
+// book. Word lists are not sized this way: their word rows wrap on purpose, so
+// the line count is not known in advance — and at 534px they have never come
+// near the bottom of the page.
+function childPassagePt(lines, titleText){
+  let pt = childCopyPt(lines, titleText);
+  const ems = CHILD_FIXED_EM + CHILD_LINE_EM * lines.length;
+  while (pt > 12 && (pt / 0.75) * ems + CHILD_FOOT_PX > CHILD_PAGE_PX) pt--;
+  return pt;
+}
+
 function childCopyHtml(){
   const L = LESSONS[currentLesson];
   let body;
@@ -2258,7 +2510,7 @@ function childCopyHtml(){
       return '<h2>' + CHILD_ESC(label) + '</h2>' + items;
     }).join('');
   } else {
-    pt = childCopyPt(L.lines, L.title);
+    pt = childPassagePt(L.lines, L.title);
     body = '<h1>' + CHILD_ESC(L.title) + '</h1>' +
            L.lines.map(l => '<p>' + CHILD_ESC(l) + '</p>').join('');
   }
@@ -2339,14 +2591,30 @@ function exportCsv(){
                 'Accuracy %','Level','Error rate','Self-correction rate',
                 'Words correct per min','Time','Wrong word','Skipped','Told',
                 'Self-corrected','Repeated','Appealed','Added words',
-                'Miscues','Cue M','Cue S','Cue V','Miscues coded',
+                // "Every mark", not "Miscues". This column holds one entry per
+                // mark of any kind, self-corrections and repetitions and
+                // appeals included — which is exactly what the printed table
+                // holds and exactly what the printed table calls itself. Named
+                // "Miscues", it invited a specialist to count the cell and get
+                // 5 for a record the screen, the paper and the "Miscues coded"
+                // column beside it all call 4. The list is right; the name was
+                // not. Nothing here is a miscue count — those are the Errors
+                // and Miscues coded columns.
+                'Every mark','Cue M','Cue S','Cue V','Miscues coded',
                 'Retell','Retell notes','Teacher notes'];
   const rows = [head.map(csvCell).join(',')];
 
+  // A row can be listed while its body is gone or half-written — the browser
+  // evicting storage does exactly this. Both cases used to `return` in silence:
+  // three children on screen, two in the spreadsheet, no message of any kind,
+  // and a file downloaded anyway. Open already refuses that clearly; Export
+  // must too. Count them and say so.
+  let unreadable = 0;
+
   list.forEach(e => {
     let d;
-    try { d = JSON.parse(localStorage.getItem(recKey(e.id))); } catch (err) { return; }
-    if (!d) return;
+    try { d = JSON.parse(localStorage.getItem(recKey(e.id))); } catch (err) { d = null; }
+    if (!d){ unreadable++; return; }
     const L = LESSONS[d.lesson] || { skill:'', title:'' };
     const w = d.words || [];
     const last = (d.stoppedAt === null || d.stoppedAt === undefined) ? w.length - 1 : d.stoppedAt;
@@ -2409,12 +2677,35 @@ function exportCsv(){
     ].map(csvCell).join(','));
   });
 
+  // Nothing readable at all: refuse, rather than hand over a file with a
+  // header row and no children in it, which reads like an empty class.
+  if (rows.length === 1){
+    alert('None of the ' + list.length + ' listed record' +
+          (list.length === 1 ? '' : 's') + ' could be read from this laptop, ' +
+          'so nothing has been exported. The browser may have cleared its ' +
+          'storage. The rows are still listed, and nothing has been changed.');
+    return;
+  }
+
   const csv = '\ufeff' + rows.join('\r\n');       // BOM so Excel reads accents
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'running-records-' +
-    (new Date().toISOString().slice(0, 10)) + '.csv';
+  a.download = 'running-records-' + todayLocal() + '.csv';   // same local day the
+                                                             // records are stamped with
   document.body.appendChild(a); a.click(); a.remove();
+
+  // Said after the download, so the file is already saved when the teacher
+  // reads it — and said twice on purpose: the alert cannot be missed, the
+  // message stays on the page after it is dismissed.
+  if (unreadable){
+    const many = unreadable > 1;
+    const msg = unreadable + ' listed record' + (many ? 's are' : ' is') +
+      ' MISSING from this spreadsheet: ' + (many ? 'their contents are' : 'its contents are') +
+      ' no longer readable on this laptop. ' +
+      (list.length - unreadable) + ' of ' + list.length + ' were exported.';
+    alert(msg);
+    say(msg, 60000);
+  }
 }
 document.getElementById('exportbtn').addEventListener('click', exportCsv);
 
@@ -2519,6 +2810,13 @@ function switchLesson(n){
     const n = +e.target.value;
     if (!LESSONS[n] || n === currentLesson) return;
     switchLesson(n);
+    // Hand the keyboard back. Choosing the lesson is the teacher's FIRST
+    // action, and it leaves focus sitting on the dropdown — where the marking
+    // keys are deliberately ignored, so that they cannot fire from a control.
+    // The result was that the very next X or O did nothing at all, silently,
+    // right at the start of an assessment. Blurring costs nothing here: the
+    // teacher has finished with the picker the moment they have picked.
+    e.target.blur();
   };
   sel.addEventListener('change', onPick);
   sel.addEventListener('input', onPick);
@@ -2534,9 +2832,32 @@ function switchLesson(n){
 paintTitle();
 paintNote();
 build();
-document.getElementById('rdate').valueAsDate = new Date();
+document.getElementById('rdate').value = todayLocal();     // local day, not UTC
 paintRecords();
 render();
+
+// WHAT WAS WRONG: worked-example.html's button says "Open Maya's record in the
+// tool", writes the record to storage — and then linked here as #L20, which is
+// a BLANK Lesson 20: no marks, 100%, Independent, 0:00. A reader who had just
+// been shown 93% and four errors arrived at a screen contradicting every number
+// in the article. There was no way to link to a RECORD, only to a lesson. There
+// is now: #R<id> opens that record, and openRecord() says so itself if the
+// record is missing, unreadable or no longer fits its lesson.
+{
+  const openFromHash = () => {
+    const wanted = /^#R(.+)$/.exec(location.hash);
+    const id = wanted && decodeURIComponent(wanted[1]);
+    // The id guard is not decoration: arriving at the record you already have
+    // open would otherwise flush and rebuild it under you.
+    if (id && id !== recordId) openRecord(id);
+  };
+  openFromHash();
+  // Both routes, like the #L handling above. Changing only the hash is a
+  // same-document navigation — the page does not reload and this script does
+  // not run again — so a link to #R followed from index.html itself would
+  // change the address bar and nothing else.
+  window.addEventListener('hashchange', openFromHash);
+}
 </script>
 </body>
 </html>

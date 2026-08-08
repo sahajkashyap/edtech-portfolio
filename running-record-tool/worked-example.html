@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>One child, one reading &mdash; a worked example</title>
+<title>Word by Word &mdash; one child, one reading</title>
 <style>
  :root{--ink:#1a1a1a;--cream:#faf6ee;--paper:#fffdf8;--rule:#d9c7a8;--blue:#378ADD;
        --deepblue:#2966bb;--muted:#8a6d3b;--sub:#b23b00;--sc:#639922}
@@ -144,7 +144,11 @@ document.getElementById('load').addEventListener('click', () => {
                    date: REC.date, updated: REC.updated, accuracy: REC.accuracy,
                    errors: REC.errors, read: REC.read });
     localStorage.setItem('running-record-index', JSON.stringify(rest));
-    location.href = 'index.html#L' + REC.lesson;
+    // #R, not #L. This used to link to the LESSON, so the button labelled
+    // "Open Maya's record in the tool" landed the reader on a blank Lesson 20
+    // — 0 marks, 100%, Independent — with her record sitting unopened in the
+    // Saved records list below. The record id opens the record.
+    location.href = 'index.html#R' + encodeURIComponent(REC.id);
   } catch (e) {
     alert('This browser would not let the page save the example (private window, '
         + 'or storage is full). The tool itself will have the same trouble.');
