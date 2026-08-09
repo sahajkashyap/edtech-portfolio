@@ -9,8 +9,10 @@ You cannot write a story from five words.
 Run:  python3 build_index.py   -> writes index.html
 """
 
+import html
 import json
 import pathlib
+import sys
 
 HERE = pathlib.Path(__file__).parent
 OUT = HERE / "index.html"
@@ -99,10 +101,10 @@ section{margin-top:2.4rem}
 .card .t{font-weight:600;font-size:.95rem;margin:.15rem 0;color:var(--muted)}
 .card .s{font-size:.75rem;color:var(--muted)}
 .card .print{margin-top:.5rem}
-.card .print a{display:inline-block;background:var(--accent);color:#fff;
+.card .print a,.card .print span{display:inline-block;background:var(--accent);color:#fff;
  font-family:var(--mono);font-size:.72rem;font-weight:600;padding:.32rem .7rem;
  border-radius:6px;text-decoration:none}
-.card .print a:hover{filter:brightness(1.15)}
+.card .print a:hover,a.card.letter:hover .print span{filter:brightness(1.15)}
 details.card{cursor:pointer}
 details.card summary{list-style:none;cursor:pointer}
 details.card summary::-webkit-details-marker{display:none}
@@ -113,9 +115,12 @@ details.card .warm{margin-top:.45rem;font-size:.72rem;color:var(--muted);font-fa
 details.card[open]{border-color:var(--accent)}
 details.card .tnote{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--warn);cursor:text}
 .card.none{opacity:.72;border-style:dashed}
-.card.letter{border-style:solid}
-.card.letter .n a{color:inherit;text-decoration:none}
-.card.letter .n a:hover{text-decoration:underline}
+/* The whole letter card is one <a> now, so it needs the pointer cursor a story
+   card gets from its <summary>. It used to be a plain div whose only live spot
+   was the 81x20px "Lesson 1" text — invisible as a link, and the page said
+   "Click them like any other lesson" twice while 15 real clicks on the card
+   body did nothing at all. Do not shrink the click target back to the title. */
+.card.letter{border-style:solid;cursor:pointer}
 footer{margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem;font-size:.82rem;color:var(--muted)}
 /* The one thing this page says on a phone. This is a desktop page on purpose:
    you come here to print letter-size paper, and nobody prints from a phone.
@@ -158,12 +163,66 @@ def sheet_pages(n):
     return f.read_text().count('class="page') if f.exists() else 0
 
 
+def check_sheets_match(passages):
+    """Refuse to build an index that disagrees with the packets it links to.
+
+    Two ways this page used to lie, both silently and both with exit code 0:
+
+    1. A passage record with no sheet file still got a blue "Print this sheet"
+       button, so a parent clicked it and landed on a 404. The letter-and-sound
+       branch below always guarded against this with .exists(); the passage
+       branch never did.
+
+    2. The card's preview and the printed sheet are two separately saved
+       copies. Edit a passage, rebuild only the index (the documented step),
+       and the card previews "Mud Hog" while its button prints "Mud Pig" — the
+       child reads a different story than the grown-up previewed. Nothing in
+       the toolchain noticed: check_all.py only measures page heights.
+
+    So before anything is written, every passage's title, every story line and
+    every warm-up word is looked for INSIDE its sheet file, escaped the same
+    way build_sheet.py wrote them. Any miss stops the build with the exact
+    command that fixes it. Refusing beats warning here: a warning scrolls past,
+    and the index this script writes is the page that makes the promises.
+    """
+    problems = []
+    for n in sorted(passages):
+        spec = passages[n]
+        f = HERE / "sheets" / f"lesson-{n:03d}.html"
+        if not f.exists():
+            problems.append(
+                f"Lesson {n}: there is a passage record but no printable sheet, so its\n"
+                f"    Print button would open a 404 page.")
+            continue
+        sheet = f.read_text()
+        wanted = [spec["title"]] + list(spec["lines"]) + list(spec["warmup"])
+        stale = [t for t in wanted
+                 if html.escape(str(t), quote=False) not in sheet]
+        if stale:
+            problems.append(
+                f"Lesson {n}: the passage record and the printable sheet disagree, so the\n"
+                f"    card would preview a different story than its button prints.\n"
+                f"    Not found in the sheet: " +
+                "; ".join(repr(t) for t in stale[:3]) +
+                ("" if len(stale) <= 3 else f" (and {len(stale) - 3} more)"))
+    if problems:
+        print("NOT writing index.html — it would disagree with the printable sheets.\n")
+        for p in problems:
+            print(f"  {p}")
+        print("\nTo fix, rebuild each sheet from its passage record, then run this again:")
+        for p in problems:
+            n = int(p.split(":")[0].split()[1])
+            print(f"    python3 build_sheet.py passages/lesson-{n:03d}.json")
+        sys.exit(1)
+
+
 def build():
     sounds = json.loads((HERE / "sound-list.json").read_text())["lessons"]
     passages = {}
     for f in sorted((HERE / "passages").glob("lesson-*.json")):
         spec = json.loads(f.read_text())
         passages[spec["lesson"]] = spec
+    check_sheets_match(passages)
 
     units, order = {}, []
     for L in sounds:
@@ -202,13 +261,23 @@ def build():
                 # yields no readable word at all -- so they get letter-and-sound
                 # sheets instead. They are real packets, not gaps, and the index
                 # links them like any other.
+                #
+                # The WHOLE card is the link, on purpose. It used to be a plain
+                # div with a link hidden on the lesson-number text: the page
+                # said "Click them like any other lesson", and a click anywhere
+                # on the card body did nothing. There is no story to preview
+                # here, so "like any other lesson" means the card opens the
+                # printable packet -- in a new tab, the same way Print this
+                # sheet does, so the index is never navigated away from. The
+                # blue button inside is a <span>, not a second <a>: a link may
+                # not contain a link, and both would go to the same place.
                 kind = "Blending &mdash; first words" if n == 5 else "Letter and sound"
-                body += (f'<div class="card letter">'
-                         f'<div class="n"><a href="sheets/lesson-{n:03d}.html">Lesson {n}</a></div>'
+                body += (f'<a class="card letter" href="sheets/lesson-{n:03d}.html" '
+                         f'target="_blank" rel="noopener">'
+                         f'<div class="n">Lesson {n}</div>'
                          f'<div class="t">{kind}</div>'
                          f'<div class="s">{L["skill"]}</div>'
-                         f'<div class="print"><a href="sheets/lesson-{n:03d}.html" '
-                         f'target="_blank" rel="noopener">Print this sheet</a></div></div>')
+                         f'<div class="print"><span>Print this sheet</span></div></a>')
             else:
                 body += (f'<div class="card none">'
                          f'<div class="n">Lesson {n}</div>'

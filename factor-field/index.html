@@ -371,7 +371,12 @@
   .stretch-btn:hover { border-color: var(--clay); transform: translateX(2px); }
   .stretch-go { font-weight: 800; font-size: .82rem; color: var(--clay); white-space: nowrap; }
   .tbl-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 8px; }
-  .tbl-cell { border-radius: 12px; padding: 10px 4px; text-align: center; color: #22303a; font-weight: 700; }
+  /* print-color-adjust: the map's whole meaning lives in these background
+     colours, and browsers drop backgrounds by default when printing ("background
+     graphics" is unticked). Without this a printed report showed twelve white
+     boxes under a legend explaining four colours that were not there. */
+  .tbl-cell { border-radius: 12px; padding: 10px 4px; text-align: center; color: #22303a; font-weight: 700;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .tbl-cell .num { font-size: 1.05rem; }
   .tbl-cell .pct { font-size: .8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
   .tc-strong { background: #9fd3ab; }
@@ -501,12 +506,21 @@
 
   /* ---------- Print ---------- */
   @media print {
-    .app-header, .nav, .ws-controls, .ws-actions, .no-print, .overlay, .panel { display: none !important; }
+    /* WHAT WAS WRONG: the toast pill was not in this list, so "Share link
+       copied!" printed as a solid black pill across the worksheet — and on the
+       progress report it sat on top of the grown-ups summary and hid two lines. */
+    .app-header, .nav, .ws-controls, .ws-actions, .no-print, .overlay, .panel, .toast { display: none !important; }
     body { background: #fff; }
     main { max-width: none; padding: 0; }
     .card { box-shadow: none; padding: 0; margin: 0; }
     .worksheet { border: none; padding: 0; margin: 0; }
     .answer-key { page-break-before: always; }
+    /* WHAT WAS WRONG: nothing kept a problem in one piece, so on the picture
+       worksheets the page break fell inside a problem — the dot array printed
+       at the foot of one sheet and its answer line at the top of the next. */
+    .ws-prob, .stat-tile, .tbl-cell { break-inside: avoid; page-break-inside: avoid; }
+    /* "▶ practice the 7s" is a tap target, not information — keep it off paper. */
+    .stretch-go { display: none !important; }
     /* A printed progress report used to carry no name and no date at all, so a
        sheet on a desk belonged to nobody. The live inputs are no use on paper —
        swap them for the plain text line, which always prints. */
@@ -624,9 +638,15 @@
     font-size: .88rem; padding: 6px 13px; border-radius: 20px; font-family: var(--font); }
   .sm-spd.on { border-color: var(--purple); color: var(--purple); }
   .sm-controls { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
-  /* the problem, with a rail of controls right beside it (no scrolling up & down) */
-  .sm-play-area { display: flex; align-items: flex-start; justify-content: center; gap: 20px;
-    flex-wrap: wrap; margin: 6px 0 4px; }
+  /* the problem, with a rail of controls right beside it (no scrolling up & down).
+     wrap-REVERSE, on purpose: on screens too narrow for the rail to sit beside
+     the stage (an iPad in portrait), plain wrap dropped it BELOW the stage —
+     332px under the fold, so the screen said "Press Show me how" and showed no
+     such button. Reversed, the rail lands ABOVE the stage instead. */
+  .sm-play-area { display: flex; align-items: flex-end; justify-content: center; gap: 20px;
+    flex-wrap: wrap-reverse; margin: 6px 0 4px; }
+  /* (align-items flips with wrap-reverse: flex-end here is the visual TOP,
+     which keeps the side-by-side desktop layout exactly as it was.) */
   #smStageWrap { overflow-x: auto; flex: 0 1 auto; }   /* safety: very wide sums scroll instead of breaking */
   .sm-rail { display: flex; flex-direction: column; gap: 12px; width: 196px; flex: 0 0 auto; padding-top: 24px; }
   .sm-rail .btn { width: 100%; }
@@ -751,7 +771,8 @@
         <button data-diff="medium" class="on">Medium</button>
         <button data-diff="hard">Hard</button>
       </div>
-      <p class="small-note mt">Easy = find the answer. Medium = sometimes a missing number. Hard = bigger numbers &amp; trickier blanks.</p>
+      <!-- honest copy: difficulty changes WHICH number is hidden, not how big they are -->
+      <p class="small-note mt">Easy = find the answer. Medium = sometimes a missing number. Hard = a missing number most of the time.</p>
     </div>
 
     <button class="btn teal" id="saveSettings" style="width:100%">Save</button>
@@ -810,6 +831,13 @@ function lsGet(key) {
   try { return localStorage.getItem(key); } catch (e) { storageBroke(); return null; }
 }
 function lsSet(key, value) {
+  // WHAT WAS WRONG: when the disk filled up mid-session, the big mq_stats write
+  // failed but the tiny mq_stars write kept succeeding — so after a reload the
+  // report said "10 questions answered" and "70 stars earned", with the warning
+  // banner gone. Once one write has failed, stop writing altogether: the banner
+  // says nothing is being saved, and now that is true for every key, so what is
+  // on disk stays consistent with itself.
+  if (!storageOK) return false;
   try { localStorage.setItem(key, value); return true; } catch (e) { storageBroke(); return false; }
 }
 function lsDel(key) {
@@ -925,14 +953,26 @@ function todayISO() {
   return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
          "-" + String(d.getDate()).padStart(2, "0");
 }
+// WHAT WAS WRONG, twice over, about the date:
+// 1. The first time anything saved `who`, today's date was written into it and
+//    never refreshed — so a report printed three months later still carried the
+//    date of that first save, for a different child.
+// 2. Deliberately clearing the Date box stored "" but printed TODAY's date — a
+//    date the teacher had just removed on purpose.
+// So the stored date now means "a date the teacher actually chose" and nothing
+// else. `dateChosen` remembers whether they touched the box at all: untouched
+// means "today, worked out fresh at print time"; chosen-and-emptied means the
+// paper shows no date rather than one nobody picked.
 function loadWho() {
   try {
     const w = JSON.parse(lsGet("mq_who"));
     if (w && typeof w === "object") {
-      return { initials: w.initials || "", date: w.date || todayISO(), sample: !!w.sample };
+      return { initials: typeof w.initials === "string" ? w.initials : "",
+               date: typeof w.date === "string" ? w.date : "",
+               dateChosen: !!w.dateChosen, sample: !!w.sample };
     }
   } catch (e) {}
-  return { initials: "", date: todayISO(), sample: false };
+  return { initials: "", date: "", dateChosen: false, sample: false };
 }
 function saveWho() { lsSet("mq_who", JSON.stringify(who)); }
 
@@ -940,7 +980,10 @@ function saveWho() { lsSet("mq_who", JSON.stringify(who)); }
    Clearing used to be final on a single click. The old progress is kept in one
    spare slot so the "Bring it back" button on the report can undo it. */
 function stashUndo() {
-  lsSet("mq_undo", JSON.stringify({ stats: stats, stars: stars, who: who }));
+  // Returns whether the copy was actually kept — in a browser that cannot save
+  // (private window, full disk) it was NOT, and the caller must not promise a
+  // "Bring it back" button that will never exist.
+  return lsSet("mq_undo", JSON.stringify({ stats: stats, stars: stars, who: who }));
 }
 function readUndo() {
   try { const u = JSON.parse(lsGet("mq_undo")); if (u && u.stats && u.stats.facts) return u; } catch (e) {}
@@ -949,8 +992,24 @@ function readUndo() {
 function undoReset() {
   const u = readUndo();
   if (!u) return false;
+  // WHAT WAS WRONG: this button never expired. Days later, with a new child's
+  // practice on screen, one click silently replaced that practice with the old
+  // snapshot and deleted the slot — the newer work was gone for good. Now it
+  // asks first when there is anything to lose, and SWAPS instead of deleting,
+  // so pressing it again always brings the other session back.
+  if (totalAnswered() > 0) {
+    if (!confirm("Bring back the practice you cleared?\n\n" +
+                 "The " + totalAnswered() + " answered questions on here right now will be put " +
+                 "aside in its place — press this button again to swap back.")) return false;
+    const current = JSON.stringify({ stats: stats, stars: stars, who: who });
+    stats = u.stats;
+    who = u.who || { initials: "", date: "", dateChosen: false, sample: false };
+    saveStats(); saveWho(); setStars(u.stars || 0);
+    lsSet("mq_undo", current);
+    return true;
+  }
   stats = u.stats;
-  who = u.who || { initials: "", date: todayISO(), sample: false };
+  who = u.who || { initials: "", date: "", dateChosen: false, sample: false };
   saveStats(); saveWho(); setStars(u.stars || 0);
   lsDel("mq_undo");
   return true;
@@ -958,6 +1017,15 @@ function undoReset() {
 function factKey(a, b) { return Math.min(a, b) + "x" + Math.max(a, b); }
 function recordAttempt(a, b, correct, usedHint) {
   if (!a || !b) return;
+  // WHAT WAS WRONG: playing while the sample student was loaded poured every
+  // real answer and every star straight into Maya Torres' made-up record — the
+  // report then said "Sample student" over a mix of invented and real practice.
+  // The first real answer clears her out first, and says so.
+  if (who.sample) {
+    clearSample();
+    paintSampleBar();
+    toast("That was the sample student — this practice is yours now. ⭐");
+  }
   const f = stats.facts[factKey(a, b)] ||
     (stats.facts[factKey(a, b)] = { seen: 0, correct: 0, wrong: 0, hinted: 0, ts: 0 });
   f.seen++;
@@ -1197,13 +1265,24 @@ SCREENS.home = function () {
 
 /* ====================== DIGIT DROP ====================== */
 SCREENS.drop = function () {
-  let prob, boxes, selected, hintShown, hintLevel;
+  let prob, boxes, selected, hintShown, hintLevel, locked;
   function next() {
-    prob = genProblem("p");                 // build the product with cards
-    boxes = String(prob.p).split("").map(() => null);
+    // WHAT WAS WRONG: pressing "New problem" during the reward pause left the
+    // old "next problem" timer running, so a second later the question the
+    // child had just been given was silently replaced and their typed digits
+    // wiped. A new problem cancels anything the old one still had scheduled.
+    pendingTimers.forEach(clearTimeout); pendingTimers = [];
+    // WHAT WAS WRONG: the blank was hard-wired to the product, so the
+    // Easy / Medium / Hard setting saved itself and then did nothing at all.
+    // genProblem() with no argument lets the difficulty decide which part of
+    // the equation the cards build (Easy: always the answer; Hard: usually a
+    // missing factor).
+    prob = genProblem();
+    boxes = String(prob.answer).split("").map(() => null);
     selected = 0;
     prob.hinted = false;
     hintShown = false; hintLevel = 0;
+    locked = false;
     render();
   }
   function render() {
@@ -1214,43 +1293,49 @@ SCREENS.drop = function () {
       const label = boxes.length >= 2 ? `<span class="place-label ${name}">${name}</span>` : "";
       return `<div class="digit-col">${label}<div class="digit-box ${d === null ? "empty" : ""} ${i === selected ? "sel" : ""}" data-box="${i}">${d === null ? "0" : d}</div></div>`;
     }).join("");
-    // The answer here is the PRODUCT, so the hint shows it as base-ten blocks —
-    // hundreds (flat), tens (rod), ones (cube) — which is fast to read/add by
-    // place value instead of counting every single item. Kept visible across taps.
+    // The hint shows whatever number goes in the boxes (the product on Easy, a
+    // missing factor on harder settings) as base-ten blocks — hundreds (flat),
+    // tens (rod), ones (cube) — which is fast to read/add by place value
+    // instead of counting every single item. Kept visible across taps.
     let hintHTML = "";
     if (hintShown) {
-      const multiPlace = placeCount(prob.p) >= 2;
+      const multiPlace = placeCount(prob.answer) >= 2;
       const revealSum = hintLevel >= 2;
       const addBlock = multiPlace ? `
           <p class="hint-text" style="margin-top:8px">👉 Add the places to get the number — it's the same both ways:</p>
           <div class="add-both">
-            <div class="add-way"><div class="add-way-label">➡️ Going across</div>${additionHTML(prob.p, "across", revealSum)}</div>
-            <div class="add-way"><div class="add-way-label">⬇️ Going down</div>${additionHTML(prob.p, "down", revealSum)}</div>
+            <div class="add-way"><div class="add-way-label">➡️ Going across</div>${additionHTML(prob.answer, "across", revealSum)}</div>
+            <div class="add-way"><div class="add-way-label">⬇️ Going down</div>${additionHTML(prob.answer, "down", revealSum)}</div>
           </div>`
-        : `<p class="hint-text" style="margin-top:8px">👉 That's <b>${prob.p}</b> — tap the cards to build it!</p>`;
+        : `<p class="hint-text" style="margin-top:8px">👉 That's <b>${prob.answer}</b> — tap the cards to build it!</p>`;
       const footer = multiPlace
         ? (revealSum
-            ? `<p class="hint-text" style="margin-top:8px">So the answer is <b>${prob.p}</b> — tap the cards to build it! 🃏</p>`
+            ? `<p class="hint-text" style="margin-top:8px">So the missing number is <b>${prob.answer}</b> — tap the cards to build it! 🃏</p>`
             : `<button class="btn ghost sm" id="hint2" style="margin-top:8px">I added them, but I'm still stuck</button>`)
         : "";
       hintHTML = `
         <div class="hint-panel">
-          <p class="hint-text">The answer as base-ten blocks —
+          <p class="hint-text">The missing number as base-ten blocks —
             <span class="bt-key h">■ flat = 100</span>,
             <span class="bt-key t">■ rod = 10</span>,
             <span class="bt-key o">■ cube = 1</span>:</p>
-          ${btHintHTML(prob.p)}
+          ${btHintHTML(prob.answer)}
           ${addBlock}
           ${footer}
         </div>`;
     }
+    // The card boxes sit wherever the blank is — the answer on Easy, a missing
+    // factor on Hard — so the difficulty setting visibly changes the game.
+    const boxWrap = `<span style="display:inline-flex; align-items:flex-end; gap:6px">${boxHTML}</span>`;
+    const aPart = prob.blank === "a" ? boxWrap : `<span>${prob.a}</span>`;
+    const bPart = prob.blank === "b" ? boxWrap : `<span>${prob.b}</span>`;
+    const pPart = prob.blank === "p" ? boxWrap : `<span>${prob.p}</span>`;
     appEl.innerHTML = `
       <div class="card center">
         <h1>🃏 Digit Drop</h1>
-        <p class="lead">Tap number cards to fill the answer boxes. Tap a box to clear it.</p>
-        <div class="equation">
-          <span>${prob.a}</span><span>×</span><span>${prob.b}</span><span>=</span>
-          <span style="display:inline-flex; align-items:flex-end; gap:6px">${boxHTML}</span>
+        <p class="lead">Tap number cards to fill the empty boxes. Tap a box to clear it.</p>
+        <div class="equation" data-blank="${prob.blank}">
+          ${aPart}<span>×</span>${bPart}<span>=</span>${pPart}
         </div>
         <div class="card-bank" id="bank">
           ${[0,1,2,3,4,5,6,7,8,9].map((n) => `<button class="num-card" data-card="${n}">${n}</button>`).join("")}
@@ -1282,10 +1367,15 @@ SCREENS.drop = function () {
   }
   function showHint() { hintShown = true; hintLevel++; prob.hinted = true; render(); }
   function check() {
+    // WHAT WAS WRONG: nothing locked this during the reward pause, so every
+    // extra tap of Check after a correct answer recorded another correct
+    // attempt and paid the stars again — six taps, six answers, twelve stars.
+    if (locked) return;
     const fb = appEl.querySelector("#fb");
     if (boxes.includes(null)) { fb.textContent = "Fill every box first!"; fb.className = "feedback bad"; return; }
     const entered = parseInt(boxes.join(""), 10);
-    if (entered === prob.p) {
+    if (entered === prob.answer) {
+      locked = true;   // this question is settled — taps until the next one do nothing
       recordAttempt(prob.a, prob.b, true, prob.hinted);
       const reward = prob.hinted ? 1 : 2; // solving without a hint is worth more
       fb.textContent = `🎉 Correct! +${reward} ⭐`; fb.className = "feedback good"; addStars(reward);
@@ -1295,7 +1385,7 @@ SCREENS.drop = function () {
       fb.textContent = `Not quite — tap 🧮 I need a hint and use the blocks!`;
       fb.className = "feedback bad";
       // Keep them on the same problem: clear the boxes so they can try again.
-      boxes = String(prob.p).split("").map(() => null); selected = 0;
+      boxes = String(prob.answer).split("").map(() => null); selected = 0;
       later(render, 1400);
     }
   }
@@ -1308,13 +1398,20 @@ SCREENS.mystery = function () {
   const CREATURES = [["🦆", "ducks"], ["🐥", "chicks"], ["🐢", "turtles"], ["🐠", "fish"],
     ["🐞", "ladybugs"], ["🍎", "apples"], ["⭐", "stars"], ["🌸", "flowers"],
     ["🐶", "puppies"], ["🦋", "butterflies"], ["🐸", "frogs"], ["🍄", "mushrooms"]];
-  let prob, hintLevel;
+  let prob, hintLevel, locked;
   function next() {
-    // Mystery mode always hides a factor (a or b), regardless of difficulty.
-    prob = genProblem(pick(["a", "b"]));
+    // Cancel anything the previous question still had scheduled — "New mystery"
+    // during the reward pause used to leave a timer that swapped the fresh
+    // question a second later. Same fix as Digit Drop.
+    pendingTimers.forEach(clearTimeout); pendingTimers = [];
+    // WHAT WAS WRONG: the blank was forced to a factor whatever the settings
+    // said, so Easy / Medium / Hard changed nothing here. Now the difficulty
+    // decides: Easy always asks for the answer, harder settings hide a factor.
+    prob = genProblem();
     const c = pick(CREATURES);
     prob.icon = c[0]; prob.creature = c[1]; prob.hinted = false;
     hintLevel = 0;
+    locked = false;
     render();
   }
   function render() {
@@ -1350,17 +1447,20 @@ SCREENS.mystery = function () {
     hintLevel++;
     prob.hinted = true;
     const countRows = prob.blank === "a"; // the hidden factor is the row count
+    const countAll = prob.blank === "p";  // Easy hides the answer: count everything
     let rowsHTML = "";
     for (let r = 0; r < prob.a; r++) {
       rowsHTML += `<div class="hint-row">${Array(prob.b).fill(`<span class="hint-cell">${prob.icon}</span>`).join("")}</div>`;
     }
-    const prompt = countRows
+    const prompt = countAll
+      ? `Here are <b>${prob.a}</b> equal rows of <b>${prob.b}</b> ${prob.creature}.<br>👉 Count them <b>all</b> — that many go in the box!`
+      : countRows
       ? `Here are all <b>${prob.p}</b> ${prob.creature}, in equal rows of <b>${prob.b}</b>.<br>👉 Count the <b>rows</b> — that many go in the box!`
       : `Here are all <b>${prob.p}</b> ${prob.creature}, in <b>${prob.a}</b> equal rows.<br>👉 Count how many are in <b>one row</b> — that goes in the box!`;
     appEl.querySelector("#hintArea").innerHTML = `
       <div class="hint-panel">
         <p class="hint-text">${prompt}</p>
-        <div class="hint-array ${countRows ? "band-rows" : "highlight-one"}">${rowsHTML}</div>
+        <div class="hint-array ${countRows || countAll ? "band-rows" : "highlight-one"}">${rowsHTML}</div>
         ${hintLevel >= 2
           ? `<p class="hint-text" style="margin-top:12px">You've got this! The mystery number is <b>${prob.answer}</b> — type it in and press Check! ✓</p>`
           : `<button class="btn ghost sm" id="hint2" style="margin-top:12px">I counted, but I'm still stuck</button>`}
@@ -1370,11 +1470,15 @@ SCREENS.mystery = function () {
     appEl.querySelector("#hint").textContent = "🔁 Show the hint again";
   }
   function check() {
+    // Same lock as Digit Drop: pressing Enter again during the reward pause
+    // used to record the same correct answer over and over.
+    if (locked) return;
     const fb = appEl.querySelector("#fb");
     const input = appEl.querySelector("#ans");
     const val = parseInt(input.value, 10);
     if (isNaN(val)) { fb.textContent = "Type a number first!"; fb.className = "feedback bad"; return; }
     if (val === prob.answer) {
+      locked = true;
       recordAttempt(prob.a, prob.b, true, prob.hinted);
       appEl.querySelector("#theslot").textContent = prob.answer;
       appEl.querySelector("#theslot").classList.add("filled");
@@ -1402,6 +1506,12 @@ SCREENS.speed = function () {
   let timeLeft, score, streak, best = parseInt(lsGet("mq_speed_best") || "0", 10);
   let prob, locked, ticker, log;
   function start() {
+    // WHAT WAS WRONG: an answer in the last second of the clock scheduled a
+    // "next question" timer that outlived the game. Pressing "Play again"
+    // reset timeLeft to 60, so the orphan's `timeLeft > 0` guard passed and it
+    // silently replaced the first question of the NEW run ~0.7s in. A fresh
+    // run starts with a clean slate of timers.
+    pendingTimers.forEach(clearTimeout); pendingTimers = [];
     timeLeft = DURATION; score = 0; streak = 0; locked = false; log = [];
     clearInterval(ticker);
     ticker = setInterval(() => {
@@ -1461,6 +1571,7 @@ SCREENS.speed = function () {
   }
   function end() {
     clearInterval(ticker);
+    pendingTimers.forEach(clearTimeout); pendingTimers = [];   // no next-question timer may outlive the game
     const isBest = score > best;
     if (isBest) { best = score; lsSet("mq_speed_best", String(best)); }
     const earned = Math.max(1, Math.round(score / 2));
@@ -1612,11 +1723,18 @@ SCREENS.array = function () {
     }, t);
   }
   function renderCount(el) {
+    // A fresh question cancels the old one's timers, exactly like Digit Drop.
+    pendingTimers.forEach(clearTimeout); pendingTimers = [];
     const prob = genFact();
     const rows = prob.a, cols = prob.b;
     const opts = distractors(prob.p, prob.a, prob.b);
     const built = buildCountSVG(rows, cols);
     let counting = false;
+    // WHAT WAS WRONG: with no lock, tapping again during the reward pause
+    // recorded the same answer repeatedly — and after a WRONG tap, the tool
+    // highlighted the right answer in green and then scored a tap on that
+    // revealed answer as correct, +2 stars, against a question already missed.
+    let locked = false;
     el.innerHTML = `
       <div class="arr-q">${rows} × ${cols} = <b>?</b></div>
       <p class="arr-instructions">How many dots in all? Press the <b>Count</b> button and follow along — we'll count the <b>columns</b>, then the <b>rows</b>.</p>
@@ -1639,7 +1757,8 @@ SCREENS.array = function () {
       playCount(svgEl, built, captionEl, () => { counting = false; });
     });
     el.querySelector(".choices").addEventListener("click", (e) => {
-      const c = e.target.closest(".choice"); if (!c) return;
+      const c = e.target.closest(".choice"); if (!c || locked) return;
+      locked = true;   // the first tap settles this question
       const fb = el.querySelector("#fb");
       if (+c.dataset.val === prob.p) {
         recordAttempt(prob.a, prob.b, true, false);
@@ -1655,8 +1774,9 @@ SCREENS.array = function () {
     });
   }
   function renderBuild(el) {
+    pendingTimers.forEach(clearTimeout); pendingTimers = [];
     const prob = genFact();
-    let r = 1, c = 1;
+    let r = 1, c = 1, locked = false;   // same reward-pause lock as "Count it"
     function draw() {
       el.innerHTML = `
         <p class="lead">Build an array for <strong>${prob.a} × ${prob.b}</strong>. Make ${prob.a} rows and ${prob.b} columns.</p>
@@ -1677,8 +1797,10 @@ SCREENS.array = function () {
         draw();
       }));
       el.querySelector("#check").addEventListener("click", () => {
+        if (locked) return;
         const fb = el.querySelector("#fb");
         if (r === prob.a && c === prob.b) {
+          locked = true;
           recordAttempt(prob.a, prob.b, true, false);
           fb.textContent = "🎉 Perfect array! +3 ⭐"; fb.className = "feedback good"; addStars(3);
           later(() => renderBuild(el), 1200);
@@ -1734,7 +1856,12 @@ function buildInsights(report) {
   });
   report.filter((r) => r.seen >= 5 && r.acc != null && r.acc >= 0.9).sort((a, b) => b.acc - a.acc).slice(0, 4)
     .forEach((r) => strengths.push(`Your <b>${r.t}s</b> are strong — ${Math.round(r.acc * 100)}% right!`));
-  report.filter((r) => r.seen >= 6 && r.acc != null && r.acc < 0.7 && !patternTables.has(r.t))
+  // WHAT WAS WRONG: a table needed 6 tries before it could become a Stretch,
+  // but only 2 to be painted "needs practice" on the map below — so the same
+  // page said "Nothing tricky right now! 🎉" above a map (and a CSV) flagging
+  // three tables. The Stretch list now uses the map's own threshold, so the two
+  // can never contradict each other.
+  report.filter((r) => r.seen >= 2 && r.acc != null && r.acc < 0.7 && !patternTables.has(r.t))
     .sort((a, b) => a.acc - b.acc)
     .forEach((r) => lowAcc.push({ table: r.t, text: `Your <b>${r.t}s</b> — ${Math.round(r.acc * 100)}% right so far.` }));
   report.filter((r) => r.seen >= 5 && r.hinted / r.seen >= 0.5 && r.acc >= 0.7 && !patternTables.has(r.t))
@@ -1809,13 +1936,13 @@ function buildSampleStats() {
 function loadSample() {
   const s = buildSampleStats();
   stats = s.stats;
-  who = { initials: SAMPLE_INITIALS, date: todayISO(), sample: true };
+  who = { initials: SAMPLE_INITIALS, date: todayISO(), dateChosen: true, sample: true };
   saveStats(); saveWho(); setStars(s.stars);
   setFocus(false);
 }
 function clearSample() {
   stats = { facts: {}, correct: 0, wrong: 0 };
-  who = { initials: "", date: todayISO(), sample: false };
+  who = { initials: "", date: "", dateChosen: false, sample: false };
   saveStats(); saveWho(); setStars(0);
   setFocus(false);
 }
@@ -2616,9 +2743,12 @@ function printAs(name) {
   // Put the tab's real title back once the print dialog has taken its copy.
   setTimeout(() => { document.title = original; }, 1200);
 }
+// The date this report claims: the one the teacher chose if they chose one,
+// today if they never touched the box, and nothing if they emptied it.
+function whoWhen() { return who.dateChosen ? who.date : todayISO(); }
 function whoStamp() {
   const ini = (who.initials || "").trim().toUpperCase();
-  const when = who.date || todayISO();
+  const when = whoWhen() || "no date";
   if (who.sample) return "SAMPLE " + SAMPLE_NAME + " " + when;
   return (ini || "no initials") + " " + when;
 }
@@ -2632,9 +2762,9 @@ function whoStamp() {
 // worksheet heading: repaint this one div in place on every keystroke.
 function whoPrintInner() {
   const ini = (who.initials || "").trim().toUpperCase();
-  const when = who.date || todayISO();
+  const when = whoWhen();   // a cleared date prints as "—", never as today
   const label = who.sample ? sampleLabel() : (ini ? "Child: " + escapeHTML(ini) : "Child: —");
-  return `${label} &nbsp;·&nbsp; Date: ${escapeHTML(when)} &nbsp;·&nbsp; ✖️ Factor Field`;
+  return `${label} &nbsp;·&nbsp; Date: ${when ? escapeHTML(when) : "—"} &nbsp;·&nbsp; ✖️ Factor Field`;
 }
 function whoPrintLine() {
   return `<div class="who-print" id="whoPrintLine">${whoPrintInner()}</div>`;
@@ -2670,7 +2800,7 @@ function progressCSV(report, ins, acc, total) {
   lines.push(csvRow(["Factor Field — progress report"]));
   if (who.sample) lines.push(csvRow([sampleLabel() + " — made-up practice, not a real child"]));
   lines.push(csvRow(["Child (initials)", who.sample ? SAMPLE_INITIALS : (who.initials || "").trim().toUpperCase()]));
-  lines.push(csvRow(["Date", who.date || todayISO()]));
+  lines.push(csvRow(["Date", whoWhen()]));
   lines.push(csvRow(["Questions answered", total]));
   lines.push(csvRow(["Correct overall (%)", acc]));
   lines.push(csvRow(["Stars earned", stars]));
@@ -2679,7 +2809,11 @@ function progressCSV(report, ins, acc, total) {
   report.forEach((r) => {
     const band = r.seen < 2 || r.acc == null ? "not tried yet"
       : r.acc >= 0.9 ? "strong" : r.acc >= 0.75 ? "good" : r.acc >= 0.6 ? "getting there" : "needs practice";
-    lines.push(csvRow([r.t + "s", r.seen, r.correct, r.acc == null ? "" : Math.round(r.acc * 100), r.hinted, band]));
+    // WHAT WAS WRONG: the map shows "—" below 2 tries, but this column printed a
+    // percentage from 1 try — so one CSV row could read "100" in Correct (%) and
+    // "not tried yet" in the very next column. Same 2-try rule on both surfaces.
+    const pct = (r.seen < 2 || r.acc == null) ? "" : Math.round(r.acc * 100);
+    lines.push(csvRow([r.t + "s", r.seen, r.correct, pct, r.hinted, band]));
   });
   lines.push("");
   lines.push(csvRow(["Strengths"]));
@@ -2704,7 +2838,9 @@ function wireWhoBoxes() {
   const dat = appEl.querySelector("#whoDate");
   if (!ini || !dat) return;
   ini.value = who.initials || "";
-  dat.value = who.date || todayISO();
+  // An untouched box shows today as a friendly default; a deliberately cleared
+  // one stays empty — the box never re-fills with a value that isn't stored.
+  dat.value = who.dateChosen ? who.date : todayISO();
   // While the sample is loaded the boxes are locked. Letting someone type real
   // initials over Maya Torres would leave HER numbers under SOMEBODY ELSE'S
   // name — the one thing this label exists to prevent. Clear the sample first.
@@ -2716,7 +2852,7 @@ function wireWhoBoxes() {
   // Save AND repaint the printed line on every keystroke. Saving alone is not
   // enough: what goes on paper is the printed line, not the box.
   ini.addEventListener("input", () => { who.initials = ini.value.toUpperCase(); saveWho(); paintWhoPrint(); });
-  dat.addEventListener("input", () => { who.date = dat.value; saveWho(); paintWhoPrint(); });
+  dat.addEventListener("input", () => { who.date = dat.value; who.dateChosen = true; saveWho(); paintWhoPrint(); });
 }
 function whoRowHTML() {
   return `<div class="who-row no-print">
@@ -2813,7 +2949,8 @@ SCREENS.progress = function () {
       <h2>🌱 Stretches</h2>
       <p class="lead" style="margin-top:-4px">Tap one to practise that table — or do them all together below.</p>
       ${stretchesHTML}
-      <div class="row mt">
+      <!-- no-print: white-on-clay buttons printed as an empty white gap on paper -->
+      <div class="row mt no-print">
         <button class="btn orange" id="focusSpeed">🎯 Practise all of these — Speed Run</button>
         <button class="btn ghost" id="focusMystery">🎯 Practise all — Mystery Factor</button>
       </div>
@@ -2867,16 +3004,27 @@ SCREENS.progress = function () {
     //    total survived a reload. Stars are progress; they go too.
     // 2. It said "This can't be undone", and it meant it. Now the old progress
     //    is put aside first and a "Bring it back" button appears underneath.
-    if (!confirm("Clear all progress and start fresh?\n\n" +
-                 "The answers, the stars and the times-table map all go back to zero. " +
-                 "Your settings and your worksheet are kept.\n\n" +
-                 "If you change your mind, a “Bring it back” button appears right afterwards.")) return;
-    stashUndo();
+    // WHAT WAS WRONG, twice more:
+    // 3. With the sample student loaded, resetting stashed HER numbers into the
+    //    undo slot — overwriting the real practice that "Load the sample" had
+    //    promised was put safely aside. The sample never needs an undo (one
+    //    click loads her again), so she is never stashed.
+    // 4. In a browser that cannot save, the confirm and the toast still promised
+    //    a "Bring it back" button that could never appear. Say the truth instead.
+    let msg = "Clear all progress and start fresh?\n\n" +
+              "The answers, the stars and the times-table map all go back to zero. " +
+              "Your settings and your worksheet are kept.";
+    if (who.sample) msg += "\n\nThis clears the sample student — one click loads her again.";
+    else if (storageOK) msg += "\n\nIf you change your mind, a “Bring it back” button appears right afterwards.";
+    else msg += "\n\nNothing can be saved in this browser right now, so there will be no way to bring it back.";
+    if (!confirm(msg)) return;
+    const stashed = !who.sample && stashUndo();
     stats = { facts: {}, correct: 0, wrong: 0 };
-    who = { initials: "", date: todayISO(), sample: false };
+    who = { initials: "", date: "", dateChosen: false, sample: false };
     saveStats(); saveWho(); setStars(0); setFocus(false);
     show("progress");
-    toast("Progress cleared — you can still bring it back.");
+    toast(stashed ? "Progress cleared — you can still bring it back."
+                  : "Progress cleared.");
   });
 };
 
@@ -3051,7 +3199,12 @@ SCREENS.blast = function () {
 
   // ---- size the canvas to the container (crisp on hi-dpi) ----
   const cssW = Math.min(stage.clientWidth || 720, 780);
-  const cssH = Math.round(cssW * 0.88);
+  // WHAT WAS WRONG: the height was always 88% of the width, so on a 13-inch
+  // laptop the play area alone was 667px under 200px of sticky header — no
+  // scroll position showed the problem AND the ship at once, and the Start
+  // button sat 144px below the fold. Cap the height so the whole game fits
+  // beneath the header on the screen it is actually on.
+  const cssH = Math.max(320, Math.min(Math.round(cssW * 0.88), (window.innerHeight || 800) - 220));
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   canvas.style.width = cssW + "px"; canvas.style.height = cssH + "px";
   canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(cssH * dpr);
@@ -3097,6 +3250,12 @@ SCREENS.blast = function () {
   function renderScore() {}
 
   function newProblem() {
+    // WHAT WAS WRONG: bullets already in flight outlived the problem they were
+    // fired at, and the hit test had no "is the alien on screen yet" guard — so
+    // a leftover bullet destroyed the NEXT problem's correct alien while it was
+    // still above the top of the canvas, crediting the child with a fact they
+    // never saw. A new problem starts with a clean sky.
+    bullets = [];
     const L = LEVELS[blLevel];
     const a = pick(L.tables), b = rint(1, L.maxB);
     prob = { a, b, p: a * b }; answer = prob.p;
@@ -3141,6 +3300,7 @@ SCREENS.blast = function () {
     invaders.forEach((inv) => inv.y += inv.vy * dt);
     for (const b of bullets) { if (b.dead) continue;
       for (const inv of invaders) { if (inv.dead) continue;
+        if (inv.y < bannerH) continue;   // not below the problem banner yet — the child can't see it, so it can't be zapped
         if (Math.abs(b.x - inv.x) < inv.r + 3 && Math.abs(b.y - inv.y) < inv.r + 8) { b.dead = true; inv.dead = true; inv.correct ? onCorrect(inv) : onWrong(inv); break; }
       }
     }
@@ -3230,10 +3390,22 @@ SCREENS.blast = function () {
   function loop(t) { if (!running) return; const dt = Math.min((t - lastT) / 1000, .05); lastT = t; update(dt); draw(); rafId = requestAnimationFrame(loop); }
 
   function overlay(html, show) { const o = document.getElementById("blOverlay"); if (!o) return; o.innerHTML = html; o.classList.toggle("show", show); if (show) { const s = o.querySelector("#blStart"); if (s) s.addEventListener("click", startGame); } }
+  // Scroll the play area under the sticky header when it would otherwise hang
+  // below the fold — the child must be able to see the Start button, and once
+  // playing, their own ship, without hunting for a scroll position.
+  function ensureStageVisible() {
+    const nav = document.querySelector(".nav");
+    const navBottom = nav ? nav.getBoundingClientRect().bottom : 130;
+    const r = stage.getBoundingClientRect();
+    if (r.bottom > window.innerHeight || r.top < navBottom) {
+      window.scrollTo({ top: window.scrollY + r.top - navBottom - 8 });
+    }
+  }
   function startGame() {
     ship = { x: W / 2, y: H - 40 }; bullets = []; invaders = []; particles = [];
     score = 0; lives = 3; combo = 0; fireCd = 0; flash = null; moveDir = 0; firing = false;
     renderLives(); renderScore();
+    ensureStageVisible();
     overlay("", false);
     running = true; lastT = performance.now();
     try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {}
@@ -3284,6 +3456,9 @@ SCREENS.blast = function () {
 
   overlay(`<h2>🚀 Times Table Takeoff</h2><p>Work out the answer, then fly under that<br>number and zap it. Every alien looks the<br>same — so you have to <b>know</b> the answer!</p><p style="font-size:.98rem;color:#c9c3e0">Arrow keys: <b>↑</b> fire &nbsp;·&nbsp; <b>←</b> <b>→</b> move</p><button class="btn teal" id="blStart">Start ▶</button>`, true);
   draw();
+  // After show() has done its scroll-to-top: if the Start button ended up below
+  // the fold (13-inch laptops), bring the stage into view.
+  setTimeout(ensureStageVisible, 0);
 
   // stop the loop and free listeners/audio when leaving the screen
   cleanup = () => {
@@ -3293,16 +3468,41 @@ SCREENS.blast = function () {
   };
 };
 
+// The sheet being built survives a trip to ⚙️ Settings. WHAT WAS WRONG:
+// pressing Save in the Settings drawer re-showed this screen with no params, so
+// the type, the problem count and the typed title were all thrown away and the
+// sheet snapped back to "Multiplication Facts" — on the exact flow the panel's
+// own note tells you to follow.
+let wsKeepCfg = null;
 SCREENS.worksheet = function (params) {
   let cfg = Object.assign({
     type: "facts", count: 20, cols: 3, showAnswers: true,
     seed: newSeed(), title: WS_TYPES.facts.title,
     tables: settings.tables.slice(), maxFactor: settings.maxFactor,
     sections: ["facts", "missing", "wordproblem"], perSection: 6,
-  }, params || {});
+  }, wsKeepCfg, params || {});
   if (WS_LEGACY[cfg.type]) cfg.type = WS_LEGACY[cfg.type];
   if (!WS_TYPES[cfg.type]) cfg.type = "facts";
+  wsKeepCfg = cfg;   // a live reference, so later edits (title, type…) stick too
 
+  // One problem the child has already been given on this sheet is a problem
+  // wasted. WHAT WAS WRONG: every problem was drawn independently, so a printed
+  // 20-question sheet routinely carried the same question two to five times.
+  // Draw again on a repeat; give up only if the type's whole pool is smaller
+  // than the sheet (e.g. 30 Equal-groups problems from 20 combinations).
+  function freshProblems(tp, n) {
+    const out = [], seen = new Set();
+    let tries = 0;
+    while (out.length < n && tries < n * 40) {
+      tries++;
+      const p = wsProblem(tp);
+      const key = p.ak + "|" + p.q;
+      if (seen.has(key)) continue;
+      seen.add(key); out.push(p);
+    }
+    while (out.length < n) out.push(wsProblem(tp));
+    return out;
+  }
   function generate() {
     const savedTables = settings.tables, savedMax = settings.maxFactor;
     settings.tables = cfg.tables; settings.maxFactor = cfg.maxFactor;
@@ -3310,10 +3510,10 @@ SCREENS.worksheet = function (params) {
       if (cfg.type === "sections") {
         return cfg.sections.map((tp) => ({
           type: tp, title: WS_TYPES[tp].title,
-          probs: Array.from({ length: cfg.perSection }, () => wsProblem(tp)),
+          probs: freshProblems(tp, cfg.perSection),
         }));
       }
-      return Array.from({ length: cfg.count }, () => wsProblem(cfg.type));
+      return freshProblems(cfg.type, cfg.count);
     });
     settings.tables = savedTables; settings.maxFactor = savedMax;
     return result;
@@ -3322,7 +3522,16 @@ SCREENS.worksheet = function (params) {
   function render() {
     const data = generate();
     const isSections = cfg.type === "sections";
-    const facty = ["facts", "missing", "mixed", "numberbond"].includes(cfg.type);
+    // WHAT WAS WRONG: "mixed" was in this list, so the Mixed Review sheet
+    // promised "Uses your chosen tables: 3" and then printed 400 × 8 — half its
+    // problems come from the tens/in-parts generators, which have their own
+    // ranges. Only types where EVERY problem obeys the setting may claim it.
+    const facty = ["facts", "missing", "numberbond"].includes(cfg.type);
+    const noteHTML = facty
+      ? `Uses your chosen tables: ${cfg.tables.slice().sort((a, b) => a - b).join(", ")} (up to ×${cfg.maxFactor}). Change these in ⚙️ Settings, then press “New problems”.`
+      : cfg.type === "mixed"
+      ? `Mixed review pulls from several types — the facts and missing-factor problems use your chosen tables, the mental-math ones use their own ranges.`
+      : `This type uses its own number ranges — the tables setting doesn’t apply.`;
 
     let bodyHTML, akHTML, total;
     if (isSections) {
@@ -3399,7 +3608,7 @@ SCREENS.worksheet = function (params) {
           <button class="btn teal" id="wsPrint">🖨️ Print</button>
           <button class="btn ghost" id="wsShare">🔗 Copy share link</button>
         </div>
-        <p class="small-note mt">${facty ? `Uses your chosen tables: ${cfg.tables.slice().sort((a, b) => a - b).join(", ")} (up to ×${cfg.maxFactor}). Change these in ⚙️ Settings, then press “New problems”.` : `This type uses its own number ranges — the tables setting doesn’t apply.`}</p>
+        <p class="small-note mt">${noteHTML}</p>
       </div>
 
       <div class="card">
@@ -3458,7 +3667,10 @@ SCREENS.worksheet = function (params) {
     const url = location.origin + location.pathname + hash;
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => toast("Share link copied! 🔗"), () => prompt("Copy this link:", url));
     else prompt("Copy this link:", url);
-    history.replaceState(null, "", hash);
+    // WHAT WAS WRONG: this used to also write the hash into the address bar,
+    // where it stayed forever — every later reload or reopened bookmark dumped
+    // you back on the Worksheet Maker showing this OLD sheet, whatever you had
+    // moved on to since. The link belongs on the clipboard, not in this tab.
   }
   render();
 };
@@ -3468,8 +3680,18 @@ function escapeHTML(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&am
 /* ---------- Settings panel wiring ---------- */
 const overlay = document.getElementById("overlay");
 const panel = document.getElementById("panel");
-function openPanel() { buildPanel(); overlay.classList.add("open"); panel.classList.add("open"); }
-function closePanel() { overlay.classList.remove("open"); panel.classList.remove("open"); }
+// WHAT WAS WRONG: the table/difficulty buttons change `settings` live, so
+// closing the drawer with the ✕ (or a tap on the dim page) kept the change on
+// screen — questions really did use it — but never wrote it to storage, and a
+// reload silently threw it away. The drawer now remembers what the settings
+// were when it opened: Save keeps the changes, any other way out puts things
+// back exactly as they were, so the screen never disagrees with what's saved.
+let panelSnapshot = null;
+function openPanel() { panelSnapshot = JSON.stringify(settings); buildPanel(); overlay.classList.add("open"); panel.classList.add("open"); }
+function closePanel() {
+  if (panelSnapshot !== null) { settings = JSON.parse(panelSnapshot); panelSnapshot = null; }
+  overlay.classList.remove("open"); panel.classList.remove("open");
+}
 document.getElementById("gearBtn").addEventListener("click", openPanel);
 document.getElementById("focusPill").addEventListener("click", () => {
   setFocus(false); toast("Focus off — back to a normal mix.");
@@ -3506,22 +3728,49 @@ document.getElementById("diffSeg").addEventListener("click", (e) => {
 document.getElementById("maxFactor").addEventListener("change", (e) => { settings.maxFactor = parseInt(e.target.value, 10); });
 document.getElementById("saveSettings").addEventListener("click", () => {
   settings.tables.sort((a, b) => a - b);
+  panelSnapshot = null;   // Save means keep — closePanel must not roll back
   saveSettings(); closePanel(); toast("Settings saved! ✓");
   const active = document.querySelector("#nav button.active");
   show(active ? active.dataset.screen : "home");
 });
 
-/* ---------- Boot: handle a shared worksheet link, else go home ---------- */
-(function boot() {
+/* ---------- Two tabs of the tool at once --------------------------------
+   WHAT WAS WRONG: each tab kept its own copy of everything and wrote the whole
+   file on every answer, so one question answered in an older tab wiped out a
+   whole session recorded in the other. When another tab writes, re-read what it
+   wrote — this tab's next save then builds on it instead of over it. */
+window.addEventListener("storage", (e) => {
+  if (e.key && e.key.indexOf("mq_") !== 0) return;
+  stats = loadStats();
+  settings = loadSettings();
+  who = loadWho();
+  stars = parseInt(lsGet("mq_stars") || "0", 10) || 0;
+  paintStars();
+  paintSampleBar();
+  // The report is the one screen that paints stored numbers — redraw it so the
+  // teacher never reads totals another tab has already moved past.
+  const active = document.querySelector("#nav button.active");
+  if (active && active.dataset.screen === "progress") show("progress");
+});
+
+/* ---------- Boot: handle a shared worksheet link, else go home ----------
+   The hash is consumed and then cleared from the address bar, so reloading
+   later brings the tool back normally instead of resurrecting the shared
+   sheet for ever. Pasting a share link into a tab that already has Factor
+   Field open works too (the hashchange listener below). */
+function openSharedSheet() {
   const m = location.hash.match(/#ws=(.+)$/);
-  if (m) {
-    try {
-      const data = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
-      show("worksheet", data);
-      return;
-    } catch (e) { /* fall through to home */ }
-  }
-  show("home");
+  if (!m) return false;
+  let data = null;
+  try { data = JSON.parse(decodeURIComponent(escape(atob(m[1])))); } catch (e) {}
+  history.replaceState(null, "", location.pathname + location.search);
+  if (!data) return false;
+  show("worksheet", data);
+  return true;
+}
+window.addEventListener("hashchange", openSharedSheet);
+(function boot() {
+  if (!openSharedSheet()) show("home");
 })();
 </script>
 </body>

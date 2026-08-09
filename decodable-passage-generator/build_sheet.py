@@ -199,7 +199,16 @@ def build_html(spec):
     # hearts until th is taught, then one. Older words are listed plainly for a
     # quick read; a child who has known "the" for ninety lessons does not need
     # to map it again.
-    new_here = [w for w in HEART.available(n) if w.lesson > n - 6]
+    # Sorted by the lesson each word is INTRODUCED at, not by where it sits in
+    # heart_words.py. That order is not the same: come/some (Lesson 62) were
+    # added to the list after because (Lesson 67), so taking the last two in
+    # list order put come/some on the Lesson 63-67 words pages under a heading
+    # that says "this week's words" — while the words those lessons actually
+    # introduce (two, does, any, many, been, into, because) never appeared,
+    # even though the story on the next page uses them. The sort is stable, so
+    # two words from the same lesson keep their written order.
+    new_here = sorted((w for w in HEART.available(n) if w.lesson > n - 6),
+                      key=lambda w: w.lesson)
     new_here = new_here[-2:] if len(new_here) > 2 else new_here
     mapped_words = {w.word for w in new_here}
     older = [w for w in hearts if w not in mapped_words]

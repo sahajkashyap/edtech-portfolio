@@ -3,8 +3,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UFLI Foundations Tracker</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- WHAT WAS WRONG: two CDN scripts sat here with no defer, so a school filter
+     that lets the request hang (rather than refuse it) held the WHOLE page
+     blank white until it gave up — even though nothing on the page needs a
+     library to draw. html2canvas was fetched and then never called once, so it
+     is gone entirely; jsPDF is only used by Export PDF, which already says so
+     politely when it is missing, so it can load whenever it likes. -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body style="margin: 0; padding: 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: transparent;">
 
@@ -93,8 +98,11 @@
   .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
   .modal.show { display: block; }
   .modal-content { background: var(--color-background-secondary); margin: 5% auto; padding: 2rem; border-radius: 12px; border: 1px solid var(--color-border-secondary); width: 90%; max-width: 600px; max-height: 70vh; overflow-y: auto; }
-  .close-modal { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--color-text-secondary); }
-  .close-modal:hover { color: var(--color-text-primary); }
+  /* A real <button>, not a span: the keyboard has to be able to land on it,
+     because while a dialog is open the keyboard is kept inside it. */
+  .close-modal { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: var(--color-text-secondary);
+    background: none; border: none; padding: 0 6px; line-height: 1; }
+  .close-modal:hover { color: var(--color-text-primary); background: none; }
   .modal-title { font-size: 18px; font-weight: 700; margin: 0 0 1.5rem 0; color: var(--color-text-primary); }
   .lesson-item { padding: 12px; margin-bottom: 10px; background: var(--color-background-primary); border-radius: 8px; border-left: 4px solid; }
   .lesson-item.e { border-color: #378ADD; }
@@ -147,6 +155,18 @@
   .say { margin-top: 10px; font-size: 13px; line-height: 1.5; color: #8a3b00; font-weight: 500; flex-basis: 100%; }
   .say:empty { margin-top: 0; }
 
+  /* WHAT WAS WRONG: when the browser refused to store anything, the only
+     warning was printed in the button row at the FOOT of a 1200px page —
+     below the fold on every screen size — while the visible top of the page
+     went on saying "Stays on this laptop". The one message that says a
+     teacher's morning is not being kept has to sit where they are working,
+     and stay there. Sticky, at the top. */
+  .save-warn { display: none; position: sticky; top: 0; z-index: 900;
+    background: #FDECEA; border: 1.5px solid #C0392B; border-radius: 8px;
+    padding: 10px 14px; margin-bottom: 1rem; font-size: 13.5px; font-weight: 600;
+    color: #7a1f12; line-height: 1.5; }
+  .save-warn.show { display: block; }
+
   .lessons-hint { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 8px 0; }
 
   /* WHAT WAS WRONG: nothing here collapsed on a phone. The two-column top grid
@@ -169,10 +189,37 @@
     .modal-content { width: 94%; padding: 1.25rem; max-height: 85vh; }
   }
   .lesson-name, .ws-name { min-width: 0; overflow-wrap: anywhere; }
+
+  /* WHAT WAS WRONG: the main page had no print rules at all, and the tool's
+     own advice when the PDF library is blocked is "File > Print will save this
+     page as a PDF". What that printed was the scrolling lesson list frozen at
+     350px tall — 5 of 128 lessons — both comment boxes cut off mid-sentence,
+     and seven buttons on the paper, beside tallies claiming the full count.
+     Printing now swaps the working screen for #printReport: a plain, complete
+     record of every scored lesson and the whole of both comments. */
+  #printReport { display: none; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .top-boxes, .section, .whorow, .sample-banner, .say, .modal, .save-warn { display: none !important; }
+    #printReport { display: block; }
+    #printReport h2 { font-size: 15px; margin: 18px 0 6px; }
+    #printReport .pr-meta { font-size: 13px; margin: 6px 0; }
+    #printReport .pr-sample { font-weight: bold; color: #8a3b00; }
+    #printReport table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    #printReport th, #printReport td { text-align: left; border-bottom: 1px solid #ddd; padding: 4px 6px; vertical-align: top; }
+    /* pre-wrap: a comment prints every line the teacher wrote, exactly as
+       written, however long it is. */
+    #printReport .pr-comment { white-space: pre-wrap; font-size: 13px; line-height: 1.5; margin: 4px 0 12px; }
+    #printReport tr, #printReport .pr-comment { break-inside: avoid; page-break-inside: avoid; }
+  }
 </style>
 
 <div class="container">
-  
+
+  <!-- Shown only when the browser refuses to store the assessment. It sticks
+       to the top of the window so it cannot hide below the fold. -->
+  <div class="save-warn" id="saveWarn" role="alert"></div>
+
   <div class="header">
     <h1>UFLI Foundations Tracker</h1>
     <p class="attrib">An independent tracker built by a classroom teacher.
@@ -275,8 +322,8 @@
 
 <!-- MODAL FOR FILTERED LESSONS -->
   <div id="lessonsModal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button type="button" class="close-modal" onclick="closeModal()" aria-label="Close this list">&times;</button>
       <div class="modal-title" id="modalTitle">Emerging / Beginning Lessons</div>
       <div id="modalLessonsList"></div>
     </div>
@@ -284,8 +331,8 @@
 
   <!-- MODAL: WORKSHEET PICKER -->
   <div id="worksheetModal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeWorksheetModal()">&times;</span>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Get practice sheets">
+      <button type="button" class="close-modal" onclick="closeWorksheetModal()" aria-label="Close this list">&times;</button>
       <div class="modal-title">Get practice sheets</div>
       <p class="worksheet-intro">Find the lesson your child is working on. <strong>Generate</strong> opens a worksheet to write on. <strong>Reading practice</strong> opens that lesson's page to read out loud, built only from sounds taught so far. Print either one, or save it as a PDF.</p>
       <div id="worksheetPickerList"></div>
@@ -304,6 +351,10 @@
     <button id="undoBtn" style="display: none;" onclick="undoClear()">Undo the clear</button>
     <div class="say" id="sayMsg"></div>
   </div>
+
+  <!-- What File > Print actually puts on paper. Rebuilt after every change,
+       so the printed page can never disagree with the tallies on it. -->
+  <div id="printReport"></div>
 
 </div>
 
@@ -546,16 +597,39 @@ function snapshot() {
 }
 
 function saveWork() {
+  buildPrintReport();   // typing in a comment box must reach the printable copy too
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(snapshot()));
+    // WHAT WAS WRONG: the warning below only ever appeared in the button row at
+    // the bottom of the page, off screen at every size, while the visible top
+    // said "Stays on this laptop". It lives in a sticky bar at the top now.
+    el('saveWarn').classList.remove('show');
     return true;
   } catch (err) {
-    say('THIS ASSESSMENT IS NOT BEING SAVED — this browser refused to store it ' +
+    const warn = 'THIS ASSESSMENT IS NOT BEING SAVED — this browser refused to store it ' +
         '(a private window, or the disk is full). Export CSV before you close ' +
-        'this tab, or the scores go with it.', 60000);
+        'this tab, or the scores go with it.';
+    el('saveWarn').textContent = warn;
+    el('saveWarn').classList.add('show');
+    say(warn, 60000);
     return false;
   }
 }
+
+// WHAT WAS WRONG: a second tab of this tool silently overwrote the first tab's
+// saved work — each tab wrote its whole in-memory copy on every change, and
+// neither one ever noticed the record changing underneath it. Nothing looked
+// wrong until a reload, and then the assessment was simply gone. When another
+// tab writes the record now, this tab catches up to match it and says so.
+window.addEventListener('storage', e => {
+  if (e.key !== STORE_KEY || e.newValue === null) return;
+  let d = null;
+  try { d = JSON.parse(e.newValue); } catch (err) { return; }
+  if (!d || typeof d !== 'object') return;
+  applySaved(d);
+  say('This assessment was just changed in another tab of this tool, so this ' +
+      'tab has caught up to match it. Working in one tab at a time is safest.', 15000);
+});
 
 function readSaved() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); }
@@ -682,13 +756,39 @@ function loadSample() {
   saveWork();
 }
 
+// True when anything on screen is the TEACHER'S — a score Maya never had (or
+// one re-scored to a different level), initials that are not hers, or words in
+// a comment box that are not her made-up paragraphs.
+function ownWorkOnTop() {
+  if (Object.entries(scores).some(([k, v]) => v && v !== SAMPLE_SCORES[k])) return true;
+  const ini = el('initials').value.trim().toUpperCase();
+  if (ini && ini !== SAMPLE_INITIALS.toUpperCase()) return true;
+  const st = el('strengthsComment').value, sr = el('stretchesComment').value;
+  if (st.trim() && st !== SAMPLE_STRENGTHS) return true;
+  if (sr.trim() && sr !== SAMPLE_STRETCHES) return true;
+  return false;
+}
+
+// WHAT WAS WRONG: "Clear the sample" — the button the banner tells every
+// first-time visitor to press — destroyed the teacher's own scores, initials
+// and comments with no question and no way back, while the "Clear" button
+// three along asked first and offered Undo. Same guard for both now: ask when
+// the teacher's own work would go, and always keep what went so Undo can put
+// it straight back.
 function clearSample() {
+  if (ownWorkOnTop() &&
+      !confirm('Clear the sample?\n\nEverything on screen goes — including the ' +
+               'scores and notes you added yourself. "Undo the clear" puts it ' +
+               'all straight back.')) return;
+  undoSnapshot = snapshot();
   isSample = false;
   sampleCleared = true;   // so she does not walk back in on the next reload
   wipe();
   paintSample();
   saveWork();
-  say('Sample cleared. The tool is empty and ready for your own assessment.', 6000);
+  el('undoBtn').style.display = '';
+  say('Sample cleared. The tool is empty and ready for your own assessment. ' +
+      '"Undo the clear" brings it back if that was not what you meant.', 8000);
 }
 
 function toggleSample() {
@@ -720,26 +820,46 @@ function paintSample() {
   el('sampleBannerMixed').style.display = mixed ? '' : 'none';
 }
 
+// A comment box still belongs to Maya if any full sentence of her made-up
+// paragraph survives in it. WHAT WAS WRONG: the old check was `value !==
+// SAMPLE_TEXT`, so a teacher who EDITED her paragraph — added one phrase to
+// the end — "owned" the whole thing, and her invented sentences went into a
+// real child's record with the sample warning stripped off. Only a box the
+// teacher has genuinely replaced counts as theirs.
+function stillSampleText(value, sample) {
+  if (!value.trim()) return false;
+  if (value === sample) return true;
+  return sample.split('. ').some(s => s.trim().length > 20 && value.includes(s.trim()));
+}
+
 // The one-press way out of a mixed record: Maya's scores and Maya's words go,
-// the teacher's own initials, date and any words they have written stay.
+// everything the teacher did themselves stays.
+// WHAT WAS WRONG: this used to call clearSample(), whose wipe() cannot tell
+// Maya's scores from the teacher's — four real scores in a unit Maya never
+// touched were deleted along with hers, while the message claimed everything
+// typed was kept. Only her scores go now: a lesson still holding exactly the
+// sample's level was hers; anything added or re-scored is the teacher's.
 function startMyOwn() {
-  const ini      = el('initials').value;
-  const date     = el('assessDate').value;
-  const unit     = el('unitSelect').value;
-  const strength = el('strengthsComment').value;
-  const stretch  = el('stretchesComment').value;
-  clearSample();
-  el('initials').value = ini;
-  el('assessDate').value = date;
-  if (strength !== SAMPLE_STRENGTHS) el('strengthsComment').value = strength;
-  if (stretch  !== SAMPLE_STRETCHES) el('stretchesComment').value = stretch;
-  el('unitSelect').value = unit;
-  currentUnit = el('unitSelect').value;
+  undoSnapshot = snapshot();   // even the careful path deserves a way back
+  Object.keys(scores).forEach(k => {
+    if (SAMPLE_SCORES[k] && scores[k] === SAMPLE_SCORES[k]) scores[k] = null;
+  });
+  if (stillSampleText(el('strengthsComment').value, SAMPLE_STRENGTHS)) el('strengthsComment').value = '';
+  if (stillSampleText(el('stretchesComment').value, SAMPLE_STRETCHES)) el('stretchesComment').value = '';
+  if (el('initials').value.trim().toUpperCase() === SAMPLE_INITIALS.toUpperCase()) el('initials').value = '';
+  isSample = false;
+  sampleCleared = true;
   updateLessons();
   updateCharts();
   paintSample();
   saveWork();
-  say('Maya’s scores are gone. Your initials and anything you wrote are still here.', 8000);
+  el('undoBtn').style.display = '';
+  const kept = Object.values(scores).filter(Boolean).length;
+  say(kept
+    ? 'Maya’s scores and her comments are gone. Your own ' + kept +
+      (kept === 1 ? ' score' : ' scores') + ', your initials, and anything you wrote yourself are still here.'
+    : 'Maya’s scores and her comments are gone. Your initials and anything you wrote yourself are still here.',
+    10000);
 }
 
 // What every export writes at the top, so a printed sheet can never be mistaken
@@ -864,7 +984,49 @@ function setScore(lesson, level) {
 function updateCharts() {
   drawPieChart();
   updateCounts();
+  buildPrintReport();
 }
+
+// Comments are the teacher's own text and go into HTML, so they are escaped.
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// The page that File > Print actually produces — see the @media print block in
+// the CSS for what was wrong with printing the working screen. Every scored
+// lesson, whatever unit is open on screen, and both comments in full.
+function buildPrintReport() {
+  const box = el('printReport');
+  if (!box) return;
+  const counts = tallies();
+  const total = counts.e + counts.d + counts.m;
+  let rows = '';
+  Object.entries(curriculum).forEach(([unitName, data]) => {
+    data.lessons.forEach(lesson => {
+      if (!scores[lesson.name]) return;
+      rows += `<tr><td>${esc(unitName)}</td><td>${esc(lesson.name)}</td>` +
+              `<td>${esc(lesson.skill)}</td><td>${esc(scores[lesson.name])}</td></tr>`;
+    });
+  });
+  box.innerHTML = `
+    <div class="pr-meta"><strong>Child:</strong> ${esc(el('initials').value.toUpperCase()) || '&mdash;'}
+      &nbsp;&nbsp; <strong>Date:</strong> ${esc(el('assessDate').value) || '&mdash;'}</div>
+    ${isSample ? `<div class="pr-meta pr-sample">${esc(sampleLabel())}</div>` : ''}
+    <div class="pr-meta">Emerging / Beginning: ${counts.e} &middot; Developing: ${counts.d} &middot;
+      Mastered: ${counts.m} &middot; ${total} of 128 lessons scored</div>
+    <h2>Scores</h2>
+    ${rows
+      ? `<table><thead><tr><th>Unit</th><th>Lesson</th><th>Skill</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table>`
+      : '<p class="pr-meta">No lessons scored yet.</p>'}
+    <h2>Strengths</h2>
+    <div class="pr-comment">${esc(el('strengthsComment').value) || '&mdash;'}</div>
+    <h2>Stretches: Areas of Growth</h2>
+    <div class="pr-comment">${esc(el('stretchesComment').value) || '&mdash;'}</div>`;
+}
+
+// Belt and braces for the moment Cmd-P is pressed mid-typing.
+window.addEventListener('beforeprint', buildPrintReport);
 
 function tallies() {
   const counts = { e: 0, d: 0, m: 0 };
@@ -1044,22 +1206,71 @@ function showLessonsByScore(scoreLevel) {
   }
   
   modal.classList.add('show');
+  modalOpened(modal);
 }
 
 function closeModal() {
   document.getElementById('lessonsModal').classList.remove('show');
+  modalClosed();
 }
 
 window.onclick = function(event) {
   const modal = document.getElementById('lessonsModal');
   if (event.target === modal) {
     modal.classList.remove('show');
+    modalClosed();
   }
   const wsModal = document.getElementById('worksheetModal');
   if (event.target === wsModal) {
     wsModal.classList.remove('show');
+    modalClosed();
   }
 }
+
+// ---------------------------------------------------------------------------
+// Keeping the keyboard inside an open dialog.
+//
+// WHAT WAS WRONG: with a lessons list open, Tab walked straight off the sheet
+// and onto the score buttons hidden BEHIND it — six presses from opening the
+// Emerging list, Enter was standing on an invisible Mastered button, and
+// pressing it changed a score while the open list went on showing the old
+// number. While a dialog is open, Tab now stays inside it, and Escape closes
+// it, the way every native dialog works.
+// ---------------------------------------------------------------------------
+let modalOpener = null;   // where the keyboard was, so closing puts it back
+
+function modalOpened(modal) {
+  modalOpener = document.activeElement;
+  const first = modal.querySelector('.close-modal');
+  if (first) first.focus();
+}
+
+function modalClosed() {
+  if (modalOpener && modalOpener.focus) modalOpener.focus({ preventScroll: true });
+  modalOpener = null;
+}
+
+document.addEventListener('keydown', e => {
+  const open = document.querySelector('.modal.show');
+  if (!open) return;
+  if (e.key === 'Escape') {
+    open.classList.remove('show');
+    modalClosed();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+  const focusables = [...open.querySelectorAll(
+    'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter(n => n.offsetParent !== null);
+  if (!focusables.length) return;
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  const inside = open.contains(document.activeElement);
+  if (e.shiftKey) {
+    if (!inside || document.activeElement === first) { last.focus(); e.preventDefault(); }
+  } else {
+    if (!inside || document.activeElement === last) { first.focus(); e.preventDefault(); }
+  }
+});
 
 function download(blob, filename) {
   const url = window.URL.createObjectURL(blob);
@@ -1383,6 +1594,13 @@ function clearForm() {
 
 function undoClear() {
   if (!undoSnapshot) { say('There is nothing to undo.', 5000); return; }
+  // WHAT WAS WRONG: this button never expired. It sat on screen while the
+  // teacher started the NEXT child, and one press silently replaced that new
+  // work with the old snapshot — no question, and no second undo. If anything
+  // has been entered since the clear, ask before replacing it.
+  if (hasContent() &&
+      !confirm('Undo the clear?\n\nThe scores and notes entered SINCE the clear ' +
+               'would be replaced by what was cleared.')) return;
   applySaved(undoSnapshot);
   undoSnapshot = null;
   el('undoBtn').style.display = 'none';
@@ -1790,9 +2008,14 @@ const WORKSHEETS = {
 
   "Lesson 87": {"footNote": "Vowel team igh / ie", "digraph": true, "titleHtml": "Vowel Team <em>igh</em> / <em>ie</em> &mdash; Reading &amp; Spelling the /ī/ Sound", "target": "igh / ie", "soundLabel": "ī", "keyword": "light", "grownWord": "light", "grownSounds": "/l/ /ī/ /t/", "grownExamples": "the middle of <em>light</em> and the end of <em>pie</em>", "fillNote": "igh often comes before t; ie can come at the end.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["light", "night", "high", "right", "sight", "might", "tight", "bright", "fight", "pie", "tie", "lie"], "families": [{"rime": "-ight", "words": ["light", "night", "right", "sight", "might"]}, {"rime": "-igh", "words": ["high", "thigh", "sigh"]}, {"rime": "-ie", "words": ["pie", "tie", "lie"]}], "fill": [["l", "t"], ["n", "t"], ["h", ""], ["r", "t"], ["p", ""], ["t", ""]], "soundBoxWords": [{"w": "light", "boxes": 3, "pairAt": 1, "lab": "igh"}, {"w": "pie", "boxes": 2, "pairAt": 1, "lab": "ie"}, {"w": "night", "boxes": 3, "pairAt": 1, "lab": "igh"}, {"w": "tie", "boxes": 2, "pairAt": 1, "lab": "ie"}], "changeOne": [{"start": "light", "from": "l", "to": "m"}, {"start": "night", "from": "n", "to": "s"}, {"start": "right", "from": "r", "to": "t"}, {"start": "tie", "from": "t", "to": "p"}], "sentenceBank": ["light", "night", "pie", "right"], "sentences": ["Turn on the {}.", "The stars are out at {}.", "I like to eat {}.", "You got the {} one."], "readAloud": ["The light is on at night.", "I see a big pie.", "You are right, it is high.", "She had to tie it up tight."], "sortWords": ["light", "cat", "pie", "sun", "night", "bed"], "sortDone": "light"},
 
-  "Lesson 89": {"footNote": "Long oo (as in moon)", "digraph": true, "titleHtml": "Vowel Team <em>oo</em> &mdash; Reading &amp; Spelling the Long /oo/ Sound (as in moon)", "target": "oo", "soundLabel": "oo", "keyword": "moon", "grownWord": "moon", "grownSounds": "/m/ /oo/ /n/", "grownExamples": "the sound in <em>moon</em> and <em>food</em>", "fillNote": "This team is usually in the middle or at the end of a word.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["moon", "food", "room", "zoo", "boot", "cool", "soon", "tooth", "roof", "pool", "mood", "broom"], "families": [{"rime": "-oom", "words": ["room", "boom", "zoom", "broom"]}, {"rime": "-ool", "words": ["cool", "pool", "tool", "spool"]}, {"rime": "-oot", "words": ["boot", "root", "hoot", "shoot"]}], "fill": [["m", "n"], ["f", "d"], ["r", "m"], ["b", "t"], ["c", "l"], ["z", ""]], "soundBoxWords": [{"w": "moon", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "zoo", "boxes": 2, "pairAt": 1, "lab": "oo"}, {"w": "food", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "boot", "boxes": 3, "pairAt": 1, "lab": "oo"}], "changeOne": [{"start": "moon", "from": "m", "to": "n"}, {"start": "boot", "from": "t", "to": "m"}, {"start": "cool", "from": "c", "to": "p"}, {"start": "food", "from": "f", "to": "m"}], "sentenceBank": ["moon", "food", "room", "zoo"], "sentences": ["The {} is up high.", "I like to eat {}.", "My {} is clean.", "We see a lion at the {}."], "readAloud": ["The moon is up in the sky.", "Sweep the room with a broom.", "The food is too cool.", "We saw a seal at the zoo."], "sortWords": ["moon", "map", "food", "sun", "room", "cat"], "sortDone": "moon"},
+  // WHAT WAS WRONG: these two sheets were keyed the wrong way round. The
+  // curriculum row "Lesson 90: oo /ū/ (moon)" opened the BOOK sheet and
+  // Lesson 89 opened the MOON sheet. In this curriculum, Lesson 89 is the
+  // short sound (book) and Lesson 90 the long one (moon) — do not "tidy" the
+  // out-of-order keys back.
+  "Lesson 90": {"footNote": "Long oo (as in moon)", "digraph": true, "titleHtml": "Vowel Team <em>oo</em> &mdash; Reading &amp; Spelling the Long /oo/ Sound (as in moon)", "target": "oo", "soundLabel": "oo", "keyword": "moon", "grownWord": "moon", "grownSounds": "/m/ /oo/ /n/", "grownExamples": "the sound in <em>moon</em> and <em>food</em>", "fillNote": "This team is usually in the middle or at the end of a word.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["moon", "food", "room", "zoo", "boot", "cool", "soon", "tooth", "roof", "pool", "mood", "broom"], "families": [{"rime": "-oom", "words": ["room", "boom", "zoom", "broom"]}, {"rime": "-ool", "words": ["cool", "pool", "tool", "spool"]}, {"rime": "-oot", "words": ["boot", "root", "hoot", "shoot"]}], "fill": [["m", "n"], ["f", "d"], ["r", "m"], ["b", "t"], ["c", "l"], ["z", ""]], "soundBoxWords": [{"w": "moon", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "zoo", "boxes": 2, "pairAt": 1, "lab": "oo"}, {"w": "food", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "boot", "boxes": 3, "pairAt": 1, "lab": "oo"}], "changeOne": [{"start": "moon", "from": "m", "to": "n"}, {"start": "boot", "from": "t", "to": "m"}, {"start": "cool", "from": "c", "to": "p"}, {"start": "food", "from": "f", "to": "m"}], "sentenceBank": ["moon", "food", "room", "zoo"], "sentences": ["The {} is up high.", "I like to eat {}.", "My {} is clean.", "We see a lion at the {}."], "readAloud": ["The moon is up in the sky.", "Sweep the room with a broom.", "The food is too cool.", "We saw a seal at the zoo."], "sortWords": ["moon", "map", "food", "sun", "room", "cat"], "sortDone": "moon"},
 
-  "Lesson 90": {"footNote": "Short oo (as in book)", "digraph": true, "titleHtml": "Vowel Team <em>oo</em> &mdash; Reading &amp; Spelling the Short /oo/ Sound (as in book)", "target": "oo", "soundLabel": "oo", "keyword": "book", "grownWord": "book", "grownSounds": "/b/ /oo/ /k/", "grownExamples": "the sound in <em>book</em> and <em>look</em>", "fillNote": "This short oo is usually in the middle of a word.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["book", "look", "took", "good", "foot", "hook", "wood", "cook", "hood", "stood", "shook", "brook"], "families": [{"rime": "-ook", "words": ["book", "look", "took", "hook", "cook"]}, {"rime": "-ood", "words": ["good", "wood", "stood", "hood"]}, {"rime": "more oo", "words": ["foot", "wool", "soot"]}], "fill": [["b", "k"], ["l", "k"], ["g", "d"], ["f", "t"], ["w", "d"], ["h", "k"]], "soundBoxWords": [{"w": "book", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "look", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "foot", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "good", "boxes": 3, "pairAt": 1, "lab": "oo"}], "changeOne": [{"start": "book", "from": "b", "to": "l"}, {"start": "look", "from": "l", "to": "c"}, {"start": "wood", "from": "w", "to": "g"}, {"start": "took", "from": "t", "to": "h"}], "sentenceBank": ["book", "look", "good", "foot"], "sentences": ["I read a {}.", "Take a {} at this!", "You did a {} job.", "I hurt my {}."], "readAloud": ["Look at my new book.", "The cook is good.", "I stood on one foot.", "Put the book on the hook."], "sortWords": ["book", "bell", "foot", "lamp", "good", "fish"], "sortDone": "book"},
+  "Lesson 89": {"footNote": "Short oo (as in book)", "digraph": true, "titleHtml": "Vowel Team <em>oo</em> &mdash; Reading &amp; Spelling the Short /oo/ Sound (as in book)", "target": "oo", "soundLabel": "oo", "keyword": "book", "grownWord": "book", "grownSounds": "/b/ /oo/ /k/", "grownExamples": "the sound in <em>book</em> and <em>look</em>", "fillNote": "This short oo is usually in the middle of a word.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["book", "look", "took", "good", "foot", "hook", "wood", "cook", "hood", "stood", "shook", "brook"], "families": [{"rime": "-ook", "words": ["book", "look", "took", "hook", "cook"]}, {"rime": "-ood", "words": ["good", "wood", "stood", "hood"]}, {"rime": "more oo", "words": ["foot", "wool", "soot"]}], "fill": [["b", "k"], ["l", "k"], ["g", "d"], ["f", "t"], ["w", "d"], ["h", "k"]], "soundBoxWords": [{"w": "book", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "look", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "foot", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "good", "boxes": 3, "pairAt": 1, "lab": "oo"}], "changeOne": [{"start": "book", "from": "b", "to": "l"}, {"start": "look", "from": "l", "to": "c"}, {"start": "wood", "from": "w", "to": "g"}, {"start": "took", "from": "t", "to": "h"}], "sentenceBank": ["book", "look", "good", "foot"], "sentences": ["I read a {}.", "Take a {} at this!", "You did a {} job.", "I hurt my {}."], "readAloud": ["Look at my new book.", "The cook is good.", "I stood on one foot.", "Put the book on the hook."], "sortWords": ["book", "bell", "foot", "lamp", "good", "fish"], "sortDone": "book"},
 
   "Lesson 93": {"footNote": "Vowel teams au / aw", "digraph": true, "titleHtml": "Vowel Teams <em>au</em> / <em>aw</em> &mdash; Reading &amp; Spelling the /aw/ Sound", "target": "au / aw", "soundLabel": "aw", "keyword": "saw", "grownWord": "saw", "grownSounds": "/s/ /aw/", "grownExamples": "the end of <em>saw</em> and the middle of <em>haul</em>", "fillNote": "Use au in the middle and aw at the end of a word.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["saw", "paw", "draw", "claw", "lawn", "hawk", "yawn", "straw", "haul", "sauce", "fault", "launch"], "families": [{"rime": "-aw", "words": ["saw", "paw", "jaw", "claw", "draw"]}, {"rime": "-awn", "words": ["lawn", "yawn", "dawn"]}, {"rime": "au words", "words": ["haul", "sauce", "fault", "launch"]}], "fill": [["s", ""], ["p", ""], ["l", "n"], ["h", "k"], ["h", "l"], ["f", "l t"]], "soundBoxWords": [{"w": "saw", "boxes": 2, "pairAt": 1, "lab": "aw"}, {"w": "paw", "boxes": 2, "pairAt": 1, "lab": "aw"}, {"w": "lawn", "boxes": 3, "pairAt": 1, "lab": "aw"}, {"w": "haul", "boxes": 3, "pairAt": 1, "lab": "au"}], "changeOne": [{"start": "saw", "from": "s", "to": "p"}, {"start": "paw", "from": "p", "to": "j"}, {"start": "lawn", "from": "l", "to": "y"}, {"start": "claw", "from": "c", "to": "f"}], "sentenceBank": ["saw", "paw", "draw", "lawn"], "sentences": ["I {} a big bird.", "The cat has a soft {}.", "I can {} a cat.", "We play on the {}."], "readAloud": ["I saw a hawk on the lawn.", "The dog licks its paw.", "Can you draw a big claw?", "The cat had a big yawn."], "sortWords": ["saw", "sat", "hawk", "map", "draw", "red"], "sortDone": "saw"},
 
@@ -1898,7 +2121,11 @@ const WORKSHEETS = {
 
   "Lesson 8": {"footNote": "Letter Ii", "titleHtml": "Letter <em>Ii</em> &mdash; the /i/ Sound", "letter": "i", "Letter": "I", "sound": "/i/", "keyword": "it", "keywordSounds": "/i/ /t/", "findGrid": ["i", "t", "n", "i", "s", "i", "m", "o", "i", "r", "e", "i", "a", "i", "p", "i", "u", "i", "c", "i", "d", "i", "h", "b"], "circleWords": ["it", "sun", "in", "top", "if", "dog", "ill", "red", "ink", "fan"], "finishRimes": ["t", "n", "f", "ll", "nk", "s"]},
 
-  "Lesson 10": {"review": true, "footNote": "CVC practice: g and i", "titleHtml": "CVC Practice &mdash; <em>g</em> &amp; <em>i</em>", "grownNote": "This sheet practices CVC words with the letters g and i. Have your child read each word, then sort it by the letter it has.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["gas", "got", "bag", "pig", "pin", "sit", "gap", "lip", "tag", "hit", "gum", "rip"], "sortColumns": [{"label": "has g (gas)", "done": "gas"}, {"label": "has i (pig)", "done": ""}], "sortWords": ["got", "pin", "bag", "sit", "gap", "lip", "tag", "hit", "gum"], "sentenceBank": ["pig", "bag", "gas", "pin"], "sentences": ["The {} can dig.", "The map is in the {}.", "Dad got {} for the van.", "I put the {} in the tin."], "readAloud": ["The big pig can dig.", "Gus got a big bag.", "The pin is in the tin.", "Sid can sit in the van."]},
+  // WHAT WAS WRONG: this sheet practised "g & i" — but the curriculum row is
+  // "CVC Practice (a, i)", and at Lesson 10 the letter g has not even been
+  // taught yet. Short a and short i now, using only the sounds taught so far
+  // (a, m, s, t, p, f, i, n).
+  "Lesson 10": {"review": true, "footNote": "CVC practice: a and i", "titleHtml": "CVC Practice &mdash; Short <em>a</em> &amp; Short <em>i</em>", "grownNote": "This sheet practices CVC words with the short a sound (as in <em>mat</em>) and the short i sound (as in <em>sit</em>), using only letters your child has been taught so far. Have your child read each word, then sort it by the vowel sound in the middle.", "warmup": ["the", "a", "is", "in", "it"], "readWords": ["mat", "sat", "fan", "man", "tap", "nap", "sit", "pit", "tin", "fin", "tip", "sip"], "sortColumns": [{"label": "short a (mat)", "done": "mat"}, {"label": "short i (sit)", "done": ""}], "sortWords": ["sat", "fan", "tap", "sit", "pin", "tip", "man", "fit", "nap"], "sentenceBank": ["fan", "sit", "nap", "pin"], "sentences": ["The {} is tan.", "I {} on the mat.", "Nat had a {}.", "The {} is in the tin."], "readAloud": ["Sam sat on a mat.", "The man has a fan.", "Tim can sit and sip.", "A pin is in the tin."]},
 
   "Lesson 11": {"footNote": "The nasal a in -am and -an", "digraph": true, "titleHtml": "<em>am</em> and <em>an</em> &mdash; Reading &amp; Spelling Words like <em>ham</em> and <em>pan</em>", "target": "am / an", "soundLabel": "a", "keyword": "ham", "grownWord": "ham", "grownSounds": "/h/ /a/ /m/", "grownExamples": "the end of <em>ham</em> and <em>pan</em> &mdash; the short a bends a little before m and n", "fillNote": "Listen for the a right before m or n.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["ham", "jam", "ram", "ban", "can", "fan", "man", "pan", "tan", "van", "clam", "plan"], "families": [{"rime": "-am", "words": ["ham", "jam", "ram", "clam"]}, {"rime": "-an", "words": ["can", "fan", "man", "pan"]}, {"rime": "-an", "words": ["ban", "tan", "van", "plan"]}], "fill": [["h", ""], ["j", ""], ["c", ""], ["p", ""], ["v", ""], ["c l", ""]], "soundBoxWords": [{"w": "ham", "boxes": 2, "pairAt": 1, "lab": "am"}, {"w": "jam", "boxes": 2, "pairAt": 1, "lab": "am"}, {"w": "can", "boxes": 2, "pairAt": 1, "lab": "an"}, {"w": "pan", "boxes": 2, "pairAt": 1, "lab": "an"}], "changeOne": [{"start": "ham", "from": "h", "to": "j"}, {"start": "can", "from": "c", "to": "f"}, {"start": "pan", "from": "p", "to": "m"}, {"start": "jam", "from": "j", "to": "r"}], "sentenceBank": ["ham", "can", "fan", "pan"], "sentences": ["I like {} on my bread.", "Yes, I {} do it.", "Turn on the {}.", "Cook the egg in a {}."], "readAloud": ["The man has a tan van.", "Can I have ham and jam?", "The fan is on for us.", "Pat ran to get the pan."], "sortWords": ["ham", "hat", "can", "cat", "plan", "cap"], "sortDone": "ham"},
 
@@ -1968,7 +2195,9 @@ const WORKSHEETS = {
 
   "Lesson 92": {"review": true, "footNote": "Review: vowel teams 2", "titleHtml": "Review &mdash; Vowel Teams 2", "grownNote": "This sheet mixes the two oo sounds and ew-ue words. Have your child read each word, then sort it by its sound.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["food", "look", "blue", "room", "few", "cook", "glue", "spoon", "hook", "stew", "wood", "zoo"], "sortColumns": [{"label": "oo (moon)", "done": "moon"}, {"label": "oo (book)", "done": ""}, {"label": "ew / ue (new)", "done": ""}], "sortWords": ["food", "cook", "blue", "room", "hook", "stew", "spoon", "wood", "glue"], "sentenceBank": ["moon", "book", "glue", "food"], "sentences": ["Look up and see the {}.", "He can read a good {}.", "Use the {} to fix it.", "The cook made good {}."], "readAloud": ["The moon was full at noon.", "Look at the new blue boots.", "She took a good book to read.", "The stew is too hot to eat."]},
 
-  "Lesson 94": {"footNote": "The schwa: a lazy /uh/ at the end", "digraph": true, "titleHtml": "The Schwa <em>a</em> &mdash; Reading &amp; Spelling Words that End in a Quiet <em>a</em>", "target": "a", "soundLabel": "ə", "keyword": "sofa", "grownWord": "sofa", "grownSounds": "/s/ /oh/ /f/ /uh/", "grownExamples": "the end of <em>sofa</em>, <em>panda</em>, and <em>pizza</em> &mdash; the a relaxes to a soft /uh/", "fillNote": "The quiet a is the very last letter.", "warmup": ["the", "a", "is", "and", "to"], "readWords": ["sofa", "panda", "zebra", "koala", "llama", "pizza", "yoga", "lava", "samba", "salsa", "extra", "comma"], "families": [{"rime": "quiet a", "words": ["sofa", "yoga", "lava"]}, {"rime": "quiet a", "words": ["panda", "zebra", "koala", "llama"]}, {"rime": "quiet a", "words": ["pizza", "salsa", "extra", "comma"]}], "fill": [["s o f", ""], ["p a n d", ""], ["z e b r", ""], ["p i z z", ""], ["y o g", ""], ["e x t r", ""]], "soundBoxWords": [{"w": "sofa", "boxes": 4, "pairAt": 3, "lab": "a"}, {"w": "yoga", "boxes": 4, "pairAt": 3, "lab": "a"}, {"w": "panda", "boxes": 5, "pairAt": 4, "lab": "a"}, {"w": "lava", "boxes": 4, "pairAt": 3, "lab": "a"}], "changeOne": [{"start": "yoga", "from": "y", "to": "t"}, {"start": "lava", "from": "l", "to": "j"}, {"start": "samba", "from": "s", "to": "m"}, {"start": "salsa", "from": "s", "to": "b"}], "sentenceBank": ["sofa", "panda", "pizza", "zebra"], "sentences": ["I sat on the {}.", "The {} eats a lot.", "We had {} for lunch.", "A {} has black and white stripes."], "readAloud": ["The panda naps on the sofa.", "I want extra pizza, please.", "The zebra ran by the llama.", "We had salsa and chips."], "sortWords": ["sofa", "sock", "panda", "pan", "pizza", "pig"], "sortDone": "sofa"},
+  // WHAT WAS WRONG: this key held a schwa-a sheet (sofa, panda) — a different
+  // skill from the one the curriculum row names, "ea /ĕ/ (head), a /ŏ/ (want)".
+  "Lesson 94": {"review": true, "footNote": "ea as in head, a as in want", "titleHtml": "Tricky Vowels &mdash; <em>ea</em> Says /&#277;/ (head), <em>a</em> Says /&#335;/ (want)", "grownNote": "Two tricky spellings share this sheet. Sometimes <strong>ea</strong> says the short e sound, like <em>head</em> and <em>bread</em>. And after <strong>w</strong>, the letter <strong>a</strong> often says the short o sound, like <em>want</em> and <em>wash</em>. Have your child read each word, then sort it by the sound it makes.", "warmup": ["bed", "red", "hot", "top", "went"], "readWords": ["head", "bread", "dead", "deaf", "breath", "sweat", "want", "wash", "watch", "wand", "swap", "wasp"], "sortColumns": [{"label": "ea says short e (head)", "done": "head"}, {"label": "a says short o (want)", "done": ""}], "sortWords": ["bread", "wash", "sweat", "watch", "dead", "wand", "breath", "swap", "deaf"], "sentenceBank": ["head", "bread", "wash", "watch"], "sentences": ["I put my hat on my {}.", "We bake fresh {}.", "Please {} your hands.", "We {} the birds fly."], "readAloud": ["I spread jam on my bread.", "Wash the pan in the sink.", "We watch the wasp on the wall.", "My head is full of good plans."]},
 
   "Lesson 97": {"review": true, "footNote": "Review: diphthongs", "titleHtml": "Review &mdash; Diphthongs", "grownNote": "This sheet mixes oi-oy, ou-ow, and aw-au words. Have your child read each word, then sort it by its sound.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["boil", "toy", "loud", "draw", "joy", "crawl", "point", "town", "haul", "soil", "howl", "yawn"], "sortColumns": [{"label": "oi / oy (coin)", "done": "coin"}, {"label": "ou / ow (cloud)", "done": ""}, {"label": "aw / au (saw)", "done": ""}], "sortWords": ["boil", "loud", "draw", "toy", "town", "crawl", "point", "howl", "yawn"], "sentenceBank": ["coin", "cloud", "draw", "toy"], "sentences": ["I found a {} in the car.", "A big {} hid the sun.", "I like to {} at school.", "The boy has a new {}."], "readAloud": ["The boy found a coin.", "A loud crowd is in town.", "I saw a fawn on the lawn.", "Roy can draw a round cloud."]},
 
@@ -1978,13 +2207,21 @@ const WORKSHEETS = {
 
   "Lesson 108": {"ending": true, "footNote": "Doubling Rule: -er", "titleHtml": "Doubling Rule &mdash; <em>-er</em>", "endingLabel": "er", "affixPos": "suffix", "demo": ["big", "bigger"], "warmup": ["big", "hot", "sad", "wet", "mad"], "readWords": ["bigger", "hotter", "sadder", "wetter", "madder", "fatter", "redder", "thinner", "dimmer", "slimmer", "flatter", "tanner"], "addRows": [["big", "bigger"], ["hot", "hotter"], ["sad", "sadder"], ["wet", "wetter"], ["mad", "madder"], ["fat", "fatter"]], "findWords": [["bigger", "big"], ["hotter", "hot"], ["sadder", "sad"], ["wetter", "wet"], ["madder", "mad"], ["fatter", "fat"]], "pairs": [["big", "bigger"], ["hot", "hotter"], ["sad", "sadder"], ["wet", "wetter"]], "sentenceBank": ["bigger", "hotter", "sadder", "wetter"], "sentences": ["This box is {} than that one.", "The sun makes the day {}.", "The rainy day felt {} than the last.", "This rag is {} than the towel."], "readAloud": ["My dog is bigger than yours.", "Today is hotter than last week.", "She felt sadder after the show.", "This towel is wetter than that one."], "sortWords": ["big", "bigger", "hot", "hotter", "sad", "sadder"], "sortDone": "big"},
 
-  "Lesson 111": {"ending": true, "footNote": "Ending -er (person)", "titleHtml": "Ending <em>-er</em> &mdash; a Person Who...", "endingLabel": "er", "affixPos": "suffix", "demo": ["teach", "teacher"], "warmup": ["teach", "farm", "sing", "play", "help"], "readWords": ["teacher", "farmer", "singer", "player", "helper", "painter", "worker", "reader", "builder", "catcher", "jumper", "cleaner"], "addRows": [["teach", "teacher"], ["farm", "farmer"], ["sing", "singer"], ["play", "player"], ["help", "helper"], ["paint", "painter"]], "findWords": [["teacher", "teach"], ["farmer", "farm"], ["singer", "sing"], ["player", "play"], ["helper", "help"], ["painter", "paint"]], "pairs": [["teach", "teacher"], ["farm", "farmer"], ["sing", "singer"], ["play", "player"]], "sentenceBank": ["teacher", "farmer", "singer", "player"], "sentences": ["The {} read us a story.", "The {} grows corn on the land.", "The {} has a lovely voice.", "Each {} ran onto the field."], "readAloud": ["My teacher is very kind.", "The farmer feeds the pigs.", "The singer stood on the stage.", "That player kicked the ball."], "sortWords": ["teach", "teacher", "farm", "farmer", "sing", "singer"], "sortDone": "teach"},
+  // WHAT WAS WRONG: this key held an "-er, a person who..." sheet (teacher,
+  // farmer) — a different skill from the curriculum row, "ar /ər/, or /ər/":
+  // the unstressed ar and or that relax to /er/ at the end of a longer word.
+  "Lesson 111": {"review": true, "footNote": "ar and or saying /er/", "titleHtml": "Lazy <em>ar</em> &amp; <em>or</em> &mdash; When They Say /er/", "grownNote": "At the end of a longer word, the letters <strong>ar</strong> and <strong>or</strong> often relax to a soft /er/ sound &mdash; <em>dollar</em> ends like <em>ladder</em>, and <em>doctor</em> ends like <em>dinner</em>. Have your child read each word, find the /er/ at the end, then sort it by how that /er/ is spelled.", "warmup": ["car", "star", "corn", "for", "her"], "readWords": ["dollar", "collar", "solar", "sugar", "cellar", "lunar", "doctor", "tractor", "mirror", "actor", "color", "flavor"], "sortColumns": [{"label": "ends in ar (dollar)", "done": "dollar"}, {"label": "ends in or (doctor)", "done": ""}], "sortWords": ["collar", "doctor", "sugar", "tractor", "solar", "mirror", "cellar", "actor", "color"], "sentenceBank": ["dollar", "doctor", "tractor", "mirror"], "sentences": ["I found a {} on the path.", "The {} checked my ears.", "The {} plows the field.", "I see my face in the {}."], "readAloud": ["The doctor has a white coat.", "A dollar was in my pocket.", "The tractor is in the barn.", "I look in the mirror each morning."]},
 
   "Lesson 112": {"footNote": "R-controlled: air, are, ear", "digraph": true, "titleHtml": "The <em>air</em> Sound &mdash; Reading &amp; Spelling Words with <em>air</em>, <em>are</em>, and <em>ear</em>", "target": "air / are / ear", "soundLabel": "air", "keyword": "chair", "grownWord": "chair", "grownSounds": "/ch/ /air/", "grownExamples": "the sound in <em>chair</em> and <em>bear</em>", "fillNote": "The air sound can be spelled air, are, or ear.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["chair", "hair", "pair", "fair", "stair", "care", "share", "bare", "dare", "bear", "pear", "wear"], "families": [{"rime": "-air", "words": ["chair", "hair", "pair", "fair", "stair"]}, {"rime": "-are", "words": ["care", "share", "bare", "dare"]}, {"rime": "-ear", "words": ["bear", "pear", "wear"]}], "fill": [["c h", ""], ["c", ""], ["b", ""], ["h", ""], ["s h", ""], ["p", ""]], "soundBoxWords": [{"w": "chair", "boxes": 2, "pairAt": 1, "lab": "air"}, {"w": "care", "boxes": 2, "pairAt": 1, "lab": "are"}, {"w": "bear", "boxes": 2, "pairAt": 1, "lab": "ear"}, {"w": "hair", "boxes": 2, "pairAt": 1, "lab": "air"}], "changeOne": [{"start": "hair", "from": "h", "to": "p"}, {"start": "care", "from": "c", "to": "b"}, {"start": "bear", "from": "b", "to": "p"}, {"start": "share", "from": "h", "to": "c"}], "sentenceBank": ["chair", "hair", "bear", "care"], "sentences": ["I sit on a {}.", "She has long {}.", "The {} is big.", "I take {} of my pet."], "readAloud": ["The bear sat on a chair.", "I pair my socks with care.", "She will share her pear.", "The fair has a tall stair."], "sortWords": ["chair", "cat", "care", "top", "bear", "sun"], "sortDone": "chair"},
 
-  "Lesson 113": {"footNote": "ear saying /er/", "digraph": true, "titleHtml": "<em>ear</em> Saying /er/ &mdash; Reading &amp; Spelling Words with <em>ear</em>", "target": "ear", "soundLabel": "er", "keyword": "earth", "grownWord": "earth", "grownSounds": "/er/ /th/", "grownExamples": "the sound in <em>earth</em> and <em>learn</em>", "fillNote": "Here, the letters ear say /er/, as in earth.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["earth", "early", "earn", "learn", "heard", "pearl", "search", "yearn", "earl", "earthy", "unearth", "earnest"], "families": [{"rime": "ear-", "words": ["earth", "early", "earn", "earl"]}, {"rime": "-earn", "words": ["learn", "yearn", "earn"]}, {"rime": "more", "words": ["heard", "pearl", "search"]}], "fill": [["", "t h"], ["l", "n"], ["h", "d"], ["", "l y"], ["p", "l"], ["s", "c h"]], "soundBoxWords": [{"w": "earth", "boxes": 2, "pairAt": 0, "lab": "ear"}, {"w": "learn", "boxes": 3, "pairAt": 1, "lab": "ear"}, {"w": "pearl", "boxes": 3, "pairAt": 1, "lab": "ear"}, {"w": "heard", "boxes": 3, "pairAt": 1, "lab": "ear"}], "changeOne": [{"start": "earn", "from": "n", "to": "l"}, {"start": "earl", "from": "l", "to": "n"}, {"start": "learn", "from": "l", "to": "y"}, {"start": "yearn", "from": "y", "to": "l"}], "sentenceBank": ["earth", "learn", "heard", "early"], "sentences": ["We live on the {}.", "I want to {} to read.", "I {} a loud sound.", "I wake up {}."], "readAloud": ["I learn a lot at school.", "We must take care of the earth.", "I heard a bird sing early.", "She found a small white pearl."], "sortWords": ["earth", "cat", "learn", "hat", "pearl", "sun"], "sortDone": "earth"},
+  // WHAT WAS WRONG: this key held an "ear saying /er/" sheet (earth, learn) —
+  // the OPPOSITE sound to the one the curriculum row names, "ear /ir/ (hear)".
+  "Lesson 113": {"footNote": "ear as in hear", "digraph": true, "titleHtml": "Vowel Team <em>ear</em> &mdash; Reading &amp; Spelling the /ear/ Sound (as in hear)", "target": "ear", "soundLabel": "ear", "keyword": "hear", "grownWord": "hear", "grownSounds": "/h/ /ear/", "grownExamples": "the sound in <em>hear</em> and <em>near</em>", "fillNote": "The letters ear work together to make one sound, as in hear.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["hear", "ear", "near", "dear", "fear", "year", "gear", "rear", "clear", "beard", "spear", "yearly"], "families": [{"rime": "-ear", "words": ["hear", "near", "dear", "fear"]}, {"rime": "-ear", "words": ["year", "gear", "rear", "spear"]}, {"rime": "more", "words": ["clear", "beard", "yearly"]}], "fill": [["h", ""], ["n", ""], ["y", ""], ["f", ""], ["c l", ""], ["b", "d"]], "soundBoxWords": [{"w": "hear", "boxes": 2, "pairAt": 1, "lab": "ear"}, {"w": "near", "boxes": 2, "pairAt": 1, "lab": "ear"}, {"w": "year", "boxes": 2, "pairAt": 1, "lab": "ear"}, {"w": "beard", "boxes": 3, "pairAt": 1, "lab": "ear"}], "changeOne": [{"start": "hear", "from": "h", "to": "n"}, {"start": "near", "from": "n", "to": "y"}, {"start": "year", "from": "y", "to": "f"}, {"start": "fear", "from": "f", "to": "d"}], "sentenceBank": ["hear", "near", "year", "beard"], "sentences": ["I {} a bird sing.", "The park is {} my house.", "Next {} I will be eight.", "Grandpa has a soft gray {}."], "readAloud": ["I hear the rain on the roof.", "The deer is near the trees.", "This year I lost a tooth.", "The sky is clear this morning."], "sortWords": ["hear", "hat", "near", "net", "year", "yes"], "sortDone": "hear"},
 
-  "Lesson 114": {"footNote": "Long a: ai, ay, a_e", "digraph": true, "titleHtml": "Long <em>a</em> &mdash; Reading &amp; Spelling Words with <em>ai</em>, <em>ay</em>, and <em>a_e</em>", "target": "ai / ay / a_e", "soundLabel": "ā", "keyword": "rain", "grownWord": "rain", "grownSounds": "/r/ /ā/ /n/", "grownExamples": "the sound in <em>rain</em> and <em>play</em>", "fillNote": "The long a sound can be spelled ai, ay, or a_e.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["rain", "wait", "mail", "pail", "play", "day", "say", "tray", "cake", "name", "gate", "cane"], "families": [{"rime": "-ain", "words": ["rain", "main", "pain", "train"]}, {"rime": "-ay", "words": ["play", "day", "say", "tray"]}, {"rime": "-ake", "words": ["cake", "bake", "lake", "make"]}], "fill": [["r", "n"], ["p l", ""], ["w", "t"], ["d", ""], ["m", "l"], ["t r", ""]], "soundBoxWords": [{"w": "rain", "boxes": 3, "pairAt": 1, "lab": "ai"}, {"w": "play", "boxes": 3, "pairAt": 2, "lab": "ay"}, {"w": "cake", "boxes": 3, "pairAt": 1, "lab": "a_e"}, {"w": "day", "boxes": 2, "pairAt": 1, "lab": "ay"}], "changeOne": [{"start": "rain", "from": "r", "to": "m"}, {"start": "play", "from": "p", "to": "c"}, {"start": "cake", "from": "k", "to": "n"}, {"start": "day", "from": "d", "to": "s"}], "sentenceBank": ["rain", "play", "cake", "day"], "sentences": ["I see the {} fall.", "We like to {} outside.", "I want a big {}.", "It is a sunny {}."], "readAloud": ["We play in the rain all day.", "I will bake a cake for you.", "The train is late today.", "Say your name to me."], "sortWords": ["rain", "cat", "play", "dog", "cake", "sun"], "sortDone": "rain"},
+  // WHAT WAS WRONG: this key held an ai / ay / a_e sheet (rain, play, cake) —
+  // the common spellings taught back in Unit 5, not one of the five ALTERNATE
+  // spellings this row names (ei, eigh, ey, ea, aigh).
+  "Lesson 114": {"review": true, "footNote": "Long a: ei, eigh, ey, ea, aigh", "titleHtml": "Alternate Long <em>a</em> &mdash; <em>ei</em>, <em>eigh</em>, <em>ey</em>, <em>ea</em>, <em>aigh</em>", "grownNote": "The long a sound has some rare spellings: <strong>ei</strong> (<em>vein</em>), <strong>eigh</strong> (<em>eight</em>), <strong>ey</strong> (<em>they</em>), <strong>ea</strong> (<em>great</em>), and <strong>aigh</strong> (<em>straight</em>). These just have to be noticed and remembered. Have your child read each word, then sort it by which spelling of long a it uses.", "warmup": ["rain", "play", "cake", "day", "name"], "readWords": ["vein", "veil", "rein", "eight", "weigh", "sleigh", "they", "obey", "prey", "great", "break", "straight"], "sortColumns": [{"label": "ei or eigh (eight)", "done": "eight"}, {"label": "ey (they)", "done": ""}, {"label": "ea or aigh (great)", "done": ""}], "sortWords": ["vein", "weigh", "they", "obey", "great", "break", "sleigh", "straight", "prey"], "sentenceBank": ["eight", "they", "great", "straight"], "sentences": ["I am {} years old.", "Can {} come and play?", "The show was {}.", "Draw a {} line."], "readAloud": ["My neighbor is eight years old.", "They obey the rules of the game.", "The sleigh went straight down the hill.", "It is great to take a break."]},
 
   "Lesson 115": {"footNote": "Long u: ew, ue, oo", "digraph": true, "titleHtml": "Long <em>u</em> &mdash; Reading &amp; Spelling Words with <em>ew</em>, <em>ue</em>, and <em>oo</em>", "target": "ew / ue / oo", "soundLabel": "ū", "keyword": "few", "grownWord": "few", "grownSounds": "/f/ /ū/", "grownExamples": "the sound in <em>few</em> and <em>moon</em>", "fillNote": "The long u sound can be spelled ew, ue, or oo.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["few", "new", "chew", "stew", "blue", "cue", "glue", "true", "moon", "zoo", "food", "soon"], "families": [{"rime": "-ew", "words": ["few", "new", "chew", "stew"]}, {"rime": "-ue", "words": ["blue", "glue", "true", "cue"]}, {"rime": "-oon", "words": ["moon", "soon", "noon", "spoon"]}], "fill": [["f", ""], ["m", "n"], ["b l", ""], ["z", ""], ["n", ""], ["s", "n"]], "soundBoxWords": [{"w": "few", "boxes": 2, "pairAt": 1, "lab": "ew"}, {"w": "blue", "boxes": 3, "pairAt": 2, "lab": "ue"}, {"w": "moon", "boxes": 3, "pairAt": 1, "lab": "oo"}, {"w": "zoo", "boxes": 2, "pairAt": 1, "lab": "oo"}], "changeOne": [{"start": "few", "from": "f", "to": "n"}, {"start": "moon", "from": "m", "to": "s"}, {"start": "blue", "from": "b", "to": "g"}, {"start": "zoo", "from": "z", "to": "t"}], "sentenceBank": ["few", "blue", "moon", "zoo"], "sentences": ["I have a {} toys.", "The sky is {}.", "The {} is bright.", "We saw a lion at the {}."], "readAloud": ["The moon is high at noon.", "I have a few blue toys.", "We will go to the zoo soon.", "The new pup likes to chew."], "sortWords": ["few", "cat", "moon", "dog", "blue", "pin"], "sortDone": "few"},
 
@@ -1994,9 +2231,12 @@ const WORKSHEETS = {
 
   "Lesson 118": {"footNote": "ch making /k/ and /sh/", "digraph": true, "titleHtml": "<em>ch</em> that says /k/ and /sh/ &mdash; Reading &amp; Spelling Words like <em>school</em> and <em>chef</em>", "target": "ch", "soundLabel": "k/sh", "keyword": "school", "grownWord": "school", "grownSounds": "/s/ /k/ /oo/ /l/", "grownExamples": "the ch in <em>school</em> (/k/) and <em>chef</em> (/sh/) &mdash; not the usual /ch/", "fillNote": "Here ch says /k/ or /sh/, not /ch/.", "warmup": ["the", "is", "and", "up", "in"], "readWords": ["school", "chord", "ache", "echo", "chorus", "stomach", "chef", "chute", "machine", "mustache"], "families": [{"rime": "ch says /k/", "words": ["school", "chord", "ache", "echo"]}, {"rime": "ch says /k/", "words": ["chorus", "stomach"]}, {"rime": "ch says /sh/", "words": ["chef", "chute", "machine", "mustache"]}], "fill": [["s", "o o l"], ["a", "e"], ["e", "o"], ["", "e f"], ["", "u t e"], ["", "o r u s"]], "soundBoxWords": [{"w": "chef", "boxes": 3, "pairAt": 0, "lab": "ch"}, {"w": "ache", "boxes": 2, "pairAt": 1, "lab": "ch"}, {"w": "echo", "boxes": 3, "pairAt": 1, "lab": "ch"}, {"w": "chute", "boxes": 3, "pairAt": 0, "lab": "ch"}], "changeOne": [{"start": "chord", "from": "d", "to": "e"}, {"start": "chord", "from": "o", "to": "a"}, {"start": "chef", "from": "f", "to": "w"}, {"start": "ache", "from": "h", "to": "r"}], "sentenceBank": ["school", "chef", "echo", "machine"], "sentences": ["We learn a lot at {}.", "The {} can cook well.", "I heard an {} in the cave.", "Mom put it in the {}."], "readAloud": ["The chef went to school.", "I heard my echo.", "The machine is loud.", "I have an ache in my leg."], "sortWords": ["school", "chin", "chef", "chat", "echo", "chip"], "sortDone": "school"},
 
-  "Lesson 119": {"ending": true, "footNote": "Ending -tion (says /shun/)", "titleHtml": "Word Ending <em>-tion</em>", "endingLabel": "tion", "affixPos": "suffix", "demo": ["act", "action"], "warmup": ["act", "invent", "protect", "correct", "collect"], "readWords": ["action", "invention", "protection", "correction", "collection", "subtraction", "motion", "nation", "station", "fiction", "section", "fraction"], "addRows": [["act", "action"], ["invent", "invention"], ["protect", "protection"], ["correct", "correction"], ["collect", "collection"], ["subtract", "subtraction"]], "findWords": [["action", "act"], ["invention", "invent"], ["protection", "protect"], ["correction", "correct"], ["collection", "collect"], ["subtraction", "subtract"]], "pairs": [["act", "action"], ["invent", "invention"], ["protect", "protection"], ["correct", "correction"]], "sentenceBank": ["action", "invention", "protection", "correction"], "sentences": ["The hero sprang into {}.", "The light bulb was a great {}.", "A helmet gives your head {}.", "She made one small {} to her work."], "readAloud": ["The movie was full of action.", "The wheel was a useful invention.", "Sunscreen gives us protection.", "The teacher marked a correction."], "sortWords": ["act", "action", "invent", "invention", "protect", "protection"], "sortDone": "act"},
+  // 119 and 120 carry a third entry on each addRow — the letters ACTUALLY
+  // added (act + ion, not act + tion) — so the printed sum and the answer
+  // boxes describe the same word. See buildEndingHTML for what was wrong.
+  "Lesson 119": {"ending": true, "footNote": "Ending -tion (says /shun/)", "titleHtml": "Word Ending <em>-tion</em>", "endingLabel": "tion", "affixPos": "suffix", "demo": ["act", "action"], "grownTip": "A word ending is a word part added to the end of a base word. These base words already end in <em>t</em> &mdash; adding <em>ion</em> makes the /shun/ ending you hear in <em>action</em>: <em>act</em> &rarr; <em>action</em>. Have your child find the base word inside the longer word. Keep it to about ten minutes and end on a win.", "addHint": "These base words already end in <em>t</em>. Add <em>ion</em> &mdash; the <em>t</em> and <em>ion</em> together spell the /shun/ ending. Write the new word, one letter in each box.", "warmup": ["act", "invent", "protect", "correct", "collect"], "readWords": ["action", "invention", "protection", "correction", "collection", "subtraction", "motion", "nation", "station", "fiction", "section", "fraction"], "addRows": [["act", "action", "ion"], ["invent", "invention", "ion"], ["protect", "protection", "ion"], ["correct", "correction", "ion"], ["collect", "collection", "ion"], ["subtract", "subtraction", "ion"]], "findWords": [["action", "act"], ["invention", "invent"], ["protection", "protect"], ["correction", "correct"], ["collection", "collect"], ["subtraction", "subtract"]], "pairs": [["act", "action"], ["invent", "invention"], ["protect", "protection"], ["correct", "correction"]], "sentenceBank": ["action", "invention", "protection", "correction"], "sentences": ["The hero sprang into {}.", "The light bulb was a great {}.", "A helmet gives your head {}.", "She made one small {} to her work."], "readAloud": ["The movie was full of action.", "The wheel was a useful invention.", "Sunscreen gives us protection.", "The teacher marked a correction."], "sortWords": ["act", "action", "invent", "invention", "protect", "protection"], "sortDone": "act"},
 
-  "Lesson 120": {"ending": true, "footNote": "Ending -ture (says /cher/)", "titleHtml": "Word Ending <em>-ture</em>", "endingLabel": "ture", "affixPos": "suffix", "demo": ["mix", "mixture"], "warmup": ["mix", "depart", "sculpt", "sign", "moist"], "readWords": ["picture", "nature", "future", "capture", "mixture", "adventure", "feature", "culture", "texture", "moisture", "signature", "sculpture"], "addRows": [["mix", "mixture"], ["depart", "departure"], ["sculpt", "sculpture"], ["sign", "signature"], ["moist", "moisture"], ["fix", "fixture"]], "findWords": [["mixture", "mix"], ["departure", "depart"], ["sculpture", "sculpt"], ["signature", "sign"], ["moisture", "moist"], ["fixture", "fix"]], "pairs": [["mix", "mixture"], ["depart", "departure"], ["sculpt", "sculpture"], ["sign", "signature"]], "sentenceBank": ["mixture", "departure", "sculpture", "signature"], "sentences": ["Stir the {} in the bowl.", "We waved at the train's {}.", "The clay {} dried in the sun.", "Please add your {} at the end."], "readAloud": ["I made a mixture of red and blue.", "Our departure time is at noon.", "The sculpture stood in the park.", "She wrote her signature on the card."], "sortWords": ["mix", "mixture", "depart", "departure", "sculpt", "sculpture"], "sortDone": "mix"},
+  "Lesson 120": {"ending": true, "footNote": "Ending -ture (says /cher/)", "titleHtml": "Word Ending <em>-ture</em>", "endingLabel": "ture", "affixPos": "suffix", "demo": ["mix", "mixture"], "grownTip": "A word ending is a word part added to the end of a base word. Adding <strong>ture</strong> &mdash; or sometimes just <em>ure</em> &mdash; makes the /cher/ ending you hear in <em>mixture</em>: <em>mix</em> &rarr; <em>mixture</em>. Have your child find the base word inside the longer word. Keep it to about ten minutes and end on a win.", "addHint": "Add the letters shown to the base word &mdash; some words take <em>ture</em>, some just <em>ure</em>. Write the new word, one letter in each box.", "warmup": ["mix", "depart", "sculpt", "sign", "moist"], "readWords": ["picture", "nature", "future", "capture", "mixture", "adventure", "feature", "culture", "texture", "moisture", "signature", "sculpture"], "addRows": [["mix", "mixture", "ture"], ["fix", "fixture", "ture"], ["depart", "departure", "ure"], ["sculpt", "sculpture", "ure"], ["moist", "moisture", "ure"], ["sign", "signature", "ature"]], "findWords": [["mixture", "mix"], ["departure", "depart"], ["sculpture", "sculpt"], ["signature", "sign"], ["moisture", "moist"], ["fixture", "fix"]], "pairs": [["mix", "mixture"], ["depart", "departure"], ["sculpt", "sculpture"], ["sign", "signature"]], "sentenceBank": ["mixture", "departure", "sculpture", "signature"], "sentences": ["Stir the {} in the bowl.", "We waved at the train's {}.", "The clay {} dried in the sun.", "Please add your {} at the end."], "readAloud": ["I made a mixture of red and blue.", "Our departure time is at noon.", "The sculpture stood in the park.", "She wrote her signature on the card."], "sortWords": ["mix", "mixture", "depart", "departure", "sculpt", "sculpture"], "sortDone": "mix"},
 
   "Lesson 121": {"ending": true, "footNote": "Ending -ist (a person)", "titleHtml": "Ending <em>-ist</em>", "endingLabel": "ist", "affixPos": "suffix", "demo": ["art", "artist"], "warmup": ["art", "tour", "dent", "cartoon", "guitar"], "readWords": ["artist", "cyclist", "florist", "tourist", "pianist", "dentist", "cartoonist", "guitarist", "violinist", "novelist", "soloist", "chemist"], "addRows": [["art", "artist"], ["tour", "tourist"], ["dent", "dentist"], ["cartoon", "cartoonist"], ["guitar", "guitarist"], ["violin", "violinist"]], "findWords": [["artist", "art"], ["tourist", "tour"], ["dentist", "dent"], ["cartoonist", "cartoon"], ["guitarist", "guitar"], ["violinist", "violin"]], "pairs": [["art", "artist"], ["tour", "tourist"], ["dent", "dentist"], ["cartoon", "cartoonist"]], "sentenceBank": ["artist", "tourist", "dentist", "cartoonist"], "sentences": ["The {} painted a bright picture.", "The {} took photos of the city.", "The {} checked all my teeth.", "The {} draws funny pictures."], "readAloud": ["The artist mixed her paints.", "A tourist asked us for help.", "I visit the dentist twice a year.", "The cartoonist made me laugh."], "sortWords": ["art", "artist", "tour", "tourist", "dent", "dentist"], "sortDone": "art"},
 
@@ -2013,7 +2253,18 @@ function wsBoxes(cls, n) {
   return s;
 }
 
-function buildWorksheetHTML(c) {
+// WHAT WAS WRONG: the sheets had no page-break rules at all, so the printer
+// sliced activity rows and sorting boxes horizontally in half — the word on
+// one page, its answer boxes on the next — and left section headings stranded
+// alone at the foot of a page. Shared by all three worksheet stylesheets.
+const WS_PRINT_CSS = `
+    h2, .hint { break-inside: avoid; page-break-inside: avoid; break-after: avoid-page; page-break-after: avoid; }
+    .tip, .warm, .wordgrid, .family, .fillrow, .sbrow, .chainq, .mrow, .prow,
+    .pgrid, .wordbank, .sent, .read, .sort, .box, .sortmulti, .tracerow,
+    .lettergrid, .circlegrid, .finishgrid, .bigletters { break-inside: avoid; page-break-inside: avoid; }
+`;
+
+function buildWorksheetHTML(c, flagged) {
   const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
   const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
   const fams = c.families.map(f => `<p class="family"><strong>${f.rime}</strong> ${f.words.join(' ')}</p>`).join('');
@@ -2115,6 +2366,7 @@ function buildWorksheetHTML(c) {
     .warm { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; font-size: 18px; text-align: center; margin-left: 12px; }
     .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; color: #333; }
     .foot { margin-top: 30px; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; }
+    ${WS_PRINT_CSS}
   `;
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Practice &mdash; ${c.footNote}</title><style>${css}</style></head><body>
@@ -2128,9 +2380,9 @@ function buildWorksheetHTML(c) {
         <div class="tag">Targeted Practice &middot; Reading Foundations</div>
         <h1>${c.titleHtml}</h1>
       </div>
-      <div class="flagged">Flagged skill</div>
+      ${flagged ? '<div class="flagged">Flagged skill</div>' : ''}
     </div>
-    <p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>
+    ${flagged ? '<p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>' : ''}
 
     <div class="tip">
       <div class="h">For the grown-up &middot; start here</div>
@@ -2185,7 +2437,7 @@ function buildWorksheetHTML(c) {
   </body></html>`;
 }
 
-function buildVCeHTML(c) {
+function buildVCeHTML(c, flagged) {
   const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
   const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
   const fams = c.families.map(f => `<p class="family"><strong>${f.rime}</strong> ${f.words.join(' ')}</p>`).join('');
@@ -2252,6 +2504,7 @@ function buildVCeHTML(c) {
     .warm { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; font-size: 18px; text-align: center; margin-left: 12px; }
     .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; color: #333; }
     .foot { margin-top: 30px; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; }
+    ${WS_PRINT_CSS}
   `;
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Practice &mdash; ${c.footNote}</title><style>${css}</style></head><body>
@@ -2265,9 +2518,9 @@ function buildVCeHTML(c) {
         <div class="tag">Targeted Practice &middot; Reading Foundations</div>
         <h1>${c.titleHtml}</h1>
       </div>
-      <div class="flagged">Flagged skill</div>
+      ${flagged ? '<div class="flagged">Flagged skill</div>' : ''}
     </div>
-    <p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>
+    ${flagged ? '<p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>' : ''}
 
     <div class="tip">
       <div class="h">For the grown-up &middot; start here</div>
@@ -2371,7 +2624,7 @@ const WS_BASE_CSS = `
     .warm div { border: 1px dashed #bbb; border-radius: 6px; padding: 7px 0; color: #333; }
     .foot { margin-top: 30px; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 8px; }
     .toolbarwrap { }
-`;
+` + WS_PRINT_CSS;
 
 function wsDoc(title, css, bodyHtml) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${title}</title><style>${WS_BASE_CSS}${css}</style></head><body>
@@ -2385,18 +2638,26 @@ function wsDoc(title, css, bodyHtml) {
   </body></html>`;
 }
 
-function wsHead(c) {
-  return `<div class="band"><div><div class="tag">Targeted Practice &middot; Reading Foundations</div><h1>${c.titleHtml}</h1></div><div class="flagged">Flagged skill</div></div>
-    <p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>`;
+// The badge and the "generated from the assessment" line only when the
+// assessment really flagged this lesson — see openWorksheet().
+function wsHead(c, flagged) {
+  return `<div class="band"><div><div class="tag">Targeted Practice &middot; Reading Foundations</div><h1>${c.titleHtml}</h1></div>${flagged ? '<div class="flagged">Flagged skill</div>' : ''}</div>
+    ${flagged ? '<p class="hint" style="margin-left:0;">Generated from the assessment. This practice matches the one skill your reader is still building.</p>' : ''}`;
 }
 
-function buildEndingHTML(c) {
+function buildEndingHTML(c, flagged) {
   const suffix = c.affixPos !== 'prefix';
   const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
   const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
+  // WHAT WAS WRONG: every row printed "+ <endingLabel>" beside boxes counted
+  // from the finished word, but on -tion and -ture the letters genuinely added
+  // are not the whole label (act + ion = action), so the sum promised one more
+  // letter than there were boxes and a child ran out of squares mid-word. A
+  // row may now carry its own third entry — the letters actually added — and
+  // the boxes and the printed sum always describe the same word.
   const add = c.addRows.map(p => suffix
-    ? `<div class="mrow"><span class="mbase">${p[0]}</span><span class="mplus">+ <strong>${c.endingLabel}</strong> =</span><span class="ansboxes">${wsBoxes('abox', p[1].length)}</span></div>`
-    : `<div class="mrow"><span class="mplus"><strong>${c.endingLabel}</strong> +</span><span class="mbase">${p[0]}</span><span class="mplus">=</span><span class="ansboxes">${wsBoxes('abox', p[1].length)}</span></div>`
+    ? `<div class="mrow"><span class="mbase">${p[0]}</span><span class="mplus">+ <strong>${p[2] || c.endingLabel}</strong> =</span><span class="ansboxes">${wsBoxes('abox', p[1].length)}</span></div>`
+    : `<div class="mrow"><span class="mplus"><strong>${p[2] || c.endingLabel}</strong> +</span><span class="mbase">${p[0]}</span><span class="mplus">=</span><span class="ansboxes">${wsBoxes('abox', p[1].length)}</span></div>`
   ).join('');
   const find = c.findWords.map(p => `<div class="mrow"><span class="mbase">${p[0]}</span><span class="mplus">&rarr; base word =</span><span class="wline"></span></div>`).join('');
   const pairs = c.pairs.map(p => `<div class="prow"><span class="pshort">${p[0]}</span><span class="plong">${p[1]}</span></div>`).join('');
@@ -2405,9 +2666,10 @@ function buildEndingHTML(c) {
   const reads = c.readAloud.map(s => `<p class="read"><span class="chk"></span> ${s}</p>`).join('');
   const bank2 = c.sortWords.map(w => `<span class="wb"><span class="ubox"></span>${w}</span>`).join('');
   const where = suffix ? 'the END' : 'the START';
-  const grownTip = `A ${suffix ? 'word ending' : 'prefix'} is a word part added to ${where} of a base word. Read the base word first, then ${suffix ? 'add' : 'put'} <strong>${c.endingLabel}</strong> ${suffix ? 'on the end' : 'in front'}: <em>${c.demo[0]}</em> &rarr; <em>${c.demo[1]}</em>. Have your child find the base word inside the longer word. Keep it to about ten minutes and end on a win.`;
+  // c.grownTip: -tion and -ture explain their own arithmetic, see addRows above.
+  const grownTip = c.grownTip || `A ${suffix ? 'word ending' : 'prefix'} is a word part added to ${where} of a base word. Read the base word first, then ${suffix ? 'add' : 'put'} <strong>${c.endingLabel}</strong> ${suffix ? 'on the end' : 'in front'}: <em>${c.demo[0]}</em> &rarr; <em>${c.demo[1]}</em>. Have your child find the base word inside the longer word. Keep it to about ten minutes and end on a win.`;
   const css = `.pshort{}`;
-  const body = `${wsHead(c)}
+  const body = `${wsHead(c, flagged)}
     <div class="tip"><div class="h">For the grown-up &middot; start here</div>${grownTip}</div>
     <h2>Warm-up &middot; Read the base words you know</h2>
     <p class="hint">Read these base words first. Then we ${suffix ? 'add' : 'put on'} the <em>${c.endingLabel}</em> ${suffix ? 'ending' : 'prefix'}.</p>
@@ -2416,7 +2678,7 @@ function buildEndingHTML(c) {
     <p class="hint">Find the base word, then read the whole word.</p>
     <div class="wordgrid">${grid}</div>
     <h2>2 &middot; ${suffix ? 'Add' : 'Put on'} the ending <em>${c.endingLabel}</em></h2>
-    <p class="hint">${suffix ? 'Add' : 'Put'} <em>${c.endingLabel}</em> ${suffix ? 'to' : 'in front of'} the base word. Write the new word, one letter in each box.</p>
+    <p class="hint">${c.addHint || `${suffix ? 'Add' : 'Put'} <em>${c.endingLabel}</em> ${suffix ? 'to' : 'in front of'} the base word. Write the new word, one letter in each box.`}</p>
     <div class="mgrid">${add}</div>
     <h2>3 &middot; Find the base word</h2>
     <p class="hint">Read the word. Write just the base word &mdash; the part without <em>${c.endingLabel}</em>.</p>
@@ -2438,8 +2700,12 @@ function buildEndingHTML(c) {
   return wsDoc(`Practice &mdash; ${c.footNote}`, css, body);
 }
 
-function buildLetterHTML(c) {
+function buildLetterHTML(c, flagged) {
   const fin = !!c.finalPos;
+  // WHAT WAS WRONG: the pair read `${c.Letter}${c.letter}` — "Aa", "Rr" — which
+  // for the one two-character letter printed "This is the letter Ququ". A
+  // two-character letter gets a space: "Qu qu".
+  const pair = c.Letter.length > 1 ? `${c.Letter} ${c.letter}` : `${c.Letter}${c.letter}`;
   const findGrid = c.findGrid.map(x => `<div>${x}</div>`).join('');
   const circle = c.circleWords.map(w => `<div>${w}</div>`).join('');
   const finish = c.finishRimes.map(r => fin
@@ -2458,8 +2724,8 @@ function buildLetterHTML(c) {
     .finishword { letter-spacing: 0.04em; }
     .blank.sm { width: 34px; }
   `;
-  const body = `${wsHead(c)}
-    <div class="tip"><div class="h">For the grown-up &middot; start here</div>This is the letter <strong>${c.Letter}${c.letter}</strong>. It says ${c.sound}, like the start of <em>${c.keyword}</em> (${c.keywordSounds}). Point to it, trace it together, and listen for ${c.sound} at the start of words. Keep it to about ten minutes and end on a win.</div>
+  const body = `${wsHead(c, flagged)}
+    <div class="tip"><div class="h">For the grown-up &middot; start here</div>This is the letter <strong>${pair}</strong>. It says ${c.sound}, like the start of <em>${c.keyword}</em> (${c.keywordSounds}). Point to it, trace it together, and listen for ${c.sound} at the start of words. Keep it to about ten minutes and end on a win.</div>
     <h2>1 &middot; Say the sound</h2>
     <p class="hint">This is the letter. It says ${c.sound} &mdash; like the start of <em>${c.keyword}</em>.</p>
     <div class="bigletters">${c.Letter} ${c.letter}</div>
@@ -2476,10 +2742,10 @@ function buildLetterHTML(c) {
     <h2>5 &middot; Write the letter</h2>
     <p class="hint">Write <em>${c.letter}</em> to ${fin ? 'finish' : 'start'} each word, then read it.</p>
     <div class="finishgrid">${finish}</div>`;
-  return wsDoc(`Practice &mdash; Letter ${c.Letter}${c.letter}`, css, body);
+  return wsDoc(`Practice &mdash; Letter ${pair}`, css, body);
 }
 
-function buildReviewHTML(c) {
+function buildReviewHTML(c, flagged) {
   const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
   const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
   const cols = c.sortColumns.map(col => `<div class="box"><div class="h">${col.label}</div>${col.done || ''}</div>`).join('');
@@ -2487,8 +2753,9 @@ function buildReviewHTML(c) {
   const bank1 = c.sentenceBank.map(w => `<span class="wb"><span class="ubox"></span>${w}</span>`).join('');
   const sents = c.sentences.map(s => `<p class="sent">${s.replace('{}', '<span class="blank"></span>')}</p>`).join('');
   const reads = c.readAloud.map(s => `<p class="read"><span class="chk"></span> ${s}</p>`).join('');
-  const css = `.sortmulti{display:grid;grid-template-columns:repeat(${c.sortColumns.length},1fr);gap:12px;margin-left:12px;}`;
-  const body = `${wsHead(c)}
+  const css = `.sortmulti{display:grid;grid-template-columns:repeat(${c.sortColumns.length},1fr);gap:12px;margin-left:12px;}
+    .sortmulti .box{min-height:150px;}`;
+  const body = `${wsHead(c, flagged)}
     <div class="tip"><div class="h">For the grown-up &middot; start here</div>${c.grownNote}</div>
     <h2>Warm-up &middot; Read to get ready</h2>
     <p class="hint">Read these words to warm up.</p>
@@ -2510,7 +2777,7 @@ function buildReviewHTML(c) {
   return wsDoc(`Practice &mdash; ${c.footNote}`, css, body);
 }
 
-function buildSyllableHTML(c) {
+function buildSyllableHTML(c, flagged) {
   const warm = c.warmup.map(w => `<div>${w}</div>`).join('');
   const grid = c.readWords.map(w => `<div>${w}</div>`).join('');
   const brk = c.breakWords.map(p => `<div class="mrow"><span class="mbase">${p[0]}</span><span class="mplus">&rarr;</span><span class="wline" style="width:120px"></span><span class="syldot">&middot;</span><span class="wline" style="width:120px"></span></div>`).join('');
@@ -2518,7 +2785,7 @@ function buildSyllableHTML(c) {
   const sents = c.sentences.map(s => `<p class="sent">${s.replace('{}', '<span class="blank"></span>')}</p>`).join('');
   const reads = c.readAloud.map(s => `<p class="read"><span class="chk"></span> ${s}</p>`).join('');
   const css = `.syldot{font-size:26px;color:#b23b00;margin:0 4px;}`;
-  const body = `${wsHead(c)}
+  const body = `${wsHead(c, flagged)}
     <div class="tip"><div class="h">For the grown-up &middot; start here</div>${c.grownNote}</div>
     <h2>Warm-up &middot; Short words first</h2>
     <p class="hint">Read these short words to warm up.</p>
@@ -2555,7 +2822,12 @@ function openWorksheet(lessonName) {
   }
   w.document.open();
   const build = c.review ? buildReviewHTML : c.syllable ? buildSyllableHTML : c.letter ? buildLetterHTML : c.ending ? buildEndingHTML : c.vce ? buildVCeHTML : buildWorksheetHTML;
-  w.document.write(build(c));
+  // WHAT WAS WRONG: every sheet said "Flagged skill / Generated from the
+  // assessment" — even for a lesson just marked Mastered, or with nothing
+  // assessed at all. A false line printed on a page that goes home. The badge
+  // only appears when this lesson's score really says more practice is needed.
+  const flagged = scores[lessonName] === 'Emerging' || scores[lessonName] === 'Developing';
+  w.document.write(build(c, flagged));
   w.document.close();
 }
 
@@ -2583,11 +2855,14 @@ function openWorksheetPicker() {
       list.appendChild(row);
     });
   });
-  document.getElementById('worksheetModal').classList.add('show');
+  const wsModal = document.getElementById('worksheetModal');
+  wsModal.classList.add('show');
+  modalOpened(wsModal);
 }
 
 function closeWorksheetModal() {
   document.getElementById('worksheetModal').classList.remove('show');
+  modalClosed();
 }
 
 // Initialize

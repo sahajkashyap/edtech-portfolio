@@ -22,8 +22,8 @@
 // clicks and real keypresses, and prints a line per check. It needs nothing on
 // the internet — and one of the checks below proves that.
 //
-// node_modules is a symlink to ../../running-record-tool/tests/node_modules, so
-// there is nothing to install.
+// puppeteer-core is borrowed from ../../running-record-tool/tests/node_modules
+// via NODE_PATH (see package.json), so there is nothing to install.
 //
 // WHAT YOU SHOULD SEE
 // -------------------
@@ -244,16 +244,20 @@ async function main(){
   await page.evaluate(() => document.getElementById('wsTitle').select());
   await page.type('#wsTitle', 'Monday sheet');
   await sleep(150);
-  await page.evaluate(() => { navigator.clipboard.writeText = () => Promise.resolve(); });
+  await page.evaluate(() => { navigator.clipboard.writeText = t => { window.__copied = t; return Promise.resolve(); }; });
   await page.click('#wsShare');
   await sleep(500);
   check('the FIRST click on Copy share link after typing a title works too',
         /copied/i.test(await page.$eval('#toast', e => e.textContent)),
         await page.$eval('#toast', e => e.textContent));
   {
-    const hash = await page.evaluate(() => location.hash);
-    const payload = JSON.parse(Buffer.from(hash.replace('#ws=', ''), 'base64').toString('utf8'));
+    const copied = await page.evaluate(() => window.__copied);
+    const payload = JSON.parse(Buffer.from(copied.split('#ws=')[1], 'base64').toString('utf8'));
     eq('the share link carries the title you typed', payload.title, 'Monday sheet');
+    // The link used to be written into THIS tab's address bar too, where it sat
+    // for ever: every later reload dumped you back on this old sheet.
+    eq('copying the link does not chain this tab to the old sheet',
+       await page.evaluate(() => location.hash), '');
   }
 
   await page.click('#wsRegen');
@@ -524,15 +528,13 @@ async function main(){
 
   await page.click('#clearSampleBtn');
   await sleep(400);
-  // "Today" is worked out inside the page, not in node — a run that straddles
-  // midnight in a different timezone would otherwise fail for no real reason.
   eq('one click clears her and the tool is empty again',
      await page.evaluate(() => ({ answered: totalAnswered(),
                                   stars: document.getElementById('starCount').textContent,
                                   bar: document.getElementById('sampleBar').classList.contains('hidden'),
-                                  who: localStorage.getItem('mq_who') })),
-     await page.evaluate(() => ({ answered: 0, stars: '0', bar: true,
-                                  who: JSON.stringify({ initials: '', date: todayISO(), sample: false }) })));
+                                  who: JSON.parse(localStorage.getItem('mq_who')) })),
+     { answered: 0, stars: '0', bar: true,
+       who: { initials: '', date: '', dateChosen: false, sample: false } });
 
   // Loading her over real practice must not throw that practice away.
   await fresh(page, base);
@@ -688,6 +690,583 @@ async function main(){
   check('a digit tapped by mistake can be cleared without starting the question again',
         filled[0] === '7' && cleared[0].empty === true,
         JSON.stringify({ filled, cleared }));
+
+  // =========================================================================
+  group('"Bring it back" cannot eat a newer child\'s practice');
+  // The button used to survive for ever, and one un-asked click replaced the
+  // current child's week with the old snapshot and deleted the only copy.
+  await fresh(page, base);
+  await playCorrect(page, 6, 7, 12);
+  await page.evaluate(() => show('progress'));
+  await page.click('#resetProg');
+  await sleep(300);
+  await page.reload({ waitUntil: 'load' });               // the next morning
+  await playCorrect(page, 4, 5, 20);                      // the next child
+  await page.evaluate(() => show('progress'));
+  check('the undo button is still offered the next session',
+        await page.evaluate(() => !!document.getElementById('undoReset')));
+  await page.evaluate(() => { window.__confirmAnswer = false; });
+  await page.click('#undoReset');
+  await sleep(300);
+  eq('saying no to it changes nothing',
+     await page.evaluate(() => totalAnswered()), 20);
+  check('and it ASKED before touching the newer practice',
+        /put\s+aside/i.test(await page.evaluate(() => window.__confirms.slice(-1)[0])),
+        await page.evaluate(() => window.__confirms.slice(-1)[0]));
+  await page.evaluate(() => { window.__confirmAnswer = true; });
+  await page.click('#undoReset');
+  await sleep(300);
+  eq('saying yes brings the old practice back', await page.evaluate(() => totalAnswered()), 12);
+  await page.evaluate(() => show('progress'));
+  await page.click('#undoReset');
+  await sleep(300);
+  eq('and the newer practice was not destroyed — pressing again swaps back',
+     await page.evaluate(() => totalAnswered()), 20);
+
+  // =========================================================================
+  group('Resetting the sample cannot overwrite the real practice put aside');
+  await fresh(page, base);
+  await playCorrect(page, 3, 4, 14);
+  await page.evaluate(() => show('progress'));
+  await page.click('#loadSample');                        // stashes the real 14
+  await sleep(400);
+  await page.click('#resetProg');                         // reset over the SAMPLE
+  await sleep(400);
+  eq('the undo slot still holds the real child, not Maya Torres',
+     await page.evaluate(() => { const u = JSON.parse(localStorage.getItem('mq_undo'));
+                                 return { answered: u.stats.correct + u.stats.wrong,
+                                          sample: !!(u.who && u.who.sample) }; }),
+     { answered: 14, sample: false });
+  await page.click('#undoReset');
+  await sleep(300);
+  eq('and the real practice comes back whole', await page.evaluate(() => totalAnswered()), 14);
+
+  // =========================================================================
+  group('Playing while the sample is loaded');
+  // Every answer used to pour straight into Maya Torres' made-up record, which
+  // then still printed "Sample student" over the mix.
+  await fresh(page, base);
+  await page.click('#loadSample');
+  await sleep(400);
+  await page.evaluate(() => { recordAttempt(2, 3, true, false); addStars(2); });
+  eq('the first real answer clears the sample instead of feeding it',
+     await page.evaluate(() => ({ answered: totalAnswered(),
+                                  stars: document.getElementById('starCount').textContent,
+                                  sample: JSON.parse(localStorage.getItem('mq_who')).sample,
+                                  barHidden: document.getElementById('sampleBar').classList.contains('hidden') })),
+     { answered: 1, stars: '2', sample: false, barHidden: true });
+  check('and it says so out loud',
+        /sample student/i.test(await page.$eval('#toast', e => e.textContent)),
+        await page.$eval('#toast', e => e.textContent));
+
+  // =========================================================================
+  group('Closing the settings drawer without saving');
+  // The ✕ used to keep the change live on screen but never store it — the tool
+  // practised tables 1–5 all afternoon and forgot about it on the next reload.
+  await fresh(page, base);
+  await page.click('#gearBtn');
+  await sleep(400);
+  await page.click('#selEasy');
+  await page.select('#maxFactor', '9');
+  await page.click('#closePanel');
+  await sleep(300);
+  eq('closing with the ✕ puts the settings back exactly as they were',
+     await page.evaluate(() => ({ tables: settings.tables.slice().sort((a, b) => a - b),
+                                  max: settings.maxFactor,
+                                  stored: localStorage.getItem('mq_settings') })),
+     { tables: [2, 3, 4, 5, 6, 7, 8, 9, 10], max: 12, stored: null });
+
+  // =========================================================================
+  group('Saving settings does not wipe the worksheet being built');
+  await fresh(page, base);
+  await page.evaluate(() => show('worksheet'));
+  await page.select('#wsType', 'wordproblem');
+  await sleep(200);
+  await page.select('#wsCount', '12');
+  await sleep(200);
+  await page.click('#wsTitle');
+  await page.evaluate(() => document.getElementById('wsTitle').select());
+  await page.type('#wsTitle', 'Year 4 Tuesday homework');
+  await sleep(150);
+  // The panel's own note says: change tables in ⚙️ Settings, then press New
+  // problems. Following that instruction used to throw the whole sheet away.
+  await page.click('#gearBtn');
+  await sleep(400);
+  await page.click('#selEasy');
+  await page.click('#saveSettings');
+  await sleep(500);
+  eq('the sheet keeps its type, its count and its typed title after Save',
+     await page.evaluate(() => ({ type: document.getElementById('wsType').value,
+                                  count: document.getElementById('wsCount').value,
+                                  title: document.getElementById('wsHeadTitle').textContent })),
+     { type: 'wordproblem', count: '12', title: 'Year 4 Tuesday homework' });
+
+  // =========================================================================
+  group('The date on the report is the teacher\'s, or nobody\'s');
+  // Clearing the Date box used to store "" but print TODAY's date anyway — a
+  // date the teacher had just deliberately removed.
+  await fresh(page, base);
+  await playCorrect(page, 3, 4, 10);
+  await page.evaluate(() => show('progress'));
+  await page.type('#whoInitials', 'ab');
+  await page.type('#whoDate', '03/11/2026');
+  await sleep(150);
+  await page.click('#whoDate');
+  await page.keyboard.down('Meta');
+  await page.keyboard.press('a');
+  await page.keyboard.up('Meta');
+  await page.keyboard.press('Backspace');
+  await sleep(200);
+  {
+    const seen = await page.evaluate(() => ({
+      stored: JSON.parse(localStorage.getItem('mq_who')).date,
+      line: document.querySelector('.who-print').textContent,
+      today: todayISO()
+    }));
+    check('an emptied date prints as no date, never as today',
+          seen.stored === '' && /Date: —/.test(seen.line) && !seen.line.includes(seen.today),
+          JSON.stringify(seen));
+  }
+  await page.click('#progPrint');
+  await sleep(400);
+  check('and the filename says "no date" rather than inventing one',
+        /no date/.test(await page.evaluate(() => window.__printTitles.slice(-1)[0])),
+        await page.evaluate(() => window.__printTitles.slice(-1)[0]));
+  await page.reload({ waitUntil: 'load' });
+  await page.evaluate(() => show('progress'));
+  eq('the cleared box stays cleared after a reload — it never re-fills itself',
+     await page.$eval('#whoDate', e => e.value), '');
+
+  // The other half of the same defect: a date that was auto-saved once used to
+  // be frozen for ever, so a report printed months later carried the first
+  // day's date for a different child.
+  await fresh(page, base);
+  await playCorrect(page, 3, 4, 10);
+  await page.evaluate(() => localStorage.setItem('mq_who',
+    JSON.stringify({ initials: 'JR', date: '2020-01-01', sample: false })));
+  await page.reload({ waitUntil: 'load' });
+  await page.evaluate(() => show('progress'));
+  {
+    const seen = await page.evaluate(() => ({
+      line: document.querySelector('.who-print').textContent,
+      box: document.getElementById('whoDate').value,
+      today: todayISO()
+    }));
+    check('an old auto-saved date is ignored — an untouched report is dated today',
+          seen.line.includes(seen.today) && !seen.line.includes('2020-01-01') && seen.box === seen.today,
+          JSON.stringify(seen));
+  }
+
+  // =========================================================================
+  group('One answer, one payout');
+  // Nothing locked the controls during the reward pause, so every extra tap of
+  // Check recorded another correct attempt and paid the stars again.
+  await fresh(page, base);
+  await page.evaluate(() => { settings.difficulty = 'easy'; saveSettings(); show('drop'); });
+  await sleep(200);
+  {
+    const digits = await page.evaluate(() => {
+      const m = document.querySelector('.equation').textContent.match(/(\d+)\s*×\s*(\d+)\s*=/);
+      return String(+m[1] * +m[2]).split('');
+    });
+    for (const d of digits) await page.click(`[data-card="${d}"]`);
+    for (let i = 0; i < 6; i++){ await page.click('#check'); await sleep(60); }
+    await sleep(300);
+    eq('six taps of Check during the celebration still count as ONE answer',
+       await page.evaluate(() => ({ answered: totalAnswered(),
+                                    stars: document.getElementById('starCount').textContent })),
+       { answered: 1, stars: '2' });
+  }
+
+  // Array Builder used to go further: after a wrong tap it highlighted the
+  // right answer in green, and tapping that green answer was scored as correct.
+  await fresh(page, base);
+  await page.evaluate(() => show('array'));
+  await sleep(200);
+  {
+    const fact = await page.evaluate(() => {
+      const m = document.querySelector('.arr-q').textContent.match(/(\d+)\s*×\s*(\d+)/);
+      const p = +m[1] * +m[2];
+      const wrong = [...document.querySelectorAll('.choice')].find(c => +c.dataset.val !== p);
+      wrong.click();
+      return { a: +m[1], b: +m[2], p };
+    });
+    await sleep(120);
+    await page.evaluate(p => {
+      const right = [...document.querySelectorAll('.choice')].find(c => +c.dataset.val === p);
+      if (right) right.click();
+    }, fact.p);
+    await sleep(200);
+    eq('tapping the revealed green answer earns nothing',
+       await page.evaluate(k => ({ fact: stats.facts[k],
+                                   stars: document.getElementById('starCount').textContent }),
+                           `${Math.min(fact.a, fact.b)}x${Math.max(fact.a, fact.b)}`),
+       { fact: { seen: 1, correct: 0, wrong: 1, hinted: 0,
+                 ts: await page.evaluate(k => stats.facts[k].ts, `${Math.min(fact.a, fact.b)}x${Math.max(fact.a, fact.b)}`) },
+         stars: '0' });
+  }
+
+  // =========================================================================
+  group('"New problem" during the celebration sticks');
+  // The old auto-advance timer used to fire a second later and replace the
+  // question the child had just asked for, wiping anything already typed.
+  await fresh(page, base);
+  await page.evaluate(() => { settings.difficulty = 'easy'; saveSettings(); show('drop'); });
+  await sleep(200);
+  {
+    const digits = await page.evaluate(() => {
+      const m = document.querySelector('.equation').textContent.match(/(\d+)\s*×\s*(\d+)\s*=/);
+      return String(+m[1] * +m[2]).split('');
+    });
+    for (const d of digits) await page.click(`[data-card="${d}"]`);
+    await page.click('#check');
+    await sleep(80);
+    await page.click('#skip');                       // "New problem", mid-celebration
+    await sleep(100);
+    await page.evaluate(() => { document.querySelector('.equation').dataset.mark = 'stay'; });
+    await sleep(1500);                               // the orphaned timer's moment
+    eq('the problem the child asked for is still the one on screen 1.5s later',
+       await page.evaluate(() => (document.querySelector('.equation').dataset.mark || 'REPLACED')),
+       'stay');
+  }
+
+  // =========================================================================
+  group('Speed Run: "Play again" starts clean');
+  // An answer in the last second of the clock left a next-question timer alive;
+  // it fired ~0.7s into the NEW run and silently swapped the first question.
+  await fresh(page, base);
+  await page.evaluate(() => {
+    // Run the 250ms game clock at 5ms so 60 seconds pass in ~1.2s of test time.
+    const oi = window.setInterval.bind(window);
+    window.setInterval = (fn, ms) => oi(fn, ms === 250 ? 5 : ms);
+    show('speed');
+  });
+  await page.click('#go');
+  await sleep(500);                                  // most of the clock is gone
+  await page.evaluate(() => {                        // answer WRONG near the buzzer
+    const m = document.querySelector('.equation').textContent.match(/(\d+)\s*×\s*(\d+)/);
+    if (!m) return;
+    const p = +m[1] * +m[2];
+    const wrong = [...document.querySelectorAll('.choice')].find(c => +c.dataset.val !== p);
+    if (wrong) wrong.click();
+  });
+  await page.waitForSelector('#again', { timeout: 4000 });
+  await page.click('#again');
+  await sleep(100);
+  await page.evaluate(() => { const e = document.querySelector('.equation'); if (e) e.dataset.mark = 'stay'; });
+  await sleep(500);
+  eq('the first question of the new run is not replaced by a ghost timer',
+     await page.evaluate(() => (document.querySelector('.equation') ? (document.querySelector('.equation').dataset.mark || 'REPLACED') : 'GONE')),
+     'stay');
+
+  // =========================================================================
+  group('What lands on paper');
+  await fresh(page, base);
+  await page.evaluate(() => show('worksheet'));
+  await page.evaluate(() => { navigator.clipboard.writeText = t => { window.__copied = t; return Promise.resolve(); }; });
+  await page.click('#wsShare');                      // puts the toast up
+  await sleep(200);
+  await page.emulateMediaType('print');
+  {
+    const seen = await page.evaluate(() => ({
+      toast: getComputedStyle(document.getElementById('toast')).display,
+      prob: getComputedStyle(document.querySelector('.ws-prob')).breakInside
+    }));
+    eq('the black toast pill never prints onto a worksheet', seen.toast, 'none');
+    eq('a worksheet problem is never sliced in half by the page break', seen.prob, 'avoid');
+  }
+  await page.emulateMediaType('screen');
+  await playCorrect(page, 3, 4, 10);
+  await page.evaluate(() => show('progress'));
+  await page.emulateMediaType('print');
+  {
+    const seen = await page.evaluate(() => ({
+      cellAdjust: getComputedStyle(document.querySelector('.tbl-cell')).webkitPrintColorAdjust,
+      focusRow: getComputedStyle(document.getElementById('focusSpeed').closest('.row')).display
+    }));
+    eq('the times-table map keeps its colours on paper', seen.cellAdjust, 'exact');
+    eq('the practice buttons stay off the paper', seen.focusRow, 'none');
+  }
+  await page.emulateMediaType('screen');
+
+  // =========================================================================
+  group('A worksheet never repeats itself');
+  // Problems were drawn independently, so a printed 20-question sheet routinely
+  // carried the same question two to five times — once, five times in twenty.
+  await fresh(page, base);
+  await page.evaluate(() => show('worksheet'));
+  for (let round = 0; round < 5; round++){
+    await page.click('#wsRegen');
+    await sleep(150);
+    const probs = await page.evaluate(() =>
+      [...document.querySelectorAll('.ws-prob')].map(e => e.textContent.replace(/^\d+\./, '').trim()));
+    eq(`all 20 facts problems are different (round ${round + 1})`,
+       new Set(probs).size, probs.length);
+  }
+  await page.select('#wsType', 'equalgroups');       // its whole pool is exactly 20
+  await sleep(250);
+  for (let round = 0; round < 3; round++){
+    const probs = await page.evaluate(() =>
+      [...document.querySelectorAll('.ws-prob')].map(e => e.innerHTML));
+    eq(`all 20 equal-groups pictures are different (round ${round + 1})`,
+       new Set(probs).size, probs.length);
+    await page.click('#wsRegen');
+    await sleep(200);
+  }
+
+  // =========================================================================
+  group('A shared sheet opens once, not for ever');
+  await fresh(page, base);
+  await page.evaluate(() => show('worksheet'));
+  await page.click('#wsTitle');
+  await page.evaluate(() => document.getElementById('wsTitle').select());
+  await page.type('#wsTitle', 'Shared sheet');
+  await page.evaluate(() => { navigator.clipboard.writeText = t => { window.__copied = t; return Promise.resolve(); }; });
+  await page.click('#wsShare');
+  await sleep(300);
+  {
+    const url = await page.evaluate(() => window.__copied);
+    await page.goto(url, { waitUntil: 'load' });
+    eq('pasting the link opens the exact sheet that was shared',
+       await page.$eval('#wsHeadTitle', e => e.textContent), 'Shared sheet');
+    eq('and the link is consumed, not left in the address bar',
+       await page.evaluate(() => location.hash), '');
+    await page.reload({ waitUntil: 'load' });
+    check('so a plain reload later brings the tool back normally, not the old sheet',
+          /Pick a way to play/.test(await page.$eval('#app h1', e => e.textContent)),
+          await page.$eval('#app h1', e => e.textContent));
+  }
+
+  // =========================================================================
+  group('The CSV and the map tell the same story');
+  await fresh(page, base);
+  await page.evaluate(() => {
+    for (let i = 0; i < 8; i++) recordAttempt(3, 4, true, false);
+    recordAttempt(3, 7, true, false);                // the 7s tried exactly once
+    show('progress');
+  });
+  {
+    const map7 = await page.evaluate(() =>
+      [...document.querySelectorAll('.tbl-cell')].find(c => c.querySelector('.num').textContent === '7s')
+        .querySelector('.pct').textContent);
+    eq('a table tried once shows as not-tried-yet on the map', map7, '—');
+  }
+  await page.click('#progCsv');
+  await sleep(400);
+  {
+    const csv2 = await page.evaluate(() => window.__lastBlob.text());
+    const row7 = csv2.split(/\r\n/).find(l => /^7s,/.test(l));
+    eq('and the CSV row agrees — no percentage next to "not tried yet"',
+       row7, '7s,1,1,,0,not tried yet');
+  }
+
+  // =========================================================================
+  group('The Stretches card cannot contradict the map beneath it');
+  await fresh(page, base);
+  await page.evaluate(() => {
+    for (let i = 0; i < 5; i++) recordAttempt(7, 4, false, false);   // 7s and 4s all wrong
+    for (let i = 0; i < 3; i++) recordAttempt(2, 5, true, false);
+    show('progress');
+  });
+  {
+    const seen = await page.evaluate(() => ({
+      stretch: document.querySelector('.ss-stretch').innerText,
+      clay: [...document.querySelectorAll('.tbl-cell.tc-low .num')].map(e => e.textContent)
+    }));
+    check('tables the map paints "needs practice" are named as Stretches, not "Nothing tricky"',
+          seen.clay.includes('7s') && /7s/.test(seen.stretch) && !/Nothing tricky/.test(seen.stretch),
+          JSON.stringify(seen));
+  }
+
+  // =========================================================================
+  group('Mixed review is honest about the tables setting');
+  await fresh(page, base);
+  await page.evaluate(() => show('worksheet'));
+  await page.select('#wsType', 'mixed');
+  await sleep(250);
+  check('the Mixed sheet no longer claims to use your chosen tables',
+        !/Uses your chosen tables/.test(await page.$eval('.small-note', e => e.textContent)),
+        await page.$eval('.small-note', e => e.textContent));
+
+  // =========================================================================
+  group('A browser that cannot save never promises an undo');
+  {
+    const p3 = await browser.newPage();
+    await p3.evaluateOnNewDocument(() => {
+      window.__confirms = []; window.__confirmAnswer = true;
+      window.confirm = m => { window.__confirms.push(String(m)); return window.__confirmAnswer; };
+      const boom = () => { throw new DOMException('QuotaExceededError'); };
+      Object.defineProperty(window, 'localStorage', {
+        configurable: true,
+        get(){ return { getItem: boom, setItem: boom, removeItem: boom, clear: boom }; }
+      });
+    });
+    await p3.goto(base + '/index.html', { waitUntil: 'load' });
+    await p3.evaluate(() => {
+      for (let i = 0; i < 20; i++) recordAttempt(3, 4, true, false);
+      addStars(40);
+      show('progress');
+    });
+    await p3.click('#resetProg');
+    await sleep(300);
+    const said = await p3.evaluate(() => ({
+      confirmText: window.__confirms.slice(-1)[0],
+      undoBtn: !!document.getElementById('undoReset'),
+      toast: document.getElementById('toast').textContent
+    }));
+    check('the confirm says the clear is final instead of promising "Bring it back"',
+          /no way to bring it back/i.test(said.confirmText) && !/button appears/i.test(said.confirmText),
+          said.confirmText);
+    check('no phantom undo button appears', said.undoBtn === false);
+    check('and the toast does not promise one either',
+          !/bring it back/i.test(said.toast), said.toast);
+    await p3.close();
+  }
+
+  // =========================================================================
+  group('A half-full disk cannot half-save');
+  // The tiny star write used to keep succeeding after the big stats write had
+  // started failing, so a reload showed "10 questions answered / 70 stars"
+  // with the warning banner gone.
+  await fresh(page, base);
+  await playCorrect(page, 3, 4, 10);                 // 10 answers, 20 stars, saved cleanly
+  await page.evaluate(() => {
+    // From here on, big writes fail (a filling disk) while small ones would fit.
+    const proto = Object.getPrototypeOf(localStorage);
+    const orig = proto.setItem;
+    proto.setItem = function (k, v) {
+      if (String(v).length > 60) throw new DOMException('QuotaExceededError');
+      return orig.call(this, k, v);
+    };
+    recordAttempt(8, 9, true, false);                // stats write fails…
+    addStars(2);                                     // …so this must not land either
+  });
+  eq('once one write fails, the star count on disk stops moving too',
+     await page.evaluate(() => ({ stars: localStorage.getItem('mq_stars'),
+                                  banner: !!document.getElementById('storageNote') })),
+     { stars: '20', banner: true });
+
+  // =========================================================================
+  group('Two tabs on one laptop');
+  await fresh(page, base);
+  await playCorrect(page, 6, 7, 12);
+  {
+    const pageB = await browser.newPage();
+    await pageB.goto(base + '/index.html', { waitUntil: 'load' });
+    await playCorrect(page, 6, 7, 5);                // tab A keeps going; B is now stale
+    await sleep(200);
+    await pageB.evaluate(() => { recordAttempt(2, 2, true, false); addStars(2); });
+    await sleep(200);
+    eq('one answer in the older tab adds to the other tab\'s work instead of erasing it',
+       await pageB.evaluate(() => JSON.parse(localStorage.getItem('mq_stats')))
+         .then(s => s.correct + s.wrong), 18);
+    await pageB.close();
+  }
+  await page.reload({ waitUntil: 'load' });
+  eq('and the first tab sees all eighteen after a reload',
+     await page.evaluate(() => totalAnswered()), 18);
+
+  // =========================================================================
+  group('Times Table Takeoff on a 13-inch laptop');
+  await page.setViewport({ width: 1280, height: 690 });
+  await fresh(page, base);
+  await page.evaluate(() => { document.querySelector('[data-screen="blast"]').click(); });
+  await sleep(500);
+  {
+    const m = await page.evaluate(() => {
+      const r = document.getElementById('blStart').getBoundingClientRect();
+      return { top: r.top, bottom: r.bottom, vh: window.innerHeight };
+    });
+    check('the Start button is on screen when the game screen opens',
+          m.top >= 0 && m.bottom <= m.vh, JSON.stringify(m));
+  }
+  await page.evaluate(() => document.getElementById('blStart').click());
+  await sleep(300);
+  {
+    const m = await page.evaluate(() => {
+      const r = document.getElementById('blCanvas').getBoundingClientRect();
+      const nav = document.querySelector('.nav').getBoundingClientRect();
+      return { canvasTop: r.top, canvasBottom: r.bottom, navBottom: nav.bottom,
+               shipY: r.bottom - 40, vh: window.innerHeight };
+    });
+    check('the problem at the top and the ship at the bottom are both visible at once',
+          m.canvasTop >= m.navBottom - 2 && m.canvasBottom <= m.vh + 2 && m.shipY < m.vh,
+          JSON.stringify(m));
+  }
+  await page.setViewport({ width: 1280, height: 900 });
+
+  // =========================================================================
+  group('Show Me How on an iPad in portrait');
+  await page.setViewport({ width: 768, height: 1024 });
+  await fresh(page, base);
+  await page.evaluate(() => show('showme'));
+  await sleep(400);
+  {
+    const m = await page.evaluate(() => {
+      const r = document.getElementById('smPlay').getBoundingClientRect();
+      return { top: r.top, bottom: r.bottom, vh: window.innerHeight };
+    });
+    check('the "Show me how" button the instructions name is actually on screen',
+          m.top >= 0 && m.bottom <= m.vh, JSON.stringify(m));
+  }
+  await page.setViewport({ width: 1280, height: 900 });
+
+  // =========================================================================
+  group('Takeoff cannot credit an alien the child never saw');
+  await fresh(page, base);
+  await page.evaluate(() => { document.querySelector('[data-screen="blast"]').click(); });
+  await sleep(300);
+  await page.evaluate(() => document.getElementById('blStart').click());
+  await sleep(100);
+  await page.keyboard.down(' ');                     // hold fire, the natural way to play
+  for (let i = 0; i < 25; i++){
+    // Re-clicking the level button forces a fresh problem while bullets fly —
+    // the deterministic route to the old first-frame kill.
+    await page.evaluate(() => document.querySelector('.blvl.active').click());
+    await sleep(40);
+  }
+  await page.keyboard.up(' ');
+  eq('no answer is recorded for an alien still above the play area',
+     await page.evaluate(() => ({ answered: totalAnswered(),
+                                  stars: document.getElementById('starCount').textContent })),
+     { answered: 0, stars: '0' });
+  await page.evaluate(() => show('home'));           // stop the game loop
+
+  // =========================================================================
+  group('The difficulty setting actually changes the game');
+  await fresh(page, base);
+  await page.click('#gearBtn');
+  await sleep(400);
+  await page.click('[data-diff="easy"]');
+  await page.click('#saveSettings');
+  await sleep(400);
+  await page.evaluate(() => show('drop'));
+  {
+    const blanks = [];
+    for (let i = 0; i < 12; i++){
+      blanks.push(await page.$eval('.equation', e => e.dataset.blank));
+      await page.click('#skip');
+      await sleep(60);
+    }
+    check('on Easy, Digit Drop always asks for the answer',
+          blanks.every(b => b === 'p'), blanks.join(','));
+  }
+  await page.click('#gearBtn');
+  await sleep(400);
+  await page.click('[data-diff="hard"]');
+  await page.click('#saveSettings');
+  await sleep(400);
+  await page.evaluate(() => show('drop'));
+  {
+    const blanks = [];
+    for (let i = 0; i < 30; i++){
+      blanks.push(await page.$eval('.equation', e => e.dataset.blank));
+      await page.click('#skip');
+      await sleep(50);
+    }
+    check('on Hard, it sometimes hides a factor instead',
+          blanks.some(b => b !== 'p'), blanks.join(','));
+  }
 
   // =========================================================================
   group('Nothing leaves this laptop');

@@ -969,6 +969,12 @@ async function main(){
   group('The practice worksheets  (was: the badge butting into the title)');
   // =========================================================================
   await fresh(page, base);
+  // The FLAGGED SKILL badge only prints when the assessment really flagged the
+  // lesson now, so flag the four sheets this group opens before opening them.
+  // (39 is already Developing and 40 already Emerging in Maya's sample.)
+  await pickUnit(page, 'Unit 2: Short Vowels & CVC Review');
+  await clickScore(page, 'Lesson 35', 'E');
+  await clickScore(page, 'Lesson 37', 'E');
   {
     const built = await page.evaluate(() => {
       const bad = [];
@@ -978,7 +984,7 @@ async function main(){
           const build = c.review ? buildReviewHTML : c.syllable ? buildSyllableHTML
                       : c.letter ? buildLetterHTML : c.ending ? buildEndingHTML
                       : c.vce ? buildVCeHTML : buildWorksheetHTML;
-          const html = build(c);
+          const html = build(c, true);   // flagged, so the badge is on the sheet
           if (!/<h1>/.test(html) || html.length < 500) bad.push(name);
         } catch (e) { bad.push(name + ': ' + e.message); }
       });
@@ -1404,6 +1410,465 @@ async function main(){
     const more = JSON.parse((await lastDownload()).text);
     eq('three scored lessons export as three',
        Object.keys(more.scores).sort(), ['Lesson 42', 'Lesson 43', 'Lesson 44']);
+  }
+
+  // =========================================================================
+  group('File > Print  (was: 5 of 128 lessons and a third of each comment on paper)');
+  // =========================================================================
+  await fresh(page, base);
+  await page.evaluate(() => { window.__confirmAnswer = true; });
+  await page.click('#sampleBtn');                       // start from empty
+  await pickUnit(page, 'all');
+  {
+    // Scores spread across the year, so the print surface has to reach past
+    // the part of the list that is visible on screen.
+    const click = i =>
+      page.click(`#lessonsList > .lesson:nth-child(${i}) .score-buttons button:nth-child(1)`);
+    for (const i of [1, 2, 3, 4, 5, 60, 100, 128]) await click(i);
+
+    const longNote = 'She blends short-vowel words on her own now and self-corrects when a ' +
+      'word does not sound real. '.repeat(6) + 'THE VERY LAST SENTENCE OF THE NOTE.';
+    await page.evaluate(t => {
+      ['strengthsComment', 'stretchesComment'].forEach(id => {
+        const box = document.getElementById(id);
+        box.value = t;
+        box.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    }, longNote);
+    await page.evaluate(() => new Promise(r => setTimeout(r, 450)));   // the save debounce
+
+    await page.emulateMediaType('print');
+    const printed = await page.evaluate(() => ({
+      report: getComputedStyle(document.getElementById('printReport')).display,
+      lessonsBox: getComputedStyle(document.querySelector('.top-boxes')).display,
+      buttons: getComputedStyle(document.querySelector('button[onclick="exportPDF()"]')
+                 .closest('.section')).display,
+      commentsBox: getComputedStyle(document.getElementById('strengthsComment')
+                 .closest('.section')).display,
+      text: document.getElementById('printReport').innerText,
+      rows: document.querySelectorAll('#printReport tbody tr').length
+    }));
+    check('printing shows the printable report instead of the scrolling screen',
+          printed.report === 'block', JSON.stringify(printed.report));
+    eq('every scored lesson is on the paper, not just the five that fit the scroll box',
+       printed.rows, 8);
+    check('including the very last lesson of the year',
+          /Lesson 128/.test(printed.text));
+    check('the whole comment prints, down to its last sentence',
+          printed.text.includes('THE VERY LAST SENTENCE OF THE NOTE.'));
+    check('the tallies on the paper agree with the lessons listed on it',
+          /8 of 128 lessons scored/.test(printed.text), printed.text.slice(0, 300));
+    check('no buttons print onto the paper',
+          printed.buttons === 'none' && printed.lessonsBox === 'none' &&
+          printed.commentsBox === 'none', JSON.stringify(printed));
+    await page.emulateMediaType('screen');
+  }
+
+  // =========================================================================
+  group('A second tab of the tool  (was: the older tab silently overwrote the newer work)');
+  // =========================================================================
+  await fresh(page, base);
+  await page.click('#sampleBtn');
+  await pickUnit(page, 'Unit 3: Digraphs');
+  await clickScore(page, 'Lesson 42', 'E');
+  await typeOver(page, 'initials', 'A.B.');
+  await page.evaluate(() => new Promise(r => setTimeout(r, 450)));
+  {
+    const tabB = await browser.newPage();
+    await tabB.setRequestInterception(true);
+    tabB.on('request', r => {
+      if (/cdnjs\.cloudflare\.com/.test(r.url()))
+        return r.respond({ status: 200, contentType: 'text/javascript', body: '' }).catch(() => {});
+      r.continue().catch(() => {});
+    });
+    await tabB.goto(base + '/index.html', { waitUntil: 'load' });
+    check('a second tab opens showing the first tab\'s work',
+          await tabB.evaluate(() => document.getElementById('initials').value) === 'A.B.');
+
+    // Work in the second tab, the thing that used to be fatal.
+    await tabB.select('#unitSelect', 'Unit 3: Digraphs');
+    const idx = await tabB.evaluate(() => {
+      const rows = [...document.querySelectorAll('#lessonsList > .lesson')];
+      return rows.findIndex(r =>
+        r.querySelector('.lesson-name').textContent.startsWith('Lesson 43:')) + 1;
+    });
+    await tabB.click(`#lessonsList > .lesson:nth-child(${idx}) .score-buttons button:nth-child(3)`);
+    await page.evaluate(() => new Promise(r => setTimeout(r, 500)));
+
+    eq('the first tab catches up instead of holding a stale copy',
+       await tallies(page), { e: 1, d: 0, m: 1 });
+    check('and says out loud that another tab changed the record',
+          /another tab/i.test(await sayText(page)), await sayText(page));
+    await tabB.close();
+
+    await reload(page);
+    eq('nothing was overwritten: both tabs\' work survives the reload',
+       await tallies(page), { e: 1, d: 0, m: 1 });
+  }
+
+  // =========================================================================
+  group('Undo long after the clear  (was: it silently destroyed the next child\'s work)');
+  // =========================================================================
+  await fresh(page, base);
+  await page.click('#sampleBtn');
+  await pickUnit(page, 'Unit 3: Digraphs');
+  await clickScore(page, 'Lesson 42', 'E');
+  {
+    await page.click('button[onclick="clearForm()"]');       // confirm answers yes
+    eq('the clear lands', await tallies(page), { e: 0, d: 0, m: 0 });
+
+    // The next child's assessment begins.
+    await pickUnit(page, 'Unit 2: Short Vowels & CVC Review');
+    await clickScore(page, 'Lesson 35', 'M');
+    await page.click('#stretchesComment');
+    await page.type('#stretchesComment', 'child two');
+    await page.evaluate(() => new Promise(r => setTimeout(r, 450)));
+
+    await page.evaluate(() => { window.__confirmed = []; window.__confirmAnswer = false; });
+    await page.click('#undoBtn');
+    check('pressing Undo with new work on screen asks first',
+          (await page.evaluate(() => window.__confirmed)).length === 1);
+    check('and the question says the new work would be replaced',
+          /since the clear/i.test((await page.evaluate(() => window.__confirmed))[0] || ''));
+    eq('saying no keeps the next child\'s scores', await tallies(page), { e: 0, d: 0, m: 1 });
+    eq('and the next child\'s note',
+       await page.evaluate(() => document.getElementById('stretchesComment').value), 'child two');
+
+    await page.evaluate(() => { window.__confirmAnswer = true; });
+    await page.click('#undoBtn');
+    eq('saying yes really does bring the cleared child back',
+       await tallies(page), { e: 1, d: 0, m: 0 });
+  }
+
+  // =========================================================================
+  group('The keyboard behind an open list  (was: Enter changed a score hidden under the sheet)');
+  // =========================================================================
+  await fresh(page, base);
+  await page.click('#sampleBtn');
+  await pickUnit(page, 'Unit 3: Digraphs');
+  await clickScore(page, 'Lesson 42', 'E');
+  {
+    await page.evaluate(() => document.querySelector('.count-item.e').focus());
+    await page.keyboard.press('Enter');
+    check('Enter on the tally opens the list',
+          await page.evaluate(() =>
+            document.getElementById('lessonsModal').classList.contains('show')));
+
+    for (let i = 0; i < 6; i++) await page.keyboard.press('Tab');
+    check('six Tabs later the keyboard is still inside the open list, ' +
+          'not on a score button hidden behind it',
+          await page.evaluate(() =>
+            document.getElementById('lessonsModal').contains(document.activeElement)),
+          await page.evaluate(() =>
+            document.activeElement.outerHTML.slice(0, 120)));
+
+    await page.keyboard.press('Enter');   // the press that used to flip E to M
+    eq('and Enter there cannot silently change the score behind the sheet',
+       await tallies(page), { e: 1, d: 0, m: 0 });
+
+    // Escape closes it, like every native dialog.
+    await page.click('.count-item.e');
+    await page.keyboard.press('Escape');
+    check('Escape closes the list',
+          await page.evaluate(() =>
+            !document.getElementById('lessonsModal').classList.contains('show')));
+  }
+
+  // =========================================================================
+  group('BLOCKER: "Clear the sample" with your own work on it  (was: gone, no question, no undo)');
+  // =========================================================================
+  await fresh(page, base);
+  await typeOver(page, 'initials', 'R.P.');
+  await pickUnit(page, 'Unit 6: R-Controlled & Other Vowels');
+  await clickScore(page, 'Lesson 77', 'D');
+  await clickScore(page, 'Lesson 78', 'D');
+  await typeOver(page, 'strengthsComment', 'My own words about R.');
+  await page.evaluate(() => new Promise(r => setTimeout(r, 450)));
+  {
+    await page.evaluate(() => { window.__confirmed = []; window.__confirmAnswer = false; });
+    await page.click('#sampleBtn');
+    check('with the teacher\'s own scores on screen, Clear the sample asks first',
+          (await page.evaluate(() => window.__confirmed)).length === 1,
+          JSON.stringify(await page.evaluate(() => window.__confirmed)));
+    eq('saying no loses nothing', await tallies(page), { e: 8, d: 12, m: 39 });
+
+    await page.evaluate(() => { window.__confirmAnswer = true; });
+    await page.click('#sampleBtn');
+    eq('saying yes clears it', await tallies(page), { e: 0, d: 0, m: 0 });
+    check('and Undo is offered, the same as the Clear button beside it',
+          await page.evaluate(() =>
+            document.getElementById('undoBtn').style.display !== 'none'));
+    await page.click('#undoBtn');
+    eq('and Undo brings the whole thing back',
+       await tallies(page), { e: 8, d: 12, m: 39 });
+    eq('initials included',
+       await page.evaluate(() => document.getElementById('initials').value), 'R.P.');
+    await page.evaluate(() => { window.__confirmAnswer = true; });
+  }
+
+  // =========================================================================
+  group('BLOCKER: "Clear her scores, keep what I typed"  (was: it deleted the teacher\'s own scores too)');
+  // =========================================================================
+  await fresh(page, base);
+  await typeOver(page, 'initials', 'R.P.');
+  await pickUnit(page, 'Unit 6: R-Controlled & Other Vowels');
+  // Four real scores in a unit Maya never touched, and one of HER lessons
+  // re-scored by hand — all five belong to the teacher now.
+  await clickScore(page, 'Lesson 77', 'M');
+  await clickScore(page, 'Lesson 78', 'M');
+  await clickScore(page, 'Lesson 79', 'M');
+  await clickScore(page, 'Lesson 80', 'M');
+  await typeOver(page, 'strengthsComment', 'My own words about R.');
+  // EDIT Maya's stretches paragraph rather than replacing it — the exact move
+  // that used to hand her invented sentences to a real child's record.
+  await page.evaluate(() => {
+    const box = document.getElementById('stretchesComment');
+    box.focus();
+    box.setSelectionRange(box.value.length, box.value.length);
+  });
+  await page.keyboard.type(' Drill nk.');
+  await page.evaluate(() => new Promise(r => setTimeout(r, 450)));
+  {
+    await page.click('#startMineBtn');
+    eq('the four scores the teacher entered themselves survive',
+       await tallies(page), { e: 0, d: 0, m: 4 });
+    check('while every one of Maya\'s own scores is gone',
+          await page.evaluate(() =>
+            ['Lesson 42', 'Lesson 45', 'Lesson 54'].every(k => !scores[k])));
+    eq('the teacher\'s replaced comment stays',
+       await page.evaluate(() => document.getElementById('strengthsComment').value),
+       'My own words about R.');
+    eq('but Maya\'s EDITED paragraph does not sneak through as the teacher\'s words',
+       await page.evaluate(() => document.getElementById('stretchesComment').value), '');
+    check('the record stops claiming to be the sample',
+          await page.evaluate(() => !JSON.parse(localStorage.getItem('ufli-assessment')).sample));
+    check('and even this careful path offers Undo',
+          await page.evaluate(() =>
+            document.getElementById('undoBtn').style.display !== 'none'));
+
+    await page.click('button[onclick="exportCSV()"]');
+    const dl = await lastDownload();
+    check('the export is no longer stamped SAMPLE', !/SAMPLE/.test(dl.name), dl.name);
+    check('Maya appears nowhere inside it', !/Maya/.test(dl.text));
+    check('and the teacher\'s own scores are in it', /Lesson 77/.test(dl.text));
+
+    await reload(page);
+    eq('the kept scores survive a reload', await tallies(page), { e: 0, d: 0, m: 4 });
+  }
+
+  // =========================================================================
+  group('The not-saved warning  (was: painted below the fold on every screen size)');
+  // =========================================================================
+  await fresh(page, base);
+  await page.click('#sampleBtn');
+  await pickUnit(page, 'Unit 3: Digraphs');
+  await page.evaluate(() => {
+    localStorage.setItem = () => { throw new Error('QuotaExceededError'); };
+  });
+  await clickScore(page, 'Lesson 42', 'M');
+  {
+    const warn = await page.evaluate(() => {
+      const w = document.getElementById('saveWarn');
+      const r = w.getBoundingClientRect();
+      return { shown: w.classList.contains('show'), top: r.top, bottom: r.bottom,
+               text: w.textContent };
+    });
+    check('the warning appears at the top of the page, where the teacher is working',
+          warn.shown && warn.top >= 0 && warn.bottom < 400, JSON.stringify(warn));
+    check('and says plainly that nothing is being saved',
+          /NOT BEING SAVED/.test(warn.text), warn.text);
+
+    // Scroll to the foot of the page — the warning must come along.
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    const stuck = await page.evaluate(() => {
+      const r = document.getElementById('saveWarn').getBoundingClientRect();
+      return { top: r.top, bottom: r.bottom, vh: window.innerHeight };
+    });
+    check('it stays on screen even scrolled to the bottom (it is sticky)',
+          stuck.top >= 0 && stuck.bottom <= stuck.vh, JSON.stringify(stuck));
+    await page.evaluate(() => window.scrollTo(0, 0));
+  }
+
+  // =========================================================================
+  group('A CDN that hangs  (was: a blank white page for as long as the filter held the line)');
+  // =========================================================================
+  {
+    const slow = await browser.newPage();
+    const held = [];
+    await slow.setRequestInterception(true);
+    slow.on('request', r => {
+      // A black-holed school filter: the request is never answered at all.
+      if (/cdnjs\.cloudflare\.com/.test(r.url())) { held.push(r); return; }
+      r.continue().catch(() => {});
+    });
+    // The navigation cannot be awaited: with the CDN hanging, 'load' does not
+    // fire until the request is released. Fire it, then watch the page paint
+    // while the request is still held.
+    const nav = slow.goto(base + '/index.html', { waitUntil: 'load', timeout: 20000 })
+                    .catch(() => {});
+    let paintedAfter = -1;
+    const t0 = Date.now();
+    while (Date.now() - t0 < 5000) {
+      const h = await slow.evaluate(() => {
+        const el = document.querySelector('.header h1');
+        return el ? el.getBoundingClientRect().height : 0;
+      }).catch(() => 0);
+      if (h > 0) { paintedAfter = Date.now() - t0; break; }
+      await new Promise(r => setTimeout(r, 100));
+    }
+    check('the page paints while the CDN request is still hanging',
+          paintedAfter >= 0 && paintedAfter < 3000, 'painted after ' + paintedAfter + 'ms');
+    check('and the tool is fully usable without the library',
+          await slow.evaluate(() =>
+            typeof setScore === 'function' &&
+            document.querySelectorAll('.count-item').length === 3).catch(() => false));
+    check('html2canvas — a library nothing ever called — is not fetched at all',
+          !held.some(r => /html2canvas/.test(r.url())),
+          held.map(r => r.url()).join(' | '));
+    // Release the held request so the page can settle before closing.
+    for (const r of held) r.abort().catch(() => {});
+    await nav;
+    await slow.close();
+  }
+
+  // =========================================================================
+  group('Each worksheet practises the skill its lesson row names');
+  // =========================================================================
+  await fresh(page, base);
+  {
+    const sheets = await page.evaluate(() => {
+      const gen = name => {
+        const c = WORKSHEETS[name];
+        const build = c.review ? buildReviewHTML : c.syllable ? buildSyllableHTML
+                    : c.letter ? buildLetterHTML : c.ending ? buildEndingHTML
+                    : c.vce ? buildVCeHTML : buildWorksheetHTML;
+        return build(c, false);
+      };
+      return {
+        l89: gen('Lesson 89'), l90: gen('Lesson 90'), l113: gen('Lesson 113'),
+        l10: gen('Lesson 10'), l94: gen('Lesson 94'), l111: gen('Lesson 111'),
+        l114: gen('Lesson 114'), l24: gen('Lesson 24'), l25: gen('Lesson 25'),
+        l26: gen('Lesson 26'), l27: gen('Lesson 27'), l32: gen('Lesson 32')
+      };
+    });
+    check('Lesson 90 "oo (moon)" opens the moon sheet, not the book sheet',
+          /as in moon/.test(sheets.l90) && /moon/.test(sheets.l90) && !/as in book/.test(sheets.l90));
+    check('Lesson 89 "oo, u" opens the book sheet, not the moon sheet',
+          /as in book/.test(sheets.l89) && /book/.test(sheets.l89) && !/as in moon/.test(sheets.l89));
+    check('Lesson 113 "ear (hear)" practises hear/near, not earth/learn',
+          /hear/.test(sheets.l113) && /near/.test(sheets.l113) &&
+          !/earth/.test(sheets.l113) && !/Saying \/er\//.test(sheets.l113));
+    check('Lesson 10 "CVC (a, i)" practises a and i, not g',
+          /Short <em>a<\/em>/.test(sheets.l10) && /short i \(sit\)/.test(sheets.l10) &&
+          !/has g/.test(sheets.l10) && !/gas/.test(sheets.l10));
+    check('Lesson 94 practises head and want, not the schwa',
+          /head/.test(sheets.l94) && /want/.test(sheets.l94) && !/sofa/.test(sheets.l94));
+    check('Lesson 111 practises dollar and doctor, not "a person who..."',
+          /dollar/.test(sheets.l111) && /doctor/.test(sheets.l111) && !/teacher/.test(sheets.l111));
+    check('Lesson 114 shows the five alternate spellings it names',
+          ['ei', 'eigh', 'ey', 'ea', 'aigh'].every(sp =>
+            new RegExp('<em>' + sp + '</em>').test(sheets.l114)) &&
+          /eight/.test(sheets.l114) && /sleigh/.test(sheets.l114) && /straight/.test(sheets.l114),
+          sheets.l114.slice(0, 200));
+    check('Lesson 25 (Part 2) is not a copy of Lesson 24 (Part 1)',
+          sheets.l24 !== sheets.l25);
+    check('Lesson 27 (Part 2) is not a copy of Lesson 26 (Part 1)',
+          sheets.l26 !== sheets.l27);
+    check('the Qu sheet says "Qu qu", never "Ququ"',
+          !/Ququ/.test(sheets.l32) && /Letter Qu qu/.test(sheets.l32));
+
+    // Every add-the-ending row: the boxes and the printed sum must describe
+    // the same word. (107–110 teach the doubling / drop-e / y-to-i rules, where
+    // the difference in letters IS the lesson — they are checked the other way:
+    // the extra or missing letter must match the rule taught.)
+    const sums = await page.evaluate(() => {
+      const bad = [];
+      const ruleLessons = ['Lesson 107', 'Lesson 108', 'Lesson 109', 'Lesson 110'];
+      Object.entries(WORKSHEETS).forEach(([name, c]) => {
+        if (!c.ending || ruleLessons.includes(name)) return;
+        const doc = new DOMParser().parseFromString(buildEndingHTML(c, false), 'text/html');
+        doc.querySelector('.mgrid').querySelectorAll('.mrow').forEach(row => {
+          const base = row.querySelector('.mbase').textContent.trim();
+          const added = row.querySelector('.mplus strong').textContent.trim();
+          const boxes = row.querySelectorAll('.abox').length;
+          if ((base + added).length !== boxes)
+            bad.push(`${name}: ${base} + ${added} needs ${(base + added).length} boxes, sheet draws ${boxes}`);
+        });
+      });
+      return bad;
+    });
+    check('every "add the ending" sum matches its answer boxes, letter for letter',
+          sums.length === 0, sums.slice(0, 6).join(' | '));
+
+    // The FLAGGED SKILL badge tells the truth now.
+    await page.click('#sampleBtn');                     // nothing assessed
+    await page.click('button[onclick="openWorksheetPicker()"]');
+    await page.click(`button[onclick="openWorksheet('Lesson 45')"]`);
+    let copy = await page.evaluate(() => window.__childCopy);
+    check('an unassessed lesson\'s sheet does not claim to be "generated from the assessment"',
+          !/Flagged skill/.test(copy) && !/Generated from the assessment/.test(copy));
+    await page.evaluate(() => closeWorksheetModal());
+
+    await pickUnit(page, 'Unit 3: Digraphs');
+    await clickScore(page, 'Lesson 45', 'M');
+    await page.click('button[onclick="openWorksheetPicker()"]');
+    await page.click(`button[onclick="openWorksheet('Lesson 45')"]`);
+    copy = await page.evaluate(() => window.__childCopy);
+    check('a MASTERED lesson\'s sheet does not say "flagged" either',
+          !/Flagged skill/.test(copy));
+    await page.evaluate(() => closeWorksheetModal());
+
+    await clickScore(page, 'Lesson 45', 'E');
+    await page.click('button[onclick="openWorksheetPicker()"]');
+    await page.click(`button[onclick="openWorksheet('Lesson 45')"]`);
+    copy = await page.evaluate(() => window.__childCopy);
+    check('an Emerging lesson\'s sheet IS marked as the flagged skill',
+          /Flagged skill/.test(copy) && /Generated from the assessment/.test(copy));
+    await page.evaluate(() => closeWorksheetModal());
+  }
+
+  // =========================================================================
+  group('Worksheets on paper  (was: activity rows sliced in half by the page break)');
+  // =========================================================================
+  {
+    // The generated sheets, rendered for print: the rules that stop an
+    // activity being cut in half must actually reach the printed page.
+    const htmls = await page.evaluate(() => ({
+      short: buildWorksheetHTML(WORKSHEETS['Lesson 35'], true),
+      letter: buildLetterHTML(WORKSHEETS['Lesson 24'], true),
+      ending: buildEndingHTML(WORKSHEETS['Lesson 119'], true)
+    }));
+    const sheet = await browser.newPage();
+
+    await sheet.setContent(htmls.short, { waitUntil: 'load' });
+    await sheet.emulateMediaType('print');
+    const frag = await sheet.evaluate(() => ({
+      sbrow: getComputedStyle(document.querySelector('.sbrow')).breakInside,
+      chainq: getComputedStyle(document.querySelector('.chainq')).breakInside,
+      sort: getComputedStyle(document.querySelector('.sort')).breakInside,
+      box: getComputedStyle(document.querySelector('.box')).breakInside,
+      h2: getComputedStyle(document.querySelector('h2')).breakAfter
+    }));
+    check('a sound-box row cannot be sliced in half by the page break',
+          frag.sbrow === 'avoid' && frag.chainq === 'avoid', JSON.stringify(frag));
+    check('a sorting box prints whole on one page',
+          frag.sort === 'avoid' && frag.box === 'avoid', JSON.stringify(frag));
+    check('a section heading is never stranded alone at the foot of a page',
+          frag.h2 === 'avoid-page' || frag.h2 === 'avoid', frag.h2);
+
+    await sheet.setContent(htmls.letter, { waitUntil: 'load' });
+    await sheet.emulateMediaType('print');
+    check('the letter sheets keep their tracing rows whole too',
+          await sheet.evaluate(() =>
+            getComputedStyle(document.querySelector('.tracerow')).breakInside === 'avoid' &&
+            getComputedStyle(document.querySelector('.lettergrid')).breakInside === 'avoid'));
+
+    await sheet.setContent(htmls.ending, { waitUntil: 'load' });
+    await sheet.emulateMediaType('print');
+    check('and the ending sheets keep each add-the-ending row whole',
+          await sheet.evaluate(() =>
+            getComputedStyle(document.querySelector('.mrow')).breakInside === 'avoid'));
+    await sheet.close();
   }
 
   // =========================================================================

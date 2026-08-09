@@ -29,8 +29,9 @@
 // It opens a real Google Chrome in the background, drives the page with real
 // clicks, and prints a line per check. It needs nothing on the internet.
 //
-// node_modules here is a SYMLINK to ../../running-record-tool/tests/node_modules
-// so puppeteer-core is not installed twice. Nothing to npm install.
+// There is no node_modules folder here on purpose: the npm test script sets
+// NODE_PATH to ../../running-record-tool/tests/node_modules, so puppeteer-core
+// is not installed twice. Nothing to npm install.
 //
 // WHAT YOU SHOULD SEE
 // -------------------
@@ -556,6 +557,178 @@ async function main(){
       await tab.close();
       await page.bringToFront();
     }
+  }
+
+  // =========================================================================
+  group('The Lessons 1-5 cards do what the page says: click anywhere, get the packet');
+  // WAS BROKEN: the page said "Click them like any other lesson" and "Click a
+  // card to preview its story right here" — and the five letter cards were
+  // plain divs. An audit fired 15 real clicks on their bodies (three spots per
+  // card, away from the links) and nothing happened on any of them; the only
+  // live target was the 81x20px "Lesson 1" text, styled identically to the
+  // NON-clickable titles on story cards. The whole card is one <a> now.
+  // =========================================================================
+  {
+    await nav(page, base + '/index.html');
+    const isLink = await page.evaluate(() => {
+      const c = document.querySelector('.card.letter');
+      return { tag: c.tagName, href: c.getAttribute('href'),
+               blank: c.target === '_blank',
+               cursor: getComputedStyle(c).cursor };
+    });
+    check('the letter card is one whole link to its packet',
+          isLink.tag === 'A' && isLink.href === 'sheets/lesson-001.html',
+          JSON.stringify(isLink));
+    check('it opens in a new tab, so the index is never navigated away from',
+          isLink.blank);
+    check('the cursor over the card body says "clickable", like a story card',
+          isLink.cursor === 'pointer', isLink.cursor);
+
+    // The exact three spots the audit clicked and got nothing from: the
+    // "Letter and sound" line, just right of the "Lesson 1" text, and the
+    // skill-symbol line. Real mouse clicks, not element.click().
+    const card = await page.$('.card.letter');
+    await page.evaluate(el => el.scrollIntoView({ block: 'center' }), card);
+    const box = await card.boundingBox();
+    for (const [label, fx, fy] of [
+      ['the "Letter and sound" line',        0.5, 0.35],
+      ['just right of the "Lesson 1" text',  0.8, 0.12],
+      ['the sound-symbol line',              0.5, 0.55]]){
+      const before = (await browser.pages()).length;
+      await page.mouse.click(box.x + box.width * fx, box.y + box.height * fy);
+      await new Promise(r => setTimeout(r, 600));
+      const tabs = await browser.pages();
+      const opened = tabs.length === before + 1;
+      check(`a real click on ${label} opens the packet`, opened,
+            `${before} tabs before, ${tabs.length} after`);
+      if (opened){
+        const tab = tabs[tabs.length - 1];
+        check('and it is Lesson 1\'s own printable sheet',
+              /sheets\/lesson-001\.html$/.test(tab.url()), tab.url());
+        await tab.close();
+        await page.bringToFront();
+      }
+    }
+    const hrefs = await page.evaluate(() =>
+      [...document.querySelectorAll('a.card.letter')].map(a => a.getAttribute('href')));
+    eq('all five letter cards are whole-card links to their own sheets',
+       hrefs, [1, 2, 3, 4, 5].map(n => `sheets/lesson-00${n}.html`));
+  }
+
+  // =========================================================================
+  group('The words page shows this week\'s words, not last week\'s');
+  // WAS BROKEN: Lessons 63-67 headed their words page "this week's words" and
+  // printed come/some — introduced back at Lesson 62 — while the words those
+  // lessons actually introduce (two, does, any, many, been, into, because)
+  // never appeared, even though the Lesson 63 story is TITLED "Two Big Boxes".
+  // Cause: heart_words.py is not written in lesson order, and the sheet
+  // builder took the last two by LIST position instead of by lesson.
+  // Lessons 29-33 had the same disease from "we" (Lesson 28) sitting late in
+  // the list; they are pinned here too.
+  // =========================================================================
+  {
+    const sheetTab = await browser.newPage();
+    const newest = {
+      63: ['two', 'does'],   64: ['any', 'many'],  65: ['been', 'into'],
+      66: ['been', 'into'],  67: ['into', 'because'],
+      29: ['we', 'was'],     31: ['was', 'you']
+    };
+    for (const [n, want] of Object.entries(newest)){
+      await sheetTab.goto(
+        `${base}/sheets/lesson-${String(n).padStart(3, '0')}.html`,
+        { waitUntil: 'load' });
+      const got = await sheetTab.evaluate(() =>
+        [...document.querySelectorAll('.hwcard .hwword')].map(e => e.textContent.trim()));
+      eq(`lesson ${n} maps its newest heart words: ${want.join(', ')}`, got, want);
+    }
+    await sheetTab.goto(`${base}/sheets/lesson-063.html`, { waitUntil: 'load' });
+    const m = await sheetTab.evaluate(() => ({
+      heading: ([...document.querySelectorAll('h2')]
+        .map(h => h.textContent).find(t => /Heart words/.test(t)) || ''),
+      story: [...document.querySelectorAll('.passage .ln')]
+        .map(e => e.textContent).join(' ')
+    }));
+    check('the heading still says these are this week\'s words',
+          /this week/.test(m.heading), m.heading.slice(0, 80));
+    check('and the child meets those exact words in the story on the next page',
+          /\btwo\b/i.test(m.story) && /\bdoes\b/i.test(m.story),
+          m.story.slice(0, 120));
+    await sheetTab.close();
+    await page.bringToFront();
+  }
+
+  // =========================================================================
+  group('The build refuses to ship a page that disagrees with its sheets');
+  // WAS BROKEN, two ways, both silent and both exit code 0:
+  //   1. Delete a sheet file and rebuild: the index still grew a blue "Print
+  //      this sheet" button for it, so a parent clicked it and got a 404 tab,
+  //      while the "Printable pages" tile quietly dropped by 5.
+  //   2. Edit a passage and rebuild only the index (the documented step): the
+  //      card previewed "Mud Hog" while its button printed "Mud Pig" — the
+  //      child read a different story than the grown-up previewed.
+  // build_index.py now checks every passage's title, lines and warm-up words
+  // against the sheet file before writing anything, and refuses with the
+  // exact fix command. These run against a throwaway copy of the tool.
+  // =========================================================================
+  {
+    const os = require('os');
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'dpg-guard-'));
+    for (const f of ['build_index.py', 'build_sheet.py', 'heart_words.py',
+                     'sound-list.json', 'words-page.json',
+                     'example-lesson-41.html', 'index.html'])
+      fs.copyFileSync(path.join(ROOT, f), path.join(tmp, f));
+    fs.cpSync(path.join(ROOT, 'passages'), path.join(tmp, 'passages'), { recursive: true });
+    fs.cpSync(path.join(ROOT, 'sheets'),   path.join(tmp, 'sheets'),   { recursive: true });
+
+    const rebuildIndex = () => {
+      try {
+        return { code: 0, out: execFileSync('python3', ['build_index.py'],
+                                            { cwd: tmp, stdio: 'pipe' }).toString() };
+      } catch (e){
+        return { code: e.status,
+                 out: String(e.stdout || '') + String(e.stderr || '') };
+      }
+    };
+    const rebuildSheet41 = () => execFileSync(
+      'python3', ['build_sheet.py', 'passages/lesson-041.json'],
+      { cwd: tmp, stdio: 'pipe' });
+
+    eq('sanity: an untouched copy of the tool still builds', rebuildIndex().code, 0);
+
+    // --- 1. a sheet file goes missing ---
+    const before = fs.readFileSync(path.join(tmp, 'index.html'), 'utf8');
+    fs.rmSync(path.join(tmp, 'sheets', 'lesson-041.html'));
+    let r = rebuildIndex();
+    check('a missing sheet stops the build instead of shipping a dead Print button',
+          r.code !== 0, `build_index.py exited ${r.code}`);
+    check('the message names Lesson 41 and the exact command that fixes it',
+          /Lesson 41/.test(r.out) &&
+          /build_sheet\.py passages\/lesson-041\.json/.test(r.out),
+          r.out.slice(0, 300));
+    check('and index.html was left exactly as it was',
+          fs.readFileSync(path.join(tmp, 'index.html'), 'utf8') === before);
+    rebuildSheet41();
+    eq('doing what the message says makes the build pass again', rebuildIndex().code, 0);
+
+    // --- 2. a passage is edited but its sheet is not rebuilt ---
+    const pj = path.join(tmp, 'passages', 'lesson-041.json');
+    const spec = JSON.parse(fs.readFileSync(pj, 'utf8'));
+    spec.title = 'Mud Hog';
+    spec.lines[0] = spec.lines[0].replace('pig', 'hog');
+    fs.writeFileSync(pj, JSON.stringify(spec, null, 1));
+    r = rebuildIndex();
+    check('an edited passage stops the index build until its sheet is rebuilt',
+          r.code !== 0, `build_index.py exited ${r.code}`);
+    check('and says plainly the card would preview a different story than it prints',
+          /Lesson 41/.test(r.out) && /disagree/.test(r.out), r.out.slice(0, 400));
+    rebuildSheet41();
+    r = rebuildIndex();
+    eq('after the sheet is rebuilt, the index builds again', r.code, 0);
+    const idx   = fs.readFileSync(path.join(tmp, 'index.html'), 'utf8');
+    const sheet = fs.readFileSync(path.join(tmp, 'sheets', 'lesson-041.html'), 'utf8');
+    check('and the card and the packet now tell the same story',
+          idx.includes('Mud Hog') && sheet.includes('Mud Hog'));
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
 
   // =========================================================================
