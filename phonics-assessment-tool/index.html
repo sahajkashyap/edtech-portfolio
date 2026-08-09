@@ -2337,29 +2337,34 @@ function buildWorksheetHTML(c, flagged) {
     .family strong { display: inline-block; width: 74px; color: #b23b00; word-spacing: normal; }
     .fillrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 24px; font-size: 22px; margin-left: 12px; }
     .fillrow span { letter-spacing: 0.06em; }
-    .blank { display: inline-block; width: 52px; border-bottom: 2px solid #1a1a1a; text-align: center; }
-    .blank.wide { width: 72px; }
+    .blank { display: inline-block; width: 76px; height: 1.5em; border-bottom: 2px solid #1a1a1a; text-align: center; }
+    .blank.wide { width: 104px; }
     .sbrow { display: flex; align-items: center; gap: 18px; margin: 16px 0 16px 12px; }
     .sbrow .cue { font-size: 22px; width: 70px; letter-spacing: 0.05em; }
-    .sboxes { display: flex; gap: 12px; }
-    .sbox { width: 75px; height: 75px; border: 1.5px solid #1a1a1a; border-radius: 6px; position: relative; }
+    .sboxes { display: flex; gap: 14px; flex-wrap: wrap; }
+    .sbox { width: 100px; height: 100px; border: 1.5px solid #1a1a1a; border-radius: 6px; position: relative; }
     .sbox .pairlab { position: absolute; bottom: 4px; right: 6px; font-size: 11px; color: #c9b48f; }
     .chainq { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; font-size: 20px; margin: 18px 0 18px 12px; }
     .chainq .startw { font-weight: bold; letter-spacing: 0.05em; min-width: 52px; }
     .chainq .arrow { color: #888; }
     .chainq .instr strong { color: #b23b00; }
     .chainq .ansboxes { display: flex; gap: 10px; }
-    .chainq .abox { width: 54px; height: 54px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
+    .chainq .abox { width: 72px; height: 72px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
     .wordbank { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin: 4px 0 4px 12px; font-size: 18px; color: #333; }
     .wordbank .lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
     .wordbank .wb { display: inline-flex; align-items: center; gap: 7px; }
     .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
-    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 1.9; }
-    .sent .blank { width: 130px; margin: 0 6px; }
+    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 2.4; }
+    .sent .blank { width: 200px; height: 1.6em; margin: 0 8px; }
     .read { font-size: 16px; margin: 9px 0 9px 12px; }
     .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
     .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
-    .box { border: 1px solid #999; border-radius: 6px; min-height: 132px; padding: 10px 12px; font-size: 18px; }
+    .box { border: 1px solid #999; border-radius: 6px; min-height: 245px; padding: 14px 16px; font-size: 18px; line-height: 2.3; }
+    /* min-height and line-height: a child WRITES the sorted words into
+       these boxes by hand. At 132px with default leading there was room
+       for about three cramped lines and no space between them, so a
+       six-year-old's letters ran into each other. Sahaj caught this on
+       paper, which no test could. */
     .box .h { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 8px; }
     .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 12px 14px; margin: 4px 0 22px; font-size: 12.5px; color: #4a3f2c; }
     .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 5px; }
@@ -2474,7 +2479,7 @@ function buildVCeHTML(c, flagged) {
     .family strong { display: inline-block; width: 74px; color: #b23b00; word-spacing: normal; }
     .blank { display: inline-block; width: 130px; border-bottom: 2px solid #1a1a1a; }
     .ansboxes { display: inline-flex; gap: 8px; vertical-align: middle; }
-    .abox { width: 50px; height: 50px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
+    .abox { width: 68px; height: 68px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
     .mgrid { margin-left: 12px; }
     .mrow { display: flex; align-items: center; gap: 12px; font-size: 21px; margin: 12px 0; }
     .mbase { min-width: 60px; font-weight: bold; letter-spacing: 0.05em; }
@@ -2487,17 +2492,22 @@ function buildVCeHTML(c, flagged) {
     .chainq .startw { font-weight: bold; letter-spacing: 0.05em; min-width: 56px; }
     .chainq .arrow { color: #888; }
     .chainq .instr strong { color: #b23b00; }
-    .chainq .ansboxes .abox { width: 50px; height: 50px; }
+    .chainq .ansboxes .abox { width: 68px; height: 68px; }
     .wordbank { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin: 4px 0 4px 12px; font-size: 18px; color: #333; }
     .wordbank .lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
     .wordbank .wb { display: inline-flex; align-items: center; gap: 7px; }
     .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
-    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 1.9; }
-    .sent .blank { width: 130px; margin: 0 6px; }
+    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 2.4; }
+    .sent .blank { width: 200px; height: 1.6em; margin: 0 8px; }
     .read { font-size: 16px; margin: 9px 0 9px 12px; }
     .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
     .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
-    .box { border: 1px solid #999; border-radius: 6px; min-height: 132px; padding: 10px 12px; font-size: 18px; }
+    .box { border: 1px solid #999; border-radius: 6px; min-height: 245px; padding: 14px 16px; font-size: 18px; line-height: 2.3; }
+    /* min-height and line-height: a child WRITES the sorted words into
+       these boxes by hand. At 132px with default leading there was room
+       for about three cramped lines and no space between them, so a
+       six-year-old's letters ran into each other. Sahaj caught this on
+       paper, which no test could. */
     .box .h { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 8px; }
     .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 12px 14px; margin: 4px 0 22px; font-size: 12.5px; color: #4a3f2c; }
     .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 5px; }
@@ -2597,7 +2607,7 @@ const WS_BASE_CSS = `
     .wordgrid div { border: 1px solid #ccc; border-radius: 6px; padding: 8px 0; }
     .blank { display: inline-block; width: 130px; border-bottom: 2px solid #1a1a1a; }
     .ansboxes { display: inline-flex; gap: 8px; vertical-align: middle; }
-    .abox { width: 50px; height: 50px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
+    .abox { width: 68px; height: 68px; border: 1.5px solid #1a1a1a; border-radius: 6px; }
     .mgrid { margin-left: 12px; }
     .mrow { display: flex; align-items: center; gap: 12px; font-size: 21px; margin: 12px 0; flex-wrap: wrap; }
     .mbase { min-width: 60px; font-weight: bold; letter-spacing: 0.05em; }
@@ -2611,12 +2621,17 @@ const WS_BASE_CSS = `
     .wordbank .lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
     .wordbank .wb { display: inline-flex; align-items: center; gap: 7px; }
     .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
-    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 1.9; }
-    .sent .blank { width: 150px; margin: 0 6px; }
+    .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 2.4; }
+    .sent .blank { width: 225px; height: 1.6em; margin: 0 8px; }
     .read { font-size: 16px; margin: 9px 0 9px 12px; }
     .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
     .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
-    .box { border: 1px solid #999; border-radius: 6px; min-height: 132px; padding: 10px 12px; font-size: 18px; }
+    .box { border: 1px solid #999; border-radius: 6px; min-height: 245px; padding: 14px 16px; font-size: 18px; line-height: 2.3; }
+    /* min-height and line-height: a child WRITES the sorted words into
+       these boxes by hand. At 132px with default leading there was room
+       for about three cramped lines and no space between them, so a
+       six-year-old's letters ran into each other. Sahaj caught this on
+       paper, which no test could. */
     .box .h { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 8px; }
     .tip { border: 1px solid #d9c7a8; background: #faf6ee; border-radius: 8px; padding: 12px 14px; margin: 4px 0 22px; font-size: 12.5px; color: #4a3f2c; }
     .tip .h { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #8a6d3b; font-weight: bold; margin-bottom: 5px; }
