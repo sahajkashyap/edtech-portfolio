@@ -1269,6 +1269,45 @@ async function main(){
   }
 
   // =========================================================================
+  group('Every worksheet type is one sheet of paper');
+  // Chrome's own print pipeline, not a measurement of the screen. WHAT WAS
+  // WRONG: six of the fourteen types (pictures, bar models, in-parts, word
+  // problems) overflowed US Letter at the shared 20-problem default, so their
+  // default print was two sheets and a staple. Each type now carries its own
+  // default count, sized so one sheet holds it WITH room for a child to write.
+  // A fixed seed keeps the check honest and repeatable; the worst legal sheet
+  // (the 12 tallest distinct arrays) was measured separately at 943px of the
+  // 960 available.
+  await fresh(page, base);
+  await page.emulateMediaType(null);   // pdf() obeys emulation; clear it first
+  {
+    const pdfPages = (buf) =>
+      (Buffer.from(buf).toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length;
+    const HALF_INCH = { top: '0.5in', bottom: '0.5in', left: '0.5in', right: '0.5in' };
+    const types = await page.evaluate(() => Object.keys(WS_TYPES));
+    const over = [];
+    for (const t of types){
+      await page.evaluate((t) => show('worksheet', {
+        type: t, count: WS_TYPES[t].n, cols: WS_TYPES[t].cols, showAnswers: false,
+        seed: 31337, title: WS_TYPES[t].title,
+        sections: ['facts', 'missing', 'wordproblem'], perSection: 6,
+      }), t);
+      const n = pdfPages(await page.pdf({ format: 'Letter', printBackground: true, margin: HALF_INCH }));
+      if (n !== 1) over.push(`${t}: ${n} pages`);
+    }
+    eq('every type\'s default worksheet prints as ONE sheet of paper', over, []);
+    // The answer key is the teacher's page and starts a sheet of its own —
+    // two sheets exactly, never the key bleeding up or the sheet bleeding down.
+    await page.evaluate(() => show('worksheet', {
+      type: 'facts', count: WS_TYPES.facts.n, cols: 3, showAnswers: true,
+      seed: 31337, title: WS_TYPES.facts.title,
+    }));
+    eq('with the answer key on, the key takes its own second sheet and nothing more',
+       pdfPages(await page.pdf({ format: 'Letter', printBackground: true, margin: HALF_INCH })), 2);
+  }
+  await page.emulateMediaType('screen');
+
+  // =========================================================================
   group('Nothing leaves this laptop');
   await fresh(page, base);
   await page.evaluate(() => { ['home','drop','mystery','speed','array','showme','worksheet','progress'].forEach(show); });

@@ -1872,6 +1872,44 @@ async function main(){
   }
 
   // =========================================================================
+  group('No packet quietly grows a page  (Chrome\'s own print pipeline, all 128)');
+  // =========================================================================
+  {
+    // Every generated packet, printed the way a parent prints it: Chrome's PDF
+    // pipeline with the sheets' own @page margins. Bigger writing boxes and
+    // bigger read-aloud type are only safe while the page count stays put —
+    // a sheet that gains a page hands a parent a stapler. The packets run 2 to
+    // 5 pages BY DESIGN (grown-up page plus practice sections); what must
+    // never change without a decision is the total. 404 printed pages across
+    // the 128 packets is the count Sahaj approved on paper.
+    const htmls = await page.evaluate(() => {
+      const out = {};
+      Object.keys(WORKSHEETS).forEach(name => {
+        const c = WORKSHEETS[name];
+        const build = c.review ? buildReviewHTML : c.syllable ? buildSyllableHTML
+                    : c.letter ? buildLetterHTML : c.ending ? buildEndingHTML
+                    : c.vce ? buildVCeHTML : buildWorksheetHTML;
+        out[name] = build(c, true);
+      });
+      return out;
+    });
+    const pdfPages = (buf) =>
+      (Buffer.from(buf).toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length;
+    const sheet = await browser.newPage();
+    const counts = {};
+    for (const [name, html] of Object.entries(htmls)){
+      await sheet.setContent(html, { waitUntil: 'load' });
+      counts[name] = pdfPages(await sheet.pdf({ format: 'Letter', printBackground: true }));
+    }
+    await sheet.close();
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    eq('all 128 packets still print in 404 pages, none has quietly grown one',
+       total, 404);
+    eq('no single packet runs past its five-page ceiling',
+       Object.entries(counts).filter(([, n]) => n > 5).map(([k, n]) => `${k}: ${n}`), []);
+  }
+
+  // =========================================================================
   group('Nothing shouted into a console nobody has open');
   // =========================================================================
   {

@@ -430,16 +430,36 @@
      line, so "Score: ____ / 20" hung 65px past the right edge and the whole page
      scrolled sideways — which also dragged the closed Settings drawer into view.
      Let the line wrap instead of pushing the page wider than the screen. */
-  .ws-meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .95rem; color: #444; margin-bottom: 18px; }
-  .ws-problems { display: grid; gap: 16px 24px; }
+  /* line-height: a child hand-writes their name ON the underscore line, and at
+     normal leading the letters ran up into the title rule above it. */
+  .ws-meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .95rem; color: #444; margin-bottom: 18px; line-height: 2.1; }
+  /* row gap 16px -> 26px: the gap under a problem is the only place a child can
+     work it out in pencil, and 16px held no handwriting at all. */
+  .ws-problems { display: grid; gap: 26px 24px; }
   .ws-prob { font-size: 1.25rem; font-weight: 700; position: relative; padding-left: 28px; }
   .ws-prob .n { position: absolute; left: 0; top: 0; color: var(--purple); font-size: .95rem; font-weight: 800; }
-  .ws-blank { display: inline-block; min-width: 46px; border-bottom: 2px solid #888; }
+  /* min-width and height: the answer blank was 46px wide with no height of its
+     own — as wide as the printed "72" beside it, and no taller than the type.
+     A child's pencil needs more room than the answer set in print does. */
+  .ws-blank { display: inline-block; min-width: 70px; height: 1.5em; border-bottom: 2px solid #888; }
   /* column (vertical) arithmetic on printable sheets */
-  .ws-col { display: inline-block; text-align: right; font-variant-numeric: tabular-nums; line-height: 1.25; min-width: 74px; }
+  /* min-width 74px -> 96px: the child writes the product (and, on 2×2, their
+     own partial products) inside this column, not just reads the factors. */
+  .ws-col { display: inline-block; text-align: right; font-variant-numeric: tabular-nums; line-height: 1.25; min-width: 96px; }
+  /* The paper-sized blanks above must not push a phone's PREVIEW sideways —
+     paper is 8.5in wide, a phone is not. Screen-only, and !important because
+     each blank carries its print width inline from wsBlank(). Print never
+     matches this query: in print media the width is the paper's. */
+  @media screen and (max-width: 480px) {
+    .ws-blank { min-width: 46px !important; }
+    .ws-col { min-width: 74px; }
+  }
   .ws-col-op { float: left; }
   .ws-col-rule { border-top: 2px solid #222; margin: 3px 0; height: 0; }
-  .ws-col-ans { height: 1.4em; }
+  /* 1.4em -> 2.4em: this is where the product goes, in a child's handwriting —
+     and on 2-digit × 2-digit, the partial-product rows too. 1.4em was sized
+     for one printed line, the tightest write-in space on any sheet. */
+  .ws-col-ans { height: 2.4em; }
   /* multiply-in-parts expression */
   .ws-parts { font-size: 1.1rem; font-weight: 700; }
   /* bar model (Singapore-style) */
@@ -3032,21 +3052,27 @@ SCREENS.progress = function () {
 // Each worksheet "type" mirrors a standard K5-style category plus Singapore-
 // style visuals (arrays, equal groups, bar models, number bonds). All problems
 // are generated fresh — original, never copied.
+// n is the default problem count for the type. WHAT WAS WRONG: every type
+// started at the same 20 problems, and for the taller problems (pictures, bar
+// models, in-parts, word problems) 20 never fit on one Letter sheet — the
+// default print was two pages, stapled, for six of the fourteen types. Each
+// type now starts at the most problems that print on ONE page with room for a
+// child to write; the "How many?" select still offers more on purpose.
 const WS_TYPES = {
-  facts:      { title: "Multiplication Facts", cols: 3 },
-  missing:    { title: "Missing Factors", cols: 3 },
-  mixed:      { title: "Mixed Multiplication Review", cols: 2 },
-  tens:       { title: "Multiply by Tens & Hundreds", cols: 3 },
-  byten:      { title: "Multiply by 10, 100 & 1000", cols: 3 },
-  inparts:    { title: "Multiply in Parts", cols: 1 },
-  col2x1:     { title: "2-Digit × 1-Digit", cols: 4 },
-  col2x2:     { title: "2-Digit × 2-Digit", cols: 3 },
-  array:      { title: "Arrays", cols: 3 },
-  equalgroups:{ title: "Equal Groups", cols: 2 },
-  wordproblem:{ title: "Word Problems", cols: 1 },
-  barmodel:   { title: "Bar Models", cols: 2 },
-  numberbond: { title: "Number Bonds", cols: 3 },
-  sections:   { title: "Mixed Practice", cols: 1 },
+  facts:      { title: "Multiplication Facts", cols: 3, n: 20 },
+  missing:    { title: "Missing Factors", cols: 3, n: 20 },
+  mixed:      { title: "Mixed Multiplication Review", cols: 2, n: 20 },
+  tens:       { title: "Multiply by Tens & Hundreds", cols: 3, n: 20 },
+  byten:      { title: "Multiply by 10, 100 & 1000", cols: 3, n: 20 },
+  inparts:    { title: "Multiply in Parts", cols: 1, n: 12 },
+  col2x1:     { title: "2-Digit × 1-Digit", cols: 4, n: 20 },
+  col2x2:     { title: "2-Digit × 2-Digit", cols: 3, n: 15 },
+  array:      { title: "Arrays", cols: 3, n: 12 },
+  equalgroups:{ title: "Equal Groups", cols: 2, n: 10 },
+  wordproblem:{ title: "Word Problems", cols: 1, n: 10 },
+  barmodel:   { title: "Bar Models", cols: 2, n: 8 },
+  numberbond: { title: "Number Bonds", cols: 3, n: 12 },
+  sections:   { title: "Mixed Practice", cols: 1, n: 18 },
 };
 const WS_LEGACY = { standard: "facts", mystery: "missing", mix: "mixed" };
 const WS_SECTION_TYPES = [
@@ -3061,20 +3087,30 @@ const WS_WORDS = [
   ["jar", "jars", "marbles"], ["row", "rows", "chairs"], ["tank", "tanks", "fish"],
   ["garden", "gardens", "flowers"], ["team", "teams", "players"], ["case", "cases", "bottles"],
 ];
-function wsBlank(w) { return `<span class="ws-blank" style="min-width:${w || 46}px">&nbsp;</span>`; }
+// Default 46px -> 70px, and every caller's width up ~50% with it: the blanks
+// were sized to fit the printed answer, not the hand that writes it.
+function wsBlank(w) { return `<span class="ws-blank" style="min-width:${w || 70}px">&nbsp;</span>`; }
 function wsColHTML(top, bottom) {
   return `<div class="ws-col"><div>${top}</div><div><span class="ws-col-op">×</span>${bottom}</div><div class="ws-col-rule"></div><div class="ws-col-ans">&nbsp;</div></div>`;
 }
 function wsBarHTML(a, b) {
-  const uW = 48, h = 40, padL = 3, topPad = 22, W = a * uW + padL * 2, braceY = topPad + h + 8, H = braceY + 34;
+  // The SVG is never narrower than the answer line below it (W floor 150),
+  // or a two-group bar would clip the child's blank; the boxes and the brace
+  // centre themselves when the floor wins.
+  const uW = 48, h = 40, padL = 3, topPad = 22, boxesW = a * uW,
+        W = Math.max(boxesW + padL * 2, 150), x0 = (W - boxesW) / 2,
+        braceY = topPad + h + 8, H = braceY + 42;
   let u = "";
   for (let i = 0; i < a; i++) {
-    const x = padL + i * uW;
+    const x = x0 + i * uW;
     u += `<rect x="${x}" y="${topPad}" width="${uW}" height="${h}" fill="#fff" stroke="#333" stroke-width="1.4"></rect>`;
     u += `<text x="${x + uW / 2}" y="${topPad + h / 2 + 6}" text-anchor="middle" font-size="17" font-weight="700" fill="#111">${b}</text>`;
   }
-  const brace = `<path d="M${padL} ${braceY} L${padL} ${braceY + 7} L${W - padL} ${braceY + 7} L${W - padL} ${braceY}" fill="none" stroke="#333" stroke-width="1.2"></path>`;
-  const q = `<text x="${W / 2}" y="${braceY + 26}" text-anchor="middle" font-size="15" font-weight="700" fill="#111">? = ______</text>`;
+  const brace = `<path d="M${x0} ${braceY} L${x0} ${braceY + 7} L${x0 + boxesW} ${braceY + 7} L${x0 + boxesW} ${braceY}" fill="none" stroke="#333" stroke-width="1.2"></path>`;
+  // This blank is SVG text, so the .ws-blank sizing cannot reach it. Six
+  // underscores at 15px fit the printed answer, not a child's pencil — the
+  // blank is now longer and taller, and H above grew with it.
+  const q = `<text x="${W / 2}" y="${braceY + 30}" text-anchor="middle" font-size="18" font-weight="700" fill="#111">? = _________</text>`;
   return `<div class="ws-bar"><div class="ws-bar-cap">${a} groups of ${b}</div><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${u}${brace}${q}</svg></div>`;
 }
 function wsArrayHTML(r, c) {
@@ -3083,7 +3119,7 @@ function wsArrayHTML(r, c) {
   for (let i = 0; i < r; i++) for (let j = 0; j < c; j++) {
     d += `<circle cx="${pad + j * (s + gap) + s / 2}" cy="${pad + i * (s + gap) + s / 2}" r="${s / 2 - 1}" fill="#4b4b4b"></circle>`;
   }
-  return `<div class="ws-vis"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${d}</svg><div class="ws-vis-q">${wsBlank(36)} × ${wsBlank(36)} = ${wsBlank(44)}</div></div>`;
+  return `<div class="ws-vis"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${d}</svg><div class="ws-vis-q">${wsBlank(54)} × ${wsBlank(54)} = ${wsBlank(66)}</div></div>`;
 }
 function wsGroupsHTML(g, m) {
   const gw = 56, gh = 48, gap = 10, padL = 5, padT = 5, W = padL * 2 + g * gw + (g - 1) * gap, H = padT + gh + 22;
@@ -3099,10 +3135,10 @@ function wsGroupsHTML(g, m) {
     }
   }
   out += `<text x="${W / 2}" y="${H - 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#111">${g} groups of ${m}</text>`;
-  return `<div class="ws-vis"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${out}</svg><div class="ws-vis-q">${wsBlank(36)} × ${wsBlank(36)} = ${wsBlank(44)}</div></div>`;
+  return `<div class="ws-vis"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${out}</svg><div class="ws-vis-q">${wsBlank(54)} × ${wsBlank(54)} = ${wsBlank(66)}</div></div>`;
 }
 function wsWordHTML(a, b, w) {
-  return `<span class="ws-word">There are <b>${a}</b> ${w[1]}. Each ${w[0]} has <b>${b}</b> ${w[2]}. How many ${w[2]} in all? &nbsp; ${wsBlank(60)}</span>`;
+  return `<span class="ws-word">There are <b>${a}</b> ${w[1]}. Each ${w[0]} has <b>${b}</b> ${w[2]}. How many ${w[2]} in all? &nbsp; ${wsBlank(90)}</span>`;
 }
 function wsBondHTML(a, b) {
   const W = 168, H = 116, cx = W / 2, topY = 26, botY = 88, r1 = 24, r2 = 20, lx = cx - 44, rx = cx + 44;
@@ -3116,7 +3152,7 @@ function wsBondHTML(a, b) {
     <circle cx="${rx}" cy="${botY}" r="${r2}" fill="#fff" stroke="#333" stroke-width="1.4"></circle>
     <text x="${rx}" y="${botY + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="#111">${b}</text>
     <text x="${cx}" y="${botY + 5}" text-anchor="middle" font-size="16" font-weight="700" fill="#111">×</text>
-  </svg><div class="ws-vis-q" style="font-size:.95rem;color:#333">Multiply the parts: ${wsBlank(44)}</div></div>`;
+  </svg><div class="ws-vis-q" style="font-size:.95rem;color:#333">Multiply the parts: ${wsBlank(66)}</div></div>`;
 }
 // Returns { q: printable question HTML, ak: answer-key line }
 function wsProblem(type) {
@@ -3133,12 +3169,12 @@ function wsProblem(type) {
     }
     case "byten": {
       const n = rint(2, 99), m = pick([10, 100, 1000]);
-      return { q: `${n} × ${m} = ${wsBlank(64)}`, ak: `${n} × ${m} = ${n * m}` };
+      return { q: `${n} × ${m} = ${wsBlank(96)}`, ak: `${n} × ${m} = ${n * m}` };
     }
     case "inparts": {
       const a = rint(3, 9); let bc = rint(11, 99); if (bc % 10 === 0) bc += 1;
       const t = Math.floor(bc / 10) * 10, o = bc % 10;
-      return { q: `<span class="ws-parts">${a} × ${bc} = (${a}×${t}) + (${a}×${o}) = ${wsBlank(40)} + ${wsBlank(34)} = ${wsBlank(48)}</span>`,
+      return { q: `<span class="ws-parts">${a} × ${bc} = (${a}×${t}) + (${a}×${o}) = ${wsBlank(60)} + ${wsBlank(52)} = ${wsBlank(72)}</span>`,
                ak: `${a} × ${bc} = ${a * t} + ${a * o} = ${a * bc}` };
     }
     case "col2x1": { const ab = rint(11, 99), c = rint(2, 9); return { q: wsColHTML(ab, c), ak: `${ab} × ${c} = ${ab * c}` }; }
@@ -3614,7 +3650,10 @@ SCREENS.worksheet = function (params) {
       <div class="card">
         <div class="worksheet" id="sheet">
           <div class="ws-head"><strong id="wsHeadTitle" style="font-size:1.4rem">${escapeHTML(cfg.title)}</strong><span>✖️ Factor Field</span></div>
-          <div class="ws-meta"><span>Name: _______________________</span><span>Date: ____________</span><span>Score: ____ / ${total}</span></div>
+          ${/* Longer Name and Date rules: a child writes these in pencil, and
+               the old rules were sized like form fields. The vertical room
+               comes from .ws-meta's line-height. */""}
+          <div class="ws-meta"><span>Name: _______________________________</span><span>Date: ________________</span><span>Score: ______ / ${total}</span></div>
           ${bodyHTML}
           ${cfg.showAnswers ? `<div class="answer-key"><h3>Answer Key</h3><div class="ak-grid">${akHTML}</div></div>` : ""}
         </div>
@@ -3635,7 +3674,9 @@ SCREENS.worksheet = function (params) {
       if (h) h.textContent = cfg.title;
     });
     appEl.querySelector("#wsType").addEventListener("change", (e) => {
-      cfg.type = e.target.value; cfg.title = WS_TYPES[cfg.type].title; cfg.cols = WS_TYPES[cfg.type].cols; cfg.seed = newSeed(); render();
+      // count resets with the type, like cols. WHAT WAS WRONG: switching from
+      // Facts to Arrays kept Facts' 20, and 20 picture problems is two pages.
+      cfg.type = e.target.value; cfg.title = WS_TYPES[cfg.type].title; cfg.cols = WS_TYPES[cfg.type].cols; cfg.count = WS_TYPES[cfg.type].n; cfg.seed = newSeed(); render();
     });
     if (isSections) {
       appEl.querySelector("#wsPer").value = String(cfg.perSection);

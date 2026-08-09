@@ -2356,8 +2356,13 @@ function buildWorksheetHTML(c, flagged) {
     .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
     .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 2.4; }
     .sent .blank { width: 200px; height: 1.6em; margin: 0 8px; }
-    .read { font-size: 16px; margin: 9px 0 9px 12px; }
-    .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
+    .read { font-size: 20px; margin: 9px 0 9px 12px; }
+    /* 16px -> 20px: the CHILD reads these lines aloud, and they were set
+       smaller than every other line the child reads on the sheet. Decodable
+       books print larger type so a beginning reader can track the letters —
+       the sheet should not shrink the type exactly where reading gets
+       hardest. The check-off box grows with it to stay proportionate. */
+    .read .chk { display: inline-block; width: 20px; height: 20px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -3px; margin-right: 8px; }
     .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
     .box { border: 1px solid #999; border-radius: 6px; min-height: 245px; padding: 14px 16px; font-size: 18px; line-height: 2.3; }
     /* min-height and line-height: a child WRITES the sorted words into
@@ -2499,8 +2504,13 @@ function buildVCeHTML(c, flagged) {
     .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
     .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 2.4; }
     .sent .blank { width: 200px; height: 1.6em; margin: 0 8px; }
-    .read { font-size: 16px; margin: 9px 0 9px 12px; }
-    .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
+    .read { font-size: 20px; margin: 9px 0 9px 12px; }
+    /* 16px -> 20px: the CHILD reads these lines aloud, and they were set
+       smaller than every other line the child reads on the sheet. Decodable
+       books print larger type so a beginning reader can track the letters —
+       the sheet should not shrink the type exactly where reading gets
+       hardest. The check-off box grows with it to stay proportionate. */
+    .read .chk { display: inline-block; width: 20px; height: 20px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -3px; margin-right: 8px; }
     .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
     .box { border: 1px solid #999; border-radius: 6px; min-height: 245px; padding: 14px 16px; font-size: 18px; line-height: 2.3; }
     /* min-height and line-height: a child WRITES the sorted words into
@@ -2623,8 +2633,13 @@ const WS_BASE_CSS = `
     .wordbank .ubox { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; }
     .sent { font-size: 20px; margin: 16px 0 16px 12px; line-height: 2.4; }
     .sent .blank { width: 225px; height: 1.6em; margin: 0 8px; }
-    .read { font-size: 16px; margin: 9px 0 9px 12px; }
-    .read .chk { display: inline-block; width: 16px; height: 16px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -2px; margin-right: 8px; }
+    .read { font-size: 20px; margin: 9px 0 9px 12px; }
+    /* 16px -> 20px: the CHILD reads these lines aloud, and they were set
+       smaller than every other line the child reads on the sheet. Decodable
+       books print larger type so a beginning reader can track the letters —
+       the sheet should not shrink the type exactly where reading gets
+       hardest. The check-off box grows with it to stay proportionate. */
+    .read .chk { display: inline-block; width: 20px; height: 20px; border: 1.5px solid #1a1a1a; border-radius: 3px; vertical-align: -3px; margin-right: 8px; }
     .sort { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-left: 12px; }
     .box { border: 1px solid #999; border-radius: 6px; min-height: 245px; padding: 14px 16px; font-size: 18px; line-height: 2.3; }
     /* min-height and line-height: a child WRITES the sorted words into

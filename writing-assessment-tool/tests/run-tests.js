@@ -1065,9 +1065,27 @@ async function main(){
   });
   check('a sheet printed with the comment boxes empty still has a box to write in',
         blankPaper.h >= 120 && blankPaper.border !== '0px', JSON.stringify(blankPaper));
+  // WHAT WAS WRONG: 120px was sized against the printed 13px type — about
+  // three handwritten lines once a real pen is on the paper. The floor is now
+  // a box a teacher can actually fill in by hand at a desk.
+  check('an empty comment box is deep enough for real handwriting, not three cramped lines',
+        blankPaper.h >= 200, JSON.stringify(blankPaper));
 
   await page.emulateMediaType(null);
   await page.setViewport({ width: 1280, height: 950 });
+
+  // Chrome's own print pipeline, not a measurement of the screen. This print
+  // has ALWAYS been two sheets — the dashboard, then the comment boxes — and
+  // the deeper boxes spend slack that already existed on sheet two. What must
+  // never happen silently is a third sheet.
+  {
+    const pdfPages = (buf) =>
+      (Buffer.from(buf).toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length;
+    const pdf = await page.pdf({ format: 'Letter', printBackground: true,
+      margin: { top: '0.5in', bottom: '0.5in', left: '0.5in', right: '0.5in' } });
+    eq('the printed record is still its two sheets — the roomier boxes never buy a third',
+       pdfPages(pdf), 2);
+  }
 
   // =========================================================================
   group('On a small phone');

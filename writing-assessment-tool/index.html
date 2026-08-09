@@ -536,9 +536,14 @@
             /* Bordered and never shorter than a few lines, so a sheet printed
                with the boxes still empty is something a teacher can write on by
                hand — which is what the empty box used to give them. */
+            /* min-height 120px -> 200px: 120px was sized against the 13px
+               printed type — about three handwritten lines once a real pen is
+               on the paper. The boxes already start the second sheet, which
+               has the room to spare; this spends it on the pen instead of on
+               white space. Same paper pass as the phonics worksheet fix. */
             .print-copy {
                 display: block;
-                min-height: 120px;
+                min-height: 200px;
                 border: 1px solid #999;
                 border-radius: 4px;
                 padding: 10px;
