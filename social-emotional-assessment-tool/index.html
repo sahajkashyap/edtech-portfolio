@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social-Emotional Assessment</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23378ADD'/%3E%3Ccircle cx='8' cy='8' r='4.2' fill='none' stroke='white' stroke-width='2.4'/%3E%3C/svg%3E">
+    <meta name="description" content="A one-page social-emotional assessment sheet for a primary classroom. Score six skills, write strengths and next steps, print or export. Everything stays on the laptop it is opened on.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231F5FA8'/%3E%3Ccircle cx='8' cy='8' r='4.2' fill='none' stroke='white' stroke-width='2.4'/%3E%3C/svg%3E">
     <!-- jsPDF comes from a CDN, so it is the one part of this tool that needs the
          internet. On a school network that blocks it, or a plane, the script never
-         arrives and window.jspdf is undefined. It used to fail with a console error
-         nobody sees and a button that did nothing forever. onerror records the
-         failure so exportPDF() can say what happened and point at Print and CSV,
-         which work with no internet at all. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+         arrives and window.jspdf is undefined. exportPDF() says so in plain words
+         and points at Print and CSV, which need nothing at all.
+
+         WHAT WAS WRONG: this was a plain <script> in the head, which stops the
+         browser drawing ANYTHING until the request answers. On a school filter
+         that drops the request rather than refusing it, the teacher sat in front
+         of a completely blank white page for eight or nine seconds — no title,
+         no text, no buttons. `defer` lets the page draw first and lets the
+         optional extra arrive whenever it arrives, or never. -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
             onerror="window.__pdfLibBlocked = true;"></script>
     <style>
         * {
@@ -32,9 +38,23 @@
             margin: 0 auto;
         }
 
+        /* A browser with JavaScript switched off used to show an empty skills
+           panel, a blank chart, four zeroes and five buttons that did nothing,
+           with nothing anywhere saying why. */
+        .noscript {
+            max-width: 720px;
+            margin: 0 auto 20px;
+            background: #8A5200;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
         }
 
         .header h1 {
@@ -43,9 +63,15 @@
             margin-bottom: 6px;
         }
 
+        /* WHAT WAS WRONG: most of the small type on this page was below the
+           WCAG AA minimum of 4.5:1 against the page background — the privacy
+           promise itself was the worst of them at 2.4:1. Every colour below is
+           measured, and tests/run-tests.js sweeps every visible text node on
+           the page rather than checking a list of named controls, so a new
+           colour cannot slip in under the bar. */
         .header .what {
             font-size: 14px;
-            color: #6b6055;
+            color: #4F4740;
             margin-bottom: 16px;
         }
 
@@ -59,19 +85,19 @@
 
         .who label {
             font-size: 13px;
-            color: #666;
+            color: #4F4740;
             font-weight: 600;
         }
 
         .who input {
             padding: 8px 12px;
             font-size: 14px;
-            border: 1px solid #999;
+            border: 1px solid #767676;
             border-radius: 4px;
         }
 
         #initials {
-            width: 80px;
+            width: 90px;
             text-transform: uppercase;
             font-weight: bold;
             letter-spacing: 1px;
@@ -79,18 +105,34 @@
 
         .privacy {
             font-size: 12.5px;
-            color: #639922;
+            color: #2F6100;
             font-weight: bold;
         }
 
-        /* One place to talk to the teacher, so every path that gives up says why. */
-        .say {
+        /* One place to talk to the teacher, so every path that gives up says why.
+           WHAT WAS WRONG: the message box grew and shrank in the layout, and
+           every message removed itself on a timer nobody armed. Six seconds
+           after a click the whole assessment jumped 51px up the screen with the
+           teacher's hand still on the mouse — and the skill rows are 65px
+           apart, so the next click landed on the wrong child skill. The wrapper
+           below reserves the space permanently and the message is laid over it,
+           so nothing on this page can move on its own. */
+        .say-wrap {
+            position: relative;
+            min-height: 58px;
             max-width: 900px;
-            margin: 14px auto 0;
+            margin: 12px auto 0;
+        }
+
+        .say {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
             font-size: 14px;
-            color: #7a3b00;
+            color: #6B3400;
             background: #FFF3E0;
-            border-left: 4px solid #BA7517;
+            border-left: 4px solid #8A5200;
             border-radius: 4px;
             padding: 10px 14px;
             text-align: left;
@@ -99,11 +141,26 @@
 
         .say.on { display: block; }
 
+        .say.warn {
+            background: #FDEBE4;
+            border-left-color: #A32E00;
+            color: #7A2200;
+            font-weight: 600;
+        }
+
+        /* WHAT WAS WRONG: the buttons are at the bottom of the page and their
+           only feedback was this strip at the very top. On a 1280x800 laptop
+           the message explaining why the PDF did not download was 94px ABOVE
+           the viewport when it appeared, so "Export as PDF" on a blocked
+           network looked exactly like a dead button. The same sentence is now
+           mirrored directly above the button row, where the hand already is. */
+        .say-wrap.bottom { margin: 22px auto 0; }
+
         .sample-banner {
             max-width: 900px;
-            margin: 14px auto 0;
+            margin: 6px auto 0;
             background: #FFF8E1;
-            border: 2px dashed #BA7517;
+            border: 2px dashed #8A5200;
             border-radius: 6px;
             padding: 12px 16px;
             font-size: 14px;
@@ -117,6 +174,11 @@
         }
 
         .sample-banner.on { display: flex; }
+
+        /* The leftover-initials note is shown and hidden with the `hidden`
+           attribute rather than a class, so that a check — and a screen reader —
+           gets the same answer from the element as the eye does. */
+        .leftover-banner:not([hidden]) { display: flex; }
 
         .sample-banner strong { font-size: 15px; }
 
@@ -143,17 +205,18 @@
 
         .chart-box h3 {
             font-size: 14px;
-            color: #666;
+            color: #544C43;
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         svg {
-            cursor: pointer;
             max-width: 100%;
             height: auto;
         }
+
+        svg path { cursor: pointer; }
 
         svg path:focus {
             outline: 3px solid #333;
@@ -162,7 +225,7 @@
 
         .chart-hint {
             font-size: 12.5px;
-            color: #777;
+            color: #554E45;
             margin-top: 8px;
         }
 
@@ -173,6 +236,10 @@
             margin-top: 15px;
         }
 
+        /* grid-template-rows, not a plain block: the four numbers then sit on
+           one baseline whatever happens to the labels above them. WHAT WAS
+           WRONG: on paper "Not yet scored" wraps to three lines, so its number
+           printed 16px below the other three and the row came out ragged. */
         .count-box {
             padding: 12px 6px;
             border-radius: 4px;
@@ -183,27 +250,15 @@
             transition: all 0.2s ease;
             border: none;
             font-family: inherit;
+            display: grid;
+            grid-template-rows: 1fr auto;
+            gap: 4px;
         }
 
-        .count-box.emerging {
-            background-color: #378ADD;
-            color: white;
-        }
-
-        .count-box.developing {
-            background-color: #BA7517;
-            color: white;
-        }
-
-        .count-box.mastered {
-            background-color: #639922;
-            color: white;
-        }
-
-        .count-box.none {
-            background-color: #8A8378;
-            color: white;
-        }
+        .count-box.emerging  { background-color: #1F5FA8; color: white; }
+        .count-box.developing{ background-color: #8A5200; color: white; }
+        .count-box.mastered  { background-color: #3F6414; color: white; }
+        .count-box.none      { background-color: #5A544B; color: white; }
 
         .count-box:hover {
             transform: scale(1.05);
@@ -218,7 +273,7 @@
 
         .right-panel h3 {
             font-size: 14px;
-            color: #666;
+            color: #544C43;
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -255,14 +310,14 @@
 
         .score-btn {
             padding: 6px 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #767676;
             border-radius: 3px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
             transition: all 0.2s ease;
             background-color: white;
-            color: #666;
+            color: #5A544B;
             font-family: inherit;
         }
 
@@ -270,33 +325,19 @@
             background-color: #f5f5f5;
         }
 
-        .score-btn.e {
-            background-color: #378ADD;
-            color: white;
-            border-color: #378ADD;
-        }
-
-        .score-btn.d {
-            background-color: #BA7517;
-            color: white;
-            border-color: #BA7517;
-        }
-
-        .score-btn.m {
-            background-color: #639922;
-            color: white;
-            border-color: #639922;
-        }
+        .score-btn.e { background-color: #1F5FA8; color: white; border-color: #1F5FA8; }
+        .score-btn.d { background-color: #8A5200; color: white; border-color: #8A5200; }
+        .score-btn.m { background-color: #3F6414; color: white; border-color: #3F6414; }
 
         /* Visible way out of a mis-click. The buttons have always toggled off if
            you press the same one twice, but nothing on screen said so, so the only
            obvious way back was Reset All — which wipes the whole assessment. */
         .undo-score {
             padding: 6px 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #767676;
             border-radius: 3px;
             background: white;
-            color: #999;
+            color: #5A544B;
             cursor: pointer;
             font-size: 12px;
             font-family: inherit;
@@ -310,11 +351,30 @@
             color: #333;
         }
 
+        /* WHAT WAS WRONG: on an iPad — where a teacher taps these seven times
+           per child while watching the child — E, D and M were 29x29 and the ×
+           that erases a score was 26x29, sitting 6px from the M button. Aiming
+           at Mastered and landing on × wipes the score instead of setting it.
+           Anything driven by a finger rather than a mouse gets Apple's 44px,
+           and that means every control on the page, not a corner of it. */
+        @media (pointer: coarse) {
+            .score-btn, .undo-score, .btn, #undoBtn,
+            .sample-banner button, .close-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+            /* Boxes you tap to type in, not buttons — height only. A 44px
+               minimum WIDTH on a four-character initials box would do nothing
+               but make it wider than it needs to be. */
+            .who input { min-height: 44px; }
+            .skill-buttons { gap: 10px; }
+        }
+
         .comments-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         .comment-box {
@@ -325,7 +385,7 @@
 
         .comment-box h3 {
             font-size: 14px;
-            color: #666;
+            color: #544C43;
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -335,7 +395,7 @@
             width: 100%;
             min-height: 150px;
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #767676;
             border-radius: 4px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             font-size: 14px;
@@ -345,19 +405,19 @@
 
         .comment-box textarea:focus {
             outline: none;
-            border-color: #378ADD;
-            box-shadow: 0 0 0 2px rgba(55, 138, 221, 0.1);
+            border-color: #1F5FA8;
+            box-shadow: 0 0 0 2px rgba(31, 95, 168, 0.2);
         }
 
-        /* A plain copy of what is in each comment box, for paper only. See the
-           print rules at the bottom of this stylesheet for why it has to exist. */
-        .print-copy { display: none; }
+        /* Anything in here is for paper only. See the print rules at the bottom
+           of this stylesheet for why each piece has to exist. */
+        .print-only { display: none; }
 
         .button-group {
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
 
@@ -372,33 +432,14 @@
             font-family: inherit;
         }
 
-        .btn-primary {
-            background-color: #378ADD;
-            color: white;
-        }
+        .btn-primary { background-color: #1F5FA8; color: white; }
+        .btn-primary:hover { background-color: #17497f; }
 
-        .btn-primary:hover {
-            background-color: #2a6bb3;
-            box-shadow: 0 2px 8px rgba(55, 138, 221, 0.3);
-        }
+        .btn-secondary { background-color: #55504A; color: white; }
+        .btn-secondary:hover { background-color: #413d38; }
 
-        .btn-secondary {
-            background-color: #666;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #555;
-        }
-
-        .btn-sample {
-            background-color: #BA7517;
-            color: white;
-        }
-
-        .btn-sample:hover {
-            background-color: #9a600f;
-        }
+        .btn-sample { background-color: #8A5200; color: white; }
+        .btn-sample:hover { background-color: #6b3f00; }
 
         .btn-undo {
             background-color: #fff;
@@ -439,19 +480,13 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-50px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
             padding: 20px;
-            border-left: 4px solid #378ADD;
+            border-left: 4px solid #1F5FA8;
             background: #F3EFE7;
         }
 
@@ -460,6 +495,8 @@
             color: #333;
             margin: 0;
         }
+
+        .modal-header h2:focus { outline: 3px solid #1F5FA8; outline-offset: 3px; }
 
         .modal-body {
             padding: 20px;
@@ -473,7 +510,7 @@
             gap: 12px;
         }
 
-        .modal-skill {
+        .modal-skill, .modal-empty {
             padding: 10px;
             background: #F3EFE7;
             border-radius: 4px;
@@ -489,7 +526,7 @@
         }
 
         .close-btn {
-            background: #666;
+            background: #55504A;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -499,23 +536,28 @@
             font-family: inherit;
         }
 
-        .close-btn:hover {
-            background: #555;
-        }
+        .close-btn:hover { background: #413d38; }
 
         @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
+            .main-content { grid-template-columns: 1fr; }
+            .comments-section { grid-template-columns: 1fr; }
+        }
 
-            .comments-section {
-                grid-template-columns: 1fr;
-            }
+        /* WHAT WAS WRONG: at 320px — an iPhone SE, and any older phone — the
+           page was 382px wide and scrolled sideways, so the right-hand edge of
+           every card and the × on every skill row sat off the screen. The floor
+           was the four-column tile grid plus 30px of padding on each side. */
+        @media (max-width: 430px) {
+            body { padding: 14px; }
+            .count-boxes { grid-template-columns: repeat(2, 1fr); }
+            .say-wrap { min-height: 96px; }
+            .header h1 { font-size: 23px; }
         }
 
         /* Printing is the fallback when the PDF library cannot be reached, so the
            printed sheet has to be a real record: who, when, the counts, every
-           skill and both comment boxes. */
+           skill and both comment boxes — and it has to be readable on the
+           black-and-white printer in the school office. */
         @media print {
             @page { margin: 14mm; }
 
@@ -525,8 +567,8 @@
                 font-size: 12pt;
             }
 
-            .button-group, .privacy, .chart-hint, .undo-score, .say, .modal,
-            .sample-banner .btn {
+            .button-group, .privacy, .chart-hint, .undo-score, .say-wrap, .modal,
+            .noscript, .sample-banner .btn, .count-box:hover {
                 display: none !important;
             }
 
@@ -535,28 +577,108 @@
                 border: 1px solid #999;
             }
 
-            /* A textarea does NOT grow to fit its text, whatever height: auto is
-               told to do — it keeps its own scrollbox and prints only the slice
-               of words that fits inside it. Ten lines of careful notes came out
-               of the printer stopped mid-word, with no scrollbar on paper to
-               show that anything was missing. The print sheet is the fallback
-               for when the PDF library is blocked, so that silently lost the
-               end of a child's record. The boxes are therefore not printed at
-               all: what goes on the paper is the plain .print-copy beside each
-               one, which is an ordinary block of text and does grow. */
-            .comment-box textarea {
-                display: none !important;
+            .print-only { display: block; }
+            .print-inline { display: inline; }
+
+            /* WHAT WAS WRONG: the printed record routinely runs to two sheets,
+               and sheet two carried the tail of a child's social-emotional
+               notes with no initials, no date and no heading — a page about a
+               child with nothing on it saying which child. The CSV repeats the
+               child and the date in every single row for exactly this reason.
+               A fixed block is repeated by the browser on every printed page. */
+            .print-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                font-size: 10pt;
+                font-weight: 700;
+                color: #000;
+                border-bottom: 1px solid #444;
+                padding-bottom: 3px;
             }
+
+            .container { padding-top: 24px; }
+
+            /* WHAT WAS WRONG: with the Child box left empty the printed sheet
+               put the placeholder "J.M." on the paper in the same bold black as
+               a real entry, naming a child who was never entered — and the date
+               box printed "mm/dd/yyyy" and its calendar glyph. Both boxes are
+               replaced on paper by plain text; an empty one becomes a ruled
+               line to write on. */
+            #initials, #adate { display: none !important; }
+            .who-print {
+                display: inline-block;
+                font-size: 12pt;
+                font-weight: 700;
+                color: #000;
+                min-width: 90px;
+                border-bottom: 1px solid #444;
+            }
+
+            /* WHAT WAS WRONG: on paper the score the teacher GAVE printed as
+               the palest letter in the row (white on a background Chrome does
+               not print) while the two scores NOT given printed dark — the
+               record read backwards, and on a mono printer it recorded nothing
+               at all. Paper gets the word, not the coloured letter. */
+            .skill-buttons { display: none !important; }
+            .score-print {
+                display: inline-block;
+                font-size: 11pt;
+                font-weight: 700;
+                color: #000;
+                border: 1.5px solid #000;
+                border-radius: 3px;
+                padding: 1px 8px;
+                white-space: nowrap;
+            }
+            .score-print.unscored { font-weight: 400; border-style: dashed; }
+
+            /* WHAT WAS WRONG: greyscale turns #378ADD, #639922 and #BA7517 into
+               grey 123, 123 and 128 — the printed donut was one featureless
+               ring saying nothing, and the four tiles printed white-on-white at
+               2.3:1. The ring goes; the counts stay, in ink. */
+            #pieChart { display: none !important; }
+            .count-box {
+                background: white !important;
+                color: #000 !important;
+                border: 2px solid #444;
+            }
+
+            /* WHAT WAS WRONG: a textarea does NOT grow to fit its text, whatever
+               height: auto is told to do — it keeps its own scrollbox and prints
+               only the slice of words that fits inside it. Ten lines of careful
+               notes came out of the printer stopped mid-word, with no scrollbar
+               on paper to show anything was missing. The boxes are not printed
+               at all: what goes on the paper is the plain .print-copy beside
+               each one, which is ordinary text and does grow. */
+            .comment-box textarea { display: none !important; }
 
             .print-copy {
                 display: block;
                 white-space: pre-wrap;
                 overflow-wrap: break-word;
                 min-height: 40px;
-                font-size: 11pt;
-                line-height: 1.45;
+                font-size: 10.5pt;
+                line-height: 1.35;
                 color: #000;
             }
+
+            /* Printing the tool as it arrives used to spill three lines onto an
+               otherwise blank second sheet. Nothing is lost by it, but it is
+               the first thing a stranger sees if they press Print in their
+               first two minutes. Tighter paper type, and boxes that are not
+               split across a page break. */
+            .header h1 { font-size: 17pt; }
+            .header .what { font-size: 9.5pt; }
+            .main-content { margin-top: 8px; margin-bottom: 12px; gap: 14px; }
+            .chart-box, .right-panel, .comment-box { padding: 10px; }
+            .skills-list { gap: 6px; }
+            .skill-item { padding: 6px 8px; }
+            .skill-label { font-size: 10.5pt; }
+            .comment-box textarea { min-height: 0; }
+            .comment-box, .skill-item, .chart-box { break-inside: avoid; }
+            .sample-banner { break-inside: avoid; }
 
             .main-content, .comments-section {
                 grid-template-columns: 1fr 1fr;
@@ -565,6 +687,18 @@
     </style>
 </head>
 <body>
+    <noscript>
+        <div class="noscript">
+            This page needs JavaScript switched on to work. With it off, the
+            skills list below stays empty and the score and export buttons do
+            nothing. Turn JavaScript on for this page and reload, or print this
+            sheet and fill it in by hand.
+        </div>
+    </noscript>
+
+    <!-- Paper only, and repeated on every printed page. See the print rules. -->
+    <div class="print-only print-header" id="printHeader"></div>
+
     <div class="container">
         <div class="header">
             <h1>Social-Emotional Assessment</h1>
@@ -575,16 +709,26 @@
             <div class="who">
                 <label for="initials">Child</label>
                 <input type="text" id="initials" maxlength="4" placeholder="J.M." autocomplete="off">
+                <span class="print-only print-inline who-print" id="initialsPrint"></span>
                 <label for="adate">Date</label>
                 <input type="date" id="adate">
+                <span class="print-only print-inline who-print" id="datePrint"></span>
                 <span class="privacy">● Stays on this laptop</span>
             </div>
-            <div class="say" id="saymsg" role="status" aria-live="polite"></div>
+            <div class="say-wrap">
+                <div class="say" id="saymsg" role="status" aria-live="polite"></div>
+            </div>
             <div class="sample-banner" id="sampleBanner">
-                <span><strong>Sample student — Maya Torres (M.T.)</strong><br>
-                Made-up scores, so you can see what the tool does before you use it.
-                Clear it when you are ready to assess a real child.</span>
+                <span id="sampleBannerText"></span>
                 <button class="btn btn-secondary" id="clearSampleBtn" onclick="clearSample()">Clear the sample</button>
+            </div>
+            <!-- The example label can come off with the sample's initials still
+                 in the Child box — nothing on the sheet can tell M.T. the made-up
+                 child from M.T. the real one, so the tool says where those
+                 letters came from instead of guessing. -->
+            <div class="sample-banner leftover-banner" id="sampleInitialsNote" hidden>
+                <span id="sampleInitialsNoteText"></span>
+                <button class="btn btn-secondary" id="dropSampleInitialsBtn" onclick="dropSampleInitials()">Empty the Child box</button>
             </div>
         </div>
 
@@ -625,13 +769,19 @@
             <div class="comment-box">
                 <h3>Strengths</h3>
                 <textarea id="strengths" placeholder="Describe student strengths and positive growth in social-emotional skills..."></textarea>
-                <div class="print-copy" id="strengthsPrint" aria-hidden="true"></div>
+                <div class="print-only print-copy" id="strengthsPrint" aria-hidden="true"></div>
             </div>
             <div class="comment-box">
                 <h3>Stretches: Areas of Growth</h3>
                 <textarea id="stretches" placeholder="Identify areas where the student is working toward growth..."></textarea>
-                <div class="print-copy" id="stretchesPrint" aria-hidden="true"></div>
+                <div class="print-only print-copy" id="stretchesPrint" aria-hidden="true"></div>
             </div>
+        </div>
+
+        <!-- The same sentence as the strip at the top of the page, put where the
+             hand already is. See the note on .say-wrap.bottom in the stylesheet. -->
+        <div class="say-wrap bottom">
+            <div class="say" id="saymsgBottom" aria-hidden="true"></div>
         </div>
 
         <div class="button-group">
@@ -644,11 +794,16 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal. role="dialog" + aria-modal, the keyboard is moved into it on open
+         and held inside it while it is there, and put back where it came from on
+         close. WHAT WAS WRONG: opening a band list left focus on the button
+         behind the overlay, so Tab walked the page underneath the dark screen
+         and Enter there changed a score nobody could see; Close was 32 Tab
+         presses away. -->
     <div id="modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal-header">
-                <h2 id="modalTitle">Skills</h2>
+                <h2 id="modalTitle" tabindex="-1">Skills</h2>
             </div>
             <div class="modal-body">
                 <div class="modal-skills" id="modalSkills"></div>
@@ -671,14 +826,31 @@
 
         let scores = {};
         let comments = { strengths: '', stretches: '' };
-        let isSample = false;      // true while the made-up child is on screen
-        let undoState = null;      // what Reset All threw away, so it can come back
+        let isSample = false;          // true while any of the made-up child is on screen
+        // Which skill rows still hold the score Maya arrived with. This is how the
+        // tool tells "the teacher happened to also mark row 3 Emerging" from
+        // "row 3 is still Maya's". See leaveSampleIfGone().
+        let sampleScoreKeys = [];
+        // The Child box is the one part of Maya nothing can tell apart from a
+        // real child's, because some real children's initials ARE M.T. So the
+        // tool remembers whether the letters in that box were put there by the
+        // sample or typed by the teacher, and never guesses. See sampleInitialsNote.
+        let sampleInitialsLeft = false;
+        let sampleCleared = false;     // she has been sent away on this laptop
+        let undoState = null;          // one step back, held in storage as well
+        let hadSavedRecord = false;    // something was read back off this laptop
+        let otherTabSaved = false;     // a second tab of this tool is the live one
+        let modalBand = null;          // which band the open panel is describing
+        let modalOpener = null;        // where to put the keyboard back
+        let lastWritten = null;        // what this tab last wrote, to spot echoes
+        let notSaving = false;         // the browser is refusing to store anything
+        let lastGoodDate = null;       // the last date the tool could actually use
 
         const colors = {
-            e: '#378ADD',
-            d: '#BA7517',
-            m: '#639922',
-            x: '#8A8378'
+            e: '#1F5FA8',
+            d: '#8A5200',
+            m: '#3F6414',
+            x: '#5A544B'
         };
         const bandNames = { e: 'Emerging', d: 'Developing', m: 'Mastered', x: 'Not yet scored' };
 
@@ -702,28 +874,85 @@
 
         const SAMPLE_LABEL = 'Sample student — Maya Torres (M.T.)';
 
-        const KEYS = {
-            scores: 'seScores',
-            comments: 'seComments',
-            initials: 'seInitials',
-            date: 'seDate',
-            sample: 'seSample',
-            seen: 'seSeen'
-        };
+        // WHAT WAS WRONG: the sheet used to be six separate keys written inside
+        // one try/catch. A browser that starts refusing writes part way through —
+        // a disk filling up while a teacher works — accepted the scores and then
+        // refused the initials, so this child's scores were saved next to the
+        // previous child's initials and comments, and that mixture came back on
+        // the next reload and exported under the wrong child's name. One key is
+        // one write: it lands whole or not at all.
+        const K_RECORD = 'seRecord';
+        // The one step of Undo is saved too. It used to live only in a variable
+        // while storage had already been emptied, so a refresh — the very thing
+        // somebody does when a page looks wrong — turned "Undo brings it straight
+        // back" into a promise with nothing behind it.
+        const K_UNDO = 'seUndo';
+        // Anything unreadable is moved here rather than written over, so a
+        // teacher (or somebody helping them) still has it to look at.
+        const K_KEPT = 'seUnreadable';
+        // What the version before this one wrote. Read once, so nobody's saved
+        // assessment is lost in the move, then cleared away.
+        const LEGACY = ['seScores', 'seComments', 'seInitials', 'seDate', 'seSample', 'seSeen'];
 
         // ---------------------------------------------------------------------
-        // One place to talk to the teacher.
+        // One place to talk to the teacher. Never "Error:" — say what happened
+        // and what to do next.
         // ---------------------------------------------------------------------
-        function say(msg, ms) {
-            const el = document.getElementById('saymsg');
-            el.textContent = msg;
-            el.classList.add('on');
+        // WHAT WAS WRONG, twice over:
+        //  1. every call left its own timer running, so an earlier message's
+        //     timer wiped a later one off the screen before its time was up.
+        //     A token fixes it: only the newest message may clear the line.
+        //  2. every message had the same weight, so the standing warning
+        //     "THIS ASSESSMENT IS NOT BEING SAVED" was replaced by the cheerful
+        //     word "Saved" the moment the teacher did what it told them to do —
+        //     export — and six seconds later the screen said nothing at all.
+        //     A warning now holds the line until it expires.
+        let sayToken = 0;
+        let warningUntil = 0;
+        function say(msg, ms, isWarning) {
+            if (!isWarning && Date.now() < warningUntil) return;   // do not talk over a warning
+            const mine = ++sayToken;
+            if (isWarning) warningUntil = Date.now() + (ms || 8000);
+            paintSay(msg, isWarning);
             clearTimeout(say._t);
-            if (ms) {
-                say._t = setTimeout(() => {
-                    if (el.textContent === msg) { el.textContent = ''; el.classList.remove('on'); }
-                }, ms);
-            }
+            say._t = setTimeout(() => {
+                if (sayToken !== mine) return;
+                if (isWarning) warningUntil = 0;
+                paintSay('', false);
+            }, ms || 8000);
+        }
+
+        // The same words in both places: the strip under the header, and the one
+        // directly above the button row, because the buttons are at the bottom
+        // of the page and on a 1280x800 laptop the header strip is off-screen.
+        function paintSay(msg, isWarning) {
+            [document.getElementById('saymsg'), document.getElementById('saymsgBottom')]
+                .forEach(el => {
+                    el.textContent = msg;
+                    el.classList.toggle('on', !!msg);
+                    el.classList.toggle('warn', !!msg && !!isWarning);
+                });
+        }
+
+        function sayText() { return document.getElementById('saymsg').textContent; }
+
+        // The one warning about saving, said the same way everywhere it is needed.
+        function sayNotSaved() {
+            notSaving = true;
+            say('THIS ASSESSMENT IS NOT BEING SAVED — this browser refused to store it ' +
+                '(a private window, or the disk is full). Print it or export it before ' +
+                'you close this tab.', 120000, true);
+        }
+
+        // WHAT WAS WRONG: once that warning appeared it never came down, even
+        // after the teacher freed up disk space and saving started working
+        // again — so the tool went on insisting nothing was being kept while it
+        // was being kept perfectly well.
+        function saySavingWorksAgain() {
+            if (!notSaving) return;
+            notSaving = false;
+            warningUntil = 0;
+            say('Saving is working again — this assessment is on this laptop.', 6000);
         }
 
         // Today, as this laptop sees it. input.valueAsDate = new Date() reads the
@@ -735,19 +964,71 @@
             return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
         }
 
+        // WHAT WAS WRONG: four places read the date box directly and each made up
+        // its own mind about a date the tool could not use. With the box mid-edit
+        // and empty, the PDF printed "Date: —" while its own filename carried
+        // today and the CSV said today in both places — one assessment, three
+        // different answers to "when". Everything reads the date through here
+        // now, so the screen, both exports, both filenames and what comes back
+        // after a refresh always agree.
+        function dateValue() {
+            const raw = document.getElementById('adate').value;
+            return /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : '';
+        }
+
+        // What a date the tool cannot use looks like on screen, on paper and in
+        // the exports: nothing, said out loud, rather than today quietly.
+        const NO_DATE = 'no date';
+
         function esc(s) {
-            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         // Initialize
         function init() {
             loadFromStorage();
+            // First arrival, nothing saved anywhere: show the sample child rather
+            // than an empty tool, so a visitor sees the chart and the report
+            // populated. Asked before the date box is filled in, because a date
+            // the tool put there itself is not a reason to call this a used tool.
+            const first = firstVisit();
+            if (first) {
+                applySample();
+                saveToStorage();
+                say('This is Maya Torres, a made-up sample, so there is something to look at ' +
+                    'straight away. The button in the dashed box above clears her.', 12000);
+            }
+            // WHAT WAS WRONG: this filled in today whenever the box was empty,
+            // including on a saved record whose date the teacher had deliberately
+            // emptied — so an assessment recorded for 4 May came back dated
+            // today with no message. Today is only filled in when nothing has
+            // ever been saved on this laptop.
+            if (!hadSavedRecord && !dateValue()) {
+                document.getElementById('adate').value = todayLocal();
+            }
+            lastGoodDate = dateValue();
             renderSkills();
             updateChart();
             renderComments();
-            paintSample();
+            renderSample();
+            renderUndo();
+            renderPrintBits();
         }
 
+        function firstVisit() {
+            if (sampleCleared || hadSavedRecord) return false;
+            try {
+                return [K_RECORD, K_UNDO].concat(LEGACY)
+                    .every(k => localStorage.getItem(k) === null);
+            } catch (err) {
+                return false;   // a browser that will not remember gets the empty sheet
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // The skills list
+        // ---------------------------------------------------------------------
         function renderSkills() {
             const skillsList = document.getElementById('skillsList');
 
@@ -772,15 +1053,28 @@
                 const score = scores[skill.id] || null;
                 skillItem.style.borderLeftColor = score ? colors[score] : '#ddd';
 
+                // aria-label and aria-pressed: the accessible name of a button is
+                // its text, so a screen reader announced these as "E", "D", "M"
+                // with nothing saying what they meant and nothing saying which
+                // one was the child's score — that was carried by background
+                // colour alone.
+                const btn = (k, cls, word) => `
+                    <button class="score-btn ${score === k ? cls : ''}" data-k="${skill.id}-${k}"
+                            onclick="setScore(${skill.id}, '${k}')"
+                            aria-label="${word}: ${esc(skill.label)}"
+                            aria-pressed="${score === k}" title="${word}">${cls.toUpperCase()}</button>`;
+
                 skillItem.innerHTML = `
                     <span class="skill-label">${esc(skill.label)}</span>
                     <div class="skill-buttons">
-                        <button class="score-btn ${score === 'e' ? 'e' : ''}" data-k="${skill.id}-e" onclick="setScore(${skill.id}, 'e')" title="Emerging">E</button>
-                        <button class="score-btn ${score === 'd' ? 'd' : ''}" data-k="${skill.id}-d" onclick="setScore(${skill.id}, 'd')" title="Developing">D</button>
-                        <button class="score-btn ${score === 'm' ? 'm' : ''}" data-k="${skill.id}-m" onclick="setScore(${skill.id}, 'm')" title="Mastered">M</button>
+                        ${btn('e', 'e', 'Emerging')}
+                        ${btn('d', 'd', 'Developing')}
+                        ${btn('m', 'm', 'Mastered')}
                         <button class="undo-score ${score ? 'on' : ''}" data-k="${skill.id}-x" onclick="clearScore(${skill.id})"
                                 title="Clear this score" aria-label="Clear this score">&times;</button>
                     </div>
+                    <span class="print-only print-inline score-print ${score ? '' : 'unscored'}">${
+                        score ? bandNames[score] : bandNames.x}</span>
                 `;
                 skillsList.appendChild(skillItem);
             });
@@ -801,21 +1095,38 @@
             }
         }
 
-        function setScore(skillId, score) {
-            scores[skillId] = scores[skillId] === score ? null : score;
+        // The teacher has made a judgement about this row, so it stops being one
+        // of Maya's rows whatever letter they happened to choose. WHAT WAS WRONG:
+        // the sample used to be identified by comparing letters, so a teacher who
+        // deliberately clicked Developing on a row Maya also had as Developing
+        // was treated as never having touched it.
+        function touchScore(skillId) {
+            sampleScoreKeys = sampleScoreKeys.filter(k => k !== String(skillId));
+        }
+
+        function afterScoreChange() {
+            leaveSampleIfGone();
             saveToStorage();
             renderSkills();
             updateChart();
+            renderModal();
+            renderSample();
+        }
+
+        function setScore(skillId, score) {
+            touchScore(skillId);
+            scores[skillId] = scores[skillId] === score ? null : score;
+            if (!scores[skillId]) delete scores[skillId];
+            afterScoreChange();
         }
 
         // A mis-clicked score used to be undoable only by pressing the same button
         // again — which nothing on screen told you — or by Reset All, which throws
         // the whole assessment away.
         function clearScore(skillId) {
-            scores[skillId] = null;
-            saveToStorage();
-            renderSkills();
-            updateChart();
+            touchScore(skillId);
+            delete scores[skillId];
+            afterScoreChange();
         }
 
         function counts() {
@@ -850,50 +1161,56 @@
             ]);
         }
 
+        // The ring is drawn as real rings — a band starts at the inner edge, not
+        // at the middle. WHAT WAS WRONG: the wedges ran all the way to the centre
+        // and a white circle was laid on top to make it look like a donut, so the
+        // plain white hole was still five invisible click targets. Clicking two
+        // pixels apart in the same blank white space opened "Mastered" or
+        // "Emerging" depending on which wedge happened to be underneath, while
+        // the line below the chart says "Click a colour".
+        const CHART = { cx: 100, cy: 100, R: 80, r: 50 };
+
+        function ringPath(a1, a2) {
+            const { cx, cy, R, r } = CHART;
+            const at = (rr, a) => {
+                const t = a * Math.PI / 180;
+                return [cx + rr * Math.cos(t), cy + rr * Math.sin(t)];
+            };
+            const sweep = a2 - a1;
+            if (sweep >= 359.99) {
+                // A single band holding every skill asks for a 360° arc, whose
+                // start point IS its end point — SVG then throws the arc away and
+                // draws a bare line, so the chart went blank at exactly the moment
+                // it had the clearest thing to say ("all six Mastered"), and the
+                // click target went with it. Two half-circle arcs describe the
+                // same ring with no such ambiguity; the second pair, with
+                // fill-rule evenodd, punches the hole out of it.
+                return `M ${cx} ${cy - R} A ${R} ${R} 0 1 1 ${cx} ${cy + R} ` +
+                       `A ${R} ${R} 0 1 1 ${cx} ${cy - R} Z ` +
+                       `M ${cx} ${cy - r} A ${r} ${r} 0 1 0 ${cx} ${cy + r} ` +
+                       `A ${r} ${r} 0 1 0 ${cx} ${cy - r} Z`;
+            }
+            const large = sweep > 180 ? 1 : 0;
+            const [x1o, y1o] = at(R, a1), [x2o, y2o] = at(R, a2);
+            const [x2i, y2i] = at(r, a2), [x1i, y1i] = at(r, a1);
+            return `M ${x1o} ${y1o} A ${R} ${R} 0 ${large} 1 ${x2o} ${y2o} ` +
+                   `L ${x2i} ${y2i} A ${r} ${r} 0 ${large} 0 ${x1i} ${y1i} Z`;
+        }
+
         function drawPie(slices) {
             const svg = document.getElementById('pieChart');
             svg.innerHTML = '';
-
-            const centerX = 100, centerY = 100, radius = 80;
             let currentAngle = -90;
 
             slices.forEach(slice => {
                 if (slice.angle <= 0) return;
 
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-                if (slice.angle >= 359.99) {
-                    // A single band holding every skill asks for a 360° arc, whose
-                    // start point IS its end point — SVG then throws the arc away
-                    // and draws a bare line, so the chart went blank at exactly the
-                    // moment it had the clearest thing to say ("all six Mastered"),
-                    // and the click target went with it. Two half-circle arcs
-                    // describe the same ring with no such ambiguity.
-                    path.setAttribute('d',
-                        `M ${centerX} ${centerY - radius} ` +
-                        `A ${radius} ${radius} 0 1 1 ${centerX} ${centerY + radius} ` +
-                        `A ${radius} ${radius} 0 1 1 ${centerX} ${centerY - radius} Z`);
-                } else {
-                    const startAngle = (currentAngle * Math.PI) / 180;
-                    const endAngle = ((currentAngle + slice.angle) * Math.PI) / 180;
-
-                    const x1 = centerX + radius * Math.cos(startAngle);
-                    const y1 = centerY + radius * Math.sin(startAngle);
-                    const x2 = centerX + radius * Math.cos(endAngle);
-                    const y2 = centerY + radius * Math.sin(endAngle);
-
-                    const largeArc = slice.angle > 180 ? 1 : 0;
-
-                    path.setAttribute(
-                        'd',
-                        `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`
-                    );
-                }
-
+                path.setAttribute('d', ringPath(currentAngle, currentAngle + slice.angle));
                 path.setAttribute('fill', slice.color);
+                path.setAttribute('fill-rule', 'evenodd');
                 path.setAttribute('stroke', 'white');
                 path.setAttribute('stroke-width', '2');
-                path.style.cursor = 'pointer';
                 // The slices were mouse-only: no tabindex, no role, no key handler,
                 // so the list of which skills sit in a band could not be opened
                 // without a mouse.
@@ -911,159 +1228,372 @@
 
                 currentAngle += slice.angle;
             });
-
-            // Center circle for donut effect
-            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            circle.setAttribute('cx', centerX);
-            circle.setAttribute('cy', centerY);
-            circle.setAttribute('r', 50);
-            circle.setAttribute('fill', 'white');
-            circle.style.pointerEvents = 'none';
-            svg.appendChild(circle);
         }
 
+        // ---------------------------------------------------------------------
+        // The band list
+        // ---------------------------------------------------------------------
         function openModal(score) {
+            // Whatever the message strip was saying about the chart is about to
+            // be contradicted by the panel opening over it. WHAT WAS WRONG: a
+            // stranger who clicked all four tiles in their first minute left
+            // "Nothing is marked Mastered yet." sitting behind an open list of
+            // six skills for the rest of its six seconds.
+            paintSay('', false);
+            sayToken++;
+            modalOpener = document.activeElement;
+            modalBand = score;
+            renderModal();
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('modalTitle').focus();
+        }
+
+        // Rebuilt from the live scores every time anything changes underneath it.
+        // WHAT WAS WRONG: it was drawn once and then left, so scoring a skill or
+        // clearing the whole assessment with the panel open left it listing a
+        // record the tool was no longer in, with the tiles behind it disagreeing.
+        function renderModal() {
+            if (!modalBand) return;
+            const score = modalBand;
             const filtered = (score === 'x')
                 ? skills.filter(s => !scores[s.id])
                 : skills.filter(s => scores[s.id] === score);
 
-            if (filtered.length === 0) {
-                say(score === 'x'
-                        ? 'Every skill has a score. Nothing left in "Not yet scored".'
-                        : `Nothing is marked ${bandNames[score]} yet.`, 6000);
-                return;
-            }
-
             document.getElementById('modalTitle').textContent =
                 (score === 'x') ? 'Not yet scored' : `${bandNames[score]} Skills`;
             const modalSkills = document.getElementById('modalSkills');
-            modalSkills.innerHTML = filtered
-                .map(s => `<div class="modal-skill">${esc(s.label)}</div>`)
-                .join('');
 
-            // Color the left border
-            const modal = document.querySelector('.modal-header');
-            modal.style.borderLeftColor = colors[score];
+            // An empty band used to be a message on the strip at the top of the
+            // page instead of a panel, so pressing a tile that read 0 looked
+            // like pressing a button that did nothing.
+            if (filtered.length === 0) {
+                modalSkills.innerHTML = '<div class="modal-empty">' + (score === 'x'
+                    ? 'Every skill has a score. Nothing is left to do.'
+                    : 'No skills are marked ' + esc(bandNames[score]) + ' yet.') + '</div>';
+            } else {
+                modalSkills.innerHTML = filtered
+                    .map(s => `<div class="modal-skill">${esc(s.label)}</div>`)
+                    .join('');
+            }
 
-            document.getElementById('modal').style.display = 'block';
+            document.querySelector('.modal-header').style.borderLeftColor = colors[score];
+        }
+
+        function modalIsOpen() {
+            return document.getElementById('modal').style.display === 'block';
         }
 
         function closeModal() {
+            if (!modalIsOpen()) return;
             document.getElementById('modal').style.display = 'none';
+            modalBand = null;
+            // WHAT WAS WRONG: closing with the panel's own Close button left the
+            // keyboard on an element that was now hidden, so the next Tab
+            // restarted at the top of the page.
+            const back = modalOpener;
+            modalOpener = null;
+            if (back && document.contains(back) && back.focus) {
+                try { back.focus(); } catch (e) { /* it went away while open */ }
+            }
         }
 
+        // Hold the keyboard inside the panel while it is open.
+        function trapTab(e) {
+            if (e.key !== 'Tab' || !modalIsOpen()) return;
+            const content = document.querySelector('.modal-content');
+            const stops = Array.prototype.slice.call(content.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
+            if (!stops.length) return;
+            const first = stops[0], last = stops[stops.length - 1];
+            // WHAT WAS WRONG: this asked "is focus inside the panel?", and the
+            // panel's heading is inside it — but the heading is tabindex="-1",
+            // so it is not a Tab stop. Shift-Tab from the heading, which is
+            // exactly where the panel puts the keyboard when it opens, matched
+            // neither branch and walked straight out of the back of the dialog
+            // onto the page underneath the overlay. Ask which STOP focus is on
+            // instead; the heading is simply not one of them.
+            const at = stops.indexOf(document.activeElement);
+            if (e.shiftKey && at <= 0) {
+                e.preventDefault(); last.focus();
+            } else if (!e.shiftKey && (at === -1 || at === stops.length - 1)) {
+                e.preventDefault(); first.focus();
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Comments and the paper copies
+        // ---------------------------------------------------------------------
         function renderComments() {
             document.getElementById('strengths').value = comments.strengths;
             document.getElementById('stretches').value = comments.stretches;
-            syncPrintCopies();
+            renderPrintBits();
         }
 
         // What actually goes on the paper. A textarea prints only what fits
         // inside it, so the printed sheet used to stop mid-word and lose the end
         // of the teacher's notes without saying so. These plain blocks hold the
-        // same words and grow to whatever length they need; the print stylesheet
-        // shows them and hides the boxes. Kept in step every time the text
-        // changes, and again on beforeprint so Cmd-P is covered as well as the
-        // Print button.
-        function syncPrintCopies() {
+        // same words and grow to whatever length they need. The same function
+        // keeps the paper stand-ins for the Child and Date boxes, and the line
+        // repeated at the top of every printed page, in step with the screen.
+        function renderPrintBits() {
             document.getElementById('strengthsPrint').textContent =
                 document.getElementById('strengths').value;
             document.getElementById('stretchesPrint').textContent =
                 document.getElementById('stretches').value;
+
+            const ini = (document.getElementById('initials').value || '').toUpperCase();
+            const d = dateValue();
+            // Blank really is blank. An empty stand-in is styled on paper as a
+            // ruled line beside its label, so a sheet printed to be filled in by
+            // hand has somewhere to write — instead of the box's own placeholder
+            // "J.M.", which printed in the same bold black as a real entry and
+            // named a child who was never entered.
+            document.getElementById('initialsPrint').textContent = ini;
+            document.getElementById('datePrint').textContent = d;
+
+            // The header names the child, the date, and — if any of the made-up
+            // example is still on the sheet — exactly which parts of it are hers.
+            // It used to say only "Sample student — Maya Torres (M.T.), not a real
+            // child" whatever the state was, so a sheet a teacher had half typed
+            // over printed under Maya's name.
+            const id = sheetIdentity();
+            const sampleTail =
+                id.kind === 'sample' ? ' — ' + SAMPLE_LABEL + ', not a real child'
+              : id.kind === 'part'   ? ' — part sample. Still Maya Torres\'s, the made-up ' +
+                                       'example: ' + sampleTraceParts().join(', ')
+              : '';
+            document.getElementById('printHeader').textContent =
+                'Social-Emotional Assessment — Child: ' + (ini || '__________') +
+                ' — Date: ' + (d || NO_DATE) + sampleTail;
         }
 
         // ---------------------------------------------------------------------
         // Storage. localStorage only — nothing on this page ever leaves the laptop.
         // ---------------------------------------------------------------------
-        // saveToStorage() used to start by copying the two comment boxes into
-        // `comments`. Every path that emptied the tool — Reset All, Clear the
-        // sample, Undo — set `comments` and then saved, so the save read the OLD
-        // text straight back off the screen and put it back again: pressing Reset
-        // left both comments sitting there, and Undo could not restore them
-        // because they had never left. Reading the boxes is now the job of the
-        // typing handler alone, and saving only ever writes down what the tool
-        // already knows.
+        // readComments() used to be called at the top of saveToStorage(), so every
+        // path that emptied the tool read the OLD text straight back off the screen
+        // and put it back again. Reading the boxes is the job of the typing
+        // handler alone; saving only ever writes down what the tool already knows.
         function readComments() {
             comments.strengths = document.getElementById('strengths').value;
             comments.stretches = document.getElementById('stretches').value;
         }
 
+        // Returns true only if the record really reached the disk, so a caller
+        // that is about to tell the teacher something has happened can tell the
+        // truth about it.
         function saveToStorage() {
-            // A full disk, and Safari's private window, both make setItem throw.
-            // With no catch the whole assessment vanished on reload and nothing
-            // ever said so.
+            renderPrintBits();
+
+            // WHAT WAS WRONG: with the tool open in two tabs, one keystroke — or
+            // one score click, or pressing Print — in the older tab wrote its
+            // whole stale sheet over everything the newer tab had saved, with no
+            // warning and no undo, because undoState lives in the page and the
+            // stale tab's is empty. A tab that has been overtaken stops saving
+            // and says so, rather than quietly winning the race.
+            if (otherTabSaved) return false;
+
+            let payload;
             try {
-                localStorage.setItem(KEYS.scores, JSON.stringify(scores));
-                localStorage.setItem(KEYS.comments, JSON.stringify(comments));
-                localStorage.setItem(KEYS.initials, document.getElementById('initials').value);
-                localStorage.setItem(KEYS.date, document.getElementById('adate').value);
-                localStorage.setItem(KEYS.sample, isSample ? '1' : '');
-                localStorage.setItem(KEYS.seen, '1');
+                payload = JSON.stringify({
+                    v: 1,
+                    scores: scores,
+                    comments: comments,
+                    initials: document.getElementById('initials').value,
+                    date: dateValue(),
+                    sample: isSample,
+                    sampleCleared: sampleCleared,
+                    sampleScoreKeys: sampleScoreKeys,
+                    sampleInitials: sampleInitialsLeft
+                });
+            } catch (err) { payload = null; }
+
+            if (payload === null) { sayNotSaved(); return false; }
+
+            try {
+                localStorage.setItem(K_RECORD, payload);
+                lastWritten = payload;
+                try { LEGACY.forEach(k => localStorage.removeItem(k)); } catch (e) { /* fine */ }
+                saySavingWorksAgain();
+                return true;
             } catch (err) {
-                say('THIS ASSESSMENT IS NOT BEING SAVED — this browser refused to ' +
-                    'store it (a private window, or the disk is full). Print it or ' +
-                    'export it before you close this tab.', 0);
+                sayNotSaved();
+                return false;
             }
         }
 
-        function loadFromStorage() {
-            // A single unreadable value used to throw out of init() before the
-            // skills list was ever drawn, leaving a half-built page with no way to
-            // score anything. Bad stored data is ignored now and the tool starts
-            // clean.
-            try {
-                const stored = localStorage.getItem(KEYS.scores);
-                const parsed = stored ? JSON.parse(stored) : null;
-                scores = (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
-            } catch (err) {
-                scores = {};
-                say('Some saved scores on this laptop could not be read, so the tool ' +
-                    'has started empty.', 12000);
-            }
+        // ---------------------------------------------------------------------
+        // What comes back out of storage is not automatically trustworthy. It can
+        // be a record half-written when the laptop was closed, something left by
+        // an older version of this tool, or a line somebody edited by hand.
+        // JSON.parse succeeding only means it is valid JSON — not that it is an
+        // assessment. So everything read back is checked before it is used.
+        // ---------------------------------------------------------------------
+        // WHAT WAS WRONG: a stored value the tool did not recognise was counted
+        // as "Not yet scored" on the tile, in the chart, in the CSV and in the
+        // PDF, but was left out of the list you got by clicking that tile — the
+        // number and the click were two different answers to one question. Only
+        // e, d and m ever get in now, so there is nothing left to disagree about.
+        function cleanScores(raw) {
+            const out = {};
+            if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return out;
+            skills.forEach(skill => {
+                const v = raw[skill.id];
+                if (v === 'e' || v === 'd' || v === 'm') out[skill.id] = v;
+            });
+            return out;
+        }
 
+        // WHAT WAS WRONG: String(parsed.strengths || '') turned an object into the
+        // literal text "[object Object]", which then appeared in the comment box,
+        // on the printed sheet, in the spreadsheet and in the PDF as if the
+        // teacher had written it — and the next keystroke saved it back as real
+        // text. Anything that is not a string is simply not a comment.
+        function cleanComments(raw) {
+            const out = { strengths: '', stretches: '' };
+            if (!raw || typeof raw !== 'object') return out;
+            if (typeof raw.strengths === 'string') out.strengths = raw.strengths;
+            if (typeof raw.stretches === 'string') out.stretches = raw.stretches;
+            return out;
+        }
+
+        function cleanInitials(raw) {
+            // The box itself holds four characters. WHAT WAS WRONG: the saved
+            // value was assigned straight to .value, which bypasses maxlength, so
+            // a longer value written by an older version showed and exported a
+            // full name where the tool promises initials only.
+            return typeof raw === 'string' ? raw.slice(0, 4) : '';
+        }
+
+        function cleanDate(raw) {
+            return (typeof raw === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw)) ? raw : '';
+        }
+
+        // A saved Undo is read back with the same suspicion as everything else:
+        // anything that is not a whole, sensible snapshot is simply not offered.
+        function cleanSnapshot(raw) {
+            if (!raw || typeof raw !== 'object') return null;
+            const s = cleanScores(raw.scores);
+            const c = cleanComments(raw.comments);
+            const ini = cleanInitials(raw.initials);
+            if (Object.keys(s).length === 0 && !c.strengths && !c.stretches && !ini) {
+                return null;      // nothing in it worth putting back
+            }
+            return {
+                scores: s, comments: c, initials: ini, date: cleanDate(raw.date),
+                sample: raw.sample === true,
+                sampleScoreKeys: Array.isArray(raw.sampleScoreKeys)
+                    ? raw.sampleScoreKeys.map(String) : [],
+                sampleInitials: raw.sampleInitials === true,
+                label: (typeof raw.label === 'string' && raw.label)
+                    ? raw.label.slice(0, 60) : 'Undo the clear'
+            };
+        }
+
+        function loadFromStorage() {
+            let rawRecord = null, rawUndo = null, legacy = null;
             try {
-                const storedComments = localStorage.getItem(KEYS.comments);
-                const parsed = storedComments ? JSON.parse(storedComments) : null;
-                if (parsed && typeof parsed === 'object') {
-                    comments = {
-                        strengths: String(parsed.strengths || ''),
-                        stretches: String(parsed.stretches || '')
+                // An older version of this tool stored a child's full name.
+                // Anything still sitting in this browser under that key goes.
+                localStorage.removeItem('seStudentName');
+                rawRecord = localStorage.getItem(K_RECORD);
+                rawUndo = localStorage.getItem(K_UNDO);
+                if (rawRecord === null) {
+                    legacy = {
+                        scores: localStorage.getItem('seScores'),
+                        comments: localStorage.getItem('seComments'),
+                        initials: localStorage.getItem('seInitials'),
+                        date: localStorage.getItem('seDate'),
+                        sample: localStorage.getItem('seSample')
                     };
                 }
             } catch (err) {
-                comments = { strengths: '', stretches: '' };
-            }
-
-            let seen = false;
-            try {
-                // An older version of this tool stored a child's full name. Anything
-                // still sitting in this browser under that key is removed on sight.
-                localStorage.removeItem('seStudentName');
-                document.getElementById('initials').value = localStorage.getItem(KEYS.initials) || '';
-                const d = localStorage.getItem(KEYS.date);
-                if (d) document.getElementById('adate').value = d;
-                isSample = localStorage.getItem(KEYS.sample) === '1';
-                seen = localStorage.getItem(KEYS.seen) === '1';
-            } catch (err) {
                 say('This browser will not let the tool read or save anything, so ' +
                     'nothing here will survive a reload. Print or export before you ' +
-                    'close the tab.', 0);
+                    'close the tab.', 120000, true);
+                notSaving = true;
+                return;
             }
 
-            if (!document.getElementById('adate').value) {
-                document.getElementById('adate').value = todayLocal();
+            let rec = null;
+            if (rawRecord !== null) {
+                try {
+                    rec = JSON.parse(rawRecord);
+                } catch (err) {
+                    // WHAT WAS WRONG: unreadable comments were emptied in total
+                    // silence and then written over by the next click, so the one
+                    // copy that might have been recovered by hand was gone. It is
+                    // moved aside instead, and the teacher is told, in the same
+                    // words the scores already used.
+                    try { localStorage.setItem(K_KEPT, rawRecord); } catch (e) { /* nothing to keep */ }
+                    say('Some of what was saved on this laptop could not be read, so the ' +
+                        'tool has started empty. The unreadable copy has been kept aside ' +
+                        'rather than written over.', 20000, true);
+                    rec = null;
+                }
+            } else if (legacy && (legacy.scores || legacy.comments || legacy.initials)) {
+                // The move from six keys to one. Read once, then dropped.
+                let ls = null, lc = null;
+                try { ls = JSON.parse(legacy.scores || 'null'); } catch (e) { ls = null; }
+                try { lc = JSON.parse(legacy.comments || 'null'); } catch (e) { lc = null; }
+                rec = {
+                    scores: ls, comments: lc, initials: legacy.initials,
+                    date: legacy.date, sample: legacy.sample === '1'
+                };
+                // WHAT WAS WRONG: the old version never wrote down WHICH rows were
+                // Maya's, so this filled that in as "all six of them" and let the
+                // letter comparison below sort it out. With six skills and three
+                // bands, some real child's row matches one of Maya's about nine
+                // times in ten — so a real child saved by the previous version came
+                // back labelled, exported and filed as Maya Torres on a coincidence.
+                // A record only counts as hers now on evidence that cannot happen by
+                // accident. See isReallySample().
+                rec.sample = rec.sample && isReallySample(rec);
+                rec.sampleScoreKeys = rec.sample ? skills.map(s => String(s.id)) : [];
             }
 
-            // First arrival, nothing saved: show the sample child rather than an
-            // empty tool, so a visitor sees the chart and the report populated.
-            if (!seen && Object.keys(scores).length === 0 &&
-                !comments.strengths && !comments.stretches) {
-                applySample();
-                // Write it down straight away. "Has this tool been used before"
-                // used to be recorded only when the teacher touched something,
-                // so arriving and reading the page left the flag unset and the
-                // sample was re-applied from scratch on every reload.
-                saveToStorage();
+            if (rec && typeof rec === 'object' && !Array.isArray(rec)) {
+                hadSavedRecord = true;
+                scores = cleanScores(rec.scores);
+                comments = cleanComments(rec.comments);
+                document.getElementById('initials').value = cleanInitials(rec.initials);
+                document.getElementById('adate').value = cleanDate(rec.date);
+                isSample = rec.sample === true;
+                sampleCleared = rec.sampleCleared === true;
+                // A record written by this version says which rows are Maya's, and
+                // that list is the truth: it is kept row by row as the teacher works.
+                // Only an older record, which never wrote one, has to be guessed at —
+                // and then only when the sheet is unmistakably hers.
+                sampleScoreKeys = Array.isArray(rec.sampleScoreKeys)
+                    ? rec.sampleScoreKeys.map(String)
+                    : (isSample && isReallySample(rec) ? skills.map(s => String(s.id)) : []);
+                // Same rule for the Child box: this version writes down whether
+                // those letters are the sample's leftovers, and that record is
+                // the truth. An older one never wrote it, so it is worked out
+                // the only safe way — the letters count as the sample's only on
+                // a sheet that was unmistakably hers.
+                sampleInitialsLeft = typeof rec.sampleInitials === 'boolean'
+                    ? rec.sampleInitials
+                    : (rec.sample === true && isReallySample(rec));
+                // WHAT WAS WRONG: the saved "this is the sample" flag was believed
+                // without ever being checked against what actually came back, so a
+                // real child's assessment could reappear labelled, exported and
+                // filed as Maya Torres with the real initials thrown away. The flag
+                // only survives if some of Maya is really still on the page.
+                leaveSampleIfGone(true);
+            } else if (rec) {
+                // Valid JSON of the wrong shape — an array, a number, a bare
+                // string. It used to be dropped in silence while a half-written
+                // record got a message; same total loss, so it gets the same
+                // message.
+                say('Some of what was saved on this laptop could not be read, so the ' +
+                    'tool has started empty.', 20000, true);
+            }
+
+            if (rawUndo !== null) {
+                let parsed = null;
+                try { parsed = JSON.parse(rawUndo); } catch (e) { parsed = null; }
+                undoState = cleanSnapshot(parsed);
             }
         }
 
@@ -1076,149 +1606,378 @@
             document.getElementById('initials').value = SAMPLE.initials;
             document.getElementById('adate').value = todayLocal();
             isSample = true;
+            sampleScoreKeys = skills.map(s => String(s.id));
+            sampleInitialsLeft = true;
         }
 
-        // "Try it with a sample student" sits first in the button row, wears the
-        // kindest label on the page, and is shown precisely when isSample is false
-        // — which is to say whenever a teacher has a real assessment on screen. It
-        // used to overwrite that assessment with Maya's on one click: no question
-        // asked, no snapshot taken, and saveToStorage() called immediately, so the
-        // real work was gone for good after a reload. Reset All has asked first and
-        // offered Undo for a while. This does both now, on the same machinery.
+        // Is what is on screen still exactly Maya, untouched? Clearing her own
+        // made-up scores costs nobody anything; clearing what a teacher has typed
+        // over the top of them is a different matter.
+        function sampleUntouched() {
+            return isSample &&
+                document.getElementById('initials').value === SAMPLE.initials &&
+                document.getElementById('strengths').value === SAMPLE.strengths &&
+                document.getElementById('stretches').value === SAMPLE.stretches &&
+                skills.every(s => scores[s.id] === SAMPLE.scores[s.id]);
+        }
+
+        // Which skill rows are still holding the score Maya arrived with.
+        function liveSampleScoreKeys() {
+            return sampleScoreKeys.filter(k => scores[k] === SAMPLE.scores[k]);
+        }
+
+        // Is this saved record really Maya's sheet? Asked only of records old
+        // enough not to say so themselves, and answered on evidence a real child
+        // cannot produce by accident: her initials, plus either one of her notes
+        // word for word (hundreds of characters nobody types by chance) or every
+        // one of her six scores at once. A single matching letter is a
+        // coincidence, not an identity, and it is not enough here.
+        function isReallySample(rec) {
+            if (cleanInitials(rec.initials).toUpperCase() !== SAMPLE.initials) return false;
+            const c = cleanComments(rec.comments);
+            if (c.strengths === SAMPLE.strengths || c.stretches === SAMPLE.stretches) return true;
+            const s = cleanScores(rec.scores);
+            return skills.every(sk => s[sk.id] === SAMPLE.scores[sk.id]);
+        }
+
+        // WHO THIS SHEET BELONGS TO. Three answers, not two:
+        //   'sample' — it is Maya's, and it is filed as Maya's
+        //   'part'   — the teacher has put their own initials on it, but some of
+        //              Maya's made-up work is still on the page
+        //   'child'  — the teacher's own, all of it
+        //
+        // WHAT WAS WRONG: there were only two answers, and anything with a scrap
+        // of Maya left counted as the whole sample. A teacher who scored four of
+        // the six rows, wrote both comments and typed K.P. over M.T. still had two
+        // of Maya's scores on the sheet — so the PDF, the spreadsheet and the
+        // printed header all called that child "Sample student — Maya Torres
+        // (M.T.)" and both files were named sample-maya-torres-…, with K.P.
+        // nowhere in either one. The child's own initials are never thrown away
+        // now, and the sheet still says out loud which parts are made up.
+        function sheetIdentity() {
+            const typed = (document.getElementById('initials').value || '').trim().toUpperCase();
+            if (!isSample) return { kind: 'child', initials: typed };
+            // WHAT WAS ALSO WRONG, and it survived the fix above: this asked
+            // "do the letters in the box say M.T.?" and called the WHOLE sheet
+            // Maya's whenever they did. Some real children's initials genuinely
+            // are M.T. A teacher who scored five of the six rows for such a
+            // child, wrote both notes, and quite correctly left M.T. in the box
+            // still had one of Maya's rows on the page — so the PDF and the
+            // spreadsheet were named sample-maya-torres-…, every spreadsheet
+            // row said "Sample student — Maya Torres (M.T.)", and the printed
+            // header said "not a real child" over a real child's assessment.
+            // Whose letters are in the box was never the question. The question
+            // is whether any of this sheet is the teacher's own work about a
+            // real child: a score they clicked, a note they wrote, or initials
+            // that are not the sample's. The moment there is any, the sheet is
+            // that child's — filed under their initials, with a part-sample
+            // warning on it — whatever the letters in the box happen to be.
+            // Emptying one of Maya's boxes is not work about a child, so it
+            // does not on its own turn her sheet into somebody's assessment.
+            const theirScore = skills.some(s =>
+                scores[s.id] && sampleScoreKeys.indexOf(String(s.id)) === -1);
+            const theirNote =
+                (comments.strengths && comments.strengths !== SAMPLE.strengths) ||
+                (comments.stretches && comments.stretches !== SAMPLE.stretches);
+            const theirInitials = typed && typed !== SAMPLE.initials;
+            if (!theirScore && !theirNote && !theirInitials) {
+                return { kind: 'sample', initials: typed };
+            }
+            return { kind: 'part', initials: typed };
+        }
+
+        // The sentence that goes into the PDF and onto the paper, so no exported
+        // sheet can be mistaken for a real child's record — whether it is all
+        // Maya or only two rows of her.
+        function sampleWarningLine() {
+            const id = sheetIdentity();
+            if (id.kind === 'sample') return SAMPLE_LABEL + ' — made-up data, not a real child.';
+            if (id.kind === 'part') {
+                return 'Part sample — still Maya Torres\'s made-up example, not ' +
+                       id.initials + '\'s: ' + sampleTraceParts().join(', ') +
+                       '. Everything else on this sheet is ' + id.initials + '\'s own.';
+            }
+            return '';
+        }
+
+        // The parts of Maya still on the page, named the way a teacher would.
+        function sampleTraceParts() {
+            const parts = [];
+            const n = liveSampleScoreKeys().length;
+            if (n) parts.push(n === 1 ? 'one of her scores' : n + ' of her scores');
+            if (comments.strengths === SAMPLE.strengths) parts.push('her strengths note');
+            if (comments.stretches === SAMPLE.stretches) parts.push('her stretches note');
+            return parts;
+        }
+
+        // THE WORST THING THIS FILE HAS DONE, AND WHAT REPLACES IT:
+        //
+        // Typing your own initials over the sample used to run takeOverFromSample(),
+        // which decided what was Maya's by comparing letters — so every score the
+        // teacher had clicked that happened to match Maya's letter was DELETED,
+        // while the message on screen said "What you filled in yourself is still
+        // here." With six skills and three bands, about a third of a real child's
+        // scores collide with Maya's by chance; in the worst run all six went. No
+        // undo, and it survived a reload.
+        //
+        // Nothing is ever deleted now. A row stops being Maya's the moment the
+        // teacher touches it (see touchScore), the banner says which parts of her
+        // are still on the page, and the label comes off by itself once none of
+        // her scores and neither of her notes are left. That also settles the
+        // other half of it: a real child whose initials genuinely are M.T. used to
+        // be filed forever as "Sample student — Maya Torres", because the only
+        // escape was through the Child box.
+        function leaveSampleIfGone(quiet) {
+            if (!isSample) return false;
+            if (sampleTraceParts().length > 0) return false;
+            isSample = false;
+            sampleScoreKeys = [];
+            renderSample();
+            if (!quiet) {
+                // WHAT WAS WRONG: emptying the sample by hand instead of pressing
+                // "Clear the sample" took the label off while M.T. was still
+                // sitting in the Child box, put there by the sample and never
+                // typed by anybody — and the tool said "This is your own
+                // assessment now" over the top of it. The next export was named
+                // social-emotional-MT-<date> and every spreadsheet row said
+                // M.T., so a real child was filed under the made-up one's
+                // initials. Those letters are not deleted — for some children
+                // they are the right ones — but they are never passed off in
+                // silence as something the teacher chose. See sampleInitialsNote.
+                say('Nothing of the sample is left on this sheet, so the example label has ' +
+                    'come off. This is your own assessment now.' +
+                    (sampleInitialsStranded()
+                        ? ' The Child box still says ' + SAMPLE.initials + ', which came ' +
+                          'from the sample — change it if those are not this child\'s initials.'
+                        : ''), sampleInitialsStranded() ? 16000 : 10000);
+            }
+            return true;
+        }
+
+        // Are the letters in the Child box the sample's leftovers rather than
+        // anybody's choice? True only while all three hold: the example label is
+        // off, the box has not been typed in since the sample put M.T. there,
+        // and M.T. is still what it says.
+        function sampleInitialsStranded() {
+            return !isSample && sampleInitialsLeft &&
+                (document.getElementById('initials').value || '').trim().toUpperCase()
+                    === SAMPLE.initials;
+        }
+
+        // Said on the page rather than in a message that fades, because this
+        // outlives the moment it happens in: it is still true after a reload,
+        // and the export it would mislabel may be days later.
+        function renderSampleInitialsNote() {
+            const on = sampleInitialsStranded();
+            const note = document.getElementById('sampleInitialsNote');
+            if (on) {
+                document.getElementById('sampleInitialsNoteText').innerHTML =
+                    '<strong>The Child box still says ' + esc(SAMPLE.initials) + ', and those ' +
+                    'letters came from the sample.</strong><br>Nothing else on this sheet is ' +
+                    'made up. If ' + esc(SAMPLE.initials) + ' really is this child, type over ' +
+                    'them and this note goes — otherwise the PDF, the spreadsheet, the printed ' +
+                    'sheet and both filenames all file this assessment under the example ' +
+                    'child\'s initials.';
+            }
+            // The keyboard must not be left standing on a button that has just
+            // been hidden, or the next Tab jumps back to the top of the page.
+            const btn = document.getElementById('dropSampleInitialsBtn');
+            if (!on && !note.hidden && document.activeElement === btn) {
+                document.getElementById('initials').focus();
+            }
+            note.hidden = !on;
+        }
+
+        // One press for the teacher who says "no, that was the sample's". It
+        // empties the box and nothing else — every score and both notes stay.
+        function dropSampleInitials() {
+            document.getElementById('initials').value = '';
+            sampleInitialsLeft = false;
+            renderSample();
+            saveToStorage();
+            say('The Child box is empty. Put this child\'s own initials in it — they go ' +
+                'on the printed sheet, in the PDF, in the spreadsheet and in both ' +
+                'filenames.', 12000);
+            document.getElementById('initials').focus();
+        }
+
+        function renderSample() {
+            const on = isSample;
+            document.getElementById('sampleBanner').classList.toggle('on', on);
+            document.getElementById('sampleBtn').hidden = on;
+            // While the sheet is still exactly Maya's the banner says so plainly.
+            // Once a teacher has typed some of their own work over the top, it
+            // says which parts are still hers, so a half-and-half sheet is never
+            // exported as though all of it were made up.
+            document.getElementById('sampleBannerText').innerHTML = on && sampleUntouched()
+                ? '<strong>' + esc(SAMPLE_LABEL) + '</strong><br>Made-up scores, so you can ' +
+                  'see what the tool does before you use it. Clear it when you are ready to ' +
+                  'assess a real child.'
+                : '<strong>Part sample — some of this is still Maya Torres, the made-up ' +
+                  'example.</strong><br>Still hers: ' + esc(sampleTraceParts().join(', ')) +
+                  '. Everything else on this sheet is yours, and ' +
+                  (sheetIdentity().kind === 'part'
+                    ? 'it prints and exports under your initials.'
+                    : 'putting your own initials in the Child box files it under them.');
+            renderSampleInitialsNote();
+            renderPrintBits();
+        }
+
+        // "Try it with a sample student" sits first in the button row and wears
+        // the kindest label on the page. It used to overwrite a real assessment on
+        // one click: no question asked, no snapshot taken, and saved immediately,
+        // so the real work was gone for good after a reload.
         function loadSample() {
-            let stashed = false;
-            if (!isSample && hasAnything()) {
+            let stashed = null;
+            if (hasWork()) {
                 if (!confirm('Load the sample child?\n\nThe initials, every score and ' +
                              'both comment boxes on screen now are replaced by Maya ' +
                              'Torres\'s made-up ones.\n\nPress "Undo — bring mine back" ' +
                              'straight afterwards if that was not what you meant.')) return;
-                stashForUndo('Undo — bring mine back');
-                stashed = true;
+                stashed = snapshot('Undo — bring mine back');
             }
             applySample();
-            saveToStorage();
+            sampleCleared = false;
+            const ok = saveToStorage();
+            if (stashed) offerUndo(stashed);
             renderSkills();
             updateChart();
             renderComments();
-            paintSample();
-            say(stashed
-                ? 'This is made-up data for Maya Torres. Your own assessment has not ' +
-                  'been thrown away — press "Undo — bring mine back" to have it ' +
-                  'returned. Like every undo here, it is there until you leave this page.'
-                : 'This is made-up data for Maya Torres. Press "Clear the sample" when ' +
-                  'you want to start your own.', 8000);
+            renderSample();
+            renderModal();
+            say((stashed
+                ? 'This is made-up data for Maya Torres. Your own assessment has not been ' +
+                  'thrown away — press "Undo — bring mine back" to have it returned. '
+                : 'This is made-up data for Maya Torres. Press "Clear the sample" when you ' +
+                  'want to start your own. ') +
+                (ok ? '' : 'This browser would not let the tool save, so nothing here will ' +
+                           'survive a reload.'), 12000);
         }
 
+        // WHAT WAS WRONG: this wiped the teacher's own scores and notes with no
+        // question and no undo, and wrote the empty sheet to the laptop
+        // immediately — while the first-visit message actively pointed them at it
+        // ("Press Clear the sample when you want to start your own"). Every other
+        // destructive path on this page asks first and keeps one step back. So
+        // does this one now.
         function clearSample() {
-            scores = {};
-            comments = { strengths: '', stretches: '' };
-            document.getElementById('initials').value = '';
-            document.getElementById('adate').value = todayLocal();
-            isSample = false;
-            saveToStorage();
-            renderSkills();
-            updateChart();
-            renderComments();
-            paintSample();
-            say('Sample cleared. The tool is empty and ready for a real child.', 6000);
-        }
-
-        // Putting your own initials in the box is how you say "this is not Maya".
-        //
-        // The sample label used to stay put whatever was typed over it, so a
-        // teacher who set the initials to J.M. and scored all six skills — without
-        // noticing the "Clear the sample" button — got a spreadsheet called
-        // sample-maya-torres-....csv with "Sample student — Maya Torres" in the
-        // Child column. Their own initials, sitting on the screen in front of
-        // them, were thrown away. That is a real child's record filed under a
-        // made-up name.
-        //
-        // So: the moment the initials stop being M.T., the sample is put away.
-        // Anything still exactly as the sample left it comes off with her, because
-        // a real child's record must not carry invented scores or invented notes.
-        // Anything the teacher changed themselves is left alone — nothing they
-        // wrote is ever taken from them — and the message says so, so they know to
-        // read the boxes before exporting.
-        function takeOverFromSample() {
-            // Skill by skill, not all-or-nothing: a teacher who re-scored one
-            // thing and left the other five must not keep five made-up scores.
-            let keptWork = false;
-            skills.forEach(s => {
-                if ((scores[s.id] || null) === (SAMPLE.scores[s.id] || null)) scores[s.id] = null;
-                else if (scores[s.id]) keptWork = true;
-            });
-            if ((comments.strengths && comments.strengths !== SAMPLE.strengths) ||
-                (comments.stretches && comments.stretches !== SAMPLE.stretches)) keptWork = true;
-
-            if (comments.strengths === SAMPLE.strengths) comments.strengths = '';
-            if (comments.stretches === SAMPLE.stretches) comments.stretches = '';
-            isSample = false;
-
-            renderSkills();
-            updateChart();
-            renderComments();
-            paintSample();
-            say(keptWork
-                ? 'These are your initials, so the sample has been put away and Maya\'s ' +
-                  'made-up scores and notes have come off with her. What you filled in ' +
-                  'yourself is still here — read the two boxes through before you export.'
-                : 'The sample has been put away, because these are your own initials. ' +
-                  'The tool is empty and everything you do from here is saved under them.',
-                10000);
-        }
-
-        // The label stays until the sample is explicitly cleared or taken over by a
-        // teacher's own initials, even if scores are changed on top of it. A printed
-        // sheet that says "sample" when it is real is a nuisance; one that says
-        // nothing when the numbers are invented is a child's record that never
-        // existed.
-        function paintSample() {
-            document.getElementById('sampleBanner').classList.toggle('on', isSample);
-            document.getElementById('sampleBtn').hidden = isSample;
+            if (sampleUntouched()) {
+                // Maya's own made-up data costs nobody anything. But if she was
+                // loaded over somebody's assessment, that assessment is still owed
+                // its way back — clearing her must not be what finally destroys it.
+                const owed = undoState;
+                wipe();
+                if (owed) offerUndo(owed); else dropUndo();
+                say(owed
+                    ? 'Sample cleared. Your own assessment is one press of "' + owed.label + '" away.'
+                    : 'Sample cleared. The tool is empty and ready for a real child.', 8000);
+                return;
+            }
+            if (!confirm('Clear the sample student?\n\nWhat you have typed in over Maya goes ' +
+                         'with her — the scores, both comment boxes and the initials. If you ' +
+                         'want to keep a copy, cancel and export or print first.\n\n' +
+                         '"Undo — put my assessment back" brings it straight back.')) return;
+            const keep = snapshot('Undo — put my assessment back');
+            const ok = wipe();
+            offerUndo(keep);
+            say(ok
+                ? 'Sample cleared. Press "Undo — put my assessment back" if that was not what ' +
+                  'you meant.'
+                : 'The sheet on screen is empty, but this browser would not let the tool save, ' +
+                  'so the copy on the laptop is still there and a reload brings it back.', 20000);
         }
 
         // ---------------------------------------------------------------------
         // Clearing, and getting it back
         // ---------------------------------------------------------------------
-        // Is there anything on this screen worth keeping?
-        function hasAnything() {
+        // Is there anything on this screen a person would be sorry to lose? The
+        // date counts: a teacher who set the date and nothing else used to be
+        // told there was nothing to clear.
+        function hasWork() {
             readComments();
+            const d = dateValue();
             return skills.some(s => scores[s.id]) ||
                    !!comments.strengths || !!comments.stretches ||
-                   !!document.getElementById('initials').value;
+                   !!document.getElementById('initials').value ||
+                   // A date the TEACHER chose is work. Today's date, which the
+                   // tool fills in by itself on an empty sheet, is not — or Reset
+                   // All would offer to clear a sheet with nothing on it.
+                   (!!d && d !== todayLocal());
         }
 
-        // One snapshot, shared by everything on this page that can wipe an
-        // assessment out — Reset All, and loading the sample over real work. The
-        // button carries the label of whatever is being taken back, so "Undo the
-        // clear" never appears over something that was not a clear.
-        function stashForUndo(label) {
-            undoState = {
+        function snapshot(label) {
+            readComments();
+            return {
                 scores: JSON.parse(JSON.stringify(scores)),
                 comments: { strengths: comments.strengths, stretches: comments.stretches },
                 initials: document.getElementById('initials').value,
-                date: document.getElementById('adate').value,
-                isSample: isSample,
+                date: dateValue(),
+                sample: isSample,
+                sampleScoreKeys: sampleScoreKeys.slice(),
+                sampleInitials: sampleInitialsLeft,
                 label: label
             };
+        }
+
+        // Hold one step of Undo, and hold it in storage as well as in memory.
+        // Returns whether the way back really reached the disk, so the caller can
+        // tell the truth about it.
+        function offerUndo(snap) {
+            undoState = snap;
+            renderUndo();
+            try { localStorage.setItem(K_UNDO, JSON.stringify(snap)); return true; }
+            catch (err) { return false; }   // still works while this tab stays open
+        }
+
+        function dropUndo() {
+            undoState = null;
+            try { localStorage.removeItem(K_UNDO); } catch (err) { /* nothing to remove */ }
+            renderUndo();
+        }
+
+        function renderUndo() {
             const btn = document.getElementById('undoBtn');
-            btn.textContent = label;
-            btn.hidden = false;
+            // The button was hidden while the keyboard was still sitting on it,
+            // so focus was left on an invisible control and the next Tab jumped
+            // back to the top of the page.
+            if (!undoState && !btn.hidden && document.activeElement === btn) {
+                const back = document.getElementById('sampleBtn');
+                if (back && !back.hidden) back.focus();
+            }
+            btn.hidden = !undoState;
+            btn.textContent = undoState ? undoState.label : 'Undo the clear';
+        }
+
+        // Empty the sheet. Nothing here asks anything — every caller has already
+        // decided it is safe. Returns whether the empty sheet reached the disk.
+        function wipe() {
+            scores = {};
+            comments = { strengths: '', stretches: '' };
+            document.getElementById('initials').value = '';
+            document.getElementById('adate').value = todayLocal();
+            if (isSample) sampleCleared = true;
+            isSample = false;
+            sampleScoreKeys = [];
+            sampleInitialsLeft = false;   // the box has just been emptied
+            const ok = saveToStorage();
+            renderSkills();
+            updateChart();
+            renderComments();
+            renderSample();
+            renderModal();
+            return ok;
         }
 
         function resetAll() {
             // Pressing Reset on an already-empty tool used to take a fresh
             // snapshot of that emptiness and put it over the top of the real one,
             // so "Undo the clear" then said "Put back." and put back nothing at
-            // all — the work was gone, with a message saying it had been
-            // restored. There is nothing to clear when there is nothing on the
-            // screen, so nothing is asked and nothing is overwritten.
-            if (!hasAnything()) {
+            // all — the work was gone, with a message saying it had been restored.
+            if (!hasWork()) {
                 say(undoState
                     ? 'There is nothing to clear — this assessment is already empty. ' +
                       'What you had before is still waiting under "' + undoState.label + '".'
-                    : 'There is nothing to clear — this assessment is already empty.',
-                    6000);
+                    : 'There is nothing to clear — this assessment is already empty.', 8000);
                 return;
             }
 
@@ -1226,74 +1985,127 @@
                          'comment boxes are emptied.\n\nPress "Undo the clear" straight ' +
                          'afterwards if that was not what you meant.')) return;
 
-            // Reset used to destroy everything on one click with nothing to go back
-            // to. The snapshot below is what makes that safe.
-            //
-            // Except when what is on screen is Maya. A teacher who loaded the sample
-            // over their own assessment and then pressed Reset would otherwise have
-            // the made-up data snapshotted over the real thing, and their work would
-            // be gone with the undo button still showing. Invented scores are not
-            // worth an undo slot; a real child's record is.
-            if (isSample && undoState) {
-                document.getElementById('undoBtn').hidden = false;
-            } else {
-                stashForUndo('Undo the clear');
+            // WHAT WAS WRONG: this skipped the snapshot whenever isSample was
+            // true and an undo already existed, on the assumption that the screen
+            // held nothing but Maya's made-up data. That stopped being true the
+            // moment a teacher typed over her — and the banner stays up while
+            // they do — so Reset All could destroy a full real assessment with no
+            // snapshot anywhere, while the message it printed named an undo that
+            // restored a different, older child. The screen is snapshotted unless
+            // it really is still nothing but Maya AND an earlier assessment is
+            // still owed its way back.
+            const owed = (undoState && sampleUntouched()) ? undoState : null;
+            const keep = owed || snapshot('Undo the clear');
+
+            const ok = wipe();
+            const undoSaved = offerUndo(keep);
+
+            if (!ok) {
+                say('This browser would not let the tool save, so the sheet on screen is ' +
+                    'empty but the saved copy is still there — reloading brings it back. ' +
+                    'Print or export what you need, then close the tab.', 120000, true);
+                return;
             }
-
-            scores = {};
-            comments = { strengths: '', stretches: '' };
-            document.getElementById('initials').value = '';
-            document.getElementById('adate').value = todayLocal();
-            isSample = false;
-            saveToStorage();
-            renderSkills();
-            updateChart();
-            renderComments();
-            paintSample();
-
-            // Named for whatever the button actually says, so the sentence and the
-            // button can never disagree about what to press.
-            say('Everything cleared. Press "' + undoState.label + '" if that was not ' +
-                'what you meant — it is there until you leave this page.', 0);
+            say('Everything cleared. Press "' + keep.label + '" if that was not what you ' +
+                'meant. ' + (undoSaved
+                    ? 'It survives a reload.'
+                    : 'It works while this tab stays open — this browser would not let the ' +
+                      'tool save the way back, so do not reload until you are sure.'), 20000);
         }
 
         function undoReset() {
             if (!undoState) return;
+
+            // WHAT WAS WRONG, AND IT WAS THE WORST THING ON THIS PAGE: the button
+            // and its snapshot were never retired. After a Reset All the button
+            // stayed on screen for the rest of the session and the message beside
+            // it went on telling the teacher to press it — so pressing it part-way
+            // through the NEXT child's assessment silently replaced that child
+            // with the previous one, permanently, and a reload confirmed it.
+            // It asks first now, and what it is about to replace is itself
+            // offered back, so a second press returns the page you were on.
+            const replacing = hasWork() ? snapshot('Undo — put back what was on screen') : null;
+            if (replacing && !confirm('Put the earlier assessment back?\n\nWhat is on this ' +
+                    'page now — the initials, the date, every score and both comment boxes — ' +
+                    'is replaced by it.\n\nOne more Undo brings this page back.')) return;
+
             scores = undoState.scores;
             comments = undoState.comments;
+            isSample = undoState.sample;
+            sampleScoreKeys = undoState.sampleScoreKeys || [];
+            sampleInitialsLeft = undoState.sampleInitials === true;
             document.getElementById('initials').value = undoState.initials;
             document.getElementById('adate').value = undoState.date;
-            isSample = undoState.isSample;
-            undoState = null;
+
+            if (replacing) offerUndo(replacing); else dropUndo();
+
+            leaveSampleIfGone(true);
             saveToStorage();
             renderSkills();
             updateChart();
             renderComments();
-            paintSample();
-            document.getElementById('undoBtn').hidden = true;
-            say('Put back.', 4000);
+            renderSample();
+            renderModal();
+            say('Put back.', 5000);
         }
 
         // ---------------------------------------------------------------------
         // Getting it off the screen: PDF, spreadsheet, paper
         // ---------------------------------------------------------------------
         function whoLine() {
-            const initials = (document.getElementById('initials').value || '—').toUpperCase();
-            return isSample ? SAMPLE_LABEL : 'Child: ' + initials;
+            const id = sheetIdentity();
+            if (id.kind === 'sample') return SAMPLE_LABEL;
+            // A half-taken-over sheet is filed under the child whose initials are
+            // in the box — with "part sample" beside them, and the full sentence
+            // about which parts are made up on the line underneath.
+            return 'Child: ' + (id.initials || '—') +
+                   (id.kind === 'part' ? ' — part sample' : '');
         }
 
         // Initials and the date go in the filename as well as in the file. Every
         // export used to be called the same thing, so a second child's sheet
         // landed in the downloads folder as a copy of the first.
         function fileStem() {
-            const initials = (document.getElementById('initials').value || '')
-                .toUpperCase().replace(/[^A-Z0-9]/g, '');
-            const date = document.getElementById('adate').value || todayLocal();
-            if (isSample) return 'sample-maya-torres-social-emotional-' + date;
-            return 'social-emotional-' + (initials || 'no-initials') + '-' + date;
+            // WHAT WAS WRONG: this kept only A-Z and 0-9, so initials with an
+            // accent or in a non-Latin script — Á.Ñ., 李明 — were stripped to
+            // nothing and every such child on the same day got the identical
+            // filename "…-no-initials-<date>", while the file's own contents
+            // named them. Every letter and digit is kept now, in whatever
+            // alphabet it is written in; only punctuation and spacing goes.
+            const typed = (document.getElementById('initials').value || '')
+                .toUpperCase().replace(/[^\p{L}\p{N}]+/gu, '');
+            const date = dateValue() || 'no-date';
+            const kind = sheetIdentity().kind;
+            if (kind === 'sample') return 'sample-maya-torres-social-emotional-' + date;
+            // WHAT WAS WRONG: a sheet the teacher had only half typed over went
+            // into the downloads folder as sample-maya-torres-… with their own
+            // initials nowhere in the name. Both facts fit in a filename: whose
+            // sheet it is, and that part of it is still the made-up example.
+            // A half-taken-over sheet with an empty Child box would otherwise be
+            // called "part-sample-social-emotional--2026-08-12", with a hole
+            // where the initials go and every such sheet on one day sharing it.
+            if (kind === 'part') {
+                return 'part-sample-social-emotional-' + (typed || 'no-initials') + '-' + date;
+            }
+            return 'social-emotional-' + (typed || 'no-initials') + '-' + date;
+        }
+
+        // jsPDF's built-in fonts only know the first 256 characters and do not
+        // say so — one arrow or tick pasted into a comment box turns that whole
+        // line of the exported PDF into spaced-out gibberish.
+        function pdfSafe(s) {
+            return String(s)
+                .replace(/[‘’‚′]/g, "'")
+                .replace(/[“”„″]/g, '"')
+                .replace(/[–—]/g, '-')
+                .replace(/…/g, '...')
+                .replace(/[^\x00-\xFF]/g, '?');
         }
 
         function exportPDF() {
+            readComments();
+            saveToStorage();
+
             // The library is on a CDN. When a school firewall blocks it the button
             // used to throw into the console and look broken forever.
             if (window.__pdfLibBlocked || !window.jspdf || !window.jspdf.jsPDF) {
@@ -1301,82 +2113,87 @@
                     'internet, and this network or this moment blocked it. Everything ' +
                     'else still works: "Print" makes the same sheet on paper or as a ' +
                     'PDF from the print box, and "Export as CSV" saves it for a ' +
-                    'spreadsheet. Both work with no internet at all.', 0);
+                    'spreadsheet. Both work with no internet at all.', 30000);
                 return;
             }
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const pageWidth = doc.internal.pageSize.getWidth();
-            let yPos = 15;
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const BOTTOM = pageHeight - 18;
+                let yPos = 15;
 
-            // Title
-            doc.setFontSize(20);
-            doc.text('Social-Emotional Assessment', pageWidth / 2, yPos, { align: 'center' });
-            yPos += 10;
+                // WHAT WAS WRONG: nothing asked whether there was room left on the
+                // page except at the very END of the skills loop, after the line
+                // had already been drawn. Two long comments pushed "Skills
+                // Assessment:" and the first of the six skills below the bottom
+                // edge of page one, where jsPDF simply does not draw them — the
+                // exported record showed five skills while the screen, the CSV and
+                // the printed sheet all showed six. Longer than that and hundreds
+                // of words of the teacher's own notes ran off the paper and were
+                // in no page of the file at all. Everything is drawn through these
+                // two helpers now, and both start a new page before they run off.
+                const room = need => {
+                    if (yPos + need > BOTTOM) { doc.addPage(); yPos = 15; }
+                };
+                const write = (text, size, gap) => {
+                    doc.setFontSize(size);
+                    const lines = doc.splitTextToSize(pdfSafe(text), pageWidth - 30);
+                    const step = size >= 12 ? 6 : 5;
+                    lines.forEach(line => {
+                        room(step);
+                        doc.text(line, 15, yPos);
+                        yPos += step;
+                    });
+                    yPos += (gap || 0);
+                };
 
-            // Who and when. The sheet carried no date at all, so a printed record
-            // could not be placed in a term, and two sheets for the same child could
-            // not be told apart.
-            doc.setFontSize(12);
-            doc.text(whoLine(), 15, yPos);
-            const dateShown = document.getElementById('adate').value || '—';
-            doc.text('Date: ' + dateShown, pageWidth - 15, yPos, { align: 'right' });
-            yPos += 8;
+                doc.setFontSize(20);
+                doc.text('Social-Emotional Assessment', pageWidth / 2, yPos, { align: 'center' });
+                yPos += 10;
 
-            // Summary Counts
-            const c = counts();
-            doc.setFontSize(11);
-            doc.text(`Emerging: ${c.e} | Developing: ${c.d} | Mastered: ${c.m} | Not yet scored: ${c.x}`, 15, yPos);
-            yPos += 10;
+                // Who and when. The date says exactly what the screen, the CSV and
+                // both filenames say — it used to print "—" while its own filename
+                // carried today.
+                doc.setFontSize(12);
+                doc.text(pdfSafe(whoLine()), 15, yPos);
+                doc.text('Date: ' + (dateValue() || NO_DATE), pageWidth - 15, yPos, { align: 'right' });
+                yPos += 8;
 
-            // Strengths
-            doc.setFontSize(12);
-            doc.text('Strengths:', 15, yPos);
-            yPos += 6;
-            doc.setFontSize(10);
-            const strengthsText = document.getElementById('strengths').value || '(No strengths recorded)';
-            const strengthsLines = doc.splitTextToSize(strengthsText, pageWidth - 30);
-            doc.text(strengthsLines, 15, yPos);
-            yPos += strengthsLines.length * 5 + 5;
-
-            // Stretches
-            doc.setFontSize(12);
-            doc.text('Stretches: Areas of Growth:', 15, yPos);
-            yPos += 6;
-            doc.setFontSize(10);
-            const stretchesText = document.getElementById('stretches').value || '(No areas of growth recorded)';
-            const stretchesLines = doc.splitTextToSize(stretchesText, pageWidth - 30);
-            doc.text(stretchesLines, 15, yPos);
-            yPos += stretchesLines.length * 5 + 10;
-
-            // Skills List
-            doc.setFontSize(12);
-            doc.text('Skills Assessment:', 15, yPos);
-            yPos += 6;
-            doc.setFontSize(10);
-
-            skills.forEach(skill => {
-                const score = scores[skill.id];
-                const scoreLabel = bandNames[score] || 'Not Assessed';
-                const line = `${skill.label} — ${scoreLabel}`;
-                const lines = doc.splitTextToSize(line, pageWidth - 30);
-                doc.text(lines, 15, yPos);
-                yPos += lines.length * 4 + 2;
-
-                if (yPos > pageHeight - 20) {
-                    doc.addPage();
-                    yPos = 15;
+                const sampleWarning = sampleWarningLine();
+                if (sampleWarning) {
+                    write(sampleWarning, 10, 2);
                 }
-            });
 
-            if (isSample) {
-                doc.setFontSize(9);
-                doc.text(SAMPLE_LABEL + ' — made-up data, not a real child.', 15, pageHeight - 10);
+                const c = counts();
+                write(`Emerging: ${c.e} | Developing: ${c.d} | Mastered: ${c.m} | ` +
+                      `Not yet scored: ${c.x}`, 11, 4);
+
+                write('Strengths:', 12, 0);
+                write(document.getElementById('strengths').value || '(No strengths recorded)', 10, 5);
+
+                write('Stretches: Areas of Growth:', 12, 0);
+                write(document.getElementById('stretches').value || '(No areas of growth recorded)', 10, 8);
+
+                write('Skills Assessment:', 12, 0);
+                skills.forEach(skill => {
+                    // "Not yet scored", spelled the way the tile, the panel and the
+                    // spreadsheet spell it. The PDF used to call the same state
+                    // "Not Assessed" while its own summary line above said "Not yet
+                    // scored" — one state, two names, in the two things a teacher
+                    // actually files.
+                    const score = scores[skill.id];
+                    write(`${skill.label} — ${bandNames[score] || bandNames.x}`, 10, 1);
+                });
+
+                doc.save(fileStem() + '.pdf');
+                say('PDF saved as ' + fileStem() + '.pdf', 8000);
+            } catch (err) {
+                say('The PDF did not get made on this computer. "Print" (your browser can ' +
+                    'save the page as a PDF) and "Export as CSV" both still work.', 30000);
             }
-
-            doc.save(fileStem() + '.pdf');
         }
 
         // A cell that holds a comma, a quote or a line break has to be quoted, or
@@ -1393,11 +2210,18 @@
             saveToStorage();
             const c = counts();
             const initials = (document.getElementById('initials').value || '').toUpperCase();
-            // The same fallbacks the filename and the PDF use. A row that said
-            // nothing about who or when, in a file whose name said today's date,
-            // was two different answers to the same question.
-            const dateShown = document.getElementById('adate').value || todayLocal();
-            const who = isSample ? SAMPLE_LABEL : (initials || '—');
+            // The same date the filename, the screen and the PDF use.
+            const dateShown = dateValue() || NO_DATE;
+            const id = sheetIdentity();
+            // The Child column carries both facts on every row: whose sheet it is,
+            // and — on a sheet only half typed over — that some of the scores are
+            // still the made-up example's. It used to carry only the sample label,
+            // so a real child's initials never reached the spreadsheet at all.
+            const who = id.kind === 'sample' ? SAMPLE_LABEL
+                      : id.kind === 'part'
+                        ? (initials || '—') + ' — part sample, some scores are still ' +
+                          'Maya Torres\'s made-up ones'
+                      : (initials || '—');
 
             const head = ['Child', 'Date', 'Skill', 'Score', 'Emerging', 'Developing',
                           'Mastered', 'Not yet scored', 'Strengths', 'Stretches'];
@@ -1411,7 +2235,7 @@
             skills.forEach(skill => {
                 rows.push([
                     who, dateShown, skill.label,
-                    bandNames[scores[skill.id]] || 'Not yet scored',
+                    bandNames[scores[skill.id]] || bandNames.x,
                     c.e, c.d, c.m, c.x,
                     comments.strengths, comments.stretches
                 ].map(csvCell).join(','));
@@ -1422,13 +2246,26 @@
             a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
             a.download = fileStem() + '.csv';
             document.body.appendChild(a); a.click(); a.remove();
-            say('Saved as ' + fileStem() + '.csv', 6000);
+
+            // WHAT WAS WRONG: when the browser was refusing to store anything, the
+            // standing "THIS ASSESSMENT IS NOT BEING SAVED" warning told the
+            // teacher to export before closing the tab — and doing so replaced the
+            // warning with the single word "Saved", which then faded to an empty
+            // message bar. The tool's own success message erased a warning that
+            // was still true.
+            if (notSaving) {
+                say('Spreadsheet downloaded as ' + fileStem() + '.csv — and this assessment ' +
+                    'is still NOT being saved on this laptop. Keep the tab open until you ' +
+                    'have everything you need.', 120000, true);
+            } else {
+                say('Spreadsheet saved as ' + fileStem() + '.csv', 8000);
+            }
         }
 
         function printSheet() {
             readComments();
-            syncPrintCopies();
             saveToStorage();
+            renderPrintBits();
             window.print();
         }
 
@@ -1439,12 +2276,30 @@
         // lost focus, so ten minutes of careful notes were thrown away by a closed
         // tab or a sleeping iPad — while the scores beside them had saved instantly
         // all along.
-        ['strengths', 'stretches', 'adate'].forEach(id =>
+        ['strengths', 'stretches'].forEach(id =>
             document.getElementById(id).addEventListener('input', () => {
                 readComments();
-                syncPrintCopies();
+                leaveSampleIfGone();
+                renderSample();
                 saveToStorage();
             }));
+
+        // WHAT WAS WRONG: one Backspace inside the date box makes its value '',
+        // and that empty string went straight over the saved date with nothing
+        // said, so an assessment recorded for 4 May came back dated today. The
+        // blank is still saved — the teacher may have meant it — but it is said
+        // out loud, and a blank date now stays blank on screen, on paper, in both
+        // exports and in both filenames instead of quietly becoming today.
+        document.getElementById('adate').addEventListener('input', () => {
+            const now = dateValue();
+            if (!now && lastGoodDate) {
+                say('The date box is empty now, so this assessment will be filed with ' +
+                    'no date until you fill it in. It was ' + lastGoodDate + '.', 12000);
+            }
+            lastGoodDate = now || lastGoodDate;
+            readComments();
+            saveToStorage();
+        });
 
         const initialsBox = document.getElementById('initials');
 
@@ -1454,26 +2309,63 @@
         // click on such a short value leaves a caret, not a selection. "Just type
         // over it" is the obvious thing to do, so it has to work: while the sample
         // is on screen, clicking into the box selects what is there.
-        initialsBox.addEventListener('focus', () => { if (isSample) initialsBox.select(); });
+        // Once the teacher's own initials are in the box, clicking back into it
+        // must NOT select them — the next keystroke would wipe what they typed.
+        // (It also has to work once the example label has come off with M.T.
+        // still in the box — the box is just as full, and the teacher is just as
+        // likely to try to type over it.)
+        initialsBox.addEventListener('focus', () => {
+            if (sampleInitialsLeft && initialsBox.value === SAMPLE.initials) initialsBox.select();
+        });
 
+        // Typing initials no longer deletes anything at all. See leaveSampleIfGone.
         initialsBox.addEventListener('input', () => {
             readComments();
-            if (isSample && initialsBox.value.toUpperCase() !== SAMPLE.initials) {
-                takeOverFromSample();
-            }
+            // Whatever is in the box now, the teacher put it there — including
+            // M.T., if that is genuinely this child. It stops being the sample's
+            // leftover the moment a key is pressed in this box.
+            sampleInitialsLeft = false;
+            renderSample();
             saveToStorage();
         });
 
         // Cmd-P and File > Print never touch printSheet(), so the paper copies of
-        // the comment boxes are brought up to date here as well.
-        window.addEventListener('beforeprint', syncPrintCopies);
+        // the comment boxes and the header line are brought up to date here too.
+        window.addEventListener('beforeprint', renderPrintBits);
 
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('modal');
-            if (e.target === modal) closeModal();
+        // WHAT WAS WRONG: this closed the panel on any click whose target was the
+        // dark backdrop — and when a mouse press and release land on different
+        // elements Chrome dispatches the click to their common ancestor, which is
+        // the backdrop. So dragging a text selection across the skill list closed
+        // the panel and threw the selection away the moment the mouse came up
+        // outside the white box: the skills in a band could not be copied.
+        let pressedOnBackdrop = false;
+        window.addEventListener('mousedown', (e) => {
+            pressedOnBackdrop = (e.target === document.getElementById('modal'));
         });
-        window.addEventListener('keydown', (e) => {
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modal') && pressedOnBackdrop) closeModal();
+            pressedOnBackdrop = false;
+        });
+        document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
+            trapTab(e);
+        });
+
+        // WHAT WAS WRONG: with the tool open in two tabs, one keystroke in the
+        // older tab wrote its whole stale sheet over everything the newer tab had
+        // saved — silently, with the older tab still showing a record that no
+        // longer existed on the laptop, and no undo anywhere because undoState
+        // lives in the page. A tab that has been overtaken stops saving and says
+        // so, rather than quietly winning the race.
+        window.addEventListener('storage', (e) => {
+            if (e.key !== K_RECORD || e.newValue === null) return;
+            if (e.newValue === lastWritten) return;   // our own write echoing back
+            otherTabSaved = true;
+            say('This assessment is open in another tab, and that tab has just saved a ' +
+                'change. To stop the two tabs writing over each other, this tab has ' +
+                'stopped saving. Print or export anything here that you need, then close ' +
+                'this tab and reload the other one.', 600000, true);
         });
 
         // Initialize on load

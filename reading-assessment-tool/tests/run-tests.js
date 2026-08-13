@@ -5,12 +5,13 @@
 // WHAT THIS IS
 // ------------
 // "Regression" means sliding backward. Every check in this file exists because
-// something was once actually broken here. The point is not to prove the tool
-// works today — it is so that a bug fixed in August cannot quietly come back in
-// November without anybody noticing.
+// something was once actually broken here — most of them found by driving the
+// real tool in a real browser, not by reading the code. The point is not to
+// prove the tool works today. It is so that a bug fixed in August cannot
+// quietly come back in November without anybody noticing.
 //
 // Each check is named for what a PERSON would notice, not for the function
-// involved. If you fix a new bug, add its check here on the same day, while you
+// involved. If you fix a new bug, add its check here the same day, while you
 // still remember what went wrong.
 //
 // HOW TO RUN IT
@@ -19,10 +20,14 @@
 //     npm test
 //
 // It opens a real Google Chrome in the background, drives the tool with real
-// clicks and real typing, and prints a line per check.
+// clicks, real keypresses and a real mouse, and prints a line per check.
+// It needs nothing on the internet: the one library the tool fetches from a CDN
+// is intercepted and answered locally, so the PDF checks are offline and
+// repeatable.
 //
-// node_modules is a symlink to the running record tool's, so nothing needs
-// installing here. Add --coverage to also print every line no test ever ran.
+// npm install is NOT needed and must not be run here. node_modules in this
+// folder is a symlink to running-record-tool/tests/node_modules, and npm test
+// also sets NODE_PATH to the same place, so puppeteer-core resolves either way.
 //
 // WHAT YOU SHOULD SEE
 // -------------------
@@ -66,6 +71,45 @@ function serve(){
 }
 
 // ---------------------------------------------------------------------------
+// A stand-in for jsPDF.
+//
+// The tool fetches jsPDF from cdnjs. Letting these tests reach out to the
+// internet would make them slower, flaky and untestable on a plane — and a
+// flaky check is worse than no check, because it teaches you to ignore red. So
+// the request is intercepted and answered with this, which records every line
+// of text the tool asks it to draw. That is what makes it possible to assert
+// on what the PDF actually SAYS.
+// ---------------------------------------------------------------------------
+const JSPDF_STUB = `
+window.jspdf = { jsPDF: function(){
+  var self = this;
+  window.__pdf = self;
+  window.__pdfSaved = null;
+  self.__lines = [];
+  self.__pages = 1;
+  self.internal = { pageSize: { getWidth: function(){ return 210; },
+                                getHeight: function(){ return 297; } } };
+  self.setFontSize  = function(){ return self; };
+  self.setTextColor = function(){ return self; };
+  self.addPage      = function(){ self.__pages++; return self; };
+  self.text         = function(t){ self.__lines.push(String(t)); return self; };
+  self.splitTextToSize = function(t, w){
+    var out = [];
+    String(t).split(/\\r?\\n/).forEach(function(para){
+      var line = '';
+      para.split(' ').forEach(function(word){
+        if ((line + ' ' + word).trim().length > 95){ out.push(line.trim()); line = word; }
+        else line = (line + ' ' + word).trim();
+      });
+      out.push(line);
+    });
+    return out;
+  };
+  self.save = function(name){ window.__pdfSaved = name; };
+}};
+`;
+
+// ---------------------------------------------------------------------------
 // Test bookkeeping
 // ---------------------------------------------------------------------------
 const G = '\x1b[32m', R = '\x1b[31m', Y = '\x1b[33m', DIM = '\x1b[2m', X = '\x1b[0m';
@@ -85,10 +129,16 @@ function eq(name, actual, expected){
   check(name, ok, ok ? '' : `expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
 }
 function group(title){ console.log(`\n${Y}${title}${X}`); }
+const wait = ms => new Promise(r => setTimeout(r, ms));
 
 // ---------------------------------------------------------------------------
 // Helpers for driving the page
 // ---------------------------------------------------------------------------
+// Chrome throws its coverage record away on every navigation, and this suite
+// reloads the page dozens of times. Left alone, the report would describe only
+// whatever the LAST page load happened to touch — which is how a suite can
+// claim 74% while actually measuring one screen. Harvest the record before
+// each navigation and start a new one.
 const covRuns = [];
 let COVERAGE = false;
 async function harvest(page){
@@ -99,126 +149,227 @@ async function harvest(page){
   } catch (e) { /* coverage not running yet */ }
 }
 
-// `load`, not `domcontentloaded`: the PDF library is still in flight when the
-// document is parsed, and a check that clicked Export PDF before it landed
-// would pass or fail depending on network timing. A test that is right nine
-// times out of ten teaches you to ignore red.
+// `load`, not `domcontentloaded`: the tool's "did the PDF library arrive?" note
+// is written on the load event, and a check that ran before it was landing
+// green or red depending on timing. A test that is right nine times out of ten
+// is not a test.
 //
-// "Fresh" is an EMPTY tool belonging to a teacher who has been here before,
-// which is the starting point nearly every check below wants. The visited flag
-// is set on purpose: on a genuine first arrival the tool now fills itself with
-// the sample student, and that belongs in one group of its own rather than
-// silently underneath all the others.
-async function fresh(page, base){
+// Two arrivals matter and they behave differently, so both are spelled out
+// here. A FIRST visit fills itself in with the sample student; a returning
+// teacher gets their own empty screen back. Most checks want the second.
+async function fresh(page, base, opts){
+  opts = opts || {};
   await harvest(page);
-  await page.goto(base + '/index.html', { waitUntil: 'load' });
-  await page.evaluate(() => { localStorage.clear();
-                              localStorage.setItem('readingVisited', 'yes'); });
-  await harvest(page);
-  await page.reload({ waitUntil: 'load' });
-  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
-}
-
-// A stranger who has never opened this page on this laptop.
-async function firstVisit(page, base){
-  await harvest(page);
+  await page.emulateMediaType(null);
+  await page.goto('about:blank');
   await page.goto(base + '/index.html', { waitUntil: 'load' });
   await page.evaluate(() => localStorage.clear());
-  await harvest(page);
-  await page.reload({ waitUntil: 'load' });
-  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
-}
-async function reload(page){
+  if (!opts.firstVisit) await page.evaluate(() => localStorage.setItem('readingVisited', 'yes'));
   await harvest(page);
   await page.reload({ waitUntil: 'load' });
   await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
 }
 
-// Click the E / D / M button on a numbered skill row.
-//
-// READ THIS BEFORE USING IT FOR ANYTHING ABOUT FOCUS: this calls .click() from
-// JavaScript, which never moves the keyboard anywhere. It is a fine way to set
-// up a state, and it is the WRONG way to test the scoring gesture itself — the
-// un-score check in "Taking a score back" was driven this way and stayed green
-// for weeks while the same gesture on a keyboard was broken. Use keyScore().
+// Click the E, D or M button on one skill row, with a real mouse click at real
+// coordinates — element.click() would skip whatever is sitting on top.
 async function score(page, row, letter){
-  await page.evaluate((row, letter) => {
-    const btns = document.querySelectorAll('.skill')[row].querySelectorAll('.btn-score');
-    ({ E: btns[0], D: btns[1], M: btns[2] })[letter].click();
-  }, row, letter);
+  const sel = `.skill:nth-of-type(${row + 1}) .btn-score:nth-of-type(${'edm'.indexOf(letter) + 1})`;
+  await page.click(sel);
 }
+// The letters of Maya's own six scores, read out of the tool itself and in the
+// order the rows are drawn, so a reordered skill list cannot make these helpers
+// click the wrong row and quietly stop testing anything.
+const mayaLetters = page => page.evaluate(() =>
+  READING_SKILLS.map(s => ({ Emerging:'e', Developing:'d', Mastered:'m' })[SAMPLE_STUDENT.scores[s]]));
 
-// Score a skill the way a teacher with no mouse does: put the keyboard on the
-// button and press a real key.
-async function keyScore(page, row, letter, key){
-  await page.evaluate((row, letter) => {
-    const btns = document.querySelectorAll('.skill')[row].querySelectorAll('.btn-score');
-    ({ E: btns[0], D: btns[1], M: btns[2] })[letter].focus();
-  }, row, letter);
-  await page.keyboard.press(key || 'Enter');
-}
-
-// Where the keyboard is standing, if it is standing on a score button at all.
-const focusedScoreButton = page => page.evaluate(() => {
-  const a = document.activeElement;
-  if (!a || !a.classList || !a.classList.contains('btn-score')) {
-    return { on: a ? a.tagName.toLowerCase() : 'nothing' };
+// Score every skill at a level that is NOT the one Maya arrived with — a
+// teacher working straight over the sample, one row at a time.
+async function replaceEveryScore(page){
+  const hers = await mayaLetters(page);
+  for (let row = 0; row < hers.length; row++){
+    await score(page, row, hers[row] === 'e' ? 'm' : 'e');
   }
-  return { on: 'score button', row: +a.dataset.skill, level: a.dataset.level,
-           pressed: a.getAttribute('aria-pressed') };
-});
-
-// Type over what is already in a box, the way somebody replaces text: select
-// the lot, then type. Real keys — el.select() only makes the selection.
-async function retype(page, sel, text){
-  await page.focus(sel);
-  await page.$eval(sel, el => el.select());
+}
+// The ordinary case, and the one this suite never drove: a teacher who agrees
+// with Maya on ONE skill and so leaves that row alone, and works over the other
+// five. replaceEveryScore() above cannot produce this screen — it is built to
+// avoid Maya's level on every row — which is exactly why the "the label comes
+// off when the last made-up score goes" check passed while the agreeing teacher
+// was stuck with a "Part sample" stamp on her finished record.
+async function replaceEveryScoreExcept(page, keepRow){
+  const hers = await mayaLetters(page);
+  for (let row = 0; row < hers.length; row++){
+    if (row === keepRow) continue;
+    await score(page, row, hers[row] === 'e' ? 'm' : 'e');
+  }
+}
+// And the coincidence: a real child who happens to land on exactly Maya's six.
+async function scoreExactlyLikeMaya(page){
+  const hers = await mayaLetters(page);
+  for (let row = 0; row < hers.length; row++) await score(page, row, hers[row]);
+}
+// Everything of Maya's, replaced: her six scores, both of her paragraphs, the
+// Child box and the date. Nothing she brought is left anywhere on the screen.
+async function replaceEverySampleField(page, initials, date){
+  await replaceEveryScore(page);
+  await retype(page, 'initials', initials);
+  await setValue(page, 'assessDate', date);
+  await setValue(page, 'strengthsComment',
+    'Rosa retells in order and goes back to the page to check herself.');
+  await setValue(page, 'stretchesComment',
+    'Digraphs are still guessed at; she needs the sound before the word.');
+}
+// A REAL paste, not a made-up event. A dispatched ClipboardEvent does nothing
+// at all in Chrome — no text arrives, no message is said — so a suite built on
+// one proves only that nothing happened, and that is exactly how "pasting a
+// name is silently truncated" came to be reported against a tool that in fact
+// says so. This puts the words on the actual system clipboard by typing them
+// into a scratch box and pressing Copy, then presses Paste in the real box.
+async function pasteInto(page, cdp, id, text){
+  await page.evaluate(t => {
+    const b = document.createElement('textarea');
+    b.id = '__clip'; b.value = t;
+    document.body.appendChild(b); b.focus(); b.select();
+  }, text);
+  await cdp.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'c', code: 'KeyC',
+    windowsVirtualKeyCode: 67, modifiers: 4, commands: ['copy'] });
+  await cdp.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'c', code: 'KeyC',
+    windowsVirtualKeyCode: 67, modifiers: 4 });
+  await page.evaluate(() => document.getElementById('__clip').remove());
+  await page.click('#' + id);
+  await cdp.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'v', code: 'KeyV',
+    windowsVirtualKeyCode: 86, modifiers: 4, commands: ['paste'] });
+  await cdp.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'v', code: 'KeyV',
+    windowsVirtualKeyCode: 86, modifiers: 4 });
+  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
+}
+// And a real drag-and-drop, which is the other way a whole name arrives in a
+// four-character box: dragged out of a class list in another window. Chrome
+// delivers it as a different kind of edit from typing or pasting.
+async function dropInto(page, cdp, id, text){
+  const at = await page.evaluate(i => {
+    const r = document.getElementById(i).getBoundingClientRect();
+    return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+  }, id);
+  const data = { items: [{ mimeType: 'text/plain', data: text }], dragOperationsMask: 1 };
+  for (const type of ['dragEnter', 'dragOver', 'drop']){
+    await cdp.send('Input.dispatchDragEvent', { type, x: at.x, y: at.y, data });
+  }
+  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
+}
+async function typeIn(page, id, text){
+  await page.click('#' + id);
   await page.keyboard.type(text);
 }
+// Select everything in a box and type over it, the way a teacher replaces one
+// child with the next. A triple-click does NOT reliably select all of "M.T." —
+// it stops at a word boundary, which quietly left half the old value behind and
+// made two checks pass against the wrong screen.
+async function retype(page, id, text){
+  await page.click('#' + id);
+  await page.evaluate(i => document.getElementById(i).select(), id);
+  if (text === '') await page.keyboard.press('Backspace');
+  else await page.keyboard.type(text);
+}
+async function setValue(page, id, value){
+  await page.evaluate((i, v) => {
+    const el = document.getElementById(i);
+    el.value = v;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }, id, value);
+}
+const sayMsg   = page => page.evaluate(() => document.getElementById('sayMsg').textContent);
+const counts   = page => page.evaluate(() => ['e','d','m'].map(k =>
+                          +document.getElementById('count-' + k).textContent));
+const stash    = page => page.evaluate(() => {
+                          const s = localStorage.getItem('readingStash');
+                          return s ? JSON.parse(s) : null; });
+const lastCsv  = page => page.evaluate(() => {
+                          const href = window.__downloads[window.__downloads.length - 1] || '';
+                          return decodeURIComponent(href.replace(/^data:text\/csv;charset=utf-8,/, '')); });
+const lastName = page => page.evaluate(() =>
+                          window.__downloadNames[window.__downloadNames.length - 1] || '');
 
-const stash = page => page.evaluate(() => {
-  const raw = localStorage.getItem('readingStash');
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch (e) { return 'unreadable'; }
-});
-
-const counts = page => page.evaluate(() => ({
-  e: +document.getElementById('count-e').textContent,
-  d: +document.getElementById('count-d').textContent,
-  m: +document.getElementById('count-m').textContent
+// Everything on screen that a person would look at, in one go.
+const screenState = page => page.evaluate(() => ({
+  initials:  document.getElementById('initials').value,
+  date:      document.getElementById('assessDate').value,
+  strengths: document.getElementById('strengthsComment').value,
+  stretches: document.getElementById('stretchesComment').value,
+  scored:    Object.keys(scores).length,
+  banner:    document.getElementById('sampleBanner').classList.contains('show'),
+  // Not only whether it is up, but which of the two things it says: "this is
+  // the sample" and "some of the sample is still here" are different promises.
+  bannerText: document.getElementById('sampleBanner').textContent.trim(),
+  // The warning sentence on its own, without the button that sits beside it —
+  // a hidden button still puts its words into the parent's textContent, and a
+  // screen reader reading the warning would read the button label as the end of
+  // the sentence. Asserting on both is how that stays true.
+  bannerSentence: document.getElementById('sampleBannerText').textContent.trim(),
+  // '' when the tool is not offering it at all.
+  claimBtn: document.getElementById('claimScoresBtn').hidden ? ''
+            : document.getElementById('claimScoresBtn').textContent.trim(),
+  sampleBtn: document.getElementById('sampleBtn').textContent,
+  undoShown: document.getElementById('undoClearBtn').classList.contains('show')
 }));
 
-// How much of the chart is actually painted. A shape with no area is, to a
-// person looking at the screen, a blank panel.
-const chartInk = page => page.evaluate(() => {
-  const svg = document.getElementById('pieChart');
-  let area = 0;
-  svg.querySelectorAll('path, circle').forEach(el => {
-    if (el.getAttribute('fill') === 'none') return;      // the dashed placeholder ring
-    const b = el.getBBox();
-    area += b.width * b.height;
-  });
-  return { area: Math.round(area), shapes: svg.querySelectorAll('path, circle').length,
-           text: svg.textContent.trim() };
-});
-
-const msg = page => page.$eval('#sayMsg', e => e.textContent);
-
-// Everything a person can operate on the chart panel, and how it announces
-// itself. Measured, not assumed: a click handler on a bare <div> or <path> is
-// invisible to a keyboard and to a screen reader.
-const drillTargets = page => page.evaluate(() => {
+// ---------------------------------------------------------------------------
+// The contrast sweep, run inside the page.
+//
+// Walks every element that owns text, composites the real background up the
+// ancestor chain onto the browser canvas, and works out the WCAG 2.x ratio
+// against the AA threshold for that element's own size and weight. This is the
+// check that 23 pieces of text on the first screen once failed.
+// ---------------------------------------------------------------------------
+const CONTRAST_SWEEP = () => {
+  const parse = c => {
+    const m = (c || '').match(/[\d.]+/g);
+    if (!m) return { r: 0, g: 0, b: 0, a: 0 };
+    return { r: +m[0], g: +m[1], b: +m[2], a: m.length > 3 ? +m[3] : 1 };
+  };
+  const lin = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lum = c => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+  const over = (fg, bg) => ({ r: fg.r * fg.a + bg.r * (1 - fg.a),
+                              g: fg.g * fg.a + bg.g * (1 - fg.a),
+                              b: fg.b * fg.a + bg.b * (1 - fg.a), a: 1 });
+  const bgOf = el => {
+    const stack = [];
+    let n = el;
+    while (n && n.nodeType === 1){
+      const c = parse(getComputedStyle(n).backgroundColor);
+      if (c.a > 0) stack.push(c);
+      n = n.parentElement;
+    }
+    let base = { r: 255, g: 255, b: 255, a: 1 };
+    for (let i = stack.length - 1; i >= 0; i--) base = over(stack[i], base);
+    return base;
+  };
   const out = [];
-  document.querySelectorAll('#pieChart path, #pieChart circle, .count-item')
-    .forEach(el => {
-      if (el.getAttribute('fill') === 'none') return;     // the placeholder ring
-      out.push({ tag: el.tagName.toLowerCase(),
-                 tabindex: el.getAttribute('tabindex'),
-                 role: el.getAttribute('role'),
-                 label: el.getAttribute('aria-label') });
-    });
+  document.querySelectorAll('*').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const owns = Array.from(el.childNodes).some(n => n.nodeType === 3 && n.textContent.trim());
+    if (!owns) return;
+    const cs = getComputedStyle(el);
+    if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity === 0) return;
+    // An SVG <text> is painted with fill, not color.
+    const isSvg = el.namespaceURI === 'http://www.w3.org/2000/svg';
+    const fg = parse(isSvg ? cs.fill : cs.color);
+    if (!fg.a) return;
+    const bg = bgOf(el);
+    const front = over(fg, bg);
+    const l1 = lum(front), l2 = lum(bg);
+    const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    const size = parseFloat(cs.fontSize), weight = parseInt(cs.fontWeight, 10) || 400;
+    const large = size >= 24 || (size >= 18.66 && weight >= 700);
+    const need = large ? 3 : 4.5;
+    if (ratio + 0.005 < need){
+      out.push(el.textContent.trim().slice(0, 26) + ' @' + ratio.toFixed(2) +
+               ' (needs ' + need + ')');
+    }
+  });
   return out;
-});
+};
 
 async function main(){
   if (!fs.existsSync(CHROME)){
@@ -234,1319 +385,1371 @@ async function main(){
     args: ['--no-sandbox', '--disable-dev-shm-usage']
   });
   const page = await browser.newPage();
+  // A direct line to the browser, for the two gestures puppeteer's own API
+  // cannot make: a paste from the real clipboard, and a drop from outside the
+  // page. Both matter here — this tool has a box that quietly drops what it
+  // cannot hold.
+  const cdp = await page.target().createCDPSession();
   await page.setViewport({ width: 1280, height: 900 });
 
   COVERAGE = process.argv.includes('--coverage');
   if (COVERAGE) await page.coverage.startJSCoverage({ resetOnNavigation: false });
 
-  const pageErrors = [], consoleErrors = [], hosts = new Set();
-  page.on('pageerror', e => pageErrors.push(e.message));
-  // Only real network requests. The CSV download is a data: URI built in the
-  // page — it has no host and never touches a network, which is the point.
-  page.on('request', r => {
-    try {
-      const u = new URL(r.url());
-      if (u.protocol === 'http:' || u.protocol === 'https:') hosts.add(u.host);
-    } catch (e) {}
+  // 'stub'  — answer the CDN locally with the recorder above (the normal case)
+  // 'block' — the school firewall: the request simply fails
+  // 'slow'  — the filtered school network: the request takes six seconds
+  let pdfMode = 'stub';
+  await page.setRequestInterception(true);
+  page.on('request', req => {
+    if (!/jspdf/i.test(req.url())) return req.continue();
+    if (pdfMode === 'block') return req.abort();
+    const send = () => req.respond({ status: 200,
+                                     contentType: 'text/javascript',
+                                     body: JSPDF_STUB }).catch(() => {});
+    if (pdfMode === 'slow') return setTimeout(send, 3000);
+    send();
   });
+
+  const pageErrors = [], consoleErrors = [];
+  page.on('pageerror', e => pageErrors.push(e.message));
   page.on('console', m => {
     if (m.type() !== 'error') return;
     // Chrome's message for a failed request is the same generic sentence
     // whatever the file was — the URL lives in location(), not in the text.
+    // Always report the URL, so a future 404 names itself.
     const url = (m.location() && m.location().url) || '';
     if (/favicon/i.test(url)) return;
+    if (/jspdf/i.test(url)) return;      // deliberately blocked in one group
     consoleErrors.push(m.text() + (url ? '  [' + url + ']' : ''));
   });
 
-  // Anything that would open a window or block on a dialog is stubbed, so the
-  // handlers still run and can be inspected.
   await page.evaluateOnNewDocument(() => {
-    window.__printed = 0; window.__downloads = [];
-    window.print = () => { window.__printed++; };
+    window.__downloads = [];
+    window.__downloadNames = [];
     window.__confirmAnswer = true;
     window.__confirms = [];
-    window.confirm = m => { window.__confirms.push(String(m)); return window.__confirmAnswer; };
-    window.alert = m => { window.__alert = String(m); };
-    // Catch anchor-triggered CSV downloads instead of writing to disk.
+    window.confirm = msg => { window.__confirms.push(String(msg)); return window.__confirmAnswer; };
+    window.alert = msg => { window.__alert = String(msg); };
+    // A browser that refuses to store anything — Safari's private window, or a
+    // full disk. Switched on by the URL rather than by a variable, because it
+    // has to be in force before the tool's very first line runs, and it has to
+    // survive a reload.
+    if (location.search.indexOf('breakstorage') !== -1){
+      Storage.prototype.setItem = function(){ throw new Error('the disk is full'); };
+    }
+    // Catch anchor-triggered CSV downloads instead of writing to the real
+    // Downloads folder.
     document.addEventListener('click', e => {
       const a = e.target.closest && e.target.closest('a[download]');
       if (a){
         e.preventDefault();
-        window.__downloads.push({ name: a.getAttribute('download'),
-                                  href: a.getAttribute('href') || '' });
+        window.__downloads.push(a.getAttribute('href') || '');
+        window.__downloadNames.push(a.getAttribute('download') || '');
       }
     }, true);
   });
 
   // =========================================================================
-  group('The page itself');
+  group('Arriving at the tool');
+  // =========================================================================
+  await fresh(page, base, { firstVisit: true });
 
-  await fresh(page, base);
-  {
-    const mode = await page.evaluate(() => document.compatMode);
-    const src = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-    // THE DEFECT: the file had no doctype line, so Chrome fell back to "quirks
-    // mode" — a twenty-year-old box model where padding is not counted in a
-    // width. The layout happened to survive, but every CSS check below,
-    // including the phone ones, was being measured under the wrong rules.
-    check('the page is rendered under modern layout rules, not quirks mode',
-          mode === 'CSS1Compat', 'document.compatMode = ' + mode);
-    check('the file starts with a doctype line',
-          /^<!DOCTYPE html>/i.test(src.trim()), src.slice(0, 40));
-  }
+  check('the page loads with no JavaScript errors',
+        pageErrors.length === 0, pageErrors.join(' | '));
+  check('the page loads with no console errors',
+        consoleErrors.length === 0, consoleErrors.join(' | '));
+
+  // THE DEFECT: an inline style="...background: transparent" on <body> outranked
+  // the stylesheet, so the warm page colour never painted once and the pale
+  // panels sat on plain white with almost no edge between them.
+  eq('the page paints its own warm background instead of plain white',
+     await page.evaluate(() => getComputedStyle(document.body).backgroundColor),
+     'rgb(232, 212, 196)');
+
+  const arrival = await screenState(page);
+  eq('a first-time visitor arrives to a filled-in tool, not an empty one',
+     arrival.scored, 6);
+  eq('...belonging to the sample student M.T.', arrival.initials, 'M.T.');
+  check('...clearly labelled on screen as a made-up child', arrival.banner);
+  check('...whose profile is mixed, not all one level',
+        (await counts(page)).every(n => n > 0), JSON.stringify(await counts(page)));
+
+  // THE DEFECT: the first sentence a stranger read told them to "click the same
+  // button" when they had pressed nothing, and the button meant was off the
+  // bottom of the screen.
+  const firstWords = await sayMsg(page);
+  check('the first thing the tool says names the button that empties it',
+        /Clear the sample student/.test(firstWords) && !/the same button/.test(firstWords),
+        firstWords);
+
+  // THE DEFECT: 23 of the 51 pieces of text on this screen were under the AA
+  // minimum, including the three big count numbers and the chosen E/D/M letter
+  // that is the tool's only record of a score.
+  const badContrast = await page.evaluate(CONTRAST_SWEEP);
+  check('every piece of text on the first screen can actually be read',
+        badContrast.length === 0, badContrast.join(' | '));
 
   // =========================================================================
-  group('What a stranger sees on arrival');
+  group('The library that comes from the internet');
+  // =========================================================================
+  // THE DEFECT: the <script> tag had no defer, so it BLOCKED the page from
+  // being drawn. On a filtered school network — slow, not blocked — a visitor
+  // sat looking at a blank white sheet for six seconds.
+  check('the PDF library is fetched in a way that cannot hold up the page',
+        await page.evaluate(() =>
+          !!document.querySelector('script[src*="jspdf"]').defer));
 
-  // THE DEFECT: a stranger landed on a dashed empty ring reading "Nothing
-  // scored yet" and three zeros, and had to go and find a button before the
-  // tool did anything at all. Every other tool in this portfolio has its charts
-  // full on arrival.
-  await firstVisit(page, base);
-  {
-    const c = await counts(page);
-    const ink = await chartInk(page);
-    const s = await page.evaluate(() => ({
-      banner: document.getElementById('sampleBanner').classList.contains('show'),
-      initials: document.getElementById('initials').value
-    }));
-    check('the charts are full the moment a stranger arrives, not after they find a button',
-          c.e + c.d + c.m === 6 && ink.area > 5000,
-          JSON.stringify(c) + ' ' + JSON.stringify(ink));
-    check('and what they are looking at is labelled a made-up child on the same screen',
-          s.banner && s.initials === 'M.T.', JSON.stringify(s));
-  }
+  pdfMode = 'slow';
+  await page.goto('about:blank');
+  const slowLoad = page.goto(base + '/index.html', { waitUntil: 'load' });
+  await wait(1200);
+  const whileSlow = await page.evaluate(() => ({
+    h1:    !!document.querySelector('h1'),
+    rows:  document.querySelectorAll('.skill').length,
+    text:  document.body.innerText.trim().length
+  }));
+  check('the whole tool is on screen while the slow library is still arriving',
+        whileSlow.h1 && whileSlow.rows === 6 && whileSlow.text > 200,
+        JSON.stringify(whileSlow));
+  await slowLoad;
+  pdfMode = 'stub';
 
-  // The reason this screen was left empty was a good one — nothing may EVER be
-  // overwritten on arrival — so the sample only loads when there is provably
-  // nothing to lose, and never lets itself back in afterwards.
-  await page.click('#sampleBtn');                       // put Maya away
-  await reload(page);
-  {
-    const c = await counts(page);
-    const s = await page.evaluate(() => ({
-      banner: document.getElementById('sampleBanner').classList.contains('show'),
-      initials: document.getElementById('initials').value
-    }));
-    check('once she has been cleared she does not walk back in on the next reload',
-          !s.banner && s.initials === '' && c.e + c.d + c.m === 0,
-          JSON.stringify(s) + ' ' + JSON.stringify(c));
-  }
-
-  await page.type('#initials', 'R.K.');
-  await score(page, 0, 'E');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
-  await reload(page);
-  {
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      banner: document.getElementById('sampleBanner').classList.contains('show')
-    }));
-    check('and a real assessment is never overwritten by her on a reload',
-          s.initials === 'R.K.' && s.strengths === 'REAL NOTES ABOUT A REAL CHILD' &&
-          !s.banner, JSON.stringify(s));
-  }
+  // THE DEFECT: Export PDF threw into a console nobody has open, so the main
+  // output button simply did nothing on a school network that blocks the CDN.
+  pdfMode = 'block';
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await score(page, 0, 'e');
+  const noteWhenBlocked = await page.evaluate(() =>
+    document.getElementById('pdfNote').textContent);
+  check('a blocked PDF library is announced beside the button, not left silent',
+        /did not load/.test(noteWhenBlocked), noteWhenBlocked);
+  await page.click('#pdfBtn');
+  const blockedMsg = await sayMsg(page);
+  check('...and pressing Export PDF explains itself and points at what still works',
+        /did not load/.test(blockedMsg) && /Export CSV/.test(blockedMsg), blockedMsg);
+  eq('...and nothing was lost', (await screenState(page)).scored, 1);
+  pdfMode = 'stub';
 
   // =========================================================================
-  group('The distribution chart');
-
+  group('The chart');
+  // =========================================================================
   await fresh(page, base);
 
-  {
-    const cold = await chartInk(page);
-    check('an unscored tool says what the chart is waiting for instead of sitting blank',
-          /Nothing scored yet/.test(cold.text), JSON.stringify(cold));
-  }
+  // THE DEFECT: a whole circle drawn as an arc starts and ends at the same
+  // point, and SVG then draws nothing at all — so the very first click a
+  // visitor made produced an empty chart, and so did any real reading where
+  // every skill sat in one band.
+  await score(page, 0, 'e');
+  const oneSlice = await page.evaluate(() => {
+    const svg = document.getElementById('pieChart');
+    return { shapes: svg.querySelectorAll('circle, path').length,
+             filled: Array.from(svg.querySelectorAll('circle, path'))
+                          .filter(s => s.getAttribute('fill') &&
+                                       s.getAttribute('fill') !== 'none').length };
+  });
+  check('the chart draws on the very first click a visitor makes',
+        oneSlice.filled === 1, JSON.stringify(oneSlice));
 
-  // THE DEFECT: a whole circle drawn as an SVG arc starts and ends at the same
-  // point, so the browser drew nothing. The very first click a visitor made
-  // produced an empty chart, and so did any real reading where every skill
-  // landed in one band.
-  await score(page, 0, 'E');
-  {
-    const one = await chartInk(page);
-    check('the chart draws on the very first click a visitor makes',
-          one.area > 5000, JSON.stringify(one));
-  }
+  for (let i = 1; i < 6; i++) await score(page, i, 'e');
+  const allOneBand = await page.evaluate(() => {
+    const svg = document.getElementById('pieChart');
+    const filled = Array.from(svg.querySelectorAll('circle, path'))
+                        .filter(s => s.getAttribute('fill') && s.getAttribute('fill') !== 'none');
+    return { filled: filled.length, tag: filled[0] && filled[0].tagName,
+             box: filled[0] ? filled[0].getBBox().width : 0 };
+  });
+  check('the chart still draws when every skill is the same level',
+        allOneBand.filled === 1 && allOneBand.box > 50, JSON.stringify(allOneBand));
 
-  for (let i = 1; i < 6; i++) await score(page, i, 'E');
-  {
-    const same = await chartInk(page);
-    const c = await counts(page);
-    check('the chart still draws when every skill is the same level',
-          same.area > 5000 && c.e === 6, JSON.stringify(same) + ' counts ' + JSON.stringify(c));
-    check('the one band is named and counted beside the chart',
-          /Emerging . 6/.test(same.text.replace(/\s+/g, ' ')), JSON.stringify(same.text));
-  }
+  // THE DEFECT: 'out of 1 skills scored' — the one number-carrying label that
+  // never got the singular treatment every other one has.
+  await fresh(page, base);
+  await score(page, 0, 'e');
+  const oneLabel = await page.evaluate(() =>
+    document.getElementById('pieChart').getAttribute('aria-label'));
+  check('the chart says "1 skill", not "1 skills", on the first score',
+        /out of 1 skill scored/.test(oneLabel), oneLabel);
 
-  await score(page, 5, 'M');
-  {
-    const mixed = await chartInk(page);
-    check('a mixed reading draws a slice per level',
-          mixed.shapes === 2 && mixed.area > 5000, JSON.stringify(mixed));
-  }
+  // THE DEFECT: cursor:pointer sat on the whole 516x160 panel, so the legend,
+  // the empty space beside the pie and the "Nothing scored yet" ring all said
+  // "click me" and none of them did anything.
+  const cursors = await page.evaluate(() => {
+    const svg = document.getElementById('pieChart');
+    const slice = svg.querySelector('circle, path');
+    const legend = svg.querySelector('text');
+    return { panel: getComputedStyle(svg).cursor,
+             slice: slice ? getComputedStyle(slice).cursor : 'none',
+             legend: legend ? getComputedStyle(legend).cursor : 'none' };
+  });
+  check('only the pie slices offer a hand cursor, not the legend beside them',
+        cursors.panel !== 'pointer' && cursors.slice === 'pointer' &&
+        cursors.legend !== 'pointer', JSON.stringify(cursors));
 
   // =========================================================================
-  await harvest(page);
-  group('Reaching the chart without a mouse');
-
-  // THE DEFECT: the pie slices and the three count tiles carried a click
-  // handler and nothing else — no tab stop, no role, no label. The drill-down
-  // was mouse-only, so a teacher on a keyboard, or anybody using a screen
-  // reader, could not open it at all and heard three unnamed boxes.
-  await fresh(page, base);
-  await score(page, 0, 'E');
-  await score(page, 1, 'D');
-  {
-    const t = await drillTargets(page);
-    const slices = t.filter(x => x.tag === 'path' || x.tag === 'circle');
-    check('every band of the chart and every count tile is a real button a keyboard can reach',
-          t.length === 5 && slices.length === 2 &&
-          t.every(x => x.tabindex === '0' && x.role === 'button' && x.label && x.label.length > 3),
-          JSON.stringify(t));
-    check('each one says out loud which level it is and how many skills are in it',
-          t.some(x => /Emerging: 1 skill of 2/.test(x.label || '')) &&
-          t.some(x => /Developing: 1 skill of 2/.test(x.label || '')) &&
-          t.some(x => /Mastered: nothing scored here yet/.test(x.label || '')),
-          JSON.stringify(t.map(x => x.label)));
-  }
-
-  // Enter on a slice, the way a keyboard user opens anything.
-  await page.evaluate(() => document.querySelector('#pieChart path').focus());
-  await page.keyboard.press('Enter');
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    const listed = await page.$$eval('#modalSkillsList .skill-item', els => els.length);
-    const focusIn = await page.evaluate(() =>
-      document.querySelector('#skillsModal .modal-content').contains(document.activeElement));
-    check('pressing Enter on a slice of the chart opens its list of skills',
-          open && listed === 1, `open=${open} listed=${listed}`);
-    check('and the keyboard lands inside the box instead of behind it',
-          focusIn, 'activeElement was outside the open box');
-  }
-  await page.keyboard.press('Escape');
-  {
-    const back = await page.evaluate(() => document.activeElement.tagName.toLowerCase());
-    check('closing it puts the keyboard back on the slice it came from',
-          back === 'path', 'focus went to <' + back + '>');
-  }
-
-  // The space bar on a count tile — and it must not scroll the page instead.
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.evaluate(() => document.getElementById('tile-d').focus());
-  await page.keyboard.press(' ');
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    const title = await page.$eval('#modalTitle', e => e.textContent);
-    const scrolled = await page.evaluate(() => window.scrollY);
-    check('the space bar on a count tile opens that level, and does not scroll the page away',
-          open && /Developing/.test(title) && scrolled === 0,
-          `open=${open} title=${title} scrollY=${scrolled}`);
-  }
-  await page.keyboard.press('Escape');
-
-  // A reading where everything landed in one band draws a single full circle
-  // rather than slices — that shape needs the same treatment.
-  for (let i = 0; i < 6; i++) await score(page, i, 'M');
-  {
-    const t = await drillTargets(page);
-    const ring = t.find(x => x.tag === 'circle');
-    check('the single full-circle chart is reachable and named too',
-          !!ring && ring.tabindex === '0' && ring.role === 'button' &&
-          /Mastered: 6 skills of 6/.test(ring.label || ''), JSON.stringify(t));
-  }
-
+  group('Scoring, and taking a score back');
   // =========================================================================
-  await harvest(page);
-  group('Taking a score back');
-
   await fresh(page, base);
-  await score(page, 0, 'E');
-  await score(page, 1, 'D');
-  await page.type('#strengthsComment', 'Reads with real expression.');
-  await score(page, 0, 'E');           // the same button again
-  {
-    const c = await counts(page);
-    const cls = await page.$eval('.skill .btn-score', e => e.className);
-    const kept = await page.$eval('#strengthsComment', e => e.value);
-    // THE DEFECT: clicking the level a skill already had did nothing, so the
-    // only way to undo one mis-tap was Clear — which wiped the other five
-    // skills and both comment boxes with it.
-    check('a mis-tapped score can be taken back without wiping everything else',
-          c.e === 0 && c.d === 1 && cls === 'btn-score' && kept === 'Reads with real expression.',
-          JSON.stringify(c) + ' class=' + cls + ' comment=' + JSON.stringify(kept));
-    check('the tool says which skill it just un-scored',
-          /Score removed/.test(await msg(page)), await msg(page));
-  }
+  await typeIn(page, 'initials', 'R.K.');
+  await typeIn(page, 'strengthsComment', 'Reads with real expression.');
+  await score(page, 0, 'e');
+  await score(page, 1, 'd');
 
-  // THE CHECK THAT WAS TESTING THE WRONG MOMENT: everything above this line is
-  // driven by score(), which calls element.click() from JavaScript. That route
-  // never moves the keyboard, so it could not see — and for weeks did not see —
-  // that the SAME gesture was impossible with a keyboard. The hint printed
-  // under the skills list tells a teacher to press the same button again, and
-  // on a keyboard there was no longer a button to press. From here down, real
-  // keys only.
+  // THE DEFECT: the only way to undo one mis-tapped button was Clear, which
+  // wiped the other five skills and both written comments as well.
+  await score(page, 0, 'e');
+  const afterUnscore = await screenState(page);
+  eq('a mis-tapped score can be taken back on its own', afterUnscore.scored, 1);
+  eq('...without touching the child', afterUnscore.initials, 'R.K.');
+  eq('...or the comment beside it', afterUnscore.strengths, 'Reads with real expression.');
+  check('...and the tool says which skill it took the score off',
+        /Score removed from/.test(await sayMsg(page)), await sayMsg(page));
+
+  // THE DEFECT: nothing cleared that line when a score went back on, so the one
+  // status line said "Score removed" directly above a visibly scored row — the
+  // exact correction the on-screen hint teaches.
+  await score(page, 0, 'd');
+  const afterRescore = await sayMsg(page);
+  check('the tool stops saying "Score removed" the moment the score goes back on',
+        !/Score removed/.test(afterRescore), afterRescore);
+
+  // THE DEFECT: say() started a timer per call and cancelled none of them, so
+  // saying the SAME sentence twice let the first call's timer wipe the second
+  // message early — sometimes 1.2 seconds into a 5-second life. It hit hardest
+  // when a teacher clicked twice because they thought nothing had happened.
   await fresh(page, base);
-  await keyScore(page, 2, 'D', 'Enter');
-  {
-    const f = await focusedScoreButton(page);
-    const c = await counts(page);
-    // THE DEFECT: setScore() calls renderSkills(), which empties the list and
-    // rebuilds every button — so the button the teacher was standing on was
-    // removed from the page and the keyboard landed back on <body>. A
-    // keyboard-only teacher had to Tab in from the top of the list again after
-    // every single score.
-    check('scoring with the keyboard leaves the keyboard on the button it just pressed',
-          f.on === 'score button' && f.row === 2 && f.level === 'Developing' &&
-          f.pressed === 'true' && c.d === 1,
-          JSON.stringify(f) + ' ' + JSON.stringify(c));
-  }
-  await page.keyboard.press('Enter');
-  {
-    const c = await counts(page);
-    const f = await focusedScoreButton(page);
-    check('so the on-screen hint can actually be followed — Enter again takes the score back off',
-          c.d === 0 && f.on === 'score button' && f.row === 2 && f.pressed === 'false',
-          JSON.stringify(c) + ' ' + JSON.stringify(f));
-  }
-  await page.keyboard.press(' ');
-  {
-    const c = await counts(page);
-    const kept = await page.$eval('#strengthsComment', e => e.value);
-    check('and the space bar scores too, the way it does on any other button',
-          c.d === 1 && kept === '', JSON.stringify(c) + ' comment=' + JSON.stringify(kept));
-  }
-
-  // =========================================================================
-  await harvest(page);
-  group('What survives a reload');
-
-  await fresh(page, base);
-  await page.type('#initials', 'j.m.');
-  await page.$eval('#assessDate', e => { e.value = '2026-08-07';
-                                         e.dispatchEvent(new Event('input', { bubbles: true })); });
-  await score(page, 2, 'M');
-  // THE DEFECT: the comment boxes autosaved on 'change', which does not fire
-  // until the box loses focus. A comment typed and then left alone — or the tab
-  // closed on it — was simply gone, while a score click one inch away saved
-  // instantly.
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'Typed but never clicked away from.');
-  {
-    const stored = await page.evaluate(() => localStorage.getItem('readingStrengths'));
-    check('a comment is saved the moment it is typed, before clicking anywhere else',
-          stored === 'Typed but never clicked away from.', JSON.stringify(stored));
-  }
-  await reload(page);
-  {
-    const after = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      date: document.getElementById('assessDate').value,
-      strengths: document.getElementById('strengthsComment').value,
-      m: document.getElementById('count-m').textContent
-    }));
-    eq('the scores, the child, the date and the comments all come back after a reload',
-       after, { initials: 'j.m.', date: '2026-08-07',
-                strengths: 'Typed but never clicked away from.', m: '1' });
-  }
-
-  // =========================================================================
-  await harvest(page);
-  group('Clear, and getting it back');
-
-  await fresh(page, base);
-  await page.type('#initials', 'A.B.');
-  await score(page, 0, 'M');
-  await score(page, 1, 'D');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'Loves non-fiction.');
-
-  // THE DEFECT: Clear destroyed the whole assessment on one click. It now asks
-  // first, and hands it back.
-  await page.evaluate(() => { window.__confirmAnswer = false; });
   await page.click('#clearBtn');
-  {
-    const c = await counts(page);
-    const confirms = await page.evaluate(() => window.__confirms);
-    check('Clear asks before it throws an assessment away, and saying no keeps it',
-          confirms.length === 1 && c.m === 1 && c.d === 1,
-          JSON.stringify(c) + ' confirms=' + JSON.stringify(confirms));
-    check('the question says what will be lost and that it can be undone',
-          /Undo clear/.test(confirms[0]), confirms[0]);
-  }
-
-  await page.evaluate(() => { window.__confirmAnswer = true; });
+  eq('pressing Clear on an empty tool says so',
+     /nothing to clear/.test(await sayMsg(page)), true);
+  await wait(4200);
   await page.click('#clearBtn');
-  {
-    const c = await counts(page);
-    const shown = await page.$eval('#undoClearBtn', e => e.className);
-    check('saying yes really does clear it', c.m === 0 && c.d === 0, JSON.stringify(c));
-    check('and the tool offers Undo clear rather than leaving you stuck',
-          /show/.test(shown) && /Undo clear/.test(await msg(page)),
-          shown + ' | ' + await msg(page));
-  }
-
-  await page.click('#undoClearBtn');
-  {
-    const back = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      m: document.getElementById('count-m').textContent,
-      d: document.getElementById('count-d').textContent,
-      stored: localStorage.getItem('readingScores')
-    }));
-    eq('Undo clear brings back the scores, the child and the comments',
-       { initials: back.initials, strengths: back.strengths, m: back.m, d: back.d },
-       { initials: 'A.B.', strengths: 'Loves non-fiction.', m: '1', d: '1' });
-    check('and writes them back to storage, so a reload keeps them too',
-          /Mastered/.test(back.stored || ''), JSON.stringify(back.stored));
-  }
-
-  // Undo used to live only in a variable, so a reload — or closing the laptop
-  // on a browser that restores tabs — quietly took the way back with it.
-  await page.click('#clearBtn');
-  await reload(page);
-  {
-    const s = await page.evaluate(() => ({
-      shown: document.getElementById('undoClearBtn').classList.contains('show'),
-      label: document.getElementById('undoClearBtn').textContent
-    }));
-    check('Undo clear is still there after a reload', s.shown && /Undo clear/.test(s.label),
-          JSON.stringify(s));
-  }
-  await page.click('#undoClearBtn');
-  {
-    const back = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      shown: document.getElementById('undoClearBtn').classList.contains('show'),
-      stash: localStorage.getItem('readingStash')
-    }));
-    eq('and it still hands the whole assessment back, then stops offering',
-       back, { initials: 'A.B.', strengths: 'Loves non-fiction.', shown: false, stash: null });
-  }
+  await wait(1400);
+  check('saying the same thing twice does not make it vanish early',
+        /nothing to clear/.test(await sayMsg(page)), await sayMsg(page));
 
   // =========================================================================
-  await harvest(page);
-  group('The sample student');
-
+  group('Who was assessed, and what leaves the laptop');
+  // =========================================================================
   await fresh(page, base);
-  await page.click('#sampleBtn');
-  {
-    const s = await page.evaluate(() => ({
-      banner: document.getElementById('sampleBanner').textContent.trim(),
-      shown: document.getElementById('sampleBanner').classList.contains('show'),
-      initials: document.getElementById('initials').value,
-      date: document.getElementById('assessDate').value,
-      strengths: document.getElementById('strengthsComment').value.length,
-      stretches: document.getElementById('stretchesComment').value.length,
-      btn: document.getElementById('sampleBtn').textContent
-    }));
-    const c = await counts(page);
-    const ink = await chartInk(page);
-    check('one click fills the tool so a visitor sees it working',
-          s.shown && c.e + c.d + c.m === 6 && s.strengths > 50 && s.stretches > 50 && ink.area > 5000,
-          JSON.stringify(s) + ' ' + JSON.stringify(c));
-    check('the sample child is Maya Torres, initials M.T.',
-          /Maya Torres/.test(s.banner) && s.initials === 'M.T.', JSON.stringify(s));
-    check('the sample is labelled on screen as not a real child',
-          /Not a real child/i.test(s.banner), s.banner);
-    check('her profile is mixed — she is not perfect and not the same on everything',
-          c.e > 0 && c.d > 0 && c.m > 0, JSON.stringify(c));
-    check('the sample carries a date like a real record would',
-          /^\d{4}-\d{2}-\d{2}$/.test(s.date), s.date);
-    check('the button now offers to clear her again',
-          /Clear the sample/.test(s.btn), s.btn);
-    const confirms = await page.evaluate(() => window.__confirms);
-    check('an empty tool just fills in — a visitor is not asked to confirm anything',
-          confirms.length === 0, JSON.stringify(confirms));
-  }
+  await typeIn(page, 'initials', 'R.K.');
+  await setValue(page, 'assessDate', '2026-08-07');
+  await score(page, 0, 'm');
+  await typeIn(page, 'strengthsComment', 'Re-reads when he loses the thread, "every time", and says so.');
+  await typeIn(page, 'stretchesComment', 'Two-syllable words,\nespecially with a schwa.');
+  await page.click('#csvBtn');
 
-  await reload(page);
-  {
-    const after = await page.evaluate(() => ({
-      shown: document.getElementById('sampleBanner').classList.contains('show'),
-      initials: document.getElementById('initials').value
-    }));
-    // If the flag were not saved, a reload would show Maya's made-up scores
-    // with no label on them — the one thing that must never happen.
-    check('after a reload the sample is still labelled as a sample',
-          after.shown && after.initials === 'M.T.', JSON.stringify(after));
-  }
+  const csv = await lastCsv(page);
+  const csvName = await lastName(page);
+  check('the spreadsheet says which child it is for and when',
+        /^R\.K\.,2026-08-07,/m.test(csv.split('\r\n')[1]), csv.split('\r\n')[1]);
+  eq('the file is named for that child and that date',
+     csvName, 'reading-assessment_RK_2026-08-07.csv');
+  // THE DEFECT: the comments were read and then left out of the export.
+  check('the spreadsheet carries both comments, not just the scores',
+        csv.indexOf('loses the thread') !== -1 && csv.indexOf('schwa') !== -1);
+  // THE DEFECT: quotes, commas and newlines were not escaped, so the columns
+  // came out shuffled or empty.
+  check('a comment with a comma, a quote and a line break does not break the columns',
+        csv.indexOf('""every time""') !== -1 &&
+        csv.indexOf('"Two-syllable words,\nespecially with a schwa."') !== -1,
+        csv.split('\r\n')[1]);
 
-  await page.click('#sampleBtn');
-  {
-    const c = await counts(page);
-    const s = await page.evaluate(() => ({
-      shown: document.getElementById('sampleBanner').classList.contains('show'),
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      stored: localStorage.getItem('readingScores')
-    }));
-    check('one click clears the sample student and leaves the tool empty',
-          !s.shown && s.initials === '' && s.strengths === '' &&
-          c.e + c.d + c.m === 0 && s.stored === null,
-          JSON.stringify(s) + ' ' + JSON.stringify(c));
-  }
-
-  // =========================================================================
-  await harvest(page);
-  group('The sample student cannot eat a real assessment');
-
-  // THE DEFECT: "Try it with a sample student" sits an inch from Export and
-  // reads like a harmless tour, so a teacher mid-reading clicks it. It used to
-  // overwrite a half-finished real assessment with Maya's — no question asked,
-  // no Undo offered — and a second click then dropped every key in storage, so
-  // the real work was gone for good. Clear had a confirm AND an Undo; the more
-  // inviting button had neither.
+  // THE DEFECT: fileStamp() stripped every character outside A-Z0-9, so Ö.M.
+  // and É.M. produced ONE filename and the second download silently replaced
+  // the first in the teacher's Downloads folder.
   await fresh(page, base);
-  await page.type('#initials', 'R.K.');
-  await score(page, 0, 'E');
-  await score(page, 3, 'M');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
+  await typeIn(page, 'initials', 'Ö.M.');
+  await setValue(page, 'assessDate', '2026-08-07');
+  await page.click('#csvBtn');
+  const nameO = await lastName(page);
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'É.M.');
+  await setValue(page, 'assessDate', '2026-08-07');
+  await page.click('#csvBtn');
+  const nameE = await lastName(page);
+  check('two children with accented initials do not get the same filename',
+        nameO !== nameE, nameO + ' vs ' + nameE);
+  check('...and each filename still names the child inside the file',
+        /Ö/.test(nameO) && /É/.test(nameE), nameO + ' | ' + nameE);
 
-  await page.evaluate(() => { window.__confirmAnswer = false; });
-  await page.click('#sampleBtn');
-  {
-    const s = await page.evaluate(() => ({
-      confirms: window.__confirms,
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      stored: localStorage.getItem('readingStrengths'),
-      banner: document.getElementById('sampleBanner').classList.contains('show')
-    }));
-    const c = await counts(page);
-    check('it asks first when there is a real assessment on the screen',
-          s.confirms.length === 1, JSON.stringify(s.confirms));
-    check('the question says what is about to be replaced, and that it can be undone',
-          /replaced by Maya Torres/.test(s.confirms[0] || '') &&
-          /Bring my assessment back/.test(s.confirms[0] || ''), s.confirms[0]);
-    check('saying no changes absolutely nothing — on the screen or in storage',
-          s.initials === 'R.K.' && s.strengths === 'REAL NOTES ABOUT A REAL CHILD' &&
-          s.stored === 'REAL NOTES ABOUT A REAL CHILD' && !s.banner &&
-          c.e === 1 && c.m === 1,
-          JSON.stringify(s) + ' ' + JSON.stringify(c));
-  }
+  // THE DEFECT: with the Date box untouched, the filename claimed today while
+  // the record inside said "Date: —". A reading done on Monday and exported on
+  // Friday was filed under Friday by a sheet that denied having a date.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await score(page, 0, 'm');
+  await page.click('#csvBtn');
+  const noDateName = await lastName(page);
+  const noDateRow = (await lastCsv(page)).split('\r\n')[1];
+  check('an untouched date is filed as "no-date", not as today',
+        /no-date/.test(noDateName), noDateName);
+  check('...so the filename and the record agree about the date',
+        noDateRow.startsWith('R.K.,,'), noDateRow);
 
-  await page.evaluate(() => { window.__confirmAnswer = true; });
-  await page.click('#sampleBtn');
-  {
-    const s = await page.evaluate(() => ({
-      strengths: document.getElementById('strengthsComment').value,
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show'),
-      undoLabel: document.getElementById('undoClearBtn').textContent
-    }));
-    check('saying yes loads Maya but offers the way back, the same as Clear does',
-          /Maya/.test(s.strengths) && s.undoShown &&
-          /Bring my assessment back/.test(s.undoLabel), JSON.stringify(s));
-    check('and the tool says out loud that the real assessment is safe',
-          /safe/.test(await msg(page)), await msg(page));
-  }
+  // THE DEFECT: the Child box takes four characters and swallowed the fifth in
+  // silence, so a stranger typing a name got "Sophia" filed as "SOPH".
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'Sophia');
+  const truncated = await screenState(page);
+  eq('the Child box still keeps initials only', truncated.initials, 'Soph');
+  check('...and now says so when it drops what you typed',
+        /initials only/i.test(await sayMsg(page)), await sayMsg(page));
+  check('...and says it on the screen before you type, too',
+        /initials/i.test(await page.evaluate(() =>
+          document.querySelector('label[for="initials"]').textContent)));
 
-  // "Bring my assessment back" is a promise. A promise that expires the moment
-  // the tab is reloaded is not one — and reloading, or closing the laptop lid
-  // on a browser that restores tabs, is exactly what happens between one child
-  // and the next.
-  await reload(page);
-  {
-    const s = await page.evaluate(() => ({
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show'),
-      undoLabel: document.getElementById('undoClearBtn').textContent,
-      banner: document.getElementById('sampleBanner').classList.contains('show')
-    }));
-    check('the way back is still offered after a reload, not just in the same breath',
-          s.undoShown && /Bring my assessment back/.test(s.undoLabel) && s.banner,
-          JSON.stringify(s));
-  }
-
-  // The second click — "Clear the sample student" — used to be the point of no
-  // return, dropping every key in storage including the stashed real work.
-  await page.click('#sampleBtn');
-  {
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show')
-    }));
-    check('clearing the sample afterwards still leaves the way back',
-          s.initials === '' && s.undoShown, JSON.stringify(s));
-  }
-
-  await page.click('#undoClearBtn');
-  {
-    const back = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      stored: localStorage.getItem('readingStrengths'),
-      banner: document.getElementById('sampleBanner').classList.contains('show'),
-      sampleFlag: localStorage.getItem('readingSample')
-    }));
-    const c = await counts(page);
-    eq('the real assessment comes back whole — scores, child and comments',
-       { initials: back.initials, strengths: back.strengths, stored: back.stored,
-         banner: back.banner, e: c.e, m: c.m },
-       { initials: 'R.K.', strengths: 'REAL NOTES ABOUT A REAL CHILD',
-         stored: 'REAL NOTES ABOUT A REAL CHILD', banner: false, e: 1, m: 1 });
-    check('and it is no longer labelled as a sample, because it is not one',
-          back.sampleFlag === '', JSON.stringify(back.sampleFlag));
-  }
+  // Typing is not how a whole name usually arrives in this box — it is pasted
+  // out of a class list, or dragged in from another window. Both were untested,
+  // and the warning is driven by one event, so both are tested here now with
+  // the real clipboard and a real drop rather than a made-up event.
+  await fresh(page, base);
+  await pasteInto(page, cdp, 'initials', 'Sophia');
+  const pasted = await screenState(page);
+  eq('a pasted full name is cut down to initials', pasted.initials, 'Soph');
+  check('...and the tool says so, the same as when it is typed',
+        /initials only/i.test(await sayMsg(page)), await sayMsg(page));
+  await fresh(page, base);
+  await dropInto(page, cdp, 'initials', 'Sophia');
+  const dropped = await screenState(page);
+  eq('a name dragged into the box is cut down too', dropped.initials, 'Soph');
+  check('...and that is not done in silence either',
+        /initials only/i.test(await sayMsg(page)), await sayMsg(page));
 
   // =========================================================================
-  await harvest(page);
-  group('The put-away assessment cannot be destroyed behind your back');
+  group('The made-up child, and keeping her separate from a real one');
+  // =========================================================================
+  await fresh(page, base, { firstVisit: true });
+  await replaceEverySampleField(page, 'R.K.', '2026-08-07');
 
-  // Every check in this group is the same shape of bug wearing a different
-  // coat: something quietly spent the ONE place this tool has to keep a
-  // put-away assessment, and a teacher's real work went with it. Two of them
-  // said nothing at all while they did it. The first said the opposite.
+  // THE DEFECT: the sample flag went on when Maya loaded and came off for
+  // nothing short of Clear, so a visitor who typed their own child over her got
+  // exports branding that real child "Sample student — Maya Torres (M.T.) — not
+  // a real child", inside the same row whose Child cell said R.K.
+  const typedOver = await screenState(page);
+  check('replacing every last piece of the sample takes the banner off the screen',
+        !typedOver.banner, typedOver.bannerText);
+  await page.click('#csvBtn');
+  const realCsv = await lastCsv(page);
+  const realName = await lastName(page);
+  check('...and out of the spreadsheet',
+        realCsv.indexOf('Maya Torres') === -1 && /^R\.K\.,2026-08-07,,/m.test(realCsv.split('\r\n')[1]),
+        realCsv.split('\r\n')[1]);
+  check('...and off the filename', realName.indexOf('SAMPLE') === -1, realName);
+  await page.click('#pdfBtn');
+  const realPdf = await page.evaluate(() => window.__pdf.__lines.join(' | '));
+  check('...and off the PDF report',
+        realPdf.indexOf('Maya Torres') === -1 && /Child: R\.K\./.test(realPdf), realPdf.slice(0, 160));
+
+  // THE DEFECT THIS GROUP MISSED THE FIRST TIME, and it is why the check above
+  // now replaces every field instead of just the Child box: the fix for the
+  // defect above dropped the sample label on the FIRST KEYSTROKE, because the
+  // flag was tied to "is the screen still the sample EXACTLY". One Backspace in
+  // the Child box — M.T. to M.T — and the banner went, the button flipped, the
+  // filename lost SAMPLE- and the spreadsheet's Sample record column emptied,
+  // while all six of Maya's made-up scores and both of her made-up paragraphs
+  // were still sitting there. A wholly fabricated child's record, with nothing
+  // anywhere on it to say so. The old test passed because it only ever changed
+  // the two fields that carry no made-up data.
+  await fresh(page, base, { firstVisit: true });
+  await page.click('#initials');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Backspace');
+  const nibbled = await screenState(page);
+  eq('one Backspace in the Child box really does change it', nibbled.initials, 'M.T');
+  check('...and Maya\'s made-up scores are all still on the screen', nibbled.scored === 6);
+  check('...so the sample banner STAYS UP', nibbled.banner, JSON.stringify(nibbled));
+  check('...and says which way round it is now, and what to do about it',
+        /still on this screen/i.test(nibbled.bannerText) &&
+        /Clear the sample student/.test(nibbled.bannerText), nibbled.bannerText);
+  await page.click('#csvBtn');
+  const nibbledCsv = await lastCsv(page);
+  check('...the spreadsheet still marks the record as part sample',
+        /Part sample/.test(nibbledCsv.split('\r\n')[1]), nibbledCsv.split('\r\n')[1].slice(0, 120));
+  check('...and SAMPLE- is still on the filename',
+        /^reading-assessment_SAMPLE-/.test(await lastName(page)), await lastName(page));
+  await page.click('#pdfBtn');
+  check('...and the printed report still carries a label',
+        await page.evaluate(() => window.__pdf.__lines.some(l => /Part sample/.test(l))));
+
+  // It has to survive a reload too — that is where the flag used to be read
+  // back off the disk and believed.
+  await page.reload({ waitUntil: 'load' });
+  const nibbledAgain = await screenState(page);
+  check('...and the label is still there after the tab is reloaded',
+        nibbledAgain.banner && nibbledAgain.scored === 6, JSON.stringify(nibbledAgain));
+
+  // The flag is not a one-way latch any anymore: put her back exactly and the
+  // full sample label comes back with her, the way Cmd+Z would.
+  await retype(page, 'initials', 'M.T.');
+  const backAgain = await screenState(page);
+  check('putting the sample back exactly brings the full sample label back',
+        backAgain.banner && /These scores are made up/.test(backAgain.bannerText),
+        backAgain.bannerText);
+  await page.click('#csvBtn');
+  check('...and the spreadsheet calls it the sample student again',
+        (await lastCsv(page)).indexOf(
+          'Sample student — Maya Torres (M.T.) — not a real child') !== -1);
+
+  // Half-replaced, the other way round: the teacher's own child in the Child
+  // box and her own comments, but Maya's six made-up scores still underneath.
+  await fresh(page, base, { firstVisit: true });
+  await retype(page, 'initials', 'R.K.');
+  await setValue(page, 'strengthsComment', 'Rosa reads the pictures first, every time.');
+  await setValue(page, 'stretchesComment', 'Blends stall at three sounds.');
+  const scoresLeft = await screenState(page);
+  check('made-up SCORES left under a real child still count as sample data',
+        scoresLeft.banner, JSON.stringify(scoresLeft));
+  await page.click('#csvBtn');
+  const scoresLeftCsv = await lastCsv(page);
+  check('...and the spreadsheet says "part sample", not that this is Maya\'s record',
+        /Part sample/.test(scoresLeftCsv) &&
+        scoresLeftCsv.indexOf('Sample student — Maya Torres (M.T.) — not a real child') === -1,
+        scoresLeftCsv.split('\r\n')[1].slice(0, 120));
+  // ...and replacing the last of the made-up scores is what finally takes it off.
+  await replaceEveryScore(page);
+  const nothingLeft = await screenState(page);
+  check('replacing the last made-up score is what finally takes the label off',
+        !nothingLeft.banner && nothingLeft.scored === 6, JSON.stringify(nothingLeft));
+  await page.click('#csvBtn');
+  check('...and the spreadsheet is a clean record of a real child',
+        (await lastCsv(page)).indexOf('Maya Torres') === -1);
+
+  // =========================================================================
+  // THE CHECK ABOVE WAS TESTING THE WRONG MOMENT.
   //
-  // The group above stops at "clearing the sample afterwards still leaves the
-  // way back" — it never pressed the sample button a third time, never pressed
-  // Clear while Maya was showing, and never pressed Undo over a new child. All
-  // three lost an assessment.
-
-  // --- Clear, pressed while the sample student is on the screen -------------
-  // THE DEFECT: clearForm() ran `lastCleared = snapshot('clear')` with no check
-  // that a stash was already standing. With Maya on the screen on top of R.K.'s
-  // put-away assessment, Clear replaced R.K. with a snapshot of MAYA — and then
-  // said "Cleared. Press 'Undo clear' if that was not what you meant". Undo
-  // handed back Maya. R.K. was gone for good, under a reassurance that she was
-  // not.
-  await fresh(page, base);
-  await page.evaluate(() => { window.__confirmAnswer = true; window.__confirms = []; });
-  await page.type('#initials', 'R.K.');
-  await score(page, 0, 'E');
-  await score(page, 3, 'M');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
-  await page.click('#sampleBtn');                       // R.K. put away, Maya loaded
-  await page.evaluate(() => { window.__confirms = []; });
-  await page.click('#clearBtn');
-  {
-    const held = await stash(page);
-    const s = await page.evaluate(() => ({
-      confirms: window.__confirms,
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show'),
-      undoLabel: document.getElementById('undoClearBtn').textContent,
-      msg: document.getElementById('sayMsg').textContent
-    }));
-    check('Clear does not spend the put-away assessment on a snapshot of the sample student',
-          !!held && held.initials === 'R.K.' && held.sample === false &&
-          held.strengths === 'REAL NOTES ABOUT A REAL CHILD', JSON.stringify(held));
-    check('the way back is still offered, and still named after the real assessment',
-          s.undoShown && /Bring my assessment back/.test(s.undoLabel), JSON.stringify(s));
-    // The reassurance has to be true. "Undo clear will bring them straight
-    // back" over work that has already been destroyed is worse than silence.
-    check('and what it says matches what it did, rather than promising back a child it threw away',
-          /still here/.test(s.msg) && /Bring my assessment back/.test(s.msg), s.msg);
-    check('the question it asked said out loud that the put-away assessment was untouched',
-          /R\.K\./.test(s.confirms[0] || '') && /not touched/.test(s.confirms[0] || ''),
-          JSON.stringify(s.confirms));
-  }
-  await page.click('#undoClearBtn');
-  {
-    const back = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      banner: document.getElementById('sampleBanner').classList.contains('show')
-    }));
-    const c = await counts(page);
-    eq('and the button hands back the real child, not Maya',
-       { initials: back.initials, strengths: back.strengths, banner: back.banner,
-         e: c.e, m: c.m },
-       { initials: 'R.K.', strengths: 'REAL NOTES ABOUT A REAL CHILD', banner: false,
-         e: 1, m: 1 });
-  }
-
-  // --- the sample button, pressed a third time -----------------------------
-  // THE DEFECT: after "Clear the sample student" the screen is empty, so
-  // hasRealWork() was false and no new snapshot was taken — and loadSample's
-  // `lastCleared = stash || null` then threw the standing rescue away. No
-  // confirm, no message; the button simply vanished from the row and R.K. was
-  // unrecoverable.
-  await fresh(page, base);
-  await page.evaluate(() => { window.__confirmAnswer = true; window.__confirms = []; });
-  await page.type('#initials', 'R.K.');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
-  await page.click('#sampleBtn');                       // R.K. put away
-  await page.click('#sampleBtn');                       // Maya cleared, R.K. still held
-  await page.evaluate(() => { window.__confirms = []; });
-  await page.click('#sampleBtn');                       // ...and Maya AGAIN
-  {
-    const held = await stash(page);
-    const s = await page.evaluate(() => ({
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show'),
-      undoLabel: document.getElementById('undoClearBtn').textContent,
-      msg: document.getElementById('sayMsg').textContent
-    }));
-    check('loading the sample a second time does not drop the assessment already put away',
-          !!held && held.initials === 'R.K.' && s.undoShown &&
-          /Bring my assessment back/.test(s.undoLabel),
-          JSON.stringify(held) + ' ' + JSON.stringify(s));
-    check('and it says so, rather than letting a teacher think the way back is gone',
-          /safe/.test(s.msg) && /Bring my assessment back/.test(s.msg), s.msg);
-  }
-  await page.click('#sampleBtn');
-  await page.click('#undoClearBtn');
-  {
-    const back = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value
-    }));
-    eq('and R.K. is still there to be brought back afterwards',
-       back, { initials: 'R.K.', strengths: 'REAL NOTES ABOUT A REAL CHILD' });
-  }
-
-  // --- Undo, pressed over a different child --------------------------------
-  // THE DEFECT: undoClear() wrote the put-away assessment straight over the
-  // screen — no confirm, and no snapshot of what it was discarding. The button
-  // sits in the row for as long as something is put away, so a teacher who had
-  // moved on to the NEXT child lost that child on one click, with nothing left
-  // to press.
-  await fresh(page, base);
-  await page.evaluate(() => { window.__confirmAnswer = true; window.__confirms = []; });
-  await page.type('#initials', 'R.K.');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'FIRST CHILD NOTES');
-  await page.click('#sampleBtn');
-  await page.click('#sampleBtn');                       // R.K. put away, screen empty
-  await page.type('#initials', 'P.T.');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'SECOND CHILD NOTES');
-  await score(page, 1, 'M');
-
-  await page.evaluate(() => { window.__confirms = []; window.__confirmAnswer = false; });
-  await page.click('#undoClearBtn');
-  {
-    const s = await page.evaluate(() => ({
-      confirms: window.__confirms,
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value
-    }));
-    const c = await counts(page);
-    check('Undo asks first when there is a different child on the screen',
-          s.confirms.length === 1 && /P\.T\./.test(s.confirms[0] || ''),
-          JSON.stringify(s.confirms));
-    check('and saying no leaves that child exactly as they were',
-          s.initials === 'P.T.' && s.strengths === 'SECOND CHILD NOTES' && c.m === 1,
-          JSON.stringify(s) + ' ' + JSON.stringify(c));
-  }
-
-  await page.evaluate(() => { window.__confirmAnswer = true; });
-  await page.click('#undoClearBtn');
-  {
-    const held = await stash(page);
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      undoLabel: document.getElementById('undoClearBtn').textContent
-    }));
-    check('saying yes swaps the two rather than destroying one of them',
-          s.initials === 'R.K.' && s.strengths === 'FIRST CHILD NOTES' &&
-          !!held && held.initials === 'P.T.' && held.strengths === 'SECOND CHILD NOTES',
-          JSON.stringify(s) + ' held=' + JSON.stringify(held));
-    check('and the button says, in the words on it, that the other one is still there',
-          /Bring the other one back/.test(s.undoLabel), s.undoLabel);
-  }
-  await page.click('#undoClearBtn');
-  {
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value
-    }));
-    const c = await counts(page);
-    eq('and pressing it swaps them straight back, with the second child whole',
-       { initials: s.initials, strengths: s.strengths, m: c.m },
-       { initials: 'P.T.', strengths: 'SECOND CHILD NOTES', m: 1 });
-  }
-
-  // --- Clear, pressed on a tool that is already empty ----------------------
-  // The same defect once more: an empty screen is still a snapshot, and taking
-  // one wrote nothing over the real assessment the tool was holding.
-  await fresh(page, base);
-  await page.evaluate(() => { window.__confirmAnswer = true; window.__confirms = []; });
-  await page.type('#initials', 'R.K.');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
-  await page.click('#sampleBtn');
-  await page.click('#sampleBtn');                       // empty screen, R.K. held
-  await page.evaluate(() => { window.__confirms = []; });
-  await page.click('#clearBtn');
-  {
-    const held = await stash(page);
-    const s = await page.evaluate(() => ({ confirms: window.__confirms,
-                                           msg: document.getElementById('sayMsg').textContent }));
-    check('Clear on an already-empty tool does nothing, instead of spending the way back on nothing',
-          s.confirms.length === 0 && !!held && held.initials === 'R.K.' &&
-          /nothing to clear/i.test(s.msg),
-          JSON.stringify(s) + ' held=' + JSON.stringify(held));
-  }
-
-  // --- two real assessments, one place to keep them ------------------------
-  // There is only one stash. When it already holds a real assessment, both
-  // buttons that would take that place now say so plainly rather than picking a
-  // winner in silence.
-  await fresh(page, base);
-  await page.evaluate(() => { window.__confirmAnswer = true; window.__confirms = []; });
-  await page.type('#initials', 'R.K.');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'FIRST CHILD NOTES');
-  await page.click('#sampleBtn');
-  await page.click('#sampleBtn');
-  await page.type('#initials', 'P.T.');
-  await page.click('#strengthsComment');
-  await page.type('#strengthsComment', 'SECOND CHILD NOTES');
-  await page.evaluate(() => { window.__confirms = []; window.__confirmAnswer = false; });
-  await page.click('#clearBtn');
-  await page.click('#sampleBtn');
-  {
-    const s = await page.evaluate(() => ({
-      confirms: window.__confirms,
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value
-    }));
-    const held = await stash(page);
-    check('Clear warns, by name, that the earlier assessment cannot be brought back afterwards',
-          /R\.K\./.test(s.confirms[0] || '') && /CANNOT be brought back/.test(s.confirms[0] || ''),
-          JSON.stringify(s.confirms[0]));
-    check('and so does the sample button, in the same words',
-          /R\.K\./.test(s.confirms[1] || '') && /CANNOT be brought back/.test(s.confirms[1] || ''),
-          JSON.stringify(s.confirms[1]));
-    check('saying no to either one changes nothing, on the screen or in the stash',
-          s.initials === 'P.T.' && s.strengths === 'SECOND CHILD NOTES' &&
-          !!held && held.initials === 'R.K.',
-          JSON.stringify(s) + ' held=' + JSON.stringify(held));
-  }
-  await page.evaluate(() => { window.__confirmAnswer = true; });
-
-  // --- a teacher typing their own child over the sample --------------------
-  // THE DEFECT: hasRealWork() opened with `if (sampleLoaded) return false`, so
-  // the entire screen counted for nothing the moment Maya was on it. "Clear the
-  // sample student" — a button that sounds like it throws away nothing at all —
-  // then emptied everything typed on top of her with no question and no way
-  // back. The tool now shows the sample on a first arrival, which makes a
-  // stranger typing straight over it the likeliest thing that happens here.
-  await firstVisit(page, base);
-  await page.evaluate(() => { window.__confirmAnswer = true; window.__confirms = []; });
-  await retype(page, '#initials', 'J.M.');
-  await retype(page, '#strengthsComment', 'MY OWN REAL NOTES');
-  {
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value,
-      banner: document.getElementById('sampleBanner').classList.contains('show')
-    }));
-    check('typing over the sample really does change the screen, and it stays labelled a sample',
-          s.initials === 'J.M.' && s.strengths === 'MY OWN REAL NOTES' && s.banner,
-          JSON.stringify(s));
-  }
-  await page.evaluate(() => { window.__confirms = []; window.__confirmAnswer = false; });
-  await page.click('#sampleBtn');                       // "Clear the sample student"
-  {
-    const s = await page.evaluate(() => ({
-      confirms: window.__confirms,
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value
-    }));
-    check('"Clear the sample student" asks first once something of yours is typed over her',
-          s.confirms.length === 1 && /typed on top of the sample/.test(s.confirms[0] || ''),
-          JSON.stringify(s.confirms));
-    check('and saying no keeps what you typed',
-          s.initials === 'J.M.' && s.strengths === 'MY OWN REAL NOTES', JSON.stringify(s));
-  }
-  await page.evaluate(() => { window.__confirmAnswer = true; });
-  await page.click('#sampleBtn');
-  {
-    const held = await stash(page);
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show')
-    }));
-    check('and saying yes keeps a way back, instead of emptying the screen for good',
-          s.initials === '' && s.undoShown && !!held && held.initials === 'J.M.' &&
-          held.strengths === 'MY OWN REAL NOTES', JSON.stringify(s) + ' held=' + JSON.stringify(held));
-  }
-  await page.click('#undoClearBtn');
-  {
-    const s = await page.evaluate(() => ({
-      initials: document.getElementById('initials').value,
-      strengths: document.getElementById('strengthsComment').value
-    }));
-    eq('and it comes back whole', s, { initials: 'J.M.', strengths: 'MY OWN REAL NOTES' });
-  }
-
-  // Maya exactly as she loads is still free to throw away — she is made up, and
-  // stopping to ask about her would train a teacher to click through the
-  // question above without reading it.
-  await firstVisit(page, base);
-  await page.evaluate(() => { window.__confirms = []; });
-  await page.click('#sampleBtn');
-  {
-    const s = await page.evaluate(() => ({ confirms: window.__confirms,
-      initials: document.getElementById('initials').value }));
-    check('but the untouched sample is still cleared in one click, with no question',
-          s.confirms.length === 0 && s.initials === '', JSON.stringify(s));
-  }
-
+  // replaceEveryScore() is built to pick a level that is NOT Maya's on every
+  // one of the six rows, so the only teacher it has ever driven is one who
+  // disagrees with the sample about everything. The ordinary teacher agrees
+  // with it somewhere — three levels, six skills — and leaves that row alone.
+  //
+  // THE DEFECT that hid behind it: her finished record, with her child in the
+  // Child box, her date, both of her comments and five scores she had entered
+  // herself, still came out stamped "Part sample — some of this is Maya Torres,
+  // the made-up example, not a real child" — on the banner, in the spreadsheet
+  // column, on the PDF and on a SAMPLE- filename. The label was literally true,
+  // because that sixth level did arrive with Maya. But nothing on the page said
+  // which score it meant or what to do about it, and the only thing that
+  // actually worked was tapping that one button off and straight back on.
+  //
+  // The tool cannot tell "I agree with this one" from "I have not got to this
+  // one yet" — the two screens are identical — so it stops guessing, says which
+  // pieces are still Maya's, and offers the teacher the one button that settles
+  // it. These checks drive that whole path.
   // =========================================================================
-  await harvest(page);
-  group('The spreadsheet export');
-
-  await fresh(page, base);
-  await page.type('#initials', 'r.k.');
-  await page.$eval('#assessDate', e => { e.value = '2026-08-07';
-                                         e.dispatchEvent(new Event('input', { bubbles: true })); });
-  await score(page, 0, 'M');
-  await score(page, 1, 'E');
-  await page.click('#strengthsComment');
-  // A quote, a comma and a newline — the three things that break a naive CSV.
-  await page.type('#strengthsComment', 'She said "I can read it", and did.\nTwice.');
-  await page.click('#stretchesComment');
-  await page.type('#stretchesComment', 'Blends, but slowly.');
-  await page.click('#csvBtn');
-  {
-    const dl = await page.evaluate(() => window.__downloads[window.__downloads.length - 1]);
-    const csv = decodeURIComponent(dl.href.replace(/^data:text\/csv;charset=utf-8,/, ''));
-    // THE DEFECT (family): an export that drops the comments it just read.
-    check('the spreadsheet contains both comment boxes, quotes and commas intact',
-          csv.indexOf('"She said ""I can read it"", and did.\nTwice."') !== -1 &&
-          csv.indexOf('"Blends, but slowly."') !== -1, csv.slice(0, 400));
-    check('every skill is a row, scored or not',
-          (csv.trim().split('\r\n').length) === 7 && /Not scored/.test(csv),
-          csv.trim().split('\r\n').length + ' rows');
-    check('the child and the date are in the spreadsheet',
-          /R\.K\./.test(csv) && /2026-08-07/.test(csv), csv.slice(0, 200));
-    // THE DEFECT: every export was called reading_assessment_report, so a
-    // second child overwrote the first in the Downloads folder.
-    check('the file is named for the child and the date',
-          dl.name === 'reading-assessment_RK_2026-08-07.csv', dl.name);
-  }
-
-  await page.click('#sampleBtn');
-  await page.click('#csvBtn');
-  {
-    const dl = await page.evaluate(() => window.__downloads[window.__downloads.length - 1]);
-    const csv = decodeURIComponent(dl.href.replace(/^data:text\/csv;charset=utf-8,/, ''));
-    check('a printed sample can never be mistaken for a real child\'s record',
-          /Maya Torres/.test(csv) && /^reading-assessment_SAMPLE-MT_/.test(dl.name),
-          dl.name + ' | ' + csv.slice(0, 200));
-  }
-
-  // =========================================================================
-  await harvest(page);
-  group('The PDF export');
-
-  await fresh(page, base);
-  // Watch what jsPDF is actually asked to draw, without writing a file.
-  await page.evaluate(() => {
-    window.__pdf = { text: [], pages: 1, name: null };
-    const Real = window.jspdf.jsPDF;
-    window.jspdf.jsPDF = function(opts){
-      const inst = new Real(opts);
-      const realText = inst.text.bind(inst);
-      const realAdd  = inst.addPage.bind(inst);
-      inst.text = function(t, x, y, o){
-        (Array.isArray(t) ? t : [t]).forEach(s =>
-          window.__pdf.text.push({ s: String(s), y: y, page: window.__pdf.pages }));
-        return realText(t, x, y, o);
-      };
-      inst.addPage = function(){ window.__pdf.pages++; return realAdd(); };
-      inst.save = function(name){ window.__pdf.name = name; };
-      return inst;
-    };
+  await fresh(page, base, { firstVisit: true });
+  await replaceEveryScoreExcept(page, 0);          // agrees with Maya on row 1
+  await retype(page, 'initials', 'R.K.');
+  await setValue(page, 'assessDate', '2026-08-07');
+  await setValue(page, 'strengthsComment', 'Rosa retells in order and checks the page.');
+  await setValue(page, 'stretchesComment', 'Digraphs are still guessed at.');
+  const agreed = await screenState(page);
+  check('a teacher who agrees with the sample on one skill still sees the label',
+        agreed.banner && agreed.scored === 6, JSON.stringify(agreed));
+  check('...and is now TOLD it is one score, not just "some of her"',
+        /Still hers: one score\./.test(agreed.bannerSentence), agreed.bannerSentence);
+  eq('...and is offered the button that settles it, in one click',
+     agreed.claimBtn, 'That score is mine, not Maya\'s');
+  // The contrast sweep further up runs on the FIRST screen, where this button
+  // is hidden — so its colours would never have been measured. It sits on the
+  // amber banner rather than on the page, which is its own background problem.
+  check('...and that button can actually be read against the amber banner',
+        (await page.evaluate(CONTRAST_SWEEP)).length === 0,
+        (await page.evaluate(CONTRAST_SWEEP)).join(' | '));
+  // A teacher without a mouse has to be able to settle it too.
+  const byKeyboard = await page.evaluate(() => {
+    const b = document.getElementById('claimScoresBtn');
+    b.focus();
+    return document.activeElement === b;
   });
-  await page.type('#initials', 'm.t.');
-  await page.$eval('#assessDate', e => { e.value = '2026-08-07';
-                                         e.dispatchEvent(new Event('input', { bubbles: true })); });
-  await score(page, 0, 'M');
+  check('...and reached from the keyboard, not only with a mouse', byKeyboard);
+  await page.click('#claimScoresBtn');
+  const claimed = await screenState(page);
+  check('claiming that score takes the sample label off the screen',
+        !claimed.banner && claimed.scored === 6, JSON.stringify(claimed));
+  check('...and says so, rather than changing in silence',
+        /Marked as your own/.test(await sayMsg(page)), await sayMsg(page));
+  await page.click('#csvBtn');
+  const claimedCsv = await lastCsv(page);
+  check('...and the spreadsheet is a clean record of R.K.',
+        claimedCsv.indexOf('Maya Torres') === -1 &&
+        /^R\.K\.,2026-08-07,,/m.test(claimedCsv.split('\r\n')[1]),
+        claimedCsv.split('\r\n')[1].slice(0, 120));
+  check('...and SAMPLE- is off the filename',
+        (await lastName(page)).indexOf('SAMPLE') === -1, await lastName(page));
   await page.click('#pdfBtn');
-  {
-    const p = await page.evaluate(() => window.__pdf);
-    const all = p.text.map(t => t.s).join(' | ');
-    check('the report says which child it is for, and when',
-          /Child: M\.T\./.test(all) && /2026-08-07/.test(all), all.slice(0, 300));
-    check('the PDF is named for the child and the date',
-          p.name === 'reading-assessment_MT_2026-08-07.pdf', p.name);
-  }
+  check('...and the printed report carries no sample line either',
+        await page.evaluate(() => !window.__pdf.__lines.some(l => /[Ss]ample/.test(l))),
+        await page.evaluate(() => window.__pdf.__lines.join(' | ').slice(0, 200)));
+  // The claim has to reach the disk. refreshSampleFlag() only writes when it
+  // sees the flag or the count move, and emptying the list is invisible to that
+  // test when the label stays on for the comments — so a reload would have
+  // handed the claimed scores straight back to Maya.
+  await page.reload({ waitUntil: 'load' });
+  const claimedAgain = await screenState(page);
+  check('...and the claim survives the tab being reloaded',
+        !claimedAgain.banner && claimedAgain.scored === 6 && claimedAgain.initials === 'R.K.',
+        JSON.stringify(claimedAgain));
 
-  // THE DEFECT: jsPDF writes below the paper edge without complaining, so a
-  // long pair of comments simply vanished from the finished report.
-  await page.evaluate(() => {
-    window.__pdf = { text: [], pages: 1, name: null };
-    const long = ('Maya reads with real attention and will talk about a book for as long ' +
-                  'as you let her, which is the part I never have to teach. ').repeat(40);
-    ['strengthsComment', 'stretchesComment'].forEach(id => {
-      const el = document.getElementById(id);
-      el.value = long;
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    });
-  });
-  await page.click('#pdfBtn');
-  {
-    const p = await page.evaluate(() => window.__pdf);
-    const lowest = Math.max(...p.text.map(t => t.y));
-    const lastLine = p.text[p.text.length - 1].s;
-    check('a very long pair of comments still lands on the paper instead of vanishing',
-          lowest <= 285 && p.pages > 1, `lowest y=${lowest}mm on a 297mm page, pages=${p.pages}`);
-    check('the skills list is still in the report after all that text',
-          /Not Scored|Mastered|Developing|Emerging/.test(lastLine), lastLine);
-  }
+  // Claiming scores is not a way to un-label a made-up record: it only ever
+  // moves the SCORES, and Maya's two paragraphs are her own words that nobody
+  // can "agree" with. Left in place, they keep the label on.
+  await fresh(page, base, { firstVisit: true });
+  await replaceEveryScoreExcept(page, 0);
+  await retype(page, 'initials', 'R.K.');
+  const partly = await screenState(page);
+  check('with her paragraphs still there, the banner names all three pieces',
+        /Still hers: one score, the Strengths comment and the Stretches comment\./
+          .test(partly.bannerSentence), partly.bannerSentence);
+  await page.click('#claimScoresBtn');
+  const stillHerWords = await screenState(page);
+  check('claiming the scores does NOT clear a label her paragraphs still earn',
+        stillHerWords.banner, JSON.stringify(stillHerWords));
+  check('...and the banner drops the score from the list of what is left',
+        /Still hers: the Strengths comment and the Stretches comment\./
+          .test(stillHerWords.bannerSentence), stillHerWords.bannerSentence);
+  eq('...and stops offering a button with nothing left to claim',
+     stillHerWords.claimBtn, '');
+  // ...and stops offering it in words as well. A banner that says "or say the
+  // scores are yours" beside no such button is an instruction pointing at
+  // nothing, and this is the state a teacher lands in the moment she claims.
+  check('...and stops telling her to press a button that is no longer there',
+        !/say the scores are yours/.test(stillHerWords.bannerSentence) &&
+        /say the scores are yours/.test(partly.bannerSentence),
+        stillHerWords.bannerSentence);
+  await page.click('#csvBtn');
+  check('...and the spreadsheet still marks the record as part sample',
+        /Part sample/.test(await lastCsv(page)),
+        (await lastCsv(page)).split('\r\n')[1].slice(0, 120));
 
-  // A printed sheet must never be able to pass for a real child's record.
-  await page.evaluate(() => { window.__pdf = { text: [], pages: 1, name: null }; });
-  await page.click('#sampleBtn');
-  await page.click('#pdfBtn');
-  {
-    const p = await page.evaluate(() => window.__pdf);
-    const all = p.text.map(t => t.s).join(' | ');
-    check('a printed sample report says on the page that it is not a real child',
-          /Sample student — Maya Torres \(M\.T\.\) — not a real child/.test(all) &&
-          /^reading-assessment_SAMPLE-MT_/.test(p.name), p.name + ' | ' + all.slice(0, 200));
-  }
+  // And it is not offered at all while the screen is still the sample exactly,
+  // or it would be a one-click way to strip the warning off a wholly made-up
+  // record.
+  await fresh(page, base, { firstVisit: true });
+  const untouched = await screenState(page);
+  eq('the claim button is not offered on the untouched sample', untouched.claimBtn, '');
+  check('...and the hidden button puts no words into the warning itself',
+        untouched.bannerText === untouched.bannerSentence &&
+        /These scores are made up/.test(untouched.bannerSentence), untouched.bannerText);
 
-  // =========================================================================
-  await harvest(page);
-  group('When things go wrong');
+  // And the other half: her paragraphs left in place under replaced scores.
+  await fresh(page, base, { firstVisit: true });
+  await retype(page, 'initials', 'R.K.');
+  await replaceEveryScore(page);
+  check('made-up COMMENTS left under a real child still count as sample data',
+        (await screenState(page)).banner);
+  await setValue(page, 'strengthsComment', 'Rosa reads the pictures first, every time.');
+  check('...and one of the two is still enough to keep the label on',
+        (await screenState(page)).banner);
+  await setValue(page, 'stretchesComment', 'Blends stall at three sounds.');
+  check('...and the label goes when the second one is replaced as well',
+        !(await screenState(page)).banner);
 
-  // --- the PDF library cannot be reached (school firewall, no internet) -----
-  {
-    const p2 = await browser.newPage();
-    if (COVERAGE) await p2.coverage.startJSCoverage({ resetOnNavigation: false });
-    const errs = [];
-    p2.on('pageerror', e => errs.push(e.message));
-    await p2.setRequestInterception(true);
-    p2.on('request', r => {
-      if (/cdnjs\.cloudflare\.com/.test(r.url())) r.abort();
-      else r.continue();
-    });
-    await p2.goto(base + '/index.html', { waitUntil: 'load' });
-    // Same origin as the main page, so it inherits whatever that one last
-    // saved. Start empty or the counts below are counting somebody else's work
-    // — and mark the visit, or the tool quite rightly fills the empty screen
-    // with the sample student and the counts are Maya's.
-    await p2.evaluate(() => { localStorage.clear();
-                              localStorage.setItem('readingVisited', 'yes'); });
-    await p2.reload({ waitUntil: 'load' });
-    await p2.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
-    const noteAtRest = await p2.$eval('#pdfNote', e => e.textContent);
-    await p2.evaluate(() => {
-      const b = document.querySelectorAll('.skill')[0].querySelectorAll('.btn-score')[0];
-      b.click();
-    });
-    await p2.click('#pdfBtn');
-    const said = await p2.$eval('#sayMsg', e => e.textContent);
-    const stillWorks = await p2.$eval('#count-e', e => e.textContent);
-    // THE DEFECT: this used to throw "Cannot destructure property 'jsPDF'"
-    // into a console nobody has open — the main output button just did nothing.
-    check('with no internet, Export PDF explains itself instead of doing nothing',
-          /did not load/.test(said) && /Export CSV/.test(said), said);
-    check('and it warns you before you even click it',
-          /unavailable/.test(noteAtRest), noteAtRest);
-    check('scoring still works with the PDF library missing, and nothing crashes',
-          stillWorks === '1' && errs.length === 0, JSON.stringify(errs));
-    await harvest(p2);
-    await p2.close();
-  }
-
-  // --- the browser refuses to save (Safari private window, full disk) -------
-  {
-    const p3 = await browser.newPage();
-    if (COVERAGE) await p3.coverage.startJSCoverage({ resetOnNavigation: false });
-    const errs = [];
-    p3.on('pageerror', e => errs.push(e.message));
-    await p3.evaluateOnNewDocument(() => {
-      const boom = () => { throw new DOMException('QuotaExceededError'); };
-      Object.defineProperty(window, 'localStorage', {
-        configurable: true,
-        get(){ return { getItem: boom, setItem: boom, removeItem: boom, clear: boom }; }
-      });
-      // This page needs its own download catcher — evaluateOnNewDocument is per
-      // page, and the CSV export below must not write to a real Downloads folder.
-      window.__downloads = [];
-      document.addEventListener('click', e => {
-        const a = e.target.closest && e.target.closest('a[download]');
-        if (a){ e.preventDefault(); window.__downloads.push(a.getAttribute('download')); }
-      }, true);
-    });
-    await p3.goto(base + '/index.html', { waitUntil: 'load' });
-    await p3.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
-    const rendered = await p3.$$eval('.skill', els => els.length);
-    const warnOnArrival = await p3.$eval('#storageWarn', e =>
-      ({ shown: e.classList.contains('show'), text: e.textContent }));
-    await p3.evaluate(() => {
-      document.querySelectorAll('.skill')[0].querySelectorAll('.btn-score')[0].click();
-    });
-    const said = await p3.$eval('#storageWarn', e => e.textContent);
-    const c = await p3.$eval('#count-e', e => e.textContent);
-    check('a browser that refuses to save says so, loudly, instead of failing silently',
-          /NOT BEING SAVED/.test(said), said);
-    check('and it says so on arrival, before a whole reading has been typed into nothing',
-          warnOnArrival.shown && /NOT BEING SAVED/.test(warnOnArrival.text),
-          JSON.stringify(warnOnArrival));
-    check('and the tool keeps working so the reading is not interrupted',
-          rendered === 6 && c === '1' && errs.length === 0,
-          `rows=${rendered} count=${c} errors=${JSON.stringify(errs)}`);
-
-    // THE DEFECT: the warning used to be written to #sayMsg, the one line every
-    // other message shares. A single click of Export CSV replaced it with
-    // "Spreadsheet saved to your Downloads folder.", that faded after five
-    // seconds, and the tool only ever warns once — so a teacher who exported
-    // had no sign left that nothing was being kept.
-    await p3.click('#csvBtn');
-    await p3.evaluate(() => {
-      document.querySelectorAll('.skill')[1].querySelectorAll('.btn-score')[2].click();
-    });
-    await p3.evaluate(() => new Promise(r => setTimeout(r, 5400)));   // past the fade
-    const durable = await p3.evaluate(() => ({
-      warn: document.getElementById('storageWarn').textContent,
-      shown: document.getElementById('storageWarn').classList.contains('show'),
-      say: document.getElementById('sayMsg').textContent,
-      downloads: window.__downloads.length
-    }));
-    check('the warning is still on screen after an export, and after the export message fades',
-          durable.shown && /NOT BEING SAVED/.test(durable.warn) && durable.downloads === 1,
-          JSON.stringify(durable));
-    check('it never shared a line with the ordinary messages in the first place',
-          !/NOT BEING SAVED/.test(durable.say), JSON.stringify(durable.say));
-    await harvest(p3);
-    await p3.close();
-  }
-
-  // --- one bad value in storage --------------------------------------------
-  {
-    await fresh(page, base);
-    await page.evaluate(() => localStorage.setItem('readingScores', '{not json'));
-    const before = pageErrors.length;
-    await reload(page);
-    const rendered = await page.$$eval('.skill', els => els.length);
-    const said = await msg(page);
-    // THE DEFECT: the unguarded JSON.parse ran before anything was drawn, so
-    // the whole tool was an empty box and nothing said why.
-    check('a bad saved value still leaves a working tool, and the tool says what happened',
-          rendered === 6 && /could not be read/.test(said) && pageErrors.length === before,
-          `rows=${rendered} msg=${said} newErrors=${pageErrors.slice(before).join('; ')}`);
-  }
-
-  // --- a bad stash ----------------------------------------------------------
-  {
-    await fresh(page, base);
-    await page.evaluate(() => localStorage.setItem('readingStash', '{not json either'));
-    const before = pageErrors.length;
-    await reload(page);
-    const s = await page.evaluate(() => ({
-      rows: document.querySelectorAll('.skill').length,
-      undoShown: document.getElementById('undoClearBtn').classList.contains('show'),
-      stash: localStorage.getItem('readingStash')
-    }));
-    // A rescue button that cannot rescue anything is worse than no button, so a
-    // stash that will not parse is thrown away rather than offered.
-    check('a stash that cannot be read is quietly dropped, not offered as a rescue',
-          s.rows === 6 && !s.undoShown && s.stash === null &&
-          pageErrors.length === before, JSON.stringify(s));
-  }
-
-  // =========================================================================
-  await harvest(page);
-  group('The skills box');
-
+  // The opposite mistake, which is the one that made this hard: a REAL child
+  // must never be branded the sample by coincidence. Three levels and six
+  // skills — a real child shares a level with Maya on at least one skill about
+  // nine times out of ten — and her initials are two letters anybody can have.
   await fresh(page, base);
-  await score(page, 0, 'E');
-  await score(page, 1, 'E');
-  await page.click('#tile-e');
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    const listed = await page.$$eval('#modalSkillsList .skill-item', els => els.length);
-    check('clicking a tile opens the list of skills at that level', open && listed === 2,
-          `open=${open} listed=${listed}`);
+  await typeIn(page, 'initials', 'M.T.');
+  await scoreExactlyLikeMaya(page);
+  const doppel = await screenState(page);
+  check('a real child who scores just like Maya is NOT branded the sample',
+        !doppel.banner && doppel.scored === 6, JSON.stringify(doppel));
+  await page.click('#csvBtn');
+  const doppelCsv = await lastCsv(page);
+  check('...and her spreadsheet rows say nothing about a sample',
+        doppelCsv.split('\r\n').slice(1).every(r => !/[Ss]ample/.test(r)),
+        doppelCsv.split('\r\n')[1].slice(0, 120));
+
+  // A record saved by an OLDER version of this file, which kept nothing but a
+  // yes/no flag: the flag could be left on top of a real child, because it used
+  // to survive everything a teacher typed. Reading it back must not brand her.
+  await fresh(page, base);
+  await page.evaluate(() => {
+    const s = {};
+    READING_SKILLS.forEach((k, i) => { s[k] = i % 2 ? 'Emerging' : 'Developing'; });
+    localStorage.setItem('readingScores', JSON.stringify(s));
+    localStorage.setItem('readingInitials', 'R.K.');
+    localStorage.setItem('readingStrengths', 'Rosa reads the pictures first, every time.');
+    localStorage.setItem('readingStretches', 'Blends stall at three sounds.');
+    localStorage.setItem('readingSample', 'yes');       // the old flag, left on
+    localStorage.removeItem('readingSampleScores');     // never written back then
+  });
+  await page.reload({ waitUntil: 'load' });
+  const oldReal = await screenState(page);
+  check('a stale sample flag saved by an older version does not brand a real child',
+        !oldReal.banner && oldReal.initials === 'R.K.', JSON.stringify(oldReal));
+  await page.click('#csvBtn');
+  check('...and her spreadsheet comes out clean',
+        (await lastCsv(page)).split('\r\n').slice(1).every(r => !/[Ss]ample/.test(r)));
+
+  // The same old record, but it really was Maya: the label has to be worked out
+  // from her values, and it has to hold when the teacher touches one field.
+  await fresh(page, base);
+  await page.evaluate(() => {
+    localStorage.setItem('readingScores', JSON.stringify(SAMPLE_STUDENT.scores));
+    localStorage.setItem('readingInitials', SAMPLE_STUDENT.initials);
+    localStorage.setItem('readingStrengths', SAMPLE_STUDENT.strengths);
+    localStorage.setItem('readingStretches', SAMPLE_STUDENT.stretches);
+    localStorage.setItem('readingSample', 'yes');
+    localStorage.removeItem('readingSampleScores');
+  });
+  await page.reload({ waitUntil: 'load' });
+  check('...while an old record that really is the sample keeps its label',
+        (await screenState(page)).banner);
+  await page.click('#initials');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Backspace');
+  const oldNibbled = await screenState(page);
+  check('...and keeps it through the first keystroke, because her scores are still there',
+        oldNibbled.banner && oldNibbled.scored === 6, JSON.stringify(oldNibbled));
+
+  // Clearing a half-replaced screen is no longer free: the teacher's own typing
+  // is on it, so the button has to ask and has to leave a way back.
+  await fresh(page, base, { firstVisit: true });
+  await retype(page, 'initials', 'R.K.');
+  await setValue(page, 'strengthsComment', 'Rosa reads the pictures first, every time.');
+  await page.evaluate(() => { window.__confirms = []; });
+  await page.click('#sampleBtn');
+  const askedFirst = await page.evaluate(() => window.__confirms.slice());
+  check('clearing a half-replaced screen asks before it throws the typing away',
+        askedFirst.length === 1 && /your own typing/i.test(askedFirst[0]), askedFirst.join(' | '));
+  const afterMixedClear = await screenState(page);
+  check('...and offers it back afterwards',
+        afterMixedClear.scored === 0 && afterMixedClear.undoShown,
+        JSON.stringify(afterMixedClear));
+  await page.click('#undoClearBtn');
+  const mixedBack = await screenState(page);
+  eq('...and it comes back with the teacher\'s own words in it',
+     mixedBack.strengths, 'Rosa reads the pictures first, every time.');
+  check('...still marked as part sample, because Maya\'s scores came back too',
+        mixedBack.banner, JSON.stringify(mixedBack));
+
+  // And the label DOES follow the sample while she is still the sample.
+  await fresh(page, base, { firstVisit: true });
+  await page.click('#csvBtn');
+  const sampleCsv = await lastCsv(page);
+  const sampleName = await lastName(page);
+  check('an untouched sample is labelled as one in the spreadsheet',
+        sampleCsv.indexOf('Sample student — Maya Torres (M.T.) — not a real child') !== -1);
+  check('...and in the filename, so a printed sheet can never pass for a real record',
+        /SAMPLE-MT/.test(sampleName), sampleName);
+  await page.click('#pdfBtn');
+  check('...and on the PDF report, so a printed sheet carries the label too',
+        await page.evaluate(() =>
+          window.__pdf.__lines.some(l => /Sample student — Maya Torres/.test(l))));
+  await page.click('#sampleBtn');
+  eq('one click puts the sample student away again',
+     (await screenState(page)).scored, 0);
+
+  // =========================================================================
+  group('What the PDF report says');
+  // =========================================================================
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await setValue(page, 'assessDate', '2026-08-07');
+  await score(page, 0, 'm');
+  await page.click('#pdfBtn');
+  const plainPdf = await page.evaluate(() => window.__pdf.__lines);
+  check('the PDF names the child and the date on the sheet itself',
+        plainPdf.some(l => /Child: R\.K\.\s+·\s+Date: 2026-08-07/.test(l)),
+        plainPdf.slice(0, 3).join(' | '));
+  // THE DEFECT: one state of one thing, spelled two ways across two exports.
+  check('an unscored skill is spelled the same way in the PDF as in the spreadsheet',
+        plainPdf.some(l => /: Not scored/.test(l)) &&
+        !plainPdf.some(l => /Not Scored/.test(l)),
+        plainPdf.filter(l => /Not [Ss]cored/.test(l))[0]);
+
+  // THE DEFECT, and it changed what the report SAID about a child: jsPDF's
+  // built-in font is single-byte, so "Ł.K." printed as "Child: A.K." and a
+  // comment reading "on ŏ versus ō" printed as "on O versus M" — a different
+  // statement about the child — with whole phrases pushed off the paper.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'Ł.K.');
+  await setValue(page, 'assessDate', '2026-08-07');
+  await typeIn(page, 'stretchesComment', 'Still mixes b → d, and ŏ versus ō.');
+  await page.click('#csvBtn');
+  const markCsv = await lastCsv(page);
+  await page.click('#pdfBtn');
+  const markPdf = await page.evaluate(() => window.__pdf.__lines);
+  const outOfRange = markPdf.filter(l => Array.from(l).some(c => c.charCodeAt(0) > 255));
+  check('the PDF never sends the font a character it cannot print',
+        outOfRange.length === 0, outOfRange.join(' | '));
+  check('...so it cannot silently rename the child',
+        markPdf.some(l => /Child: \?\.K\./.test(l)),
+        markPdf.slice(0, 3).join(' | '));
+  const markMsg = await sayMsg(page);
+  check('...and the tool says out loud which characters it could not print',
+        /could not print/.test(markMsg) && markMsg.indexOf('Ł') !== -1 &&
+        markMsg.indexOf('ŏ') !== -1, markMsg);
+  check('...and points at the export that does keep them',
+        /Export CSV/.test(markMsg) && markCsv.indexOf('ŏ versus ō') !== -1, markMsg);
+
+  // =========================================================================
+  group('Keeping the work');
+  // =========================================================================
+  // THE DEFECT: scores were lost on reload.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await score(page, 0, 'e');
+  await score(page, 1, 'm');
+  // THE DEFECT: the comment boxes listened for 'change', which does not fire
+  // until the box loses focus, so a comment typed and then left alone was gone.
+  await page.click('#strengthsComment');
+  await page.keyboard.type('Loves nonfiction.');
+  await page.reload({ waitUntil: 'load' });
+  const afterReload = await screenState(page);
+  eq('the scores are still there after a refresh', afterReload.scored, 2);
+  eq('...and so is the child', afterReload.initials, 'R.K.');
+  eq('a comment survives a refresh without clicking away from the box first',
+     afterReload.strengths, 'Loves nonfiction.');
+
+  // THE DEFECT: a browser that refuses to store anything — a private window, or
+  // a full disk — failed silently, and the teacher was never told their whole
+  // assessment was not being kept.
+  await harvest(page);
+  await page.goto(base + '/index.html?breakstorage=1', { waitUntil: 'load' });
+  // removeItem still works when setItem does not, so this really is a first
+  // arrival at a browser that will not remember it.
+  await page.evaluate(() => localStorage.clear());
+  await harvest(page);
+  await page.reload({ waitUntil: 'load' });
+  const warned = await page.evaluate(() => {
+    const bar = document.getElementById('storageWarn');
+    return { shown: bar.classList.contains('show'), text: bar.textContent,
+             role: bar.getAttribute('role') };
+  });
+  check('a browser that refuses to save says so, in its own bar on screen',
+        warned.shown && /NOT BEING SAVED/.test(warned.text), JSON.stringify(warned));
+  check('...loudly enough that a screen reader announces it', warned.role === 'alert');
+  check('...and the tool still works, so nothing typed is thrown away',
+        await page.evaluate(() => document.querySelectorAll('.skill').length === 6));
+  // THE DEFECT this guards: the warning used to go through the shared status
+  // line, so one "Spreadsheet saved to your Downloads folder." wiped it off the
+  // screen and, because the tool only warns once, nothing ever brought it back.
+  // Every failed write puts it straight back now.
+  await page.evaluate(() => document.getElementById('storageWarn').classList.remove('show'));
+  await typeIn(page, 'strengthsComment', 'Reads with real expression.');
+  check('...and the warning comes back on the next thing that cannot be saved',
+        await page.evaluate(() =>
+          document.getElementById('storageWarn').classList.contains('show')));
+  // THE DEFECT: a visit that cannot be remembered looks like a FIRST visit
+  // every single time, so the sample student walked back in on every reload
+  // however often she was cleared. She only offers herself where the tool can
+  // remember being told no.
+  check('the sample student does not walk back in where the tool cannot remember saying no',
+        await page.evaluate(() =>
+          !document.getElementById('sampleBanner').classList.contains('show')));
+
+  // =========================================================================
+  group('Clear, and getting it back');
+  // =========================================================================
+  // THE DEFECT: Clear destroyed everything on one click, with no question and
+  // no way back.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await typeIn(page, 'strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
+  await score(page, 0, 'e');
+  await page.evaluate(() => { window.__confirmAnswer = false; window.__confirms = []; });
+  await page.click('#clearBtn');
+  const refused = await screenState(page);
+  check('Clear asks before it throws anything away',
+        (await page.evaluate(() => window.__confirms.length)) === 1);
+  eq('...and answering no changes nothing', refused.initials, 'R.K.');
+  eq('...and says so', /Nothing was changed/.test(await sayMsg(page)), true);
+
+  await page.evaluate(() => { window.__confirmAnswer = true; });
+  await page.click('#clearBtn');
+  eq('answering yes empties the tool', (await screenState(page)).scored, 0);
+  check('...and offers the work back by name',
+        /Undo clear/.test(await sayMsg(page)) &&
+        (await screenState(page)).undoShown, await sayMsg(page));
+  await page.reload({ waitUntil: 'load' });
+  check('...and the offer survives closing the tab', (await screenState(page)).undoShown);
+  await page.click('#undoClearBtn');
+  const broughtBack = await screenState(page);
+  eq('pressing it brings the assessment back whole', broughtBack.initials, 'R.K.');
+  eq('...with its comment', broughtBack.strengths, 'REAL NOTES ABOUT A REAL CHILD');
+  eq('...and its scores', broughtBack.scored, 1);
+
+  // THE DEFECT: Clear on an already-empty screen took a snapshot of nothing and
+  // wrote it over the assessment the tool was still holding.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await score(page, 0, 'e');
+  await page.click('#clearBtn');
+  await page.click('#clearBtn');
+  check('Clear on an already-empty tool does not spend the way back',
+        (await stash(page)).initials === 'R.K.', JSON.stringify(await stash(page)));
+
+  // THE DEFECT: that guard read `!sampleLoaded && !hasRealWork()`, and the
+  // sample flag defeated it. A teacher who put their own assessment away and
+  // then emptied Maya out BY HAND met a blank screen with the banner still up —
+  // and Clear asked about work that was not there, then wrote a snapshot of
+  // NOTHING over the assessment they had put away, with no way back.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await typeIn(page, 'strengthsComment', 'REAL NOTES ABOUT A REAL CHILD');
+  await score(page, 0, 'e');
+  await page.click('#sampleBtn');                       // R.K. goes into the stash
+  eq('putting the sample student on top puts the real one away',
+     (await stash(page)).initials, 'R.K.');
+  // Empty Maya by hand, exactly as a teacher would: select and delete.
+  for (const id of ['initials', 'strengthsComment', 'stretchesComment']){
+    await retype(page, id, '');
   }
+  await setValue(page, 'assessDate', '');
+  for (let i = 0; i < 6; i++){
+    const lit = await page.evaluate(r => {
+      const b = document.querySelectorAll('.skill')[r].querySelector('.btn-score.e, .btn-score.d, .btn-score.m');
+      return b ? b.textContent : null;
+    }, i);
+    if (lit) await score(page, i, lit.toLowerCase());
+  }
+  const handEmptied = await screenState(page);
+  eq('emptying the sample by hand really does leave a blank screen', handEmptied.scored, 0);
+  await page.click('#clearBtn');
+  check('Clear on a screen emptied by hand does not spend the way back either',
+        (await stash(page)) && (await stash(page)).initials === 'R.K.',
+        JSON.stringify(await stash(page)));
+  check('...and says there was nothing to clear',
+        /nothing to clear/.test(await sayMsg(page)), await sayMsg(page));
+  await page.click('#undoClearBtn');
+  eq('...so the real assessment still comes back',
+     (await screenState(page)).strengths, 'REAL NOTES ABOUT A REAL CHILD');
+
+  // THE DEFECT: after a first-time visitor cleared the sample, the tool kept
+  // MAYA in its one rescue slot and then promised "Your own assessment is safe"
+  // to somebody who had never made one — and the button went on offering her
+  // back after every reload.
+  await fresh(page, base, { firstVisit: true });
+  await page.click('#clearBtn');
+  const afterSampleClear = await screenState(page);
+  check('clearing the made-up child does not pretend to be holding your assessment',
+        !afterSampleClear.undoShown && (await stash(page)) === null,
+        JSON.stringify(await stash(page)));
+  check('...and says plainly that the tool is now ready for a real reading',
+        /ready for a real reading/.test(await sayMsg(page)), await sayMsg(page));
+  await page.click('#sampleBtn');
+  check('...and bringing her back does not promise a rescue that does not exist',
+        !/your own assessment is safe/i.test(await sayMsg(page)), await sayMsg(page));
+
+  // =========================================================================
+  group('When the tool is asked to hold two children at once');
+  // =========================================================================
+  // The tool has exactly ONE place to keep a put-away assessment. Every path
+  // that is about to take that place has to say plainly that something else is
+  // standing in it, instead of choosing for the teacher in silence.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'A.A.');
+  await score(page, 0, 'e');
+  await page.click('#clearBtn');                       // A.A. goes into the slot
+  await typeIn(page, 'initials', 'B.B.');
+  await score(page, 1, 'm');
+  await page.evaluate(() => { window.__confirmAnswer = false; window.__confirms = []; });
+  await page.click('#clearBtn');
+  const warning = await page.evaluate(() => window.__confirms[0] || '');
+  check('putting a second child away warns that the first one will be lost',
+        /only hold one assessment at a time/.test(warning) &&
+        warning.indexOf('A.A.') !== -1 &&
+        /CANNOT be brought back/.test(warning), warning.slice(0, 200));
+  eq('...and answering no leaves both of them exactly where they were',
+     (await screenState(page)).initials, 'B.B.');
+  eq('...and the first child is still the one on offer',
+     (await stash(page)).initials, 'A.A.');
+  check('...and the tool says nothing was changed',
+        /Nothing was changed/.test(await sayMsg(page)), await sayMsg(page));
+
+  await page.evaluate(() => { window.__confirmAnswer = true; });
+  await page.click('#clearBtn');
+  eq('answering yes puts the second child away instead', (await stash(page)).initials, 'B.B.');
+
+  // THE DEFECT: Undo used to write the put-away assessment straight over
+  // whatever was on the screen, with no question and no snapshot — so a teacher
+  // who had started the NEXT child lost her on one click, with nothing left to
+  // press.
+  await typeIn(page, 'initials', 'C.C.');
+  await score(page, 2, 'd');
+  await page.evaluate(() => { window.__confirmAnswer = false; window.__confirms = []; });
+  await page.click('#undoClearBtn');
+  const swapAsk = await page.evaluate(() => window.__confirms[0] || '');
+  check('bringing one back asks first when a different child is on the screen',
+        swapAsk.indexOf('C.C.') !== -1 && /swaps the two of them/.test(swapAsk),
+        swapAsk.slice(0, 200));
+  eq('...and answering no keeps the child on the screen', (await screenState(page)).initials, 'C.C.');
+  await page.evaluate(() => { window.__confirmAnswer = true; });
+  await page.click('#undoClearBtn');
+  const swapped = await screenState(page);
+  eq('answering yes swaps the two of them', swapped.initials, 'B.B.');
+  eq('...and the one that was on screen is now the one on offer',
+     (await stash(page)).initials, 'C.C.');
+  eq('...under a button that says which', swapped.sampleBtn && await page.evaluate(() =>
+     document.getElementById('undoClearBtn').textContent), 'Bring the other one back');
+
+  // The sample student sitting on top of a real, put-away assessment: clearing
+  // her must not touch it, and must say so.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await score(page, 0, 'e');
+  await page.click('#sampleBtn');                      // R.K. into the slot, Maya on screen
+  await page.evaluate(() => { window.__confirmAnswer = false; window.__confirms = []; });
+  await page.click('#clearBtn');
+  const mayaAsk = await page.evaluate(() => window.__confirms[0] || '');
+  check('clearing the sample off the top says the real assessment is not touched',
+        /is not touched/.test(mayaAsk) && mayaAsk.indexOf('R.K.') !== -1, mayaAsk);
+  check('...and answering no leaves the sample on the screen',
+        (await screenState(page)).banner);
+  await page.evaluate(() => { window.__confirmAnswer = true; });
+  await page.click('#clearBtn');
+  eq('...and answering yes clears only the sample', (await screenState(page)).scored, 0);
+  eq('...leaving the real assessment where it was', (await stash(page)).initials, 'R.K.');
+  check('...and saying so by the name on the button',
+        /Bring my assessment back/.test(await sayMsg(page)), await sayMsg(page));
+
+  // Same again through the sample button rather than Clear.
+  await page.click('#sampleBtn');                      // Maya back on screen
+  await page.click('#sampleBtn');                      // and away again
+  check('putting the sample away by its own button also says the real one is safe',
+        /still here/.test(await sayMsg(page)) &&
+        (await stash(page)).initials === 'R.K.', await sayMsg(page));
+
+  // =========================================================================
+  group('When what was saved cannot be read');
+  // =========================================================================
+  // THE DEFECT: an unguarded JSON.parse threw before the skills had ever been
+  // drawn, so one bad value in storage left the whole tool as an empty box with
+  // nothing said about why.
+  await fresh(page, base);
+  await page.evaluate(() => localStorage.setItem('readingScores', 'this is not json'));
+  await page.reload({ waitUntil: 'load' });
+  const damaged = await page.evaluate(() => ({
+    rows: document.querySelectorAll('.skill').length,
+    said: document.getElementById('sayMsg').textContent,
+    left: localStorage.getItem('readingScores')
+  }));
+  check('a damaged saved file leaves a working tool, not an empty box',
+        damaged.rows === 6 && /could not be read/.test(damaged.said) && damaged.left === null,
+        JSON.stringify(damaged));
+
+  // THE DEFECT: a stash was accepted on the strength of its `scores` field
+  // alone, so a damaged one made "Undo clear" write the word "undefined" into
+  // the child's initials and both comment boxes — and then save it.
+  await fresh(page, base);
+  await page.evaluate(() => localStorage.setItem('readingStash', '{"why":"clear"}'));
+  await page.reload({ waitUntil: 'load' });
+  const badStash = await page.evaluate(() => ({
+    offered: document.getElementById('undoClearBtn').classList.contains('show'),
+    left: localStorage.getItem('readingStash')
+  }));
+  check('a damaged put-away assessment is not offered back as the word "undefined"',
+        !badStash.offered && badStash.left === null, JSON.stringify(badStash));
+
+  // =========================================================================
+  group('Two tabs open on the same laptop');
+  // =========================================================================
+  // THE DEFECT: with the tool open twice, one tap in the older tab wrote its
+  // stale fields over the newer tab's record — producing a saved assessment
+  // carrying one child's initials and another child's scores, with no confirm,
+  // no warning and no way back for the second child.
+  await fresh(page, base);
+  await typeIn(page, 'initials', 'R.K.');
+  await score(page, 0, 'e');
+  await score(page, 1, 'e');
+
+  const tabB = await browser.newPage();
+  await tabB.setRequestInterception(true);
+  tabB.on('request', r => /jspdf/i.test(r.url())
+    ? r.respond({ status: 200, contentType: 'text/javascript', body: JSPDF_STUB })
+    : r.continue());
+  await tabB.evaluateOnNewDocument(() => { window.confirm = () => true; });
+  await tabB.goto(base + '/index.html', { waitUntil: 'load' });
+  await tabB.bringToFront();
+  eq('a second tab opens on the same child', await tabB.evaluate(() =>
+     document.getElementById('initials').value), 'R.K.');
+
+  await tabB.click('#clearBtn');
+  await tabB.click('#initials');
+  await tabB.keyboard.type('T.W.');
+  await tabB.click('.skill:nth-of-type(4) .btn-score:nth-of-type(3)');
+  await tabB.click('.skill:nth-of-type(5) .btn-score:nth-of-type(3)');
+  await wait(400);
+  await page.bringToFront();
+
+  const tabACaughtUp = await screenState(page);
+  eq('the first tab catches up instead of holding a stale child',
+     tabACaughtUp.initials, 'T.W.');
+  eq('...with the newer child\'s scores, not the older one\'s', tabACaughtUp.scored, 2);
+  check('...and says why the screen changed under the teacher',
+        /another tab/.test(await sayMsg(page)), await sayMsg(page));
+
+  await score(page, 5, 'd');
+  await wait(200);
+  const blended = await page.evaluate(() => ({
+    initials: localStorage.getItem('readingInitials'),
+    scores: Object.keys(JSON.parse(localStorage.getItem('readingScores') || '{}')).length
+  }));
+  check('one child\'s initials can no longer end up welded to another\'s scores',
+        blended.initials === 'T.W.' && blended.scores === 3, JSON.stringify(blended));
+  await tabB.close();
+  await page.bringToFront();
+
+  // =========================================================================
+  group('The printed page');
+  // =========================================================================
+  // THE DEFECT: printing clipped both comment boxes to the 78px height of the
+  // textarea, so the end of a teacher's writing never reached the paper — with
+  // no ellipsis and no scrollbar to show anything was missing — while the CSV
+  // and the PDF carried it in full. And the tool itself recommends printing as
+  // the fallback when the PDF library is blocked.
+  await fresh(page, base, { firstVisit: true });
+  await page.emulateMediaType('print');
+  const printed = await page.evaluate(() => {
+    const ta = document.getElementById('strengthsComment');
+    const copy = document.getElementById('strengthsPrint');
+    return { taShown:   getComputedStyle(ta).display !== 'none',
+             copyShown: getComputedStyle(copy).display !== 'none',
+             sameText:  copy.textContent === ta.value,
+             clipped:   copy.scrollHeight > copy.clientHeight + 1,
+             tail:      copy.textContent.slice(-18) };
+  });
+  check('the whole of a comment reaches the paper, not the first four lines',
+        !printed.taShown && printed.copyShown && printed.sameText && !printed.clipped,
+        JSON.stringify(printed));
+  check('...right down to the last words the teacher wrote',
+        /proves her point\./.test(printed.tail), printed.tail);
+
+  // THE DEFECT: '.count-item:hover' was in the print stylesheet's display:none
+  // list — plainly meant to switch off the hover animation, but it hid the tile.
+  // :hover is not cleared when a print job renders, so the printed record
+  // silently dropped whichever count the mouse was resting on, contradicting
+  // the legend printed two inches above it.
+  await page.emulateMediaType(null);
+  await fresh(page, base, { firstVisit: true });
+  await page.hover('#tile-d');
+  await page.emulateMediaType('print');
+  const hoveredPrint = await page.evaluate(() => ({
+    hovering: document.getElementById('tile-d').matches(':hover'),
+    shown: ['e','d','m'].map(k =>
+      getComputedStyle(document.getElementById('tile-' + k)).display !== 'none')
+  }));
+  check('all three counts print, even the one the mouse is resting on',
+        hoveredPrint.hovering && hoveredPrint.shown.every(Boolean),
+        JSON.stringify(hoveredPrint));
+
+  await page.emulateMediaType(null);
+  await page.click('#tile-d');
   await page.keyboard.press('Escape');
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    check('Escape closes the skills box', !open);
-  }
-  await page.click('#tile-e');
-  await page.mouse.click(8, 8);
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    // THE DEFECT: the small × was the only way out. These are the two gestures
-    // everybody tries on a box like this.
-    check('clicking outside the skills box closes it', !open);
-  }
-  await page.click('#tile-e');
-  await page.click('#closeModalBtn');
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    check('the × still closes it too', !open);
-  }
-  // The × is a <span>, so pressing Enter on it does nothing unless it is wired
-  // up — and a keyboard user who tabs to the only visible way out expects it.
-  await page.click('#tile-e');
-  await page.evaluate(() => document.getElementById('closeModalBtn').focus());
-  await page.keyboard.press('Enter');
-  {
-    const open = await page.$eval('#skillsModal', e => e.classList.contains('show'));
-    check('and Enter on the × closes it, for anyone not using a mouse', !open);
-  }
-  await page.click('#tile-m');
-  {
-    const txt = await page.$eval('#modalSkillsList', e => e.textContent);
-    check('a level with nothing in it says so plainly', /No skills in this category/.test(txt), txt);
-    await page.keyboard.press('Escape');
-  }
+  await page.emulateMediaType('print');
+  const tappedPrint = await page.evaluate(() => ({
+    shown: ['e','d','m'].map(k =>
+      getComputedStyle(document.getElementById('tile-' + k)).display !== 'none'),
+    ring: getComputedStyle(document.getElementById('tile-d')).outlineStyle
+  }));
+  check('all three counts still print after the teacher taps one to look at it',
+        tappedPrint.shown.every(Boolean), JSON.stringify(tappedPrint));
+  check('...and the printed sheet has no black focus ring around it',
+        tappedPrint.ring === 'none', tappedPrint.ring);
+  await page.emulateMediaType(null);
+
+  // The sample banner is deliberately NOT in the print-hidden list — a printed
+  // sheet of a made-up child has to carry the warning. The button that now sits
+  // inside it is a different matter: on paper it is not a button any more, it
+  // is the sentence "Those 6 scores are mine, not Maya's" printed immediately
+  // under a warning that says the opposite.
+  await fresh(page, base, { firstVisit: true });
+  await page.click('#initials');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Backspace');
+  await page.emulateMediaType('print');
+  const bannerOnPaper = await page.evaluate(() => ({
+    warning: getComputedStyle(document.getElementById('sampleBanner')).display !== 'none',
+    claim:   document.getElementById('claimScoresBtn').getClientRects().length
+  }));
+  check('a part-sample sheet still prints its warning',
+        bannerOnPaper.warning, JSON.stringify(bannerOnPaper));
+  check('...but the claim button does not print as a contradicting sentence',
+        bannerOnPaper.claim === 0, JSON.stringify(bannerOnPaper));
+  await page.emulateMediaType(null);
 
   // =========================================================================
-  await harvest(page);
-  group('On a phone');
+  group('The box that opens when you click a count');
+  // =========================================================================
+  await fresh(page, base);
+  await score(page, 0, 'e');
+  await score(page, 1, 'e');
+  await score(page, 2, 'd');
+  await page.click('#tile-e');
+  eq('clicking a count opens the list of skills behind it',
+     await page.evaluate(() => document.querySelectorAll('#modalSkillsList .skill-item').length), 2);
+  await page.keyboard.press('Escape');
 
-  await page.setViewport({ width: 390, height: 844, isMobile: true });
-  await reload(page);
-  {
-    const m = await page.evaluate(() => {
-      const b = document.querySelector('.btn-score').getBoundingClientRect();
-      return { scrollWidth: document.documentElement.scrollWidth,
-               clientWidth: document.documentElement.clientWidth,
-               buttonRight: Math.round(b.right), buttonWidth: Math.round(b.width) };
-    });
-    // THE DEFECT: the two top panels stayed side by side at 390px, so the whole
-    // scoring panel began exactly at the right edge of the screen. A visitor on
-    // a phone saw an empty chart, three zeros, and nothing to tap.
-    check('on a phone the scoring buttons are on the screen, not off the side of it',
-          m.scrollWidth <= m.clientWidth + 1 && m.buttonRight <= m.clientWidth &&
-          m.buttonWidth > 20, JSON.stringify(m));
+  // The slices and the tiles were mouse-only: a click handler and nothing else,
+  // so a keyboard could not reach them at all.
+  await page.focus('#tile-d');
+  await page.keyboard.press('Enter');
+  check('a count can be opened from the keyboard as well as the mouse',
+        await page.evaluate(() => document.getElementById('skillsModal').classList.contains('show')));
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => document.querySelector('#pieChart path, #pieChart circle').focus());
+  await page.keyboard.press(' ');
+  check('...and so can a slice of the chart',
+        await page.evaluate(() => document.getElementById('skillsModal').classList.contains('show')));
+  await page.keyboard.press('Escape');
 
-    const list = await page.evaluate(() => {
-      const box = document.getElementById('skillsList');
-      const last = box.lastElementChild.getBoundingClientRect();
-      return { clipped: box.scrollHeight > box.clientHeight + 1,
-               lastBottom: Math.round(last.bottom),
-               boxBottom: Math.round(box.getBoundingClientRect().bottom) };
+  // A band with nothing in it has to say so rather than open an empty box.
+  await page.click('#tile-m');
+  check('a count of nought opens a box that says there is nothing in it',
+        await page.evaluate(() =>
+          /No skills in this category/.test(document.getElementById('modalSkillsList').textContent)));
+  await page.keyboard.press('Escape');
+  await page.click('#tile-e');
+
+  // THE DEFECT: Tab walked straight OUT of the open box onto Clear and Export —
+  // buttons sitting under the grey overlay where a mouse physically cannot
+  // reach them — and Enter fired them. Clear wiped the assessment while the box
+  // was still open on top of it, still listing skills that no longer had scores.
+  const escapees = [];
+  for (let i = 0; i < 6; i++){
+    await page.keyboard.press('Tab');
+    escapees.push(await page.evaluate(() =>
+      document.getElementById('skillsModal').contains(document.activeElement)));
+  }
+  check('the keyboard cannot escape the open box onto Clear behind it',
+        escapees.every(Boolean), JSON.stringify(escapees));
+  await page.keyboard.press('Enter');
+  eq('...so nothing behind the box can be fired by accident',
+     (await screenState(page)).scored, 3);
+  // Close it deliberately. Clicking #tile-e while the box is up would land on
+  // the backdrop covering it, which is a CLOSE — a test that reopened the box
+  // that way was in fact measuring a closed one.
+  await page.keyboard.press('Escape');
+
+  // THE DEFECT: the box closed on any mouse-up over the backdrop, including the
+  // end of a drag that STARTED inside it — so selecting a skill name to copy it
+  // closed the box and threw the selection away.
+  await page.click('#tile-e');
+  check('the box is open before the drag begins',
+        await page.evaluate(() =>
+          document.getElementById('skillsModal').classList.contains('show')));
+  const nameBox = await page.evaluate(() => {
+    const r = document.querySelector('#modalSkillsList .skill-item-name').getBoundingClientRect();
+    return { x: r.left + 2, y: r.top + r.height / 2 };
+  });
+  await page.mouse.move(nameBox.x, nameBox.y);
+  await page.mouse.down();
+  await page.mouse.move(nameBox.x + 220, nameBox.y);
+  await page.mouse.move(30, nameBox.y + 260);
+  await page.mouse.up();
+  check('selecting the text inside the box does not close the box',
+        await page.evaluate(() =>
+          document.getElementById('skillsModal').classList.contains('show')));
+
+  // THE DEFECT: the page went on scrolling under the open box — a trackpad
+  // flick over the backdrop moved the whole tool 247px while the box sat still,
+  // and the box's own hint ("click outside this box to close it") was aimed at
+  // a moving target.
+  await page.setViewport({ width: 1280, height: 620 });
+  const room = await page.evaluate(() =>
+    document.documentElement.scrollHeight - window.innerHeight);
+  // A real wheel gesture over the dark backdrop — window.scrollBy() would be a
+  // programmatic scroll, which overflow:hidden does not stop and a trackpad is
+  // not. Measure the gesture the teacher actually makes.
+  await page.mouse.move(200, 500);
+  await page.mouse.wheel({ deltaY: 800 });
+  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => r())));
+  const afterWheel = await page.evaluate(() => window.scrollY);
+  check('the page holds still behind the open box',
+        room > 100 && afterWheel === 0,
+        JSON.stringify({ room, afterWheel }));
+  await page.setViewport({ width: 1280, height: 900 });
+
+  // The two gestures everybody tries on a box like this still work.
+  await page.mouse.click(30, 400);
+  check('a click on the dark backdrop still closes the box',
+        await page.evaluate(() =>
+          !document.getElementById('skillsModal').classList.contains('show')));
+  await page.click('#tile-e');
+  await page.keyboard.press('Escape');
+  check('and so does Escape',
+        await page.evaluate(() =>
+          !document.getElementById('skillsModal').classList.contains('show')));
+
+  // =========================================================================
+  group('On a teacher\'s iPad, held in portrait');
+  // =========================================================================
+  // THE DEFECT: the skills list was a 350px scroll box, and the fix that lifted
+  // the cap only applied below 780px — so an iPad in portrait, at 810-834px, was
+  // the exact device the fix missed. The sixth skill was sliced in half, its
+  // buttons bisected, with the page itself not scrolling and blank space below.
+  for (const width of [768, 820, 834, 1000, 1280]){
+    await page.setViewport({ width, height: 1180 });
+    await fresh(page, base, { firstVisit: true });
+    const fit = await page.evaluate(() => {
+      const list = document.getElementById('skillsList');
+      const box = list.getBoundingClientRect();
+      const rows = Array.from(document.querySelectorAll('.skill'));
+      return { hidden: list.scrollHeight > list.clientHeight + 1,
+               cut: rows.filter(r => r.getBoundingClientRect().bottom > box.bottom + 1).length,
+               rows: rows.length };
     });
-    // A scroll box inside a scrolling page hid the sixth skill on a phone, in a
-    // box nobody would guess could scroll.
-    check('all six skills are on the phone page, not hidden inside a scroll box',
-          !list.clipped && list.lastBottom <= list.boxBottom + 1, JSON.stringify(list));
+    check(`all six skills are fully on the page at ${width}px wide`,
+          fit.rows === 6 && !fit.hidden && fit.cut === 0, JSON.stringify(fit));
   }
 
-  // Every phone width anybody is likely to hold, not just the one that was
-  // broken last time. THE DEFECT: at 320px — an iPhone SE, or a 5s, which
-  // plenty of schools still hand out — the page scrolled sideways by 38px,
-  // because the three count tiles could not shrink below the width of the word
-  // DEVELOPING and a grid item is never allowed under its own minimum width.
-  // The check names the offending element, so the next one is a five-second fix
-  // instead of a hunt.
-  for (const w of [320, 360, 375, 390, 414, 768]){
-    await page.setViewport({ width: w, height: 800, isMobile: true });
-    await reload(page);
-    const m = await page.evaluate(() => {
-      const edge = document.documentElement.clientWidth;
-      const over = [];
-      document.querySelectorAll('*').forEach(el => {
-        const r = el.getBoundingClientRect();
-        if (r.width === 0) return;
-        if (r.right > edge + 0.5 || r.left < -0.5){
-          const name = el.id || String(el.className.baseVal !== undefined
-                                       ? el.className.baseVal : el.className) || el.tagName;
-          over.push(name.trim().split(/\s+/)[0] + ' ' +
-                    Math.round(r.left) + '..' + Math.round(r.right));
-        }
-      });
-      return { scrollWidth: document.documentElement.scrollWidth, clientWidth: edge,
-               over: over.slice(0, 5) };
-    });
-    check('nothing hangs off the side of a ' + w + 'px screen',
-          m.scrollWidth <= m.clientWidth && m.over.length === 0, JSON.stringify(m));
-  }
+  // THE DEFECT: the E/D/M buttons — the gesture a teacher makes six times per
+  // child, one-handed, while holding the thing — were 29x26, and the × on the
+  // box was 15.7px wide, under the WCAG 2.2 minimum of 24x24 outright.
+  await page.setViewport({ width: 820, height: 1180, isMobile: true, hasTouch: true });
+  await fresh(page, base, { firstVisit: true });
+  const targets = await page.evaluate(() => {
+    const b = document.querySelector('.btn-score').getBoundingClientRect();
+    return { w: Math.round(b.width), h: Math.round(b.height) };
+  });
+  check('the score buttons are big enough to hit with a finger',
+        targets.w >= 44 && targets.h >= 44, JSON.stringify(targets));
+  await page.click('#tile-e');
+  const closeSize = await page.evaluate(() => {
+    const b = document.getElementById('closeModalBtn').getBoundingClientRect();
+    return { w: Math.round(b.width), h: Math.round(b.height) };
+  });
+  check('the close button on the box is big enough to hit too',
+        closeSize.w >= 44 && closeSize.h >= 44, JSON.stringify(closeSize));
+  await page.keyboard.press('Escape');
+
+  // A 320px phone still must not scroll sideways.
+  await page.setViewport({ width: 320, height: 700, isMobile: true, hasTouch: true });
+  await fresh(page, base, { firstVisit: true });
+  check('a 320px phone does not scroll sideways',
+        await page.evaluate(() =>
+          document.documentElement.scrollWidth <= window.innerWidth + 1),
+        await page.evaluate(() =>
+          document.documentElement.scrollWidth + ' vs ' + window.innerWidth));
+  // ...including with the longer "some of Maya is still here" sentence in the
+  // banner, which is the one a visitor typing over her actually sees.
+  await page.click('#initials');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Backspace');
+  check('...not even with the longer part-sample banner up',
+        await page.evaluate(() =>
+          document.getElementById('sampleBanner').classList.contains('show') &&
+          document.documentElement.scrollWidth <= window.innerWidth + 1),
+        await page.evaluate(() =>
+          document.documentElement.scrollWidth + ' vs ' + window.innerWidth));
   await page.setViewport({ width: 1280, height: 900 });
 
   // =========================================================================
-  await harvest(page);
-  group('Nothing leaves the laptop');
+  group('Told out loud, for a teacher who cannot see the screen');
+  // =========================================================================
+  // THE DEFECT: #sayMsg is the tool's only voice — and it was a plain div with
+  // no role and no aria-live, so none of it was spoken. Pressing Clear on an
+  // already-empty tool changes nothing else on the whole page, so the button
+  // simply appeared to be broken.
+  await fresh(page, base);
+  const voice = await page.evaluate(() => {
+    const m = document.getElementById('sayMsg');
+    return { role: m.getAttribute('role'), live: m.getAttribute('aria-live'),
+             atomic: m.getAttribute('aria-atomic') };
+  });
+  check('what the tool just did is announced, not only shown',
+        voice.role === 'status' && voice.live === 'polite' && voice.atomic === 'true',
+        JSON.stringify(voice));
 
-  {
-    const offsite = [...hosts].filter(h => !/^127\.0\.0\.1/.test(h) &&
-                                           h !== 'cdnjs.cloudflare.com');
-    check('the only thing fetched from the internet is the PDF library',
-          offsite.length === 0, JSON.stringify([...hosts]));
-    const src = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-    check('no fetch, XHR, WebSocket or beacon anywhere in the file',
-          !/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/.test(src));
-  }
-
-  check('no page errors anywhere in the whole run', pageErrors.length === 0,
-        pageErrors.join('\n'));
-  check('no console errors anywhere in the whole run', consoleErrors.length === 0,
-        consoleErrors.join('\n'));
+  await score(page, 0, 'e');
+  const spoken = await page.evaluate(() => ({
+    chart: document.getElementById('pieChart').getAttribute('aria-label'),
+    tile:  document.getElementById('tile-e').getAttribute('aria-label'),
+    pressed: document.querySelector('.btn-score.e').getAttribute('aria-pressed')
+  }));
+  check('the chart and the counts describe themselves as the numbers change',
+        /Emerging 1/.test(spoken.chart) && /1 skill of 1/.test(spoken.tile) &&
+        spoken.pressed === 'true', JSON.stringify(spoken));
 
   // =========================================================================
-  // Coverage: not whether the tests PASS but whether they LOOK at everything.
+  group('Nothing broke while all of the above ran');
+  // =========================================================================
+  check('still no JavaScript errors after every check',
+        pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '));
+  check('still no console errors after every check',
+        consoleErrors.length === 0, consoleErrors.slice(0, 3).join(' | '));
+
+  // -------------------------------------------------------------------------
+  // Coverage report
+  // -------------------------------------------------------------------------
   if (COVERAGE){
-    await harvest(page);
-    group('Coverage');
-    // Every page load produces its own record for index.html and some of them
-    // are stubs. Merge the bytes that ran across ALL of them onto the longest
-    // copy of the text — taking only the first record reported "0 of 0", which
-    // looks like a coverage tool working and is a coverage tool measuring
-    // nothing.
-    const runs = covRuns.filter(e => /index\.html/.test(e.url) && e.text);
-    const entries = runs.length
-      ? [runs.reduce((a, b) => (b.text.length > a.text.length ? b : a))]
-      : [];
-    for (const entry of entries){
-      const text = entry.text;
-      entry.ranges = runs.filter(r => r.text === text)
-                         .reduce((acc, r) => acc.concat(r.ranges), []);
-      const used = new Uint8Array(text.length);
-      entry.ranges.forEach(r => { for (let i = r.start; i < r.end; i++) used[i] = 1; });
+    covRuns.push(...await page.coverage.stopJSCoverage());
+    const merged = new Map();
+    for (const e of covRuns){
+      if (!/index\.html/.test(e.url)) continue;
+      const cur = merged.get(e.text) || [];
+      merged.set(e.text, cur.concat(e.ranges));
+    }
+    group('Code coverage — which lines never ran');
+    if (!merged.size){
+      console.log(`${R}  no coverage was recorded${X}`);
+    } else {
+      for (const [text, ranges] of merged){
+        const used = new Uint8Array(text.length);
+        ranges.forEach(r => used.fill(1, r.start, r.end));
 
-      // Chrome hands back the SCRIPT BODY for an inline script, not the HTML
-      // file. Sniffing for a "<script>" substring got this wrong the moment the
-      // tool's own code mentioned one in a comment: close came back -1 and the
-      // report cheerfully said "0 of 0" — a coverage tool measuring nothing
-      // looks exactly like a coverage tool working. Decide by what the text
-      // actually starts with.
-      const isHtml = text.trimStart().startsWith('<');
-      const tag  = isHtml ? text.indexOf('<script>') : -1;
-      const open = tag === -1 ? 0 : tag + '<script>'.length;
-      const close = tag === -1 ? text.length : text.lastIndexOf('</script>');
+        // Chrome may hand back either the whole document or just the inline
+        // script body. Handle both: when it is the whole document, measure only
+        // between the script tags, so the HTML and CSS — which are not
+        // executable — cannot flatter the number.
+        //
+        // Whether it IS the whole document has to be decided by how the text
+        // STARTS, not by searching for "<script>" anywhere in it. A comment in
+        // the tool's own JavaScript mentions that tag, so the search found it
+        // inside the script body, then found no closing tag to pair it with,
+        // and the whole report silently measured a range of zero lines and
+        // printed "every executable line was run by a test".
+        const wholeDoc = /^\s*<!doctype|^\s*<html/i.test(text);
+        const tag   = wholeDoc ? text.indexOf('<script>') : -1;
+        const open  = wholeDoc ? tag + '<script>'.length : 0;
+        const close = wholeDoc ? text.lastIndexOf('</script>') : text.length;
 
-      let lineShift = 0;
-      if (tag === -1){
-        const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-        const at = html.indexOf('<script>');
-        if (at !== -1) lineShift = html.slice(0, at).split('\n').length - 1;
+        let lineShift = 0;
+        if (!wholeDoc){
+          const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+          const at = html.indexOf('\n<script>');
+          if (at !== -1) lineShift = html.slice(0, at + 1).split('\n').length - 1;
+        }
+
+        const lineStarts = [0];
+        for (let i = 0; i < text.length; i++) if (text[i] === '\n') lineStarts.push(i + 1);
+        const lineOf = off => {
+          let lo = 0, hi = lineStarts.length - 1;
+          while (lo < hi){ const mid = (lo + hi + 1) >> 1;
+            if (lineStarts[mid] <= off) lo = mid; else hi = mid - 1; }
+          return lo;
+        };
+
+        const dead = [];
+        let executable = 0, covered = 0;
+        for (let ln = lineOf(open); ln <= lineOf(close); ln++){
+          const from = lineStarts[ln];
+          const to   = (lineStarts[ln + 1] || text.length);
+          const src  = text.slice(from, to);
+          const code = src.trim();
+          if (!code || code.startsWith('//') || code.startsWith('*') ||
+              code.startsWith('/*') || /^[}\])\s,;]*$/.test(code)) continue;
+          executable++;
+          let any = false;
+          for (let i = from; i < to; i++) if (used[i]){ any = true; break; }
+          if (any) covered++; else dead.push({ ln: ln + 1 + lineShift, code });
+        }
+
+        const pct = executable ? (covered / executable * 100) : 0;
+        const colour = pct >= 95 ? G : pct >= 85 ? Y : R;
+        console.log(`  ${colour}${pct.toFixed(1)}%${X} of executable lines ran ` +
+                    `${DIM}(${covered} of ${executable})${X}`);
+        if (dead.length){
+          console.log(`  ${Y}${dead.length} line(s) never executed:${X}`);
+          dead.forEach(d => console.log(`    ${DIM}index.html:${d.ln}${X}  ${d.code.slice(0, 96)}`));
+          console.log(`\n  ${DIM}Each line above is untested. Either write a test that runs it` +
+                      ` and\n  asserts on the result, or delete it because nothing can reach it.${X}`);
+        } else {
+          console.log(`  ${G}every executable line was run by a test${X}`);
+        }
       }
-
-      const lineStarts = [0];
-      for (let i = 0; i < text.length; i++) if (text[i] === '\n') lineStarts.push(i + 1);
-      const lineOf = off => {
-        let lo = 0, hi = lineStarts.length - 1;
-        while (lo < hi){ const mid = (lo + hi + 1) >> 1;
-          if (lineStarts[mid] <= off) lo = mid; else hi = mid - 1; }
-        return lo;
-      };
-
-      const dead = [];
-      let executable = 0, covered = 0;
-      for (let ln = lineOf(open); ln <= lineOf(close); ln++){
-        const from = lineStarts[ln];
-        const to   = (lineStarts[ln + 1] || text.length);
-        const code = text.slice(from, to).trim();
-        if (!code || code.startsWith('//') || code.startsWith('*') ||
-            code.startsWith('/*') || /^[}\])\s,;]*$/.test(code)) continue;
-        executable++;
-        let any = false;
-        for (let i = from; i < to; i++) if (used[i]){ any = true; break; }
-        if (any) covered++; else dead.push({ ln: ln + 1 + lineShift, code });
-      }
-      const pct = executable ? (covered / executable * 100) : 0;
-      const colour = pct >= 95 ? G : pct >= 85 ? Y : R;
-      console.log(`  ${colour}${pct.toFixed(1)}%${X} of executable lines ran ` +
-                  `${DIM}(${covered} of ${executable})${X}`);
-      dead.forEach(d => console.log(`    ${DIM}index.html:${d.ln}${X}  ${d.code.slice(0, 96)}`));
-
     }
   }
 
@@ -1554,6 +1757,28 @@ async function main(){
   srv.close();
 
   // -------------------------------------------------------------------------
+  // How many checks were SUPPOSED to run.
+  //
+  // Several checks read a value out of the page first. If that read ever comes
+  // back undefined the check does not fail — it can silently stop happening,
+  // and the run still ends green. That is how a suite quietly shrinks. So the
+  // count itself is a check: if it moves, either you added checks (put the new
+  // number here, deliberately) or some stopped running (find out why).
+  // -------------------------------------------------------------------------
+  const EXPECTED_CHECKS = Number(process.env.EXPECTED_CHECKS || 0);
+  const ran = passed + failures.length;
+  if (EXPECTED_CHECKS && ran !== EXPECTED_CHECKS){
+    failures.push({
+      name: `the suite ran ${ran} checks, but ${EXPECTED_CHECKS} were expected`,
+      detail: ran < EXPECTED_CHECKS
+        ? 'Checks vanished rather than failed — look for a read that came back empty.'
+        : 'Checks were added. If that was deliberate, update EXPECTED_CHECKS.',
+    });
+    console.log(`${R}  FAIL${X} expected ${EXPECTED_CHECKS} checks, ran ${ran}`);
+  } else if (!EXPECTED_CHECKS){
+    console.log(`${DIM}  (no EXPECTED_CHECKS set — ran ${ran})${X}`);
+  }
+
   console.log('');
   if (failures.length){
     console.log(`${R}${failures.length} CHECK(S) FAILED${X}  (${passed} passed)`);

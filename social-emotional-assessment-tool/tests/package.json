@@ -1,7 +1,7 @@
 {
   "name": "social-emotional-assessment-tests",
   "version": "1.0.0",
-  "description": "Regression tests for the Social-Emotional Assessment tool.",
+  "description": "Regression tests for the Social-Emotional Assessment tool. There is no node_modules here on purpose — puppeteer-core is borrowed from the running record tool via NODE_PATH, so nothing needs installing.",
   "scripts": {
     "test": "NODE_PATH=/Users/sahajkashyap/Documents/GitHub/edtech-portfolio/running-record-tool/tests/node_modules node run-tests.js",
     "coverage": "NODE_PATH=/Users/sahajkashyap/Documents/GitHub/edtech-portfolio/running-record-tool/tests/node_modules node run-tests.js --coverage"
