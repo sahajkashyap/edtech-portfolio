@@ -2,16 +2,16 @@
   "lesson": 67,
   "title": "The Backpack",
   "lines": [
-    "Tom is off to camp with his pal Dan.",
-    "He packs his backpack with a hotdog and napkin.",
-    "Dan's kitten is hidden in the backpack.",
-    "Tom cannot see it, and off they go.",
-    "Tom and Dan hop up the big hill.",
-    "At the top they sit and rest.",
+    "Tom and Dan go to camp with Dad and Dan's kitten.",
+    "Tom packs his backpack with a hotdog and napkin.",
+    "They hop up the big hill to the camp.",
+    "At the top Tom sets his backpack on the grass.",
+    "Tom and Dan help Dad set up the tent.",
+    "The kitten slips into the backpack!",
     "At sunset Tom digs for his hotdog.",
     "The kitten is sitting on it! Tom is upset.",
     "The hotdog is a mess. The napkin is wet.",
-    "Dan hands him a muffin and Tom grins.",
+    "Dad hands him a muffin and Tom grins.",
     "The kitten naps as the sun sets."
   ],
   "warmup": [
@@ -25,7 +25,7 @@
   "questions": [
     {
       "ask": "What was in Tom's backpack?",
-      "listenFor": "A hotdog, a napkin, and Dan's kitten. Stated in the story — have them find the lines instead of listing it for them."
+      "listenFor": "A hotdog and a napkin. Then the kitten slips in too. Stated in the story — have them find the lines instead of listing it for them."
     },
     {
       "ask": "Why is Tom upset?",
@@ -33,7 +33,7 @@
     },
     {
       "ask": "How did Tom feel when he found the kitten on his hotdog? Which word tells you?",
-      "listenFor": "Upset — line eight says so. Then Dan hands him a muffin and he grins, which turns it round."
+      "listenFor": "Upset — line eight says so. Then Dad hands him a muffin and he grins, which turns it round."
     }
   ]
 }

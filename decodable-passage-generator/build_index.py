@@ -19,14 +19,7 @@ OUT = HERE / "index.html"
 
 # Lessons whose story cannot demonstrate the sound the lesson teaches, and why.
 # Recorded rather than papered over.
-TARGET_SOUND_NOTES = {
-    7: ("This story does not use an <strong>f</strong> word. With only "
-        "<em>a m s t p f</em> taught and no blends yet, the only real English "
-        "word containing f that a child can decode here is one we chose not to "
-        "put on a children's sheet. Lesson 8 adds <em>i</em> and <em>fit</em> "
-        "becomes available. The f practice for this lesson comes from the "
-        "worksheet generator instead."),
-}
+TARGET_SOUND_NOTES = {}
 
 # The dash below is written as &mdash; on purpose, and so is every other
 # non-ASCII character on this page -- see ascii_only() at the bottom of this
@@ -318,6 +311,10 @@ def build():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Decodable Passages &mdash; all 128 lessons</title>
+<meta name="description" content="A printable reading practice packet for every UFLI Foundations lesson, 1 to 128.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Decodable Passages &mdash; all 128 lessons">
+<meta property="og:description" content="A printable reading practice packet for every UFLI Foundations lesson, 1 to 128.">
 <style>{CSS}</style>
 <div class="wrap">
 <header>
@@ -339,8 +336,8 @@ def build():
 </header>
 
 <section>
-  <div class="note"><strong>Lessons {min(letter_sheets)}&ndash;{max(letter_sheets)} are
-  letter-and-sound sheets, not stories.</strong> {NO_PASSAGE_REASON} So those five teach the
+  <div class="note"><strong>Lessons 1&ndash;5 and Lesson 7 are
+  letter-and-sound sheets, not stories.</strong> {NO_PASSAGE_REASON} So those lessons teach the
   letter and its sound instead: the letter with a keyword picture, how the mouth makes the
   sound, handwriting practice on three-line guides, a letter hunt and a beginning-sound sort
   &mdash; and, at Lesson 5, first blending. Click them like any other lesson.</div>

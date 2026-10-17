@@ -4,15 +4,15 @@
   "lines": [
     "Kim is a girl in a red shirt.",
     "She spots a bird sitting in the dirt.",
-    "Its wing is bad, and it can not fly.",
-    "Kim goes to pick it up, and it hops off.",
-    "First she gets a box and a soft rag.",
-    "She sets the box in the dirt by it.",
+    "Its wing is hurt, and it can not fly.",
+    "Kim does not pick it up. She gets her mother.",
+    "Her mother gets a box and a soft rag.",
+    "She sets the box in the dirt by the bird.",
     "The bird turns and hops into the box.",
-    "Her mother turns a lamp on for it.",
-    "The bird curls up and naps.",
-    "On the third sun up, the wing is fine.",
-    "Kim lets it go. It lifts up and turns."
+    "Then they take it to a bird vet.",
+    "The vet will help the bird get well.",
+    "The vet calls Kim. The wing is fine!",
+    "Kim and her mother let it go. It lifts up and turns."
   ],
   "warmup": [
     "girl",
@@ -25,11 +25,11 @@
   "questions": [
     {
       "ask": "What was wrong with the bird?",
-      "listenFor": "Its wing was bad, so it could not fly. 'It was in the dirt' is where it was, not what was wrong."
+      "listenFor": "Its wing was hurt, so it could not fly. 'It was in the dirt' is where it was, not what was wrong."
     },
     {
-      "ask": "How did Kim get the bird into the box?",
-      "listenFor": "She set the box in the dirt next to it, and the bird hopped in on its own. If they say \"she picked it up,\" ask \"what happened when she went to pick it up?\""
+      "ask": "How did the bird get into the box?",
+      "listenFor": "Kim's mother set the box in the dirt next to it, and the bird hopped in on its own. Worth pointing out: Kim did not pick it up — she got a grown-up."
     },
     {
       "ask": "Which part will you draw — the bird in the box, or the bird lifting off?",

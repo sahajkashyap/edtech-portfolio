@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Decodable Passage &mdash; Lesson 7, f /f/</title>
+<title>Letter &amp; Sound Sheet &mdash; Lesson 7, f /f/</title>
+<meta name="description" content="A printable letter and sound sheet for UFLI Lesson 7, f /f/.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lesson 7: Letter &amp; Sound Sheet">
+<meta property="og:description" content="A printable letter and sound sheet for UFLI Lesson 7, f /f/.">
 <style>
   /* Side margins are 0.5in (safe on ordinary home printers) so the story lines
      get the widest column the paper allows; top and bottom stay 0.6in. */
@@ -162,13 +166,49 @@
      both have it, so the fallback never lands on Verdana's double-story a */
   .lhunt, .bw .bwd, .sstrip div, .erow .eword, .chain span, .doit .dw { font-family: "Century Gothic", Futura, "Comic Sans MS", Verdana, sans-serif; }
 
-  .passage p { font-size: 32px; line-height: 2.5; }</style>
+  /* Scoped to the five letter sheets only -- the other 123 keep the
+     stylesheet exactly as it is. The blend words were made much larger
+     on the teacher's request, so the room comes out of the gaps between
+     blocks rather than out of anything the child uses. */
+  h2 { margin-top: 10px; }
+  .sub { margin-bottom: 4px; }
+  .doit { margin: 2px 0; }
+  .chain { margin-bottom: 2px; }
+  /* The words page holds only words, so they get room to breathe --
+     air between them is what stops a small finger sliding on to the
+     next word before the child has finished the one they are on. */
+  /* the words sit in the middle of the space above the fold, rather than
+     at the top with a hole beneath them -- Lesson 2 has exactly one
+     readable word and a lone word pinned to the top reads as a mistake */
+  .wline { gap: 54px 40px; margin-top: auto; margin-bottom: auto; }
+  .tip { padding: 4px 11px; margin: 2px 0 3px; }
+  .tip p { margin: 1px 0; }
+  .audit { padding: 4px 12px; margin-top: 6px; }
+  /* The grown-up's instructions live at the foot of the page, under a
+     line they can fold back or tear off. push it down so the fold lands
+     near the bottom of the sheet whatever the words above it need. */
+  /* margin-top:auto pushes this to the foot of the page, which landed its
+     bottom edge exactly on the page boundary and read as a 0.2px
+     overflow. The bottom margin makes it stop just short. */
+  .foldoff { margin-top: auto; margin-bottom: 8px; padding-top: 20px; }
+  .page:has(.foldoff) { display: flex; flex-direction: column; }
+  .foldline { border-top: 2px dashed #9a9a9a; position: relative;
+               margin: 0 0 12px; height: 0; }
+  .foldline span { position: absolute; left: 50%; transform: translate(-50%, -50%);
+               background: #fff; padding: 0 12px; font-size: 10.5px;
+               letter-spacing: 0.14em; text-transform: uppercase; color: #8a8a8a; }
+  .adultnote { font-size: 12.4px; line-height: 1.42; color: #4a3f2c; }
+  .adultnote .anh { font-weight: bold; text-transform: uppercase;
+               letter-spacing: 0.12em; font-size: 11px; color: #8a6d3b;
+               margin-bottom: 5px; }
+  .adultnote p { margin: 4px 0; }
+</style>
 </head>
 <body>
 
 <div class="toolbar">
   <button onclick="window.print()">Print / Save as PDF</button>
-  <span>Prints as 5 pages: 1 grown-up sheet, then 4 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
+  <span>Prints as 4 pages: 1 grown-up sheet, then 3 child sheets. Choose &ldquo;Save as PDF&rdquo; to keep a copy.</span>
 </div>
 
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -177,177 +217,174 @@
   <span class="owner adult">Grown-up sheet &mdash; keep this one</span>
   <div class="band">
     <div>
-      <div class="tag">Decodable Passage &middot; Reading Foundations</div>
-      <h1>Pat the Map</h1>
+      <div class="tag">Letter &amp; Sound &middot; Reading Foundations</div>
+      <h1>The letter f says /f/</h1>
     </div>
     <div class="flagged">Lesson 7<br>f /f/</div>
   </div>
 
   <div class="prereq">
-    <p style="margin:0"><strong>Before you start: this is Lesson 7. It uses only sounds already taught in Lessons 1&ndash;6.</strong> If they
-    have not done those yet it will feel too hard &mdash; ask their teacher where to start.</p>
+    <p style="margin:0"><strong>This is Lesson 7. It assumes your child has met the letters from Lessons 1&ndash;6 (a, m, s, t, p).</strong> If not, start at Lesson 1 &mdash; each sheet takes only a few minutes.</p>
   </div>
 
-  <h2>About 15 minutes, in this order</h2>
+  <h2>What this lesson teaches</h2>
   <div class="tip">
-    <p><strong>1. Say the practice words on the words page,</strong> then the heart words.
-    A heart word has one part that cannot be sounded out &mdash; the little heart marks the
-    bit to just remember.</p>
-    <p><strong>2. Read the story on the next page. If they get stuck, don&rsquo;t say the
-    word.</strong> Point under the letters and say: &ldquo;Say each sound, then say them
-    fast&rdquo; &mdash; &ldquo;mmm &ndash; aaa &ndash; p &hellip; map!&rdquo;</p>
-    <p><strong>3. Read it three times</strong> &mdash; they color a circle each time.</p>
-    <p><strong>4. They draw what happened,</strong> on the top half of the next page. No
-    picture to copy &mdash; their drawing is how you see what they understood.</p>
-    <p><strong>5. They write one sentence,</strong> on the lines under their drawing. The
-    sentence to read aloud is in the box below.</p>
+    <p>Today your child meets the letter <strong>f</strong> and its sound <strong>/f/</strong> &mdash; a soft rush of air, like the start of <em>fish</em>. As always, the <strong>sound</strong> is what reading uses, not the name (&ldquo;ef&rdquo;). The words page reads words made from the letters your child already knows; in the next lesson, f starts turning up in words like <em>fit</em>.</p>
   </div>
 
-  <h2>The writing sentence &middot; read this aloud to them</h2>
+  <div class="prereq">
+    <div class="h">The one thing to get right &mdash; say the sound clean</div>
+    <p>Say <strong>&ldquo;fff,&rdquo; not &ldquo;fuh.&rdquo;</strong> Hold the air and stop &mdash; no &ldquo;uh&rdquo; on the end. A child who learns &ldquo;fuh&rdquo; will later read <em>fit</em> as &ldquo;fuh-i-t,&rdquo; and blending gets harder.</p>
+  </div>
+
+  <h2>The mouth cue &mdash; say it together at a mirror</h2>
   <div class="tip">
-    <p class="say">&ldquo;I tap, and Sam and Pam pat.&rdquo;</p>
-    <p>Once at normal speed, once slowly, and have them <strong>say it back</strong> before
-    they write. If they get stuck on a word, say its sounds together &mdash; don&rsquo;t spell
-    it letter by letter.</p>
-    <p><strong>Practice, not a test &mdash; don&rsquo;t mark it wrong.</strong> If a word is
-    misspelled, read it back exactly as they wrote it and let them hear the difference.</p>
+    <p><strong>f</strong> &mdash; rest your top teeth gently on your bottom lip and blow: <strong>fff</strong>.</p>
+    <p>Watch each other&rsquo;s mouths in a mirror. Seeing what the mouth does makes the
+    sound stick far better than hearing it alone.</p>
   </div>
 
-  <h2>When it does not go smoothly</h2>
+  <h2>How to run the writing page</h2>
   <div class="tip">
-    <p><strong>A wrong word, or a guess?</strong> Don&rsquo;t say &ldquo;no&rdquo; &mdash; point
-    at the word: &ldquo;Try that one again &mdash; say each sound.&rdquo; Fixing it themselves
-    is the win.</p>
-    <p><strong>Sounded it out twice, still stuck?</strong> Tell them the word and carry on.
-    A few told words do no harm.</p>
-    <p><strong>Stuck on nearly every line, or fed up?</strong> Stop &mdash; that is fine. Try an
-    easier lesson, or this one tomorrow. Five happy minutes beat twenty cross ones.</p>
+    <p><strong>Big first, small last.</strong> Sky-write it huge in the air, then
+    finger-trace the big letters, then pick up a pencil. <strong>Always start at the red
+    dot,</strong> and say &ldquo;fff&rdquo; each time a letter is finished, so hand
+    and sound get glued together.</p>
+    <p><strong>Backwards letters are completely normal at this age.</strong> Point at the
+    start dot and try again &mdash; it fixes itself with practice.</p>
   </div>
 
-  <h2>If they want the questions <span class="h2note">&mdash; the questions page is extra;
-  these work just as well out loud</span></h2>
-  <div class="answers">
-    <p class="qa"><span class="qq">1. Who is telling this story?</span><br><span class="aa">Tam. The first line says "I am Tam." If they are unsure, ask them who the word I means here.</span></p>
-    <p class="qa"><span class="qq">2. What are Tam, Sam and Pam patting and tapping?</span><br><span class="aa">The map. It is in nearly every line — let them find one and read it back to you.</span></p>
-    <p class="qa"><span class="qq">3. The children pat the map flat. What else could hold a rolled-up map down?</span><br><span class="aa">Any idea of their own — books, hands, knees. Line two is where they pat it flat.</span></p>
+
+  <h2>How to run the words page</h2>
+  <div class="tip">
+    <p><strong>Two kinds of dot.</strong> The <strong>red</strong> dot on the writing
+    page is where the pencil starts. The dots under a word are its <strong>sounds</strong>
+    &mdash; touch each one, say its sound, then slide along the arrow and say the word.
+    Fuller instructions are on the words page itself.</p>
+  </div>
+
+  <h2>Two games &mdash; no pencil, no paper</h2>
+  <div class="tip">
+    <p><strong>1. Thumbs up.</strong> Say words one at a time; thumbs up if the word starts
+    with /f/. Try: <em>fish, fan, fox, feet</em> &mdash; and some that do not: <em>sun, moon, dog</em>.</p>
+    <p><strong>2. Robot talk.</strong> Say a word in two robot pieces, they snap it
+    together: &ldquo;I say <em>c&hellip;at</em> &mdash; you say <em>cat</em>!&rdquo; No
+    letters needed &mdash; this one works in the car.</p>
   </div>
 
   <div class="audit">
-    <p style="margin:0;"><strong>Checked word by word:</strong> all 38 words in this
-    story use only sounds taught by Lesson 7, plus heart words already learned. Nothing here
-    needs guessing.</p>
+    <p style="margin:0 0 4px"><strong>Five minutes a day beats twenty on Saturday. Stop while
+    it is still fun.</strong></p>
+    <p style="margin:0">In the letter hunt, the other letters are the ones learned so far, all in review. Watch for <strong>t</strong>: it looks a lot like <strong>f</strong>, so this is good practice telling them apart. On the picture page, name the pictures together
+    first: a fish, the sun, a frog, a star, a flower, a tent.</p>
   </div>
 
   <div class="foot">
     <span>Grown-up sheet &mdash; Lesson 7, f /f/</span>
-    <span>Original text. Public-domain sight words only.</span>
+    <span>Original text and drawings.</span>
   </div>
 
 </div>
 
-
-<!-- ================= PAGE 2 &mdash; WORDS BEFORE THE STORY ================= -->
+<!-- ================= PAGE 2 — MY LETTER ================= -->
 <div class="page">
 
   <div class="band">
     <div>
       <span class="owner child" style="margin-bottom:3px">For the reader</span>
-      <div class="tag">Words first</div>
-      <h1>Pat the Map</h1>
+      <div class="tag">My letter page</div>
+      <h1>f is for fish</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  <h2>Say these first</h2>
-  <div class="warm"><div>sat</div><div>map</div><div>tap</div><div>pat</div></div>
+  <div class="meet"><div><svg viewBox="-2 4 50 102" height="173" width="85" role="img" aria-label="The letter f drawn as a fish"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 50 L34 50" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></g></svg><div class="mcap"><strong>small f</strong> &mdash; the one you write</div></div><div><svg width="140" height="140" viewBox="0 0 100 100" role="img" aria-label="a fish"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 60 C38 40 70 40 84 60 C70 80 38 80 22 60 z" fill="#fff"/><path d="M22 60 L6 46 L10 60 L6 74 z" fill="#fff"/><circle cx="72" cy="55" r="2.5" fill="#1a1a1a"/></g></svg><div class="mcap">a fish</div></div><div><svg viewBox="0 8 72 100" height="86" width="62"><path d="M12 100 L12 16 L58 16 M12 56 L48 56" fill="none" stroke="#777" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="mcap">capital F &mdash; just to know it</div></div></div>
 
-  <h2>Heart words <span style="font-weight:400;font-size:.75em;color:#444;letter-spacing:0">&mdash; this week&rsquo;s words, not always in the story; the <span style="color:#b23f28">&hearts;</span> part is learned by heart</span></h2><div class="hwrow"><div class="hwcard"><svg viewBox="0 0 184 95" width="184" height="95" role="img" aria-label="and, with a heart under each tricky part"><rect x="0" y="0" width="58" height="58" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><text x="29" y="39" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="32" fill="#1a1a1a">a</text><rect x="63" y="0" width="58" height="58" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="92" y="39" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="32" fill="#1a1a1a">n</text><path transform="translate(92,79) scale(1.11)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/><rect x="126" y="0" width="58" height="58" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="155" y="39" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="32" fill="#1a1a1a">d</text><path transform="translate(155,79) scale(1.11)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg><div class="hwword">and</div></div><div class="hwcard"><svg viewBox="0 0 58 95" width="58" height="95" role="img" aria-label="a, with a heart under each tricky part"><rect x="0" y="0" width="58" height="58" rx="3" fill="#fdf0f0" stroke="#b23f28" stroke-width="1.5"/><text x="29" y="39" text-anchor="middle" font-family="Century Gothic, Verdana, sans-serif" font-size="32" fill="#1a1a1a">a</text><path transform="translate(29,79) scale(1.11)" d="M0,4 C-6,-3 -11,-8 -6,-11 C-3,-13 0,-10 0,-7 C0,-10 3,-13 6,-11 C11,-8 6,-3 0,4 z" fill="#b23f28"/></svg><div class="hwword">a</div></div></div>
+  <p class="mouthline"><strong>Mouth check:</strong> say <strong>fff</strong>. Are your top teeth on your bottom lip? Put a hand in front of your mouth and feel the air. Look in a mirror with your grown-up.</p>
 
-  <p class="artcap" style="text-align:right;margin-top:10px">The story is on the next page &rarr;</p>
+  <h2>Write it <span class="h2note">&mdash; start at the dot every time, and say
+  &ldquo;fff&rdquo; each time you finish one</span></h2>
+  <div class="wmodel">
+    <svg viewBox="-30 -20 106 142" height="168" width="125" role="img" aria-label="How to write the letter f"><defs><marker id="ah-f" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#b23f28"/></marker></defs><line x1="-26" y1="0" x2="72" y2="0" stroke="#1a1a1a" stroke-width="1.6"/><line x1="-26" y1="50" x2="72" y2="50" stroke="#8a8a8a" stroke-width="1.6" stroke-dasharray="6 6"/><line x1="-26" y1="100" x2="72" y2="100" stroke="#1a1a1a" stroke-width="1.6"/><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 6 C24 4 16 8 12 16" fill="none" stroke="#b23f28" stroke-width="2.5" stroke-linecap="round" marker-end="url(#ah-f)"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><circle cx="42" cy="12" r="8.5" fill="#b23f28"/><text x="42" y="16.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">1</text><path d="M6 50 L34 50" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 41 L28 41" fill="none" stroke="#b23f28" stroke-width="2.5" stroke-linecap="round" marker-end="url(#ah-f)"/><circle cx="6" cy="50" r="5" fill="#b23f28"/><circle cx="1" cy="38" r="8.5" fill="#b23f28"/><text x="1" y="42.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">2</text></svg>
+  </div>
+
+  <p class="rowlab">1. Trace the big letters with your <strong>finger</strong>.</p>
+  <div class="ruled trace"><span class="mid"></span><svg viewBox="0 0 880 100" preserveAspectRatio="xMidYMid meet"><g transform="translate(87,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(307,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(527,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(747,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g></svg></div>
+  <p class="rowlab">2. Trace the dotted letters with a <strong>pencil</strong>. Start at the dot.</p>
+  <div class="ruled trace"><span class="mid"></span><svg viewBox="0 0 880 100" preserveAspectRatio="xMidYMid meet"><g transform="translate(87,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(307,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(527,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(747,0)"><path d="M40 24 C36 12 18 12 18 30 L18 100" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="40" cy="24" r="5" fill="#b23f28"/><path d="M6 50 L34 50" fill="none" stroke="#666" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="0.5 8"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g></svg></div>
+  <p class="rowlab">3. Now write it on your own. Start at each dot.</p>
+  <div class="ruled trace"><span class="mid"></span><svg viewBox="0 0 880 100" preserveAspectRatio="xMidYMid meet"><g transform="translate(87,0)"><circle cx="40" cy="24" r="5" fill="#b23f28"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(307,0)"><circle cx="40" cy="24" r="5" fill="#b23f28"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(527,0)"><circle cx="40" cy="24" r="5" fill="#b23f28"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g><g transform="translate(747,0)"><circle cx="40" cy="24" r="5" fill="#b23f28"/><circle cx="6" cy="50" r="3" fill="#b23f28"/></g></svg></div>
 
 </div>
 
-<!-- ================= PAGE 3 &mdash; THE STORY ================= -->
+<!-- ================= PAGE 3 — MY PRACTICE ================= -->
 <div class="page">
 
   <div class="band">
     <div>
       <span class="owner child" style="margin-bottom:3px">For the reader</span>
-      <div class="tag">My reading page</div>
-      <h1>Pat the Map</h1>
+      <div class="tag">My practice page</div>
+      <h1>Find f, hear /f/</h1>
     </div>
     <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
 
-  
-  
+  <h2>Letter hunt</h2>
+  <p class="sub">Circle every <strong>f</strong>. There are 9 to find.</p>
+  <div class="lhunt"><div>m</div><div>t</div><div>a</div><div>t</div><div>s</div><div>p</div><div>f</div><div>p</div><div>t</div><div>f</div><div>f</div><div>a</div><div>f</div><div>f</div><div>s</div><div>f</div><div>f</div><div>s</div><div>p</div><div>m</div><div>a</div><div>m</div><div>f</div><div>f</div></div>
 
-  
+  <h2>Circle the ones that start with /f/</h2>
+  <p class="sub">Name each picture out loud with your grown-up first. Then circle the ones
+  that start with /f/.</p>
+  <div class="sortrow"><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a fish"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 60 C38 40 70 40 84 60 C70 80 38 80 22 60 z" fill="#fff"/><path d="M22 60 L6 46 L10 60 L6 74 z" fill="#fff"/><circle cx="72" cy="55" r="2.5" fill="#1a1a1a"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="the sun"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="34" r="20"/><line x1="50" y1="4" x2="50" y2="-4"/><line x1="50" y1="72" x2="50" y2="64"/><line x1="20" y1="34" x2="12" y2="34"/><line x1="88" y1="34" x2="80" y2="34"/><line x1="28" y1="12" x2="23" y2="7"/><line x1="72" y1="56" x2="77" y2="61"/><line x1="72" y1="12" x2="77" y2="7"/><line x1="28" y1="56" x2="23" y2="61"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a frog"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="70" rx="28" ry="20" fill="#fff"/><circle cx="36" cy="46" r="10" fill="#fff"/><circle cx="64" cy="46" r="10" fill="#fff"/><circle cx="36" cy="46" r="3" fill="#1a1a1a"/><circle cx="64" cy="46" r="3" fill="#1a1a1a"/><path d="M36 76 q14 10 28 0"/><path d="M22 84 q-10 6 -4 12"/><path d="M78 84 q10 6 4 12"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a star"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M50 24 L59 52 L88 52 L64 69 L73 96 L50 79 L27 96 L36 69 L12 52 L41 52 z" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a flower"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="50" y1="96" x2="50" y2="52"/><circle cx="50" cy="38" r="10" fill="#fff"/><circle cx="50" cy="20" r="9" fill="#fff"/><circle cx="50" cy="56" r="9" fill="#fff"/><circle cx="32" cy="38" r="9" fill="#fff"/><circle cx="68" cy="38" r="9" fill="#fff"/><path d="M50 72 q14 -8 20 2 q-14 8 -20 -2 z" fill="#fff"/></g></svg></div><div class="pic"><svg width="92" height="92" viewBox="0 0 100 100" role="img" aria-label="a tent"><g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M50 14 L6 96 L94 96 z" fill="#fff"/><line x1="50" y1="14" x2="50" y2="96"/><path d="M38 96 L50 68 L62 96" fill="#fff"/></g></svg></div></div>
 
-  <h2>Read the story</h2>
-  <div class="passage">
-    <div class="ptitle">Pat the Map</div>
-    <p>
-      <span class="ln">I am Tam. Sam and Pam sat.</span>
-      <span class="ln">The map! Pat the map, Sam.</span>
-      <span class="ln">Pat, pat, pat.</span>
-      <span class="ln">Tap the map, Pam. Tap, tap, tap.</span>
-      <span class="ln">Tam, Sam and Pam tap at the map.</span>
-      <span class="ln">I tap, and Sam and Pam pat.</span>
-    </p>
+</div>
+
+<!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
+<div class="page">
+
+  <div class="band">
+    <div>
+      <span class="owner child" style="margin-bottom:3px">For the reader</span>
+      <div class="tag">My words page</div>
+      <h1>Read the words</h1>
+    </div>
+    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
-  <div class="fluency">
-    <span class="lbl">Read it 3 times</span>
+
+  <h2>Say the sounds</h2>
+  <p class="sub">Touch each letter and say its sound &mdash; clean and clear.</p>
+  <div class="sstrip"><div>a</div><div>m</div><div>s</div><div>t</div><div>p</div><div>f</div></div>
+
+  <h2>Touch, then slide</h2>
+  <div class="wline"><div class="bw"><div class="bwd" style="font-size:84px">at</div><svg width="120" height="20" viewBox="0 0 120 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="144" height="16" viewBox="0 0 144 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="130" y2="8"/><path d="M129 2 L141 8 L129 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">sat</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">map</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">tap</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div><div class="bw"><div class="bwd" style="font-size:84px">pat</div><svg width="172" height="20" viewBox="0 0 172 20"><circle cx="34" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="86" cy="9" r="6.3" fill="#1a1a1a"/><circle cx="138" cy="9" r="6.3" fill="#1a1a1a"/></svg><svg width="205" height="16" viewBox="0 0 205 16"><g fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="191" y2="8"/><path d="M190 2 L202 8 L190 14"/></g></svg></div></div>
+
+  <div class="fluency" style="justify-content:center">
+    <span class="lbl">Read them 3 times</span>
     <span class="star"></span><span class="star"></span><span class="star"></span>
     <span class="note">Color one circle each time.</span>
   </div>
 
-</div>
-
-<!-- ============ PAGE 4 &mdash; DRAW IT, THEN WRITE IT ============ -->
-<div class="page">
-
-  <div class="band" style="margin-bottom:4px;">
-    <div>
-      <span class="owner child" style="margin-bottom:4px;">For the reader</span>
-      <div class="tag">My drawing page</div>
-      <h1 style="font-size:18px;">Pat the Map</h1>
+  <div class="foldoff">
+    <div class="foldline"><span>fold back or tear off along this line</span></div>
+    <div class="adultnote">
+      <div class="anh">Instructions for the grown-up</div>
+      <p><strong>Start with the letter row at the top:</strong> touch each letter and
+      say its sound, cleanly &mdash; &ldquo;mmm&rdquo; not &ldquo;muh&rdquo;. Then go to
+      the words.</p>
+      <p>The dots under each word are its <strong>sounds</strong> &mdash; one dot per
+      sound. Your child touches each dot and says that sound, then slides a finger
+      along the arrow and says the whole word.</p>
+      <p><strong>The arrow matters as much as the dots.</strong> The dots show
+      <em>where</em> the sounds are; the arrow says <strong>do not stop between
+      them</strong>. Said with gaps, &ldquo;/m/ &hellip; /a/ &hellip; /t/&rdquo; does not
+      sound like <em>mat</em>; stretched together, &ldquo;mmmaaat&rdquo; does.</p>
+      <p>If your child gets stuck, you slide and stretch it first and let them copy
+      you.</p>
+      <p style="margin-bottom:0"><strong>Once you have read this, fold it back.</strong>
+      Then the page holds nothing but the words.</p>
     </div>
-    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
   </div>
-
-  <h2 style="margin-top:12px;">Draw the story</h2>
-  <p class="sub">Read it again if you need to. Then draw what happened.</p>
-  <div class="drawbox"><span class="dlab">Your picture</span></div>
-
-  <h2>Write the sentence you hear</h2>
-  <p class="sub">Your grown-up will say one sentence from the story. Say it back, then write it.</p>
-  <div class="ruled"><span class="mid"></span></div>
-  <div class="ruled"><span class="mid"></span></div>
-
-</div>
-
-<!-- ============ PAGE 5 &mdash; QUESTIONS, ONLY IF THEY WANT THEM ============ -->
-<div class="page">
-
-  <div class="band" style="margin-bottom:4px;">
-    <div>
-      <span class="owner extra" style="margin-bottom:4px;">If you want more</span>
-      <div class="tag">Talk about it</div>
-      <h1 style="font-size:18px;">Pat the Map</h1>
-    </div>
-    <div class="nameline"><span class="lbl">Name</span><span class="rule"></span></div>
-  </div>
-
-  <div class="optional">
-    <strong>This page is extra.</strong> Reading the story and drawing the picture is the
-    work. If your reader has had enough, stop there &mdash; they have done it. These are
-    for a child who wants more, and they are just as good asked out loud as written down.
-  </div>
-
-  <div class="q"><span class="qtext">1. Who is telling this story?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">2. What are Tam, Sam and Pam patting and tapping?</span><span class="qline"></span><span class="qline"></span></div>
-  <div class="q"><span class="qtext">3. The children pat the map flat. What else could hold a rolled-up map down?</span><span class="qline"></span><span class="qline"></span></div>
 
 </div>
 

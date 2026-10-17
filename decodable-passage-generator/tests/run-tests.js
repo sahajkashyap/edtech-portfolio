@@ -439,7 +439,9 @@ async function main(){
     for (let n = 1; n <= 128; n++) real += pagesInSheet(n);
     eq('the tile matches the pages the 128 sheets actually contain',
        tiles['Printable pages'], String(real));
-    eq('and that number is 634', real, 634);
+    // 633 since Oct 17 2026: Lesson 7 became a four-page letter sheet
+    // (it was a five-page story with no f word in it).
+    eq('and that number is 633', real, 633);
 
     // Chrome is the referee, not the markup: print three sheets for real and
     // count the pages in the PDF it produces. This is what ties the count
@@ -611,8 +613,8 @@ async function main(){
     }
     const hrefs = await page.evaluate(() =>
       [...document.querySelectorAll('a.card.letter')].map(a => a.getAttribute('href')));
-    eq('all five letter cards are whole-card links to their own sheets',
-       hrefs, [1, 2, 3, 4, 5].map(n => `sheets/lesson-00${n}.html`));
+    eq('all six letter cards (Lessons 1-5 and 7) are whole-card links to their own sheets',
+       hrefs, [1, 2, 3, 4, 5, 7].map(n => `sheets/lesson-00${n}.html`));
   }
 
   // =========================================================================

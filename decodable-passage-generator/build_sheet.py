@@ -339,6 +339,10 @@ def build_html(spec):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Decodable Passage &mdash; Lesson {n}, {esc(L['skill'])}</title>
+<meta name="description" content="A printable reading practice packet for UFLI Lesson {n}: {esc(spec['title'])}.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lesson {n}: {esc(spec['title'])}">
+<meta property="og:description" content="A printable reading practice packet for UFLI Lesson {n}, {esc(L['skill'])}.">
 <style>{css()}{scale_css}</style>
 </head>
 <body>

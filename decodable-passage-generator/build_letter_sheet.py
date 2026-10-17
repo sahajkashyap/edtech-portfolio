@@ -66,6 +66,13 @@ LETTERS = {
                "C38 79 42 84 38 91 C33 98 16 96 12 89", dot=(42, 58),
              arr="M46 48 C38 40 24 40 16 48", num=(52, 42)),
     ]),
+    # f: one stroke over the top and down, then the crossbar at the midline
+    "f": dict(w=46, strokes=[
+        dict(d="M40 24 C36 12 18 12 18 30 L18 100", dot=(40, 24),
+             arr="M30 6 C24 4 16 8 12 16", num=(42, 12)),
+        dict(d="M6 50 L34 50", dot=(6, 50),
+             arr="M12 41 L28 41", num=(1, 38)),
+    ]),
     "t": dict(w=48, strokes=[
         dict(d="M22 20 L22 90 C22 99 31 102 38 96", dot=(22, 20),
              arr="M32 32 L32 74", num=(32, 22)),
@@ -98,16 +105,19 @@ ANCHOR_ART = {
     # tent. A legible letter matters more than a clever one, so t falls
     # back to a plain letter with the tent picture beside it (SIDE_PIC).
     "t": "",
+    # f: the same choice as t -- a plain letter with the fish beside it
+    "f": "",
 }
 
 # letters whose keyword is shown as a separate picture next to the letter
 # instead of drawn into it
-SIDE_PIC = {"t": "tent"}
+SIDE_PIC = {"t": "tent", "f": "fish"}
 
 # viewBox for the meet-the-letter display, per letter (the art extends
 # past the letter box). Same unit scale for all so x-heights match.
 MEET_VB = {"a": (-4, 22, 72, 84), "m": (4, 40, 82, 66),
-           "s": (4, 42, 68, 62), "t": (-2, 12, 50, 94)}
+           "s": (4, 42, 68, 62), "t": (-2, 12, 50, 94),
+           "f": (-2, 4, 50, 102)}
 MEET_SCALE = 1.7
 
 UPPER = {
@@ -116,6 +126,7 @@ UPPER = {
     "S": ("M56 30 C50 16 20 16 14 30 C8 44 26 50 34 56 "
           "C46 64 48 78 38 88 C28 97 10 93 6 82", 64),
     "T": ("M6 16 L62 16 M34 16 L34 100", 68),
+    "F": ("M12 100 L12 16 L58 16 M12 56 L48 56", 64),
 }
 
 # ---------------------------------------------------------------------------
@@ -264,13 +275,49 @@ DATA = {
               ("moon", False), ("ten", True), ("star", False)],
         words=["am", "at", "mat", "sat", "Sam"],
     ),
+    # Lesson 7 is a letter sheet, not a story. With a, m, s, t, p and f the
+    # only word a child can sound out that has an f in it is "fat", and a
+    # word that can only describe a person has no place on a child's sheet.
+    # So, like Lessons 1-4, the letter pages practise the new sound itself,
+    # and the words page reads words built from the letters already taught.
+    7: dict(
+        letter="f", sound="/f/", say="fff", keyword="fish",
+        teaches=("Today your child meets the letter <strong>f</strong> and its sound "
+                 "<strong>/f/</strong> &mdash; a soft rush of air, like the start of <em>fish</em>. "
+                 "As always, the <strong>sound</strong> is what reading uses, not the name "
+                 "(&ldquo;ef&rdquo;). The words page reads words made from the letters your "
+                 "child already knows; in the next lesson, f starts turning up in words like "
+                 "<em>fit</em>."),
+        clean=("Say <strong>&ldquo;fff,&rdquo; not &ldquo;fuh.&rdquo;</strong> Hold the air "
+               "and stop &mdash; no &ldquo;uh&rdquo; on the end. A child who learns "
+               "&ldquo;fuh&rdquo; will later read <em>fit</em> as &ldquo;fuh-i-t,&rdquo; and "
+               "blending gets harder."),
+        mouth=("<strong>f</strong> &mdash; rest your top teeth gently on your bottom lip and "
+               "blow: <strong>fff</strong>."),
+        mouthcheck=("<strong>Mouth check:</strong> say <strong>fff</strong>. Are your top teeth "
+                    "on your bottom lip? Put a hand in front of your mouth and feel the air. "
+                    "Look in a mirror with your grown-up."),
+        thumbs="<em>fish, fan, fox, feet</em> &mdash; and some that do not: <em>sun, moon, dog</em>",
+        hunt_distractors=["t", "a", "m", "s", "p"],
+        hunt_note=("In the letter hunt, the other letters are the ones learned so far, "
+                   "all in review. Watch for <strong>t</strong>: it looks a lot like "
+                   "<strong>f</strong>, so this is good practice telling them apart."),
+        sort=[("fish", True), ("sun", False), ("frog", True),
+              ("star", False), ("flower", True), ("tent", False)],
+        words=["at", "sat", "map", "tap", "pat"],
+    ),
 }
+
+# The new letter each lesson brings, for the "assumes your child has met"
+# line. Lesson 5 brings blending, not a letter, so it adds nothing here.
+LESSON_LETTERS = {1: "a", 2: "m", 3: "s", 4: "t", 6: "p", 7: "f"}
 
 SORT_NAMES = {
     "apple": "an apple", "sun": "the sun", "ant": "an ant", "sock": "a sock",
     "tent": "a tent", "moon": "the moon", "mountain": "a mountain",
     "mouse": "a mouse", "star": "a star", "tooth": "a tooth",
-    "ten": "the number ten",
+    "ten": "the number ten", "fish": "a fish", "frog": "a frog",
+    "flower": "a flower",
 }
 
 # a mouse is not in props.py and not in the teacher's icon list, but m-words
@@ -447,7 +494,8 @@ def elkonin_row(word, boxes, write=False, label=""):
             f'</div>')
 
 
-DATA_KEYWORD = {"a": "an apple", "m": "mountains", "s": "a snake", "t": "a tent"}
+DATA_KEYWORD = {"a": "an apple", "m": "mountains", "s": "a snake", "t": "a tent",
+                "f": "a fish"}
 
 
 # ---------------------------------------------------------------------------
@@ -460,6 +508,10 @@ def head(n, skill, page_note):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Letter &amp; Sound Sheet &mdash; Lesson {n}, {esc(skill)}</title>
+<meta name="description" content="A printable letter and sound sheet for UFLI Lesson {n}, {esc(skill)}.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lesson {n}: Letter &amp; Sound Sheet">
+<meta property="og:description" content="A printable letter and sound sheet for UFLI Lesson {n}, {esc(skill)}.">
 <style>{css()}
   /* Scoped to the five letter sheets only -- the other 123 keep the
      stylesheet exactly as it is. The blend words were made much larger
@@ -525,7 +577,7 @@ def adult_page_letter(n, skill, d):
         ready = ("<strong>This is Lesson 1 &mdash; the very beginning.</strong> Nothing comes "
                  "before it, so any child who is ready to start reading can start here.")
     else:
-        taught = ", ".join(DATA[i]["letter"] for i in range(1, n))
+        taught = ", ".join(LESSON_LETTERS[i] for i in range(1, n) if i in LESSON_LETTERS)
         ready = (f"<strong>This is Lesson {n}. It assumes your child has met the letters from "
                  f"Lessons 1&ndash;{n - 1} ({taught}).</strong> If not, start at Lesson 1 &mdash; "
                  f"each sheet takes only a few minutes.")
@@ -686,8 +738,8 @@ def word_page(n, d):
     # word the letters allow is already here.
     px = {1: 96, 2: 92, 3: 88}.get(len(d["words"]), 84)
     items = "".join(word_item(w, px) for w in d["words"])
-    sounds = "".join(f"<div>{DATA[i]['letter']}</div>"
-                     for i in range(1, n + 1))
+    sounds = "".join(f"<div>{LESSON_LETTERS[i]}</div>"
+                     for i in range(1, n + 1) if i in LESSON_LETTERS)
     plural = "s" if len(d["words"]) > 1 else ""
     return f"""
 <!-- ================= PAGE 4 &mdash; READ THE WORDS ================= -->
@@ -964,7 +1016,7 @@ def main():
     args = sys.argv[1:]
     if not args:
         sys.exit(__doc__)
-    lessons = range(1, 6) if args[0] == "--all" else [int(a) for a in args]
+    lessons = [1, 2, 3, 4, 5, 7] if args[0] == "--all" else [int(a) for a in args]
     for n in lessons:
         print(f"  {write_sheet(n).name}")
     print(f"\n{len(list(lessons))} letter sheets written to {SHEETS}")
