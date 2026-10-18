@@ -10,8 +10,8 @@
     "Phil ran back and got a red dish.",
     "Ted digs with the dish, and the shell pops.",
     "\"I got it!\" said Ted. Phil hops up.",
-    "Then Ted digs and gets a shell as well.",
-    "\"That shell is your shell,\" said Ted."
+    "Then Phil digs with the dish and gets a shell as well.",
+    "Ted and Phil sit with the shells in the sun."
   ],
   "warmup": [
     "which",
@@ -32,7 +32,7 @@
     },
     {
       "ask": "Which of the two shells would you have picked? What made you pick it?",
-      "listenFor": "Either. The thin red one is in line three. The reason is the part worth praising."
+      "listenFor": "Either. Ted's is the thin red one in line three; Phil's is the one he digs up in line nine. The reason is the part worth praising."
     }
   ]
 }

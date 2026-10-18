@@ -6,7 +6,7 @@
     "She runs to the store before it shuts.",
     "The store has no more corn at all.",
     "Meg is sad. What can she make then?",
-    "Then Meg thinks of Gran's corn at the farm.",
+    "Then Mom thinks of the corn at the farm.",
     "Mom and Meg run a short path past thorns.",
     "The corn stands tall next to the big barn.",
     "Meg picks the best corn she can spot.",
@@ -28,8 +28,8 @@
       "listenFor": "The store had no more corn at all. Send them back to that line."
     },
     {
-      "ask": "What did Meg and Mom run past on the short path?",
-      "listenFor": "Thorns. It is one line, and it is the line most kids skim."
+      "ask": "Where did Meg and Mom get the corn in the end?",
+      "listenFor": "At the farm, next to the big barn. Lines five to eight."
     },
     {
       "ask": "How did Meg feel when the store had no more corn? Find the words that show you.",

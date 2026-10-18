@@ -6,8 +6,8 @@
     "He rolls the ball off the top.",
     "It falls in a well!",
     "\"Dad! The ball fell in!\" yells Bill.",
-    "Dad gets a net, and Bill dips it in.",
-    "Bill tugs and tugs and gets the ball!",
+    "Dad gets a net and dips it in.",
+    "Dad tugs and tugs and gets the ball!",
     "The ball is a mess. Bill gets a tub.",
     "Bill fills it up and dips the ball in!"
   ],
@@ -25,8 +25,8 @@
       "listenFor": "In a well. It is stated in the story — if they guess, have them find the line with the word well in it."
     },
     {
-      "ask": "Who tugs the ball out of the well?",
-      "listenFor": "Bill does. Dad fetches the net and Bill dips and tugs. Lines five and six say it. Follow up with \"and how did Dad know to come?\""
+      "ask": "Who gets the ball out of the well?",
+      "listenFor": "Dad does. Bill yells for Dad, and Dad dips the net and tugs. Lines four to six."
     },
     {
       "ask": "The story says the ball is a mess. What does a mess look like?",

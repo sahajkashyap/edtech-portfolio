@@ -358,7 +358,7 @@ def build_html(spec):
   <span class="owner adult">Grown-up sheet &mdash; keep this one</span>
   <div class="band">
     <div>
-      <div class="tag">Decodable Passage &middot; Reading Foundations</div>
+      <div class="tag">Decodable Passage &middot; Designed by Sahaj Kashyap</div>
       <h1>{esc(title)}</h1>
     </div>
     <div class="flagged">Lesson {n}<br>{esc(L['skill'])}</div>

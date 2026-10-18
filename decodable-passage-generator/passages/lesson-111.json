@@ -7,7 +7,7 @@
     "The shop had a big red kite in the window.",
     "Omar had wanted that kite for a long time.",
     "Then a dog ran up with a red collar on.",
-    "It had no one with it and no home.",
+    "It had no one with it.",
     "The dog was thin and its feet were black.",
     "Omar called out, but the dog ran off.",
     "He ran after it. That made it run more.",
@@ -43,8 +43,8 @@
       "listenFor": "He called, then he ran after it, and both made the dog run off. Sitting still worked."
     },
     {
-      "ask": "Was it fair of the sailor to give Omar a dollar? Why?",
-      "listenFor": "Either answer is fine. You want a reason, not a right choice."
+      "ask": "How did Omar help the dog get back home?",
+      "listenFor": "He sat still so it came back, then took it to the vet, who read the tag and made a call."
     }
   ]
 }

@@ -4,7 +4,7 @@
   "lines": [
     "Tim went to look for his red ball.",
     "It was in the shed on a tall shelf.",
-    "A big dog naps by that shed all day.",
+    "His big dog naps by that shed all day.",
     "He is brown and he naps in the sun.",
     "Tim did not want to wake him up.",
     "First he went in fast to get the ball.",
@@ -21,11 +21,18 @@
     "It licked his hand kindly and sat down.",
     "Tim gave him a soft pat and went in."
   ],
-  "warmup": ["slowly", "softly", "loudly", "kindly", "neatly", "shed"],
+  "warmup": [
+    "slowly",
+    "softly",
+    "loudly",
+    "kindly",
+    "neatly",
+    "shed"
+  ],
   "questions": [
     {
       "ask": "Why did Tim not want to make a sound?",
-      "listenFor": "A big dog naps by that shed all day. Have them find that line."
+      "listenFor": "His big dog naps by that shed all day. Have them find that line."
     },
     {
       "ask": "What went wrong when Tim went in fast?",

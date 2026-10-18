@@ -6,16 +6,16 @@
     "She saw a small cat deep in the straw.",
     "One paw was caught on a bit of rope.",
     "Pam had to haul the straw away to see it.",
-    "She held a soft hand by the caught paw.",
+    "Pam did not reach for the caught paw.",
     "The cat hissed and held up a sharp claw.",
-    "Pam sat back on the straw to think.",
-    "Then she went in and got a bowl of milk.",
-    "She set it in the straw and sat still.",
-    "She did not speak, and she did not reach.",
-    "At last the cat came and licked up the milk.",
-    "Then Pam got the paw free with soft hands.",
+    "Pam went in to get her dad.",
+    "Dad came with a bowl of cat food.",
+    "He set it in the straw, and they sat still.",
+    "They did not speak, and they did not reach.",
+    "At last the cat came and ate the food.",
+    "Then Dad got the paw free with soft hands.",
     "The rope fell off, and the cat was free.",
-    "It did not run away from her at all.",
+    "It did not run away from them at all.",
     "It sat by Pam and licked its paw clean.",
     "Pam gave the small cat a name: Straw.",
     "The small cat sleeps in the barn on the soft straw."
@@ -35,7 +35,7 @@
     },
     {
       "ask": "What did Pam do after the cat hissed at her?",
-      "listenFor": "She got a bowl of milk, set it in the straw, and sat still until the cat came."
+      "listenFor": "She went in to get her dad. He set out cat food, and they sat still until the cat came."
     },
     {
       "ask": "Do you think the cat trusts Pam now? Tell me why.",

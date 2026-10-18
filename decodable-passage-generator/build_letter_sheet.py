@@ -578,8 +578,9 @@ def adult_page_letter(n, skill, d):
                  "before it, so any child who is ready to start reading can start here.")
     else:
         taught = ", ".join(LESSON_LETTERS[i] for i in range(1, n) if i in LESSON_LETTERS)
+        span = "Lesson 1" if n == 2 else f"Lessons 1&ndash;{n - 1}"
         ready = (f"<strong>This is Lesson {n}. It assumes your child has met the letters from "
-                 f"Lessons 1&ndash;{n - 1} ({taught}).</strong> If not, start at Lesson 1 &mdash; "
+                 f"{span} ({taught}).</strong> If not, start at Lesson 1 &mdash; "
                  f"each sheet takes only a few minutes.")
     return f"""
 <!-- ================= PAGE 1 — GROWN-UP SHEET ================= -->
@@ -588,7 +589,7 @@ def adult_page_letter(n, skill, d):
   <span class="owner adult">Grown-up sheet &mdash; keep this one</span>
   <div class="band">
     <div>
-      <div class="tag">Letter &amp; Sound &middot; Reading Foundations</div>
+      <div class="tag">Letter &amp; Sound &middot; Designed by Sahaj Kashyap</div>
       <h1>The letter {letter} says {d["sound"]}</h1>
     </div>
     <div class="flagged">Lesson {n}<br>{esc(skill)}</div>
@@ -803,7 +804,7 @@ def adult_page_blend(n, skill):
   <span class="owner adult">Grown-up sheet &mdash; keep this one</span>
   <div class="band">
     <div>
-      <div class="tag">Letter &amp; Sound &middot; Reading Foundations</div>
+      <div class="tag">Letter &amp; Sound &middot; Designed by Sahaj Kashyap</div>
       <h1>Putting sounds together</h1>
     </div>
     <div class="flagged">Lesson {n}<br>{esc(skill)}</div>

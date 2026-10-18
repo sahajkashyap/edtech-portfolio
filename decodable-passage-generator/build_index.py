@@ -358,6 +358,7 @@ def build():
   lesson, words using a two-sound spelling drawn from an approved list, warm-up words
   taken from the story itself. Sheets were measured to fit on letter paper.
   Text is original; sight words are from the public-domain Dolch list (1936).
+  <p style="margin:.6rem 0 0">Designed by Sahaj Kashyap.</p>
 </footer>
 </div>
 """

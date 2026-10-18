@@ -3,13 +3,13 @@
   "title": "Pull, Bull, Pull!",
   "lines": [
     "Tim has a bag full of nuts.",
-    "He pulls it up a tall hill.",
+    "He and Dad pull it up a tall hill.",
     "A big bull sits on the top.",
-    "\"Go on, bull!\" said Tim. No. It sits.",
-    "So Tim rolls a nut off the hill.",
+    "Tim sits. \"Do not go up to a bull,\" said Dad.",
+    "So Dad rolls a nut off the hill.",
     "The bull runs and gets it.",
     "Tim pulls the full bag to the top.",
-    "\"You can have a nut,\" said Tim."
+    "Tim and Dad sit and have a nut."
   ],
   "warmup": [
     "bull",
@@ -25,12 +25,12 @@
       "listenFor": "Nuts. It is stated in the story — if they cannot find it, have them reread the first line rather than telling them."
     },
     {
-      "ask": "Why does Tim roll a nut off the hill?",
-      "listenFor": "The bull would not move, so Tim got it to run after the nut instead. You want cause and effect, not just \"it fell.\""
+      "ask": "Why does Dad roll a nut off the hill?",
+      "listenFor": "The bull sat on the top, and the nut got it to run down and away from them. You want cause and effect, not just \"it fell.\""
     },
     {
       "ask": "What do you think Tim will take with him the next time he goes up that hill?",
-      "listenFor": "Any guess with a reason. A nut moved the bull in line five, so nuts are good thinking."
+      "listenFor": "Any guess with a reason. A nut moved the bull in lines five and six, so nuts are good thinking."
     }
   ]
 }

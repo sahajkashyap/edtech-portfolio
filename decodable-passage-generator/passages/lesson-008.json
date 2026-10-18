@@ -18,7 +18,7 @@
   "questions": [
     {
       "ask": "Where are Tim and Sam?",
-      "listenFor": "At a pit — the sand pit. Line one says it. Let them find the word pit rather than being told."
+      "listenFor": "At a pit. Line one says it. Let them find the word pit rather than being told."
     },
     {
       "ask": "What do Tim and Sam do once the mat fits?",

@@ -7,9 +7,9 @@
     "A duck tugs at the sack!",
     "Nick picks it up and backs up.",
     "The duck taps at his red sock.",
-    "Nick sits back and a bun falls off.",
+    "Nick sits back and a bun falls off the sack.",
     "The duck gets it. \"What luck!\" said Dad.",
-    "It goes to Nick and naps."
+    "The duck naps on the deck."
   ],
   "warmup": [
     "duck",
@@ -25,12 +25,12 @@
       "listenFor": "Nick's red sock. This is stated in the story — if they guess, have them find the line with the word sock in it."
     },
     {
-      "ask": "Why does a bun fall off?",
-      "listenFor": "Nick sat back when the duck tapped at his sock. You are listening for the chain of events, not just \"it fell.\""
+      "ask": "What happens when Nick sits back?",
+      "listenFor": "A bun falls off, and the duck gets it. Lines six and seven."
     },
     {
       "ask": "What did the duck want in this story? How did it get it?",
-      "listenFor": "A bun. It tugged the sack, then tapped his sock until one fell off. Lines three to seven."
+      "listenFor": "A bun. It tugged at the sack, then tapped at Nick's sock. When Nick sat back, a bun fell off the sack. Lines three to seven."
     }
   ]
 }

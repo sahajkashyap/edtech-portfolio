@@ -8,10 +8,10 @@
     "It will not move.",
     "Meg waves a hat and yells at it.",
     "The duck just sits and blinks at Meg.",
-    "Then the duck licks the side of the box.",
-    "Meg sets a bit of fudge on the edge.",
-    "The duck hops up and licks it up.",
-    "Meg runs past and hands Gran the box.",
+    "Meg runs back to get Dad.",
+    "Dad steps up to the edge of the bridge.",
+    "The duck hops off and swims off.",
+    "Meg and Dad hand Gran the box.",
     "Gran grins and pins a badge on Meg."
   ],
   "warmup": [
@@ -20,7 +20,7 @@
     "edge",
     "badge",
     "duck",
-    "licks"
+    "hops"
   ],
   "questions": [
     {
@@ -28,8 +28,8 @@
       "listenFor": "A big duck. Stated in the story — point them at that line rather than saying it for them."
     },
     {
-      "ask": "What did Meg do to get the duck to move?",
-      "listenFor": "She set a bit of fudge on the edge, and the duck hopped over to lick it. If they say \"she yelled,\" ask \"did that work?\""
+      "ask": "How did Meg get past the duck?",
+      "listenFor": "She ran back and got Dad, and the duck hopped off when he came. If they say \"she yelled,\" ask \"did that work?\""
     },
     {
       "ask": "Which part will you draw — the duck on the bridge, or Gran pinning on the badge?",

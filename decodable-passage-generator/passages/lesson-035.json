@@ -5,7 +5,7 @@
     "Pam, Dan and Sal ran in the sun.",
     "\"I am it!\" said Pam. She ran to Dan.",
     "Dan ran and ran. Pam can not tag him.",
-    "Sal is not big. She sat and was sad.",
+    "Sal can not tag Dan. She sat and was sad.",
     "Pam ran to Sal. \"Can we tag Dan?\"",
     "Sal and Pam ran and Sal got Dan!",
     "\"Sal got me! Sal is it,\" said Dan.",
@@ -26,7 +26,7 @@
     },
     {
       "ask": "Why was Sal sitting down and feeling sad?",
-      "listenFor": "She is not big, so she was left out of the running. Line four says it. Let them reread it rather than being told."
+      "listenFor": "She could not tag Dan. Line four says it. Let them reread it rather than being told."
     },
     {
       "ask": "How did Sal feel at the start? How about at the end? What changed?",

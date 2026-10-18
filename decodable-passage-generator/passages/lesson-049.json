@@ -8,10 +8,10 @@
     "He tugs and tugs. He gets a shell.",
     "Then his net tugs up a wet sock!",
     "\"That is not a fish!\" said Nick.",
-    "\"Sit and hush. Do not let go,\" said Dad.",
+    "\"Sit and hush. Do not tug yet,\" said Dad.",
     "Nick sits. He will not tug at all.",
     "Then his net tugs back. Up hops a fish!",
-    "\"Such a fish!\" said Josh. Nick lets it go."
+    "\"Such a fish!\" said Josh. It is not big, so Nick lets it go back in."
   ],
   "warmup": [
     "fish",
@@ -28,11 +28,11 @@
     },
     {
       "ask": "What does Dad tell Nick to do?",
-      "listenFor": "Sit, hush, and do not let go. It is the line in quote marks — have them find the talking."
+      "listenFor": "Sit, hush, and do not tug yet. It is the line in quote marks — have them find the talking."
     },
     {
       "ask": "What do you think Nick will do the next time he catches a fish?",
-      "listenFor": "Any guess with a reason. He let this one go in the last line, so that is good evidence to use."
+      "listenFor": "Any guess with a reason. He let this one go back in the last line because it was not big, so that is good evidence to use."
     }
   ]
 }

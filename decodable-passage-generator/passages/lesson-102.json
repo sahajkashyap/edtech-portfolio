@@ -31,8 +31,8 @@
   ],
   "questions": [
     {
-      "ask": "Jill looked in two spots first. What did she find?",
-      "listenFor": "A box full of rags, and dust under the bed. Both were useless."
+      "ask": "Jill looked in three spots first. What did she find?",
+      "listenFor": "A box full of rags, dust under the bed, and no sock in the sock bag."
     },
     {
       "ask": "What was Jill's plan with the sock she still had?",

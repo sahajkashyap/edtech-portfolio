@@ -15,7 +15,7 @@
     "\"I know,\" said Nell. \"I have a plan.\"",
     "She ran and got a pen from the shelf.",
     "She made a mark on each of the lids.",
-    "A dish, a cup, a peach, and a brush.",
+    "A dish, a glass, a peach, a brush, a sock, a cup.",
     "Now Nell can find the peaches at once.",
     "She lifted that lid and got them out.",
     "Gran said, \"That was a smart plan, Nell.\"",
@@ -36,7 +36,7 @@
     },
     {
       "ask": "What was Nell's plan?",
-      "listenFor": "She got a pen and made a mark on each lid — a dish, a cup, a peach, a brush."
+      "listenFor": "She got a pen and made a mark on each lid — a dish, a glass, a peach, a brush, a sock and a cup."
     },
     {
       "ask": "What mark would you put on a box of cups? Tell me why.",

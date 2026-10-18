@@ -9,9 +9,9 @@
     "\"Who did that?\" said Jane. Mom thinks a bug.",
     "But Jane spots cake on Jake the cat's chin.",
     "\"It was Jake!\" said Jane. \"Look at his chin.\"",
-    "\"We can make Jake a small cake,\" said Jane.",
-    "They bake it, and Jake licks it up.",
-    "Then Jane and Mom take the big cake in."
+    "\"Cats can not have cake,\" said Mom.",
+    "Mom fills his dish with fish, and Jake laps it up.",
+    "Mom cuts off the lick, and they take the big cake in."
   ],
   "warmup": [
     "bake",
@@ -31,8 +31,8 @@
       "listenFor": "She spots cake on Jake the cat's chin. Line six is the clue — it is worth a little talk."
     },
     {
-      "ask": "Tell me the bit you liked best — the cake on Jake's chin, or Jake's own small cake.",
-      "listenFor": "Either. Line six is the chin; line nine is the small cake. Ask them to read their line back."
+      "ask": "Tell me the bit you liked best — the cake on Jake's chin, or Jake at his own dish.",
+      "listenFor": "Either. Line six is the chin; line nine is the dish. Ask them to read their line back."
     }
   ]
 }
