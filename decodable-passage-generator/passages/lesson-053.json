@@ -7,8 +7,8 @@
     "Beth claps and steps back fast.",
     "Raj said, \"A crab can pinch. Do not grab.\"",
     "The crab grabs a stick and slips off.",
-    "It hid in a crack next to a rock.",
-    "Beth taps the crack. The crab just sat still.",
+    "It hid in a gap next to a rock.",
+    "Beth taps the gap. The crab just sat still.",
     "Then Raj sticks a twig in the flat sand.",
     "The crab grabs it and drags it off.",
     "Beth and Raj grin. \"He wants that stick!\""
@@ -27,7 +27,7 @@
       "listenFor": "A crab can pinch. It is right there in his talking — have them find the quote marks."
     },
     {
-      "ask": "Beth taps the crack with the crab in it. Does the crab come out?",
+      "ask": "Beth taps the gap with the crab in it. Does the crab come out?",
       "listenFor": "No — it just sat still. Line seven says it. That is the try that does not work."
     },
     {

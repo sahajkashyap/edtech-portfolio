@@ -1,10 +1,10 @@
 {
   "lesson": 118,
-  "title": "The School Ghost",
+  "title": "The Sad Sound at School",
   "lines": [
     "Kim went to a school that was very old.",
-    "Kids said a ghost lived in the halls.",
-    "At night it made a long, sad sound.",
+    "Kids said the old halls sang at night.",
+    "It was a long, sad sound.",
     "It went up and down like a song.",
     "The cook said it was just a machine.",
     "But Kim did not think that was it.",
@@ -21,7 +21,7 @@
     "The door came free. Green eyes shone!",
     "It was a cat, stuck in there since lunch.",
     "Mom held the lamp and Kim gave it some food.",
-    "Her school ghost sat and ate and shut its eyes."
+    "Now the cat sat and ate and shut its eyes."
   ],
   "warmup": [
     "school",
@@ -33,8 +33,8 @@
   ],
   "questions": [
     {
-      "ask": "What did the kids say lived in the school?",
-      "listenFor": "A ghost, in the halls. Line two says it."
+      "ask": "What did the kids say about the halls?",
+      "listenFor": "That they sang at night, with a long, sad sound. Lines two and three."
     },
     {
       "ask": "What was really making the sad sound?",

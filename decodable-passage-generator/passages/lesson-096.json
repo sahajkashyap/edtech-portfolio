@@ -9,9 +9,9 @@
     "Who had spilled them? Nita looked all over.",
     "Then she saw a brown mouse by the bin.",
     "The mouse was eating her bird seeds!",
-    "Nita bent down to catch it in her hands.",
-    "But the mouse was too quick. It ran off.",
-    "Nita did not shout. She got a box.",
+    "Nita ran to get Mom, and the mouse ran off.",
+    "Mom said, \"A box will do it.\"",
+    "So Nita got a box.",
     "She set it down with a bit of bread.",
     "Then she sat still and waited a long time.",
     "At last the mouse came out again.",
@@ -36,8 +36,8 @@
       "listenFor": "Seeds. That is the clue that sent her looking."
     },
     {
-      "ask": "What did Nita try first, and did it work?",
-      "listenFor": "She bent down to catch it in her hands. No — it was too quick."
+      "ask": "What did Mom tell Nita to use?",
+      "listenFor": "A box. Then Nita set it down with a bit of bread and sat still. Lines nine to twelve."
     },
     {
       "ask": "Do you think the mouse will come back in? Tell me why.",

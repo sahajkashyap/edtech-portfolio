@@ -10,9 +10,9 @@
     "The cat hissed and held up a sharp claw.",
     "Pam went in to get her dad.",
     "Dad came with a bowl of cat food.",
-    "He set it in the straw, and they sat still.",
+    "He set it by the cat, and they sat still.",
     "They did not speak, and they did not reach.",
-    "At last the cat came and ate the food.",
+    "At last the cat ate the food and stopped hissing.",
     "Then Dad got the paw free with soft hands.",
     "The rope fell off, and the cat was free.",
     "It did not run away from them at all.",
@@ -35,11 +35,11 @@
     },
     {
       "ask": "What did Pam do after the cat hissed at her?",
-      "listenFor": "She went in to get her dad. He set out cat food, and they sat still until the cat came."
+      "listenFor": "She went in to get her dad. He set out cat food, and they sat still until the cat ate and stopped hissing."
     },
     {
       "ask": "Do you think the cat trusts Pam now? Tell me why.",
-      "listenFor": "Either answer is fine. The last line is the best clue."
+      "listenFor": "Either answer is fine. Lines fourteen and fifteen are the best clues: it did not run away, and it sat by Pam."
     }
   ]
 }
