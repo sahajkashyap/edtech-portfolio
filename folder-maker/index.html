@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Folder Maker &mdash; a folder for every name on a list</title>
+<meta name="description" content="A free Google Sheet: paste a list of names, click one button, and a folder for every name appears in Google Drive.">
+<style>
+ :root{--ink:#1a1a1a;--cream:#faf6ee;--paper:#fffdf8;--rule:#d9c7a8;--blue:#378ADD;
+       --deepblue:#2966bb;--muted:#8a6d3b;--yellow:#fff2cc;--green:#d9ead3}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--cream);color:var(--ink);
+   font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+ .wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+ h1{font-size:1.7rem;margin:0 0 .4rem;line-height:1.25}
+ h2{font-size:1.15rem;margin:2.4rem 0 .6rem}
+ .lede{color:var(--muted);margin:0 0 1.6rem;font-size:1.02rem}
+ .note{background:var(--paper);border:1px solid var(--rule);border-left:4px solid var(--blue);
+   border-radius:8px;padding:.9rem 1.1rem;font-size:.92rem;margin:0 0 2rem}
+ .btn{display:inline-block;background:var(--deepblue);color:#fff;border:0;border-radius:8px;
+   padding:.7rem 1.1rem;font-size:.95rem;cursor:pointer;text-decoration:none;margin:.3rem .4rem .3rem 0}
+ .btn.ghost{background:var(--paper);color:var(--deepblue);border:1px solid var(--rule)}
+ ol li,ul li{margin:.35rem 0}
+ table{border-collapse:collapse;width:100%;font-size:.94rem;margin:.8rem 0}
+ th,td{text-align:left;padding:.45rem .6rem;border:1px solid var(--rule);background:var(--paper)}
+ th{background:var(--green);font-size:.85rem}
+ td.y{background:var(--yellow)}
+ .sheet{overflow-x:auto}
+ .tree{background:var(--paper);border:1px solid var(--rule);border-radius:10px;
+   padding:1rem 1.3rem;font:.95rem/1.7 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow-x:auto}
+ .pull{font-size:1.06rem;border-left:3px solid var(--rule);padding-left:1rem;margin:1.4rem 0}
+ footer{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--rule);
+   font-size:.86rem;color:var(--muted)}
+ a{color:var(--deepblue)}
+ .kicker{margin:0 0 .3rem;font-size:.8rem;color:#5a6472;letter-spacing:.03em}
+ .kicker a{font-weight:bold;text-decoration:none}
+ @media print{.btn{display:none}}
+</style></head><body><div class="wrap">
+
+<p class="kicker"><a href="https://sahajkashyap.github.io/edtech-portfolio/">Sahaj Kashyap</a> &middot; tools for classrooms and offices</p>
+<h1>Folder Maker</h1>
+<p class="lede">A folder for every name on a list, made in one step, in your own Google Drive.</p>
+
+<p>Every school year starts with lists. A class list, a bus list, a list of who still owes a
+permission slip. Sooner or later someone needs a folder for every name on one of them, and
+types them in one at a time.</p>
+
+<p>Folder Maker is a Google Sheet that does it in one step. Paste the list, type a name for the
+big folder, and click <b>Make the folders</b>. A box shows how many folders will be made and the
+first few names, so you can check before anything happens. Then a folder appears in Google Drive
+for every name.</p>
+
+<p><a class="btn" href="https://docs.google.com/spreadsheets/d/14DpzVWna2xMyKhlUx6pVrizyG2STNDzgvf0i2btQIPQ/copy">Make your own copy (free)</a>
+<a class="btn ghost" href="code/Code.js">Read the code</a></p>
+
+<div class="note"><b>Your names stay yours.</b> The copy belongs to you and runs entirely inside
+your own Google account. Nothing is sent anywhere else, and no one else can see your list.</div>
+
+<h2>How to use it</h2>
+<ol>
+<li>Click <b>Make your own copy</b> above. Google asks you to sign in, then to confirm
+<b>Make a copy</b>.</li>
+<li>In your copy, type a name for the big folder in the yellow box, for example
+<i>Emergency forms 2026-27</i>.</li>
+<li>Paste the names into column A, starting in row 8.</li>
+<li>In the menu bar, choose <b>Folders</b>, then <b>Make the folders</b>.</li>
+<li>The first time, Google asks for permission to make folders in your Drive. Allow it, then
+choose <b>Make the folders</b> again.</li>
+<li>Check the count and the first few names in the box, and click <b>Yes</b>. The link to the
+finished folder appears in the Sheet.</li>
+</ol>
+
+<h2>What the Sheet looks like</h2>
+<div class="sheet"><table>
+<tr><td><b>Name for the big folder</b></td><td class="y">Emergency forms 2026-27</td><td></td></tr>
+<tr><th>Name (or first name)</th><th>Last name (only if in its own column)</th><th>Class or group (optional)</th></tr>
+<tr><td>Ada</td><td>Marsh</td><td>Room 4</td></tr>
+<tr><td>Ben</td><td>Okafor</td><td>Room 4</td></tr>
+<tr><td>Pippa</td><td>Fenwick</td><td>Room 5</td></tr>
+</table></div>
+<p>And what it makes in Google Drive:</p>
+<div class="tree">Emergency forms 2026-27
+├── Room 4
+│   ├── Marsh, Ada
+│   └── Okafor, Ben
+└── Room 5
+    └── Fenwick, Pippa</div>
+<p style="font-size:.86rem;color:var(--muted)">The names are invented, for the example.</p>
+
+<h2>What it does, and what it never does</h2>
+<ul>
+<li>If first and last names sit in two columns, the folders come out as &ldquo;Last, First&rdquo;
+so they sort A to Z. One column of full names works too.</li>
+<li>Add a class or group column and each group gets its own folder with its names inside.</li>
+<li>Lists copied from Word or Google Docs with numbers or bullets in front are tidied up.</li>
+<li>Run it again with the same list and it only adds what is missing.</li>
+<li>It never renames, moves or deletes anything.</li>
+<li><b>Folders</b>, then <b>Clear everything</b>, empties the list to start a new one. Folders
+already made are left alone.</li>
+</ul>
+
+<p class="pull">One more use I keep thinking about: a folder for every child, made on the first
+day, ready to hold a year of their work. A portfolio of each child's work can start the same day
+the class list does.</p>
+
+<h2>How it was built</h2>
+<p>I directed Claude to write the code, then tested it with made-up names in two separate
+Google accounts before anyone used it with a real list. The code is a short Google Apps Script
+attached to the Sheet: <a href="code/Code.js">Code.js</a> and its settings,
+appsscript.json, in the same folder. Google will ask you to allow it into your
+Drive, because that is where the folders go. What it does there is in the code for anyone to read:
+it makes folders, and nothing else.</p>
+
+<footer>Free to copy and use. Built by Sahaj Kashyap.
+<a href="https://sahajkashyap.github.io/edtech-portfolio/">More tools</a></footer>
+
+</div></body></html>

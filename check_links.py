@@ -26,6 +26,7 @@ ROOT = Path(__file__).parent
 LIVE_BASE = "https://sahajkashyap.github.io/edtech-portfolio/"
 DEFAULT_STARTS = [
     "decodable-passage-generator/index.html",
+    "folder-maker/index.html",
     "phonics-assessment-tool/index.html",
     "running-record-tool/index.html",
     # A new page joins this list in the same commit that creates it, or the

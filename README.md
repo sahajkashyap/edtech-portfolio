@@ -200,6 +200,12 @@ prints as a report for a conference.
 | [`social-emotional-assessment-tool/`](social-emotional-assessment-tool/) | Six skills: routines and directions, self-regulation, empathy, persistence, conflict resolution, and asking questions. |
 | [`factor-field/`](factor-field/) | Times-tables practice, plus a Show Me How tutor: one big stacked problem, and a hand works it a column at a time, carrying and borrowing, narrated aloud in English or Spanish. |
 
+### For offices and classrooms
+
+| Tool | What it is |
+|---|---|
+| [`folder-maker/`](folder-maker/) | A free Google Sheet: paste a list of names, click one button, and a folder for every name appears in Google Drive, sorted into groups if you like. Never renames, moves or deletes. [Get your copy](https://sahajkashyap.github.io/edtech-portfolio/folder-maker/) |
+
 ### For families
 
 | Tool | What it is |
