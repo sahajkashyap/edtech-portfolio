@@ -5,8 +5,9 @@
  * names, choose Folders > Make the folders, and a folder for each name
  * appears in Google Drive.
  *
- * It only makes folders. It never renames, moves or deletes anything, and
- * running it again makes only the folders that are still missing.
+ * Making folders never renames, moves or deletes anything, and running it
+ * again makes only the folders that are still missing. Sorting (Sorter.js) is
+ * optional: it moves only what is dropped into Arrivals.
  */
 
 const LAYOUT = {
@@ -20,12 +21,19 @@ const HEADER_WORDS = ['name', 'names', 'first', 'first name', 'last', 'last name
   'student name', 'child', 'child name', 'full name', 'class', 'grade', 'group'];
 
 function onOpen() {
-  if (!SpreadsheetApp.getActiveSheet().getRange('A1').getValue()) setUpThisSheet();   // a brand-new copy lays itself out
+  if (!namesSheet_().getRange('A1').getValue()) setUpThisSheet();   // a brand-new copy lays itself out
   SpreadsheetApp.getUi().createMenu('Folders')
     .addItem('Make the folders', 'makeTheFolders')
     .addSeparator()
     .addItem('Clear everything (to start a new list)', 'clearTheNames')
     .addToUi();
+  if (typeof sortingMenu_ === 'function') sortingMenu_();         // Sorter.js, when it is in the project
+}
+
+/** The tab with the list. Other tabs (Rules, Sorting log) never take its place. */
+function namesSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  return ss.getSheetByName('Names') || ss.getActiveSheet();
 }
 
 // ---- reading and checking the list (no Google calls; checked on the Mac) ----
@@ -132,7 +140,7 @@ function summary_(n, bigName) {
 // ---- the menu items ----
 
 function makeTheFolders() {
-  const ui = SpreadsheetApp.getUi(), sh = SpreadsheetApp.getActiveSheet();
+  const ui = SpreadsheetApp.getUi(), sh = namesSheet_();
   const bigName = tidy_(sh.getRange(LAYOUT.bigFolderCell).getValue());
   if (!bigName) return ui.alert('First type a name for the big folder in ' + LAYOUT.bigFolderCell +
     ', for example "Emergency forms 2026-27".');
@@ -165,7 +173,7 @@ function makeTheFolders() {
 }
 
 function clearTheNames() {
-  const ui = SpreadsheetApp.getUi(), sh = SpreadsheetApp.getActiveSheet();
+  const ui = SpreadsheetApp.getUi(), sh = namesSheet_();
   if (ui.alert('Clear the big folder name and all the names, to start a new list? Folders already made stay as they are.',
     ui.ButtonSet.YES_NO) !== ui.Button.YES) return;
   const last = Math.max(sh.getLastRow(), LAYOUT.firstRow);
@@ -176,7 +184,7 @@ function clearTheNames() {
 
 /** Lays out the sheet (done by itself the first time an empty copy opens). */
 function setUpThisSheet() {
-  const sh = SpreadsheetApp.getActiveSheet();
+  const sh = namesSheet_();
   sh.setName('Names');
   sh.getRange('A1').setValue('Make folders from a list of names').setFontSize(16).setFontWeight('bold');
   sh.getRange('A2').setValue('Fill in the yellow boxes, paste the names from row ' + LAYOUT.firstRow + ', then choose Folders > Make the folders.');

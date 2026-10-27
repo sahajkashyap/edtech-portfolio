@@ -37,7 +37,7 @@
 
 <p class="kicker"><a href="https://sahajkashyap.github.io/edtech-portfolio/">Sahaj Kashyap</a> &middot; tools for classrooms and offices</p>
 <h1>Folder Maker</h1>
-<p class="lede">A folder for every name on a list, made in one step, in your own Google Drive.</p>
+<p class="lede">A folder for every name on a list, made in one step, in your own Google Drive. And if you like, documents sorted into them by what they say.</p>
 
 <p>Every school year starts with lists. A class list, a bus list, a list of who still owes a
 permission slip. Sooner or later someone needs a folder for every name on one of them, and
@@ -92,10 +92,38 @@ so they sort A to Z. One column of full names works too.</li>
 <li>Add a class or group column and each group gets its own folder with its names inside.</li>
 <li>Lists copied from Word or Google Docs with numbers or bullets in front are tidied up.</li>
 <li>Run it again with the same list and it only adds what is missing.</li>
-<li>It never renames, moves or deletes anything.</li>
+<li>Making folders never renames, moves or deletes anything.</li>
 <li><b>Folders</b>, then <b>Clear everything</b>, empties the list to start a new one. Folders
 already made are left alone.</li>
 </ul>
+
+<h2>Sorting documents into the folders (optional)</h2>
+<p>Once the folders exist, the same Sheet can file documents into them. Drop scans, photos, PDFs,
+Word files or Google Docs into a folder called <b>Arrivals</b>, and each one goes where its words
+say it belongs.</p>
+<ol>
+<li>Choose <b>Sorting</b>, then <b>Set up sorting</b>. A <b>Rules</b> tab opens, and Arrivals and
+Unsorted appear inside the big folder.</li>
+<li>Type a rule on each row: the words to look for, where to look (the top of the page, or
+anywhere), and the folder to put it in.</li>
+<li>Tick <b>Then by name</b> on a rule to file it one step further, into a folder for the person
+it names.</li>
+<li>Drop documents into Arrivals, then choose <b>Sorting</b>, then <b>Sort Arrivals now</b>.
+Or choose <b>Turn on sorting</b>, and Arrivals is checked every five minutes.</li>
+</ol>
+<div class="sheet"><table>
+<tr><th>If the document says</th><th>Look at</th><th>Put it in this folder</th><th>Then by name</th></tr>
+<tr><td>Permission slip</td><td>Top of the page</td><td>Permission slips</td><td>&#9744;</td></tr>
+<tr><td>Live Scan</td><td>Anywhere</td><td>Live Scan</td><td>&#9745;</td></tr>
+</table></div>
+<p>Google reads the words in each document, scans and phone photos included. Rows are checked from
+the top, and the first one that matches decides. If no row matches, a full name from the list
+decides. A document that matches nothing, or names two people, goes to <b>Unsorted</b> for a person
+to look at. It never guesses. Every document gets a line on a <b>Sorting log</b> tab saying where
+it went and why.</p>
+<div class="note"><b>Sorting moves files.</b> Only what is dropped into Arrivals is ever moved, and
+nothing is renamed or deleted. A file already in your Drive is moved, not copied, so make a copy
+first if you want the original to stay where it is.</div>
 
 <p class="pull">One more use I keep thinking about: a folder for every child, made on the first
 day, ready to hold a year of their work. A portfolio of each child's work can start the same day
@@ -103,11 +131,13 @@ the class list does.</p>
 
 <h2>How it was built</h2>
 <p>I directed Claude to write the code, then tested it with made-up names in two separate
-Google accounts before anyone used it with a real list. The code is a short Google Apps Script
-attached to the Sheet: <a href="code/Code.js">Code.js</a> and its settings,
-appsscript.json, in the same folder. Google will ask you to allow it into your
-Drive, because that is where the folders go. What it does there is in the code for anyone to read:
-it makes folders, and nothing else.</p>
+Google accounts before anyone used it with a real list. Sorting was tested the same way: a grid of
+116 practice documents on the Mac, every one in the right place, then a real run in Google Drive
+with scans, photos, a PDF and a Word file. The code is a short Google Apps Script attached to the
+Sheet: <a href="code/Code.js">Code.js</a> makes the folders, <a href="code/Sorter.js">Sorter.js</a>
+sorts, and appsscript.json, in the same folder, holds its settings. Google will ask you to allow it
+into your Drive, because that is where the folders go, and, for sorting, to read your documents and
+run on a timer. What it does there is in the code for anyone to read.</p>
 
 <footer>Free to copy and use. Built by Sahaj Kashyap.
 <a href="https://sahajkashyap.github.io/edtech-portfolio/">More tools</a></footer>

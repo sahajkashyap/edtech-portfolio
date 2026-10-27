@@ -204,7 +204,7 @@ prints as a report for a conference.
 
 | Tool | What it is |
 |---|---|
-| [`folder-maker/`](folder-maker/) | A free Google Sheet: paste a list of names, click one button, and a folder for every name appears in Google Drive, sorted into groups if you like. Never renames, moves or deletes. [Get your copy](https://sahajkashyap.github.io/edtech-portfolio/folder-maker/) |
+| [`folder-maker/`](folder-maker/) | A free Google Sheet: paste a list of names, click one button, and a folder for every name appears in Google Drive, sorted into groups if you like. Can also sort documents into the folders by what they say. [Get your copy](https://sahajkashyap.github.io/edtech-portfolio/folder-maker/) |
 
 ### For families
 
