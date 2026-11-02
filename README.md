@@ -149,8 +149,8 @@ version.
 **123 of the 128 lessons now have a decodable story and a printable four-page
 packet**: 6,749 words, 492 pages, every one through the gate and every sheet
 measured to fit. Lessons 1–5 have none, because at Lesson 1 there are zero words
-a child can sound out and by Lesson 5 there are five. You cannot write a story
-from five words.
+a child can sound out and by Lesson 5 there are four. You cannot write a story
+from four words.
 
 Along the way the loop caught a checker that rejected every word containing `q`
 at every lesson, a rulebook that made three lessons impossible to write, and

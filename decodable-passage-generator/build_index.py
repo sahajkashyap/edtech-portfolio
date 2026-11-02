@@ -3,8 +3,8 @@
 
 Also the honest record of what is NOT here. Lessons 1-5 have no passage, and
 that is a fact about early phonics rather than a gap in the generator: at Lesson
-1 there are zero words a child can sound out, and at Lessons 4-5 there are five.
-You cannot write a story from five words.
+1 there are zero words a child can sound out, and at Lessons 4-5 there are four.
+You cannot write a story from four words.
 
 Run:  python3 build_index.py   -> writes index.html
 """
