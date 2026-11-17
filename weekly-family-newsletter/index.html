@@ -461,6 +461,10 @@
     .sheet-example { flex-wrap: wrap; gap: 6px; }
     .sheet-example .se-text { flex: 1 1 100%; }
     h1.title { font-size: 27px; }
+    /* WHAT WAS WRONG: on a 390px phone the subject pills under Time travel and
+       the "Add photo album link" button were 34-35px tall, under the 44px a
+       fingertip needs, so a tap could land on the wrong subject. */
+    .catchup-pill, .album button { min-height: 44px; }
   }
   /* WHAT WAS WRONG: at 390px — an ordinary phone — the decorative sun disc was
      drawn straight over the last letters of the newsletter title. Keep the
